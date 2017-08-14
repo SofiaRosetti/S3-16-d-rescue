@@ -1,0 +1,21 @@
+group 'it.unibo.S3.drescue'
+version '0.1'
+
+apply plugin: 'java'
+apply plugin: 'scala'
+
+sourceCompatibility = 1.8
+
+allprojects {
+
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+}
+
+dependencies {
+    compile 'org.scala-lang:scala-library:2.12.2'
+}
+
+defaultTasks('clean', 'build')

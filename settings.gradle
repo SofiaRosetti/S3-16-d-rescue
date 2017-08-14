@@ -1,0 +1,6 @@
+include ':mobileuser'
+rootProject.name = 'drescue'
+include 'civilprotection'
+include 'server'
+include 'utils'
+
