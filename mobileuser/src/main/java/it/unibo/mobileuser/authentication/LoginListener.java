@@ -6,7 +6,7 @@ package it.unibo.mobileuser.authentication;
 public interface LoginListener {
 
     /**
-     * Performs login.
+     * Performs login with the given parameters.
      */
-    void login();
+    void login(String email, String password);
 }

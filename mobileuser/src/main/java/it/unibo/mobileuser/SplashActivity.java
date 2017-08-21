@@ -3,15 +3,13 @@ package it.unibo.mobileuser;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import it.unibo.mobileuser.authentication.SignInFragment;
-import it.unibo.mobileuser.authentication.SplashFragment;
-import it.unibo.mobileuser.authentication.SplashListener;
+import it.unibo.mobileuser.authentication.*;
 
 /**
  * Launcher activity of the App.
  */
 public class SplashActivity extends BaseActivity
-        implements SplashListener {
+        implements SplashListener, SignInListener, LoginListener {
 
     private Toolbar toolbar;
 
@@ -60,6 +58,16 @@ public class SplashActivity extends BaseActivity
         //TODO switch to LoginFragment
     }
 
+    @Override
+    public void login(final String email, final String password) {
+        //TODO asynkTask request
+    }
+
+    @Override
+    public void signIn(final String name, final String surname, final String email, final String phone, final String password, final String confirmPassword) {
+        //TODO asynkTask request
+    }
+
     /**
      * Set the visibility of the toolbar inside an activity.
      *
@@ -72,5 +80,4 @@ public class SplashActivity extends BaseActivity
             getSupportActionBar().setDisplayShowTitleEnabled(visible);
         }
     }
-
 }
