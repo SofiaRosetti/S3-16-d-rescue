@@ -1,8 +1,11 @@
 <resources>
     <string name="app_name">mobileuser</string>
 
+    <string name="change_password">Change password</string>
     <string name="description">Description:</string>
     <string name="description_hint">Enter a description of the event</string>
+    <string name="edit">Edit</string>
+    <string name="email">Email:</string>
     <string name="event_type">Event type:</string>
     <string-array name="event_type_array">
         <item>Avalanche</item>
@@ -16,5 +19,14 @@
         <item>Tsunami</item>
         <item>Volcanic eruption</item>
     </string-array>
+    <string name="name">Name:</string>
+    <string name="password_confirm">Confirm password</string>
+    <string name="password_new">New password:</string>
+    <string name="password_new_hint">Enter new password</string>
+    <string name="password_old">Old password:</string>
+    <string name="password_old_hint">Enter old password</string>
+    <string name="phone">Phone:</string>
+    <string name="save">Save</string>
     <string name="send">Send</string>
+    <string name="surname">Surname:</string>
 </resources>
