@@ -17,6 +17,7 @@ public class SplashActivity extends BaseActivity
 
         this.toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(this.toolbar);
+        setToolbarVisibility(false);
 
         setFragment(new SplashFragment(), R.id.container, false);
 
@@ -31,4 +32,17 @@ public class SplashActivity extends BaseActivity
     public void onRequestLogin() {
         //TODO switch to LoginFragment
     }
+
+    /**
+     * Set the visibility of the toolbar inside an activity
+     * @param visible if true the toolbar is visible inside the activity
+     */
+    private void setToolbarVisibility(final boolean visible) {
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(visible);
+            getSupportActionBar().setHomeButtonEnabled(visible);
+            getSupportActionBar().setDisplayShowTitleEnabled(visible);
+        }
+    }
+
 }
