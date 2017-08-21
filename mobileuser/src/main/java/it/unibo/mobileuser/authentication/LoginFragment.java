@@ -17,20 +17,17 @@ import it.unibo.mobileuser.R;
 public class LoginFragment extends Fragment {
 
     private LoginListener listener;
-    private Button loginButton;
-    private MaterialEditText emailEditText;
-    private MaterialEditText passwordEditText;
 
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        this.emailEditText = view.findViewById(R.id.email_login);
-        this.passwordEditText = view.findViewById(R.id.password_login);
+        final MaterialEditText emailEditText = view.findViewById(R.id.email_login);
+        final MaterialEditText passwordEditText = view.findViewById(R.id.password_login);
 
-        this.loginButton = view.findViewById(R.id.login);
-        this.loginButton.setOnClickListener((v) -> {
+        final Button loginButton = view.findViewById(R.id.login);
+        loginButton.setOnClickListener((v) -> {
             if (LoginFragment.this.listener != null) {
                 //TODO check on editText
                 //LoginFragment.this.listener.signIn();

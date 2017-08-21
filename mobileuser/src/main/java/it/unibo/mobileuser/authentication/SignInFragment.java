@@ -17,28 +17,21 @@ import it.unibo.mobileuser.R;
 public class SignInFragment extends Fragment {
 
     private SignInListener listener;
-    private Button signInButton;
-    private MaterialEditText nameEditText;
-    private MaterialEditText surnameEditText;
-    private MaterialEditText emailEditText;
-    private MaterialEditText phoneEditText;
-    private MaterialEditText passwordEditText;
-    private MaterialEditText confirmPasswordEditText;
 
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
 
-        this.nameEditText = view.findViewById(R.id.name_sign_in);
-        this.surnameEditText = view.findViewById(R.id.surname_sign_in);
-        this.emailEditText = view.findViewById(R.id.email_sign_in);
-        this.phoneEditText = view.findViewById(R.id.phone_sign_in);
-        this.passwordEditText = view.findViewById(R.id.password_sign_in);
-        this.confirmPasswordEditText = view.findViewById(R.id.confirm_password_sign_in);
+        final MaterialEditText nameEditText = view.findViewById(R.id.name_sign_in);
+        final MaterialEditText surnameEditText = view.findViewById(R.id.surname_sign_in);
+        final MaterialEditText emailEditText = view.findViewById(R.id.email_sign_in);
+        final MaterialEditText phoneEditText = view.findViewById(R.id.phone_sign_in);
+        final MaterialEditText passwordEditText = view.findViewById(R.id.password_sign_in);
+        final MaterialEditText confirmPasswordEditText = view.findViewById(R.id.confirm_password_sign_in);
 
-        this.signInButton = view.findViewById(R.id.sign_in);
-        this.signInButton.setOnClickListener((v) -> {
+        final Button signInButton = view.findViewById(R.id.sign_in);
+        signInButton.setOnClickListener((v) -> {
             if (SignInFragment.this.listener != null) {
                 //TODO check on editText
                 //SignInFragment.this.listener.signIn();
@@ -49,7 +42,7 @@ public class SignInFragment extends Fragment {
     }
 
     /**
-     * Set the activity listener to the listener implemented by this fragment
+     * Set the activity listener to the listener implemented by this fragment.
      *
      * @param listener
      */
