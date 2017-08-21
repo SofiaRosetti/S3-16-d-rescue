@@ -6,7 +6,7 @@ package it.unibo.mobileuser.authentication;
 public interface LoginListener {
 
     /**
-     * Performs actions at login
+     * Performs login
      */
-    void onRequestLogin();
+    void login();
 }

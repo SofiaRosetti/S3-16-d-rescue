@@ -6,8 +6,8 @@ package it.unibo.mobileuser.authentication;
 public interface SignInListener {
 
     /**
-     * Performs actions at sign in
+     * Performs sign in
      */
-    void onRequestSignIn();
+    void signIn();
 
 }
