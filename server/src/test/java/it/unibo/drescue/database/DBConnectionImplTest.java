@@ -39,6 +39,20 @@ public class DBConnectionImplTest {
         this.dbConnection.unregisterUser(this.dbConnection.getUserId(EMAIL_TEST));
     }
 
+    @Test
+    public void isRejectingUnregisteredUser() throws Exception {
+        assertFalse(this.dbConnection.login(EMAIL_TEST, PASSWORD_TEST));
+    }
+
+    @Test
+    public void isLoggingInRegisteredUser() throws Exception {
+        this.dbConnection.registerUser(EMAIL_TEST, PASSWORD_TEST,
+                NAME_TEST, SURNAME_TEST, PHONENUMBER_TEST);
+        assertTrue(this.dbConnection.login(EMAIL_TEST, PASSWORD_TEST));
+        //Deleting test user
+        this.dbConnection.unregisterUser(this.dbConnection.getUserId(EMAIL_TEST));
+    }
+    
     @After
     public void tearDown() throws Exception {
         this.dbConnection.closeConnection();

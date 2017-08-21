@@ -102,12 +102,37 @@ public class DBConnectionImpl implements DBConnection {
         return false;
     }
 
+
+    /**
+     * @param email
+     * @return the password if the user with the given email exist,
+     * null otherwise
+     */
+    private String getUserPwd(String email) {
+        String strRet = null;
+        String query = "SELECT password FROM User WHERE email=" + STR_ESCAPE + email + STR_ESCAPE;
+        try {
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                strRet = resultSet.getString("password");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return strRet;
+    }
+
     @Override
     public boolean login(String email, String password) {
 
-        //TODO
-        return false;
+        //Check password
+        String passInDb = this.getUserPwd(email);
+        if (passInDb == null) {
+            return false;
+        } else {
+            return password.equals(passInDb);
+        }
+        
     }
-
 
 }
