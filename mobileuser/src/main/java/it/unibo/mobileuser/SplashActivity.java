@@ -2,8 +2,10 @@ package it.unibo.mobileuser;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import it.unibo.mobileuser.authentication.SplashListener;
 
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends BaseActivity
+        implements SplashListener {
 
     private Toolbar toolbar;
 
@@ -15,5 +17,15 @@ public class SplashActivity extends BaseActivity {
         this.toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(this.toolbar);
 
+    }
+
+    @Override
+    public void onRequestSignIn() {
+        //TODO switch to SignInFragment
+    }
+
+    @Override
+    public void onRequestLogin() {
+        //TODO switch to LoginFragment
     }
 }
