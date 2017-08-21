@@ -5,6 +5,9 @@ import android.support.v7.widget.Toolbar;
 import it.unibo.mobileuser.authentication.SplashFragment;
 import it.unibo.mobileuser.authentication.SplashListener;
 
+/**
+ * Launcher activity of the App.
+ */
 public class SplashActivity extends BaseActivity
         implements SplashListener {
 
@@ -34,11 +37,12 @@ public class SplashActivity extends BaseActivity
     }
 
     /**
-     * Set the visibility of the toolbar inside an activity
+     * Set the visibility of the toolbar inside an activity.
+     *
      * @param visible if true the toolbar is visible inside the activity
      */
     private void setToolbarVisibility(final boolean visible) {
-        if(getSupportActionBar()!=null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(visible);
             getSupportActionBar().setHomeButtonEnabled(visible);
             getSupportActionBar().setDisplayShowTitleEnabled(visible);

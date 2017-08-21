@@ -5,7 +5,7 @@ import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 /**
- * Base activity from which every activity of the App extends
+ * Base activity from which every activity of the App extends.
  */
 public class BaseActivity extends AppCompatActivity {
 

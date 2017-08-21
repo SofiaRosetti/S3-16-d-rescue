@@ -11,6 +11,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import it.unibo.mobileuser.R;
 
+/**
+ * Fragment represented on the splash screen.
+ */
 public class SplashFragment extends Fragment {
 
     private SplashListener listener;
@@ -23,30 +26,27 @@ public class SplashFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_splash, container, false);
 
         this.loginButton = view.findViewById(R.id.splash_login);
-        this.loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                if (SplashFragment.this.listener != null) {
-                    System.out.println("[SplashFragment] Login pressed!");
-                    //listener.onRequestLogin();
-                }
+        this.loginButton.setOnClickListener((v) -> {
+            if (SplashFragment.this.listener != null) {
+                SplashFragment.this.listener.onRequestLogin();
             }
         });
 
         this.signInTextView = view.findViewById(R.id.splash_sign_in);
-        this.signInTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                if (SplashFragment.this.listener != null) {
-                    System.out.println("[SplashFragment] Sign in pressed!");
-                    //listener.onRequestSignIn();
-                }
+        this.signInTextView.setOnClickListener((v) -> {
+            if (SplashFragment.this.listener != null) {
+                SplashFragment.this.listener.onRequestSignIn();
             }
         });
 
         return view;
     }
 
+    /**
+     * Set the activity listener to the listener implemented by this fragment
+     *
+     * @param listener
+     */
     private void setListener(final SplashListener listener) {
         this.listener = listener;
     }
