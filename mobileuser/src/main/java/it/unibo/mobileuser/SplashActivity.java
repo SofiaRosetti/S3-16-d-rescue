@@ -2,6 +2,7 @@ package it.unibo.mobileuser;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import it.unibo.mobileuser.authentication.SplashFragment;
 import it.unibo.mobileuser.authentication.SplashListener;
 
 public class SplashActivity extends BaseActivity
@@ -16,6 +17,8 @@ public class SplashActivity extends BaseActivity
 
         this.toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(this.toolbar);
+
+        setFragment(new SplashFragment(), R.id.container, false);
 
     }
 
