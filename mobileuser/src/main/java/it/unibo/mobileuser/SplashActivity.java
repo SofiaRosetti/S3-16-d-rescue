@@ -55,7 +55,11 @@ public class SplashActivity extends BaseActivity
 
     @Override
     public void onRequestLogin() {
-        //TODO switch to LoginFragment
+        System.out.println("[SplashActivity] onRequestLogin");
+        setFragment(new LoginFragment(), R.id.container, true);
+
+        setToolbarVisibility(true);
+        getSupportActionBar().setTitle(R.string.login);
     }
 
     @Override
