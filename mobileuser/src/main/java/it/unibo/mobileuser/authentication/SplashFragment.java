@@ -64,4 +64,5 @@ public class SplashFragment extends Fragment {
         this.listener = null;
         super.onDetach();
     }
+
 }

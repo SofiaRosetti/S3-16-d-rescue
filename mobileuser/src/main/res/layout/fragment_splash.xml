@@ -60,7 +60,7 @@
                     android:id="@+id/splash_sign_in"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/sign_in"
+                    android:text="@string/sign_in_exclamation"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textStyle="bold"
                     android:clickable="true"
