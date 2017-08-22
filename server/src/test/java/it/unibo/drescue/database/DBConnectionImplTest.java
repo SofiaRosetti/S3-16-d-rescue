@@ -18,7 +18,7 @@ public class DBConnectionImplTest {
 
     @Before
     public void setUp() throws Exception {
-        this.dbConnection = new DBConnectionImpl();
+        this.dbConnection = new DBConnectionImpl(DBConnectionImpl.DBInfo.LOCAL);
         this.dbConnection.openConnection();
     }
 
@@ -52,7 +52,7 @@ public class DBConnectionImplTest {
         //Deleting test user
         this.dbConnection.unregisterUser(this.dbConnection.getUserId(EMAIL_TEST));
     }
-    
+
     @After
     public void tearDown() throws Exception {
         this.dbConnection.closeConnection();

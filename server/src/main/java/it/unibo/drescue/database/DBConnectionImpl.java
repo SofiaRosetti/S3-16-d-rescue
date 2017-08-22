@@ -6,18 +6,41 @@ public class DBConnectionImpl implements DBConnection {
 
     private static final String STR_ESCAPE = "\'";
     private static final String DRIVER_NAME = "com.mysql.jdbc.Driver";
-    private static final String LOCAL_DB_URL = "jdbc:mysql://localhost:3306/testschema";
-    private static final String LOCAL_DB_USERNAME = "admin";
-    private static final String LOCAL_DB_PASSWORD = "4dm1n";
-    private static final String REMOTE_DB_URL =
-            "jdbc:mysql://rds-mysql-drescue.cnwnbp8hx7vq.us-east-2.rds.amazonaws.com:3306/drescueDB";
-    private static final String REMOTE_DB_USERNAME = "masterDrescue";
-    private static final String REMOTE_DB_PASSWORD = "rdsTeamPass";
-
     private static Connection connection;
     private static Statement statement;
+    private DBInfo dbInfo;
+    private String dbAddress;
+    private String dbUsername;
+    private String dbPassword;
 
+    /**
+     * Constructor without parameters, connect to REMOTE db
+     */
     public DBConnectionImpl() {
+        this.dbInfo = DBInfo.REMOTE;
+        this.setDbInfo();
+    }
+
+    /**
+     * @param info enum (LOCAL/REMOTE), to specify in which environment to connect
+     */
+    public DBConnectionImpl(DBInfo info) {
+        this.dbInfo = info;
+        this.setDbInfo();
+    }
+
+    private void setDbInfo() {
+        switch (this.dbInfo) {
+            case LOCAL:
+                this.dbAddress = "jdbc:mysql://localhost:3306/testschema";
+                this.dbUsername = "admin";
+                this.dbPassword = "4dm1n";
+            case REMOTE:
+                this.dbAddress =
+                        "jdbc:mysql://rds-mysql-drescue.cnwnbp8hx7vq.us-east-2.rds.amazonaws.com:3306/drescueDB";
+                this.dbUsername = "masterDrescue";
+                this.dbPassword = "rdsTeamPass";
+        }
     }
 
     @Override
@@ -25,8 +48,8 @@ public class DBConnectionImpl implements DBConnection {
         try {
             if (connection == null || connection.isClosed()) {
                 Class.forName(DRIVER_NAME);
-                connection = DriverManager.getConnection(REMOTE_DB_URL,
-                        REMOTE_DB_USERNAME, REMOTE_DB_PASSWORD);
+                connection = DriverManager.getConnection(this.dbAddress,
+                        this.dbUsername, this.dbPassword);
                 System.out.println("Connected to DB");
                 statement = connection.createStatement();
                 System.out.println("Statement created");
@@ -47,7 +70,6 @@ public class DBConnectionImpl implements DBConnection {
             e.printStackTrace();
         }
     }
-
 
     public int getUserId(String email) {
         int id = -1;
@@ -91,7 +113,6 @@ public class DBConnectionImpl implements DBConnection {
         return false;
     }
 
-
     @Override
     public boolean unregisterUser(int userID) {
 
@@ -105,7 +126,6 @@ public class DBConnectionImpl implements DBConnection {
         }
         return false;
     }
-
 
     /**
      * @param email
@@ -137,6 +157,11 @@ public class DBConnectionImpl implements DBConnection {
             return password.equals(passInDb);
         }
 
+    }
+
+    protected enum DBInfo {
+        LOCAL,
+        REMOTE
     }
 
 }
