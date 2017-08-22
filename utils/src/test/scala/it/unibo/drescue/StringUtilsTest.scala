@@ -4,8 +4,8 @@ import org.scalatest.FunSuite
 
 class StringUtilsTest extends FunSuite {
 
-  test("String must be not null or empty") {
-    val rightString = "prova"
+  test("String must not be null or empty") {
+    val rightString = "test"
     val nullString = null
     val emptyString = ""
 
