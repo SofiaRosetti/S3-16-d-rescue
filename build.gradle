@@ -1,21 +1,31 @@
 group 'it.unibo.S3.drescue'
 version '0.1'
 
-apply plugin: 'java'
-apply plugin: 'scala'
-
-sourceCompatibility = 1.8
-
-allprojects {
+subprojects {
 
     repositories {
         mavenCentral()
         jcenter()
     }
+
 }
 
-dependencies {
-    compile 'org.scala-lang:scala-library:2.12.2'
+configure(subprojects.findAll()) {
+    if (it.name != 'mobileuser') {
+        apply plugin: 'java'
+        apply plugin: 'scala'
+
+        sourceCompatibility = 1.8
+
+        dependencies {
+            compile 'org.scala-lang:scala-library:2.12.2'
+            testCompile group: 'junit', name: 'junit', version: '4.12'
+        }
+
+
+    }
 }
+
+
 
 defaultTasks('clean', 'build')
