@@ -23,5 +23,13 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(new Intent(view.getContext(), ChangePasswordActivity.class));
             }
         });
+
+        final Button editProfile = (Button) findViewById(R.id.edit_button);
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                startActivity(new Intent(view.getContext(), EditProfileActivity.class));
+            }
+        });
     }
 }
