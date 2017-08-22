@@ -73,7 +73,7 @@ public class DBConnectionImpl implements DBConnection {
 
     public int getUserId(String email) {
         int id = -1;
-        String query = "SELECT userID FROM User WHERE email=" + STR_ESCAPE + email + STR_ESCAPE;
+        String query = "SELECT userID FROM USER WHERE email=" + STR_ESCAPE + email + STR_ESCAPE;
         try {
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
@@ -95,13 +95,13 @@ public class DBConnectionImpl implements DBConnection {
             return false;
         }
 
-        String query = "INSERT INTO User (email,password,phoneNumber,name,surname)"
+        String query = "INSERT INTO USER (email,password,name,surname,phoneNumber)"
                 + "VALUE ("
                 + STR_ESCAPE + email + STR_ESCAPE + ","
                 + STR_ESCAPE + password + STR_ESCAPE + ","
-                + STR_ESCAPE + phoneNumber + STR_ESCAPE + ","
                 + STR_ESCAPE + name + STR_ESCAPE + ","
-                + STR_ESCAPE + surname + STR_ESCAPE
+                + STR_ESCAPE + surname + STR_ESCAPE + ","
+                + STR_ESCAPE + phoneNumber + STR_ESCAPE
                 + ")";
         try {
             statement.executeUpdate(query);
@@ -116,7 +116,7 @@ public class DBConnectionImpl implements DBConnection {
     @Override
     public boolean unregisterUser(int userID) {
 
-        String query = "DELETE FROM User WHERE userID=" + userID;
+        String query = "DELETE FROM USER WHERE userID=" + userID;
         try {
             statement.executeUpdate(query);
             System.out.println("Deleted user " + userID);
@@ -134,7 +134,7 @@ public class DBConnectionImpl implements DBConnection {
      */
     private String getUserPwd(String email) {
         String strRet = null;
-        String query = "SELECT password FROM User WHERE email=" + STR_ESCAPE + email + STR_ESCAPE;
+        String query = "SELECT password FROM USER WHERE email=" + STR_ESCAPE + email + STR_ESCAPE;
         try {
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
@@ -159,7 +159,7 @@ public class DBConnectionImpl implements DBConnection {
 
     }
 
-    protected enum DBInfo {
+    public enum DBInfo {
         LOCAL,
         REMOTE
     }
