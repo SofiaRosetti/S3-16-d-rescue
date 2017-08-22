@@ -68,7 +68,7 @@ public class SplashActivity extends BaseActivity
     }
 
     @Override
-    public void signIn(final String name, final String surname, final String email, final String phone, final String password, final String confirmPassword) {
+    public void signIn(final String name, final String surname, final String email, final String phone, final String password) {
         //TODO asynkTask request
     }
 

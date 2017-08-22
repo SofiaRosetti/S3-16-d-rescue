@@ -3,7 +3,7 @@ package it.unibo.mobileuser.utils;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 /**
- * Class with specific utils for mobileuser module
+ * Class with specific utils for mobileuser module.
  */
 public class Utils {
 
