@@ -9,6 +9,10 @@ public class DBConnectionImpl implements DBConnection {
     private static final String LOCAL_DB_URL = "jdbc:mysql://localhost:3306/testschema";
     private static final String LOCAL_DB_USERNAME = "admin";
     private static final String LOCAL_DB_PASSWORD = "4dm1n";
+    private static final String REMOTE_DB_URL =
+            "jdbc:mysql://rds-mysql-drescue.cnwnbp8hx7vq.us-east-2.rds.amazonaws.com:3306/drescueDB";
+    private static final String REMOTE_DB_USERNAME = "masterDrescue";
+    private static final String REMOTE_DB_PASSWORD = "rdsTeamPass";
 
     private static Connection connection;
     private static Statement statement;
@@ -21,8 +25,8 @@ public class DBConnectionImpl implements DBConnection {
         try {
             if (connection == null || connection.isClosed()) {
                 Class.forName(DRIVER_NAME);
-                connection = DriverManager.getConnection(LOCAL_DB_URL,
-                        LOCAL_DB_USERNAME, LOCAL_DB_PASSWORD);
+                connection = DriverManager.getConnection(REMOTE_DB_URL,
+                        REMOTE_DB_USERNAME, REMOTE_DB_PASSWORD);
                 System.out.println("Connected to DB");
                 statement = connection.createStatement();
                 System.out.println("Statement created");
@@ -132,7 +136,7 @@ public class DBConnectionImpl implements DBConnection {
         } else {
             return password.equals(passInDb);
         }
-        
+
     }
 
 }
