@@ -30,7 +30,7 @@ public class LoginFragment extends Fragment {
         loginButton.setOnClickListener((v) -> {
             if (LoginFragment.this.listener != null) {
                 //TODO check on editText
-                //LoginFragment.this.listener.signIn();
+                //LoginFragment.this.listener.login();
             }
         });
 
