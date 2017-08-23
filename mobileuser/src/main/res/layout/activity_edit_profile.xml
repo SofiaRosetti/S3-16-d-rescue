@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context="it.unibo.mobileuser.profile.EditProfileActivity">
+
+    <include
+            android:layout_width="match_parent"
+            layout="@layout/toolbar"
+            android:id="@+id/toolbar"
+            android:layout_height="?attr/actionBarSize">
+    </include>
+
+    <LinearLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/name_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/name"
+                android:inputType="text"
+                app:met_floatingLabel="highlight"
+                app:met_iconLeft="@mipmap/ic_launcher"/>
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/surname_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/surname"
+                android:inputType="text"
+                app:met_floatingLabel="highlight"/>
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/email_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                app:met_floatingLabel="highlight"
+                app:met_iconLeft="@mipmap/ic_launcher"/>
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/phone_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/phone"
+                android:inputType="phone"
+                app:met_floatingLabel="highlight"
+                app:met_iconLeft="@mipmap/ic_launcher"/>
+
+        <Button
+                android:text="@string/save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/save_button"/>
+    </LinearLayout>
+</LinearLayout>
