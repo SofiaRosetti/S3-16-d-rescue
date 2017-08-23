@@ -52,7 +52,7 @@ public class Geocoding {
             final Object type = object.get("types");
             final String typeString = type.toString();
             if (typeString.contains("ADMINISTRATIVE_AREA_LEVEL_2")) {
-                this.district = object.get("shortName").toString();
+                this.district = object.get("shortName").toString().substring(1, 3);
             }
         }
         return this.district;
