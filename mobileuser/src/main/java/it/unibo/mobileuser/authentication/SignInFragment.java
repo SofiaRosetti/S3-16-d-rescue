@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import it.unibo.drescue.StringUtils;
 import it.unibo.mobileuser.R;
+import it.unibo.mobileuser.utils.Utils;
 
 /**
  * Fragment to sign in in the mobileuser App.
@@ -32,9 +34,29 @@ public class SignInFragment extends Fragment {
 
         final Button signInButton = view.findViewById(R.id.sign_in);
         signInButton.setOnClickListener((v) -> {
-            if (SignInFragment.this.listener != null) {
-                //TODO check on editText
-                //SignInFragment.this.listener.signIn();
+
+            final String name = Utils.getEditTextString(nameEditText);
+            final String surname = Utils.getEditTextString(surnameEditText);
+            final String email = Utils.getEditTextString(emailEditText);
+            final String phone = Utils.getEditTextString(phoneEditText);
+            final String password = Utils.getEditTextString(passwordEditText);
+            final String confirmPassword = Utils.getEditTextString(confirmPasswordEditText);
+            if (StringUtils.isAValidString(name) && StringUtils.isAValidString(surname) &&
+                    StringUtils.isAValidString(email) && StringUtils.isAValidString(phone) &&
+                    StringUtils.isAValidString(password) && StringUtils.isAValidString(confirmPassword)) {
+                if (StringUtils.isAValidEmail(email)) {
+                    if (password.equals(confirmPassword)) {
+                        if (SignInFragment.this.listener != null) {
+                            SignInFragment.this.listener.signIn(name, surname, email, phone, password);
+                        }
+                    } else {
+                        //TODO show dialog "password and confirm password do not match"
+                    }
+                } else {
+                    //TODO show dialog "incorrect email format"
+                }
+            } else {
+                //TODO show dialog "all fields must be filled"
             }
         });
 

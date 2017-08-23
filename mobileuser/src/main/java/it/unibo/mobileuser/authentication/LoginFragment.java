@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import it.unibo.drescue.StringUtils;
 import it.unibo.mobileuser.R;
+import it.unibo.mobileuser.utils.Utils;
 
 /**
  * Fragment to login in the mobileuser App
@@ -28,9 +30,16 @@ public class LoginFragment extends Fragment {
 
         final Button loginButton = view.findViewById(R.id.login);
         loginButton.setOnClickListener((v) -> {
-            if (LoginFragment.this.listener != null) {
-                //TODO check on editText
-                //LoginFragment.this.listener.login();
+
+            final String email = Utils.getEditTextString(emailEditText);
+            final String password = Utils.getEditTextString(passwordEditText);
+            if (StringUtils.isAValidString(email) && StringUtils.isAValidString(password) &&
+                    StringUtils.isAValidEmail(email)) {
+                if (LoginFragment.this.listener != null) {
+                    LoginFragment.this.listener.login(email, password);
+                }
+            } else {
+                //TODO show error dialog "incorrect login data"
             }
         });
 

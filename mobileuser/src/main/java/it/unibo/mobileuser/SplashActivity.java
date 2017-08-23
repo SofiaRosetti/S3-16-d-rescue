@@ -22,7 +22,6 @@ public class SplashActivity extends ToolbarActivity
 
     @Override
     public void onRequestSignIn() {
-        System.out.println("[SplashActivity] onRequestSignIn");
         setFragment(new SignInFragment(), R.id.container, true);
 
         setToolbarVisibility(true);
@@ -31,7 +30,6 @@ public class SplashActivity extends ToolbarActivity
 
     @Override
     public void onRequestLogin() {
-        System.out.println("[SplashActivity] onRequestLogin");
         setFragment(new LoginFragment(), R.id.container, true);
 
         setToolbarVisibility(true);
@@ -40,11 +38,16 @@ public class SplashActivity extends ToolbarActivity
 
     @Override
     public void login(final String email, final String password) {
+        System.out.println("[SplashActivity] login: email=" + email + " password=" + password);
+
         //TODO asynkTask request
     }
 
     @Override
     public void signIn(final String name, final String surname, final String email, final String phone, final String password) {
+        System.out.println("[SplashActivity] signIn: name=" + name + " surname=" + surname +
+                " email=" + email + " phone=" + phone + " password=" + password);
+
         //TODO asynkTask request
     }
 }
