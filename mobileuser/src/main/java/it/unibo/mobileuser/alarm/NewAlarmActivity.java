@@ -1,4 +1,5 @@
-package it.unibo.mobileuser;
+package it.unibo.mobileuser.alarm;
+
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,6 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import it.unibo.mobileuser.R;
 
 /**
  * A class that allows to show graphical interface to report new alarm and sends the alarm to server.
@@ -34,4 +36,6 @@ public class NewAlarmActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

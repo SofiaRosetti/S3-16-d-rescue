@@ -1,9 +1,10 @@
-package it.unibo.mobileuser;
+package it.unibo.mobileuser.profile;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import it.unibo.mobileuser.R;
 
 /**
  * A class that allows to show the graphical interface to change user's data.
