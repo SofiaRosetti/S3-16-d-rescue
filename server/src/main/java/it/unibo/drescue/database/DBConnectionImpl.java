@@ -21,6 +21,7 @@ public class DBConnectionImpl implements DBConnection {
         this.setDbInfo();
     }
 
+    //TODO TO FIX: now it always connects to remote
     /**
      * @param info enum (LOCAL/REMOTE), to specify in which environment to connect
      */
