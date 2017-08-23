@@ -1,7 +1,10 @@
 package it.unibo.mobileuser.utils;
 
-import it.unibo.mobileuser.connection.RequestItemImpl;
+import it.unibo.mobileuser.connection.RequestImpl;
 
+/**
+ * Class with specific utils for server requests.
+ */
 public class ServerUtils {
 
     public static final String SERVER_ADDRESS = "ec2-13-58-168-22.us-east-2.compute.amazonaws.com";
@@ -27,8 +30,8 @@ public class ServerUtils {
     /**
      * Requests
      */
-    public static RequestItemImpl signIn(final String email, final String password, final String name, final String surname, final String phone) {
-        final RequestItemImpl signInRequest = new RequestItemImpl();
+    public static RequestImpl signIn(final String email, final String password, final String name, final String surname, final String phone) {
+        final RequestImpl signInRequest = new RequestImpl();
         signInRequest.putKeyValuePair(EMAIL, email);
         signInRequest.putKeyValuePair(PASSWORD, password);
         signInRequest.putKeyValuePair(NAME, name);
@@ -37,8 +40,8 @@ public class ServerUtils {
         return signInRequest;
     }
 
-    public static RequestItemImpl login(final String email, final String password) {
-        final RequestItemImpl signInRequest = new RequestItemImpl();
+    public static RequestImpl login(final String email, final String password) {
+        final RequestImpl signInRequest = new RequestImpl();
         signInRequest.putKeyValuePair(EMAIL, email);
         signInRequest.putKeyValuePair(PASSWORD, password);
         return signInRequest;

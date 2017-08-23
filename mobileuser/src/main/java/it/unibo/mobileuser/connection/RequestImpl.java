@@ -6,7 +6,7 @@ import it.unibo.mobileuser.utils.ServerUtils;
 /**
  * Class that represents a generic request to server.
  */
-public class RequestItemImpl implements RequestItem {
+public class RequestImpl implements Request {
 
     private final String address;
     private final int port;
@@ -15,7 +15,7 @@ public class RequestItemImpl implements RequestItem {
     /**
      * Create a new request with empty data.
      */
-    public RequestItemImpl() {
+    public RequestImpl() {
         this.address = ServerUtils.SERVER_ADDRESS;
         this.port = ServerUtils.PORT;
         this.requestData = new JsonObject();

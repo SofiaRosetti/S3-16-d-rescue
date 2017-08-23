@@ -3,7 +3,7 @@ package it.unibo.mobileuser.connection;
 /**
  * Interface implemented to create a generic request to server.
  */
-public interface RequestItem {
+public interface Request {
 
     /**
      * Insert a key/value pair inside a JsonObject
