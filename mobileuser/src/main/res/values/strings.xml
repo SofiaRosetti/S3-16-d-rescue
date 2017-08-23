@@ -2,10 +2,12 @@
     <string name="app_name">mobileuser</string>
 
     <string name="change_password">Change password</string>
+    <string name="confirm_password">Confirm password</string>
     <string name="description">Description:</string>
     <string name="description_hint">Enter a description of the event</string>
     <string name="edit">Edit</string>
-    <string name="email">Email:</string>
+    <string name="email">E-mail</string>
+    <string name="email_label">Email:</string>
     <string name="event_type">Event type:</string>
     <string-array name="event_type_array">
         <item>Avalanche</item>
@@ -19,29 +21,24 @@
         <item>Tsunami</item>
         <item>Volcanic eruption</item>
     </string-array>
-    <string name="name">Name:</string>
+    <string name="exclamation_point">!</string>
+    <string name="login">Login</string>
+    <string name="missing_account">You don\'t have an account?</string>
+    <string name="name">Name</string>
+    <string name="name_label">Name:</string>
+    <string name="password">Password</string>
     <string name="password_confirm">Confirm password</string>
     <string name="password_new">New password:</string>
     <string name="password_new_hint">Enter new password</string>
     <string name="password_old">Old password:</string>
     <string name="password_old_hint">Enter old password</string>
-    <string name="phone">Phone:</string>
+    <string name="phone">Phone</string>
+    <string name="phone_label">Phone:</string>
     <string name="save">Save</string>
     <string name="send">Send</string>
-    <string name="surname">Surname:</string>
-
-    <!-- Authentication. -->
-    <string name="login">Login</string>
     <string name="sign_in">Sign in</string>
-    <string name="exclamation_point">!</string>
     <string name="sign_in_exclamation">Sign in!</string>
-    <string name="missing_account">You don\'t have an account?</string>
-
-    <string name="email">E-mail</string>
-    <string name="password">Password</string>
-    <string name="confirm_password">Confirm password</string>
-    <string name="name">Name</string>
     <string name="surname">Surname</string>
-    <string name="phone">Phone</string>
+    <string name="surname_label">Surname:</string>
 
 </resources>
