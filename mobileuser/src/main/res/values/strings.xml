@@ -28,10 +28,8 @@
     <string name="name_label">Name:</string>
     <string name="password">Password</string>
     <string name="password_confirm">Confirm password</string>
-    <string name="password_new">New password:</string>
-    <string name="password_new_hint">Enter new password</string>
-    <string name="password_old">Old password:</string>
-    <string name="password_old_hint">Enter old password</string>
+    <string name="password_new">New password</string>
+    <string name="password_old">Old password</string>
     <string name="phone">Phone</string>
     <string name="phone_label">Phone:</string>
     <string name="save">Save</string>
