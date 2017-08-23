@@ -29,4 +29,19 @@
     <string name="save">Save</string>
     <string name="send">Send</string>
     <string name="surname">Surname:</string>
+
+    <!-- Authentication. -->
+    <string name="login">Login</string>
+    <string name="sign_in">Sign in</string>
+    <string name="exclamation_point">!</string>
+    <string name="sign_in_exclamation">Sign in!</string>
+    <string name="missing_account">You don\'t have an account?</string>
+
+    <string name="email">E-mail</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="phone">Phone</string>
+
 </resources>
