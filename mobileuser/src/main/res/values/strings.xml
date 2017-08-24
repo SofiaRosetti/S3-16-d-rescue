@@ -9,19 +9,8 @@
     <string name="email">E-mail</string>
     <string name="email_label">Email:</string>
     <string name="event_type">Event type:</string>
-    <string-array name="event_type_array">
-        <item>Avalanche</item>
-        <item>Earthquake</item>
-        <item>Fire</item>
-        <item>Flood</item>
-        <item>Hurricane</item>
-        <item>Landslide</item>
-        <item>Meteorite impact</item>
-        <item>Tornado</item>
-        <item>Tsunami</item>
-        <item>Volcanic eruption</item>
-    </string-array>
     <string name="exclamation_point">!</string>
+    <string name="functionality_not_active">Functionality not active</string>
     <string name="login">Login</string>
     <string name="missing_account">You don\'t have an account?</string>
     <string name="name">Name</string>
