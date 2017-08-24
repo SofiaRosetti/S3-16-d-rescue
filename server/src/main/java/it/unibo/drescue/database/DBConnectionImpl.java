@@ -22,6 +22,7 @@ public class DBConnectionImpl implements DBConnection {
     }
 
     //TODO TO FIX: now it always connects to remote
+
     /**
      * @param info enum (LOCAL/REMOTE), to specify in which environment to connect
      */
@@ -49,11 +50,11 @@ public class DBConnectionImpl implements DBConnection {
         try {
             if (connection == null || connection.isClosed()) {
                 Class.forName(DRIVER_NAME);
+                System.out.println("[DB]: Connecting with db address: " + this.dbAddress);
                 connection = DriverManager.getConnection(this.dbAddress,
                         this.dbUsername, this.dbPassword);
-                System.out.println("Connected to DB");
                 statement = connection.createStatement();
-                System.out.println("Statement created");
+                System.out.println("[DB]: Connection and statement created");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -64,9 +65,8 @@ public class DBConnectionImpl implements DBConnection {
     public void closeConnection() {
         try {
             statement.close();
-            System.out.println("Statement closed");
             connection.close();
-            System.out.println("Connection closed");
+            System.out.println("[DB]: Statement and connection closed");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -92,7 +92,7 @@ public class DBConnectionImpl implements DBConnection {
 
         //Verify if email already exists
         if (this.getUserId(email) != -1) {
-            System.out.println("User " + email + " already registered");
+            System.out.println("[DB]: SIGNUP_FAIL: User " + email + " already registered");
             return false;
         }
 
@@ -106,7 +106,7 @@ public class DBConnectionImpl implements DBConnection {
                 + ")";
         try {
             statement.executeUpdate(query);
-            System.out.println("Added user " + email);
+            System.out.println("[DB]: SIGNUP_OK: Added user " + email);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -120,7 +120,7 @@ public class DBConnectionImpl implements DBConnection {
         String query = "DELETE FROM USER WHERE userID=" + userID;
         try {
             statement.executeUpdate(query);
-            System.out.println("Deleted user " + userID);
+            System.out.println("[DB]: DELETE_USER_OK: Deleted user " + userID);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -153,9 +153,14 @@ public class DBConnectionImpl implements DBConnection {
         //Check password
         String passInDb = this.getUserPwd(email);
         if (passInDb == null) {
+            System.out.println("[DB]: LOGIN_FAIL: User " + email + " not registered yet");
+            return false;
+        } else if (!password.equals(passInDb)) {
+            System.out.println("[DB]: LOGIN_FAIL: User " + email + ", wrong credentials");
             return false;
         } else {
-            return password.equals(passInDb);
+            System.out.println("[DB]: LOGIN_OK: User " + email + " log in correctly");
+            return true;
         }
 
     }
