@@ -3,4 +3,5 @@ rootProject.name = 'drescue'
 include 'civilprotection'
 include 'server'
 include 'utils'
+include 'utils-java'
 
