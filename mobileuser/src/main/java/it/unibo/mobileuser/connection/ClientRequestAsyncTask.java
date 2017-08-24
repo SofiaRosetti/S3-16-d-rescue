@@ -6,11 +6,18 @@ import it.unibo.drescue.StringUtils;
 import java.io.*;
 import java.net.Socket;
 
+/**
+ * Class used to send an async request to server.
+ */
 public class ClientRequestAsyncTask extends AsyncTask<Void, Void, String> {
 
     private final RequestImpl request;
     private final RequestDelegate delegate;
 
+    /**
+     * @param request
+     * @param delegate
+     */
     public ClientRequestAsyncTask(final RequestImpl request, final RequestDelegate delegate) {
         this.request = request;
         this.delegate = delegate;
@@ -46,7 +53,7 @@ public class ClientRequestAsyncTask extends AsyncTask<Void, Void, String> {
 
             //Waiting for server response
             jsonString = fromServer.readLine();
-            if (StringUtils.isAValidString(jsonString)) throw new IOException();
+            if (!StringUtils.isAValidString(jsonString)) throw new IOException();
 
             System.out.println("[Client]: Response " + jsonString);
             return jsonString;
@@ -67,5 +74,14 @@ public class ClientRequestAsyncTask extends AsyncTask<Void, Void, String> {
 
         return null;
     }
+
+    @Override
+    protected void onPostExecute(final String result) {
+        super.onPostExecute(result);
+        if (this.delegate != null) {
+            this.delegate.onReceivingResponse(result);
+        }
+    }
+
 
 }

@@ -1,7 +1,11 @@
 package it.unibo.mobileuser;
 
 import android.os.Bundle;
+import com.google.gson.JsonObject;
 import it.unibo.mobileuser.authentication.*;
+import it.unibo.mobileuser.connection.ClientRequestAsyncTask;
+import it.unibo.mobileuser.connection.AbstractServerResponse;
+import it.unibo.mobileuser.utils.ServerUtils;
 
 /**
  * Launcher activity of the App.
@@ -40,7 +44,21 @@ public class SplashActivity extends ToolbarActivity
     public void login(final String email, final String password) {
         System.out.println("[SplashActivity] login: email=" + email + " password=" + password);
 
-        //TODO asynkTask request
+        new ClientRequestAsyncTask(ServerUtils.login(email, password),
+                new AbstractServerResponse<JsonObject>() {
+
+                    @Override
+                    public void onSuccessfulRequest(final JsonObject data) {
+                        System.out.println("[SplashActivity] login successful");
+                        //TODO perform login saving userID in preferences
+                    }
+
+                    @Override
+                    public void onErrorRequest(final int code) {
+                        System.out.println("[SplashActivity] login error");
+                        //TODO show error dialog
+                    }
+                }).execute();
     }
 
     @Override
@@ -48,6 +66,19 @@ public class SplashActivity extends ToolbarActivity
         System.out.println("[SplashActivity] signIn: name=" + name + " surname=" + surname +
                 " email=" + email + " phone=" + phone + " password=" + password);
 
-        //TODO asynkTask request
+        new ClientRequestAsyncTask(ServerUtils.signIn(email, password, name, surname, phone),
+                new AbstractServerResponse<JsonObject>() {
+                    @Override
+                    public void onSuccessfulRequest(final JsonObject data) {
+                        System.out.println("[SplashActivity] signIn successful");
+                        //TODO get data and switch to SplashFragment
+                    }
+
+                    @Override
+                    public void onErrorRequest(final int code) {
+                        System.out.println("[SplashActivity] signIn error");
+                        //TODO show error dialog
+                    }
+                }).execute();
     }
 }
