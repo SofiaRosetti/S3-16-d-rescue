@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer-array name="card_icons">
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+    </integer-array>
+
+    <string-array name="card_activities">
+        <item>null</item>
+        <item>it.unibo.mobileuser.alarm.NewAlarmActivity</item>
+        <item>null</item>
+        <item>it.unibo.mobileuser.profile.ProfileActivity</item>
+    </string-array>
+    <string-array name="card_titles">
+        <item>Last alarms</item>
+        <item>My alarms</item>
+        <item>Occurred events</item>
+        <item>Profile</item>
+    </string-array>
+    <string-array name="event_type_array">
+        <item>Avalanche</item>
+        <item>Earthquake</item>
+        <item>Fire</item>
+        <item>Flood</item>
+        <item>Hurricane</item>
+        <item>Landslide</item>
+        <item>Meteorite impact</item>
+        <item>Tornado</item>
+        <item>Tsunami</item>
+        <item>Volcanic eruption</item>
+    </string-array>
+
+</resources>
