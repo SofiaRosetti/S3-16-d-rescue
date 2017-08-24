@@ -17,9 +17,9 @@ public class DBConnectionImpl implements DBConnection {
     }
 
     /**
-     * TODO
+     * Instantiate a new DB connection to db in local environment
      *
-     * @return
+     * @return a db connection in local
      */
     public static DBConnectionImpl getLocalConnection() {
         setEnvironment(Environment.LOCAL);
@@ -27,9 +27,9 @@ public class DBConnectionImpl implements DBConnection {
     }
 
     /**
-     * TODO
+     * Instantiate a new DB connection to db in remote environment
      *
-     * @return
+     * @return a db connection in remote
      */
     public static DBConnectionImpl getRemoteConnection() {
         setEnvironment(Environment.REMOTE);
