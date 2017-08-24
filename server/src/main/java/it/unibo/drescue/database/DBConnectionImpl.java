@@ -5,43 +5,50 @@ import java.sql.*;
 public class DBConnectionImpl implements DBConnection {
 
     private static final String STR_ESCAPE = "\'";
-    private static final String DRIVER_NAME = "com.mysql.jdbc.Driver";
+    private static final String DRIVER_NAME =
+            "com.mysql.jdbc.Driver";
     private static Connection connection;
     private static Statement statement;
-    private DBInfo dbInfo;
-    private String dbAddress;
-    private String dbUsername;
-    private String dbPassword;
+    private static String dbAddress;
+    private static String dbUsername;
+    private static String dbPassword;
 
-    /**
-     * Constructor without parameters, connect to REMOTE db
-     */
-    public DBConnectionImpl() {
-        this.dbInfo = DBInfo.REMOTE;
-        this.setDbInfo();
+    private DBConnectionImpl() {
     }
 
-    //TODO TO FIX: now it always connects to remote
-
     /**
-     * @param info enum (LOCAL/REMOTE), to specify in which environment to connect
+     * TODO
+     *
+     * @return
      */
-    public DBConnectionImpl(DBInfo info) {
-        this.dbInfo = info;
-        this.setDbInfo();
+    public static DBConnectionImpl getLocalConnection() {
+        setEnvironment(Environment.LOCAL);
+        return new DBConnectionImpl();
     }
 
-    private void setDbInfo() {
-        switch (this.dbInfo) {
+    /**
+     * TODO
+     *
+     * @return
+     */
+    public static DBConnectionImpl getRemoteConnection() {
+        setEnvironment(Environment.REMOTE);
+        return new DBConnectionImpl();
+    }
+
+    private static void setEnvironment(Environment env) {
+        switch (env) {
             case LOCAL:
-                this.dbAddress = "jdbc:mysql://localhost:3306/testschema";
-                this.dbUsername = "admin";
-                this.dbPassword = "4dm1n";
+                dbAddress = "jdbc:mysql://localhost:3306/testschema";
+                dbUsername = "admin";
+                dbPassword = "4dm1n";
+                break;
             case REMOTE:
-                this.dbAddress =
+                dbAddress =
                         "jdbc:mysql://rds-mysql-drescue.cnwnbp8hx7vq.us-east-2.rds.amazonaws.com:3306/drescueDB";
-                this.dbUsername = "masterDrescue";
-                this.dbPassword = "rdsTeamPass";
+                dbUsername = "masterDrescue";
+                dbPassword = "rdsTeamPass";
+                break;
         }
     }
 
@@ -50,9 +57,8 @@ public class DBConnectionImpl implements DBConnection {
         try {
             if (connection == null || connection.isClosed()) {
                 Class.forName(DRIVER_NAME);
-                System.out.println("[DB]: Connecting with db address: " + this.dbAddress);
-                connection = DriverManager.getConnection(this.dbAddress,
-                        this.dbUsername, this.dbPassword);
+                System.out.println("[DB]: Connecting with db address: " + dbAddress);
+                connection = DriverManager.getConnection(dbAddress, dbUsername, dbPassword);
                 statement = connection.createStatement();
                 System.out.println("[DB]: Connection and statement created");
             }
@@ -72,6 +78,7 @@ public class DBConnectionImpl implements DBConnection {
         }
     }
 
+    @Override
     public int getUserId(String email) {
         int id = -1;
         String query = "SELECT userID FROM USER WHERE email=" + STR_ESCAPE + email + STR_ESCAPE;
@@ -165,7 +172,7 @@ public class DBConnectionImpl implements DBConnection {
 
     }
 
-    public enum DBInfo {
+    private enum Environment {
         LOCAL,
         REMOTE
     }

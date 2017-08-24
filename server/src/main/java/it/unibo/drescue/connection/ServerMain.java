@@ -51,7 +51,7 @@ public class ServerMain {
                     System.out.println("[Server]: Received phoneNumber: " + phoneNumber);
 
                     //Insert data into DB
-                    DBConnection dbConnection = new DBConnectionImpl(DBConnectionImpl.DBInfo.REMOTE);
+                    DBConnection dbConnection = DBConnectionImpl.getRemoteConnection();
                     dbConnection.openConnection();
 
                     //Prepare response
