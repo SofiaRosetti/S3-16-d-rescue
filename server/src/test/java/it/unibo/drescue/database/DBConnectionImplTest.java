@@ -18,7 +18,7 @@ public class DBConnectionImplTest {
 
     @Before
     public void setUp() throws Exception {
-        this.dbConnection = new DBConnectionImpl(DBConnectionImpl.DBInfo.LOCAL);
+        this.dbConnection = DBConnectionImpl.getRemoteConnection();
         this.dbConnection.openConnection();
     }
 
