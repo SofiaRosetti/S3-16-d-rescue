@@ -3,6 +3,7 @@ package it.unibo.mobileuser.authentication;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 import com.google.gson.JsonObject;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import it.unibo.drescue.StringUtils;
@@ -46,17 +47,15 @@ public class SignUpActivity extends ToolbarActivity {
                     if (password.equals(confirmPassword)) {
                         signUp(name, surname, email, phone, password);
                     } else {
-                        //TODO show dialog "password and confirm password do not match"
+                        showDialog(R.string.sign_up, R.string.password_mismatch);
                     }
                 } else {
-                    //TODO show dialog "incorrect email format"
+                    showDialog(R.string.sign_up, R.string.incorrect_email_format);
                 }
             } else {
-                //TODO show dialog "all fields must be filled"
+                showDialog(R.string.sign_up, R.string.fill_fields);
             }
         });
-
-
     }
 
     /**
@@ -77,14 +76,13 @@ public class SignUpActivity extends ToolbarActivity {
                 new AbstractServerResponse<JsonObject>() {
                     @Override
                     public void onSuccessfulRequest(final JsonObject data) {
-                        System.out.println("[SplashActivity] signUp successful");
+                        Toast.makeText(SignUpActivity.this, R.string.sign_up_successful, Toast.LENGTH_LONG).show();
                         finish();
                     }
 
                     @Override
                     public void onErrorRequest(final int code) {
-                        System.out.println("[SplashActivity] signUp error");
-                        //TODO show error dialog
+                        showDialog(R.string.sign_up, R.string.incorrect_sign_up_data);
                     }
                 }).execute();
     }

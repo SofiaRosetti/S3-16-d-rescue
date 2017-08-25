@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import it.unibo.mobileuser.authentication.LoginActivity;
 import it.unibo.mobileuser.authentication.SignUpActivity;
+import it.unibo.mobileuser.utils.Utils;
 
 /**
  * Launcher activity of the App.
@@ -19,6 +20,8 @@ public class SplashActivity extends ToolbarActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        checkIfUserIsLogged();
 
         setToolbar(false);
 
@@ -48,7 +51,27 @@ public class SplashActivity extends ToolbarActivity {
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == LOGIN_CODE && resultCode == RESULT_OK) {
+            goToMainActivity();
+            finish();
+        }
+    }
 
+    /**
+     * Go to MainActivity because a user is logged.
+     */
+    private void goToMainActivity() {
+        final Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Checks if a user is already logged when opening the app.
+     */
+    private void checkIfUserIsLogged() {
+        final String userID = Utils.getUserIDfromSharedPreferences(getApplicationContext());
+        if (userID.length() != 0) {
+            goToMainActivity();
+            finish();
         }
     }
 }

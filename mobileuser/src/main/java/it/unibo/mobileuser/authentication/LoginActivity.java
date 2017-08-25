@@ -1,8 +1,10 @@
 package it.unibo.mobileuser.authentication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 import com.google.gson.JsonObject;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import it.unibo.drescue.StringUtils;
@@ -35,7 +37,7 @@ public class LoginActivity extends ToolbarActivity {
                     && StringUtils.isAValidEmail(email)) {
                 login(email, password);
             } else {
-                //TODO show error dialog "incorrect login data"
+                showDialog(R.string.login, R.string.incorrect_login_data);
             }
         });
     }
@@ -55,14 +57,19 @@ public class LoginActivity extends ToolbarActivity {
 
                     @Override
                     public void onSuccessfulRequest(final JsonObject data) {
-                        System.out.println("[LoginActivity] login successful");
-                        //TODO perform login saving userID in preferences and go to MainActivity
+                        Toast.makeText(LoginActivity.this, R.string.login_successful, Toast.LENGTH_LONG).show();
+
+                        final String userID = data.get("id").getAsString();
+                        Utils.setUserIDinSharedPreferences(getApplicationContext(), userID);
+
+                        final Intent intent = new Intent();
+                        setResult(RESULT_OK, intent);
+                        finish();
                     }
 
                     @Override
                     public void onErrorRequest(final int code) {
-                        System.out.println("[LoginActivity] login error");
-                        //TODO show error dialog "incorrect login data"
+                        showDialog(R.string.login, R.string.incorrect_login_data);
                     }
                 }).execute();
     }

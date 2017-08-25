@@ -16,12 +16,12 @@ public class ServerUtils {
     public static final String CODE = "code";
     public static final String DATA = "data";
 
-    //Json keys in server requests
+    //Json keys in server requests and response
     private static final String EMAIL = "email";
-    private static final String PASSWORD = "password";
     private static final String NAME = "name";
-    private static final String SURNAME = "surname";
+    private static final String PASSWORD = "password";
     private static final String PHONE_NUMBER = "phoneNumber";
+    private static final String SURNAME = "surname";
 
     /**
      * @param email
