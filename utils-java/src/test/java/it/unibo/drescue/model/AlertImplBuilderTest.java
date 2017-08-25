@@ -10,7 +10,7 @@ public class AlertImplBuilderTest {
     private static final int ALERT_ID = 1558;
     private static final double LATITUDE = 44.139773;
     private static final double LONGITUDE = 12.243283;
-    private AlertImpl alert;
+    private Alert alert;
 
     @Before
     public void createAlertWithLatLng() throws Exception {

@@ -13,7 +13,7 @@ public class UserImplBuilderTest {
     private static final String EMAIL = "j.white@gmail.com";
     private static final String PASSWORD = "jwhite19";
     private static final String PHONENUMBER = "3459287116";
-    private UserImpl user;
+    private User user;
 
     @Before
     public void createUser() throws Exception {
