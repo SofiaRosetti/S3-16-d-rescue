@@ -1,12 +1,29 @@
 package it.unibo.mobileuser.connection;
 
+import com.google.gson.JsonObject;
+
 /**
- * Interface implemented to create a generic request to server.
+ * Interface for a generic request to server.
  */
 public interface Request {
 
     /**
-     * Insert a key/value pair inside a JsonObject
+     * @return the server address
+     */
+    String getAddress();
+
+    /**
+     * @return the server port
+     */
+    int getPort();
+
+    /**
+     * @return the data to send
+     */
+    JsonObject getRequestData();
+
+    /**
+     * Insert a key/value pair inside a request.
      *
      * @param key
      * @param value

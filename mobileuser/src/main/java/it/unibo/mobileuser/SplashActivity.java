@@ -3,8 +3,8 @@ package it.unibo.mobileuser;
 import android.os.Bundle;
 import com.google.gson.JsonObject;
 import it.unibo.mobileuser.authentication.*;
-import it.unibo.mobileuser.connection.ClientRequestAsyncTask;
 import it.unibo.mobileuser.connection.AbstractServerResponse;
+import it.unibo.mobileuser.connection.RequestAsyncTask;
 import it.unibo.mobileuser.utils.ServerUtils;
 
 /**
@@ -44,7 +44,7 @@ public class SplashActivity extends ToolbarActivity
     public void login(final String email, final String password) {
         System.out.println("[SplashActivity] login: email=" + email + " password=" + password);
 
-        new ClientRequestAsyncTask(ServerUtils.login(email, password),
+        new RequestAsyncTask(ServerUtils.login(email, password),
                 new AbstractServerResponse<JsonObject>() {
 
                     @Override
@@ -66,7 +66,7 @@ public class SplashActivity extends ToolbarActivity
         System.out.println("[SplashActivity] signIn: name=" + name + " surname=" + surname +
                 " email=" + email + " phone=" + phone + " password=" + password);
 
-        new ClientRequestAsyncTask(ServerUtils.signIn(email, password, name, surname, phone),
+        new RequestAsyncTask(ServerUtils.signIn(email, password, name, surname, phone),
                 new AbstractServerResponse<JsonObject>() {
                     @Override
                     public void onSuccessfulRequest(final JsonObject data) {

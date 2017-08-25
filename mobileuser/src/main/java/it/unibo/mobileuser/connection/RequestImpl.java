@@ -21,14 +21,17 @@ public class RequestImpl implements Request {
         this.requestData = new JsonObject();
     }
 
+    @Override
     public String getAddress() {
         return this.address;
     }
 
+    @Override
     public int getPort() {
         return this.port;
     }
 
+    @Override
     public JsonObject getRequestData() {
         return this.requestData;
     }

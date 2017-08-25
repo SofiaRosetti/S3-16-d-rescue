@@ -7,8 +7,7 @@ import it.unibo.drescue.StringUtils;
 import static it.unibo.mobileuser.utils.ServerUtils.*;
 
 /**
- * Abstract and generic class that handle the server response.
- * <T> can be only JsonObject or JsonArray
+ * Abstract and generic class that handles server response.
  */
 public abstract class AbstractServerResponse<T> implements RequestDelegate {
 
@@ -21,20 +20,23 @@ public abstract class AbstractServerResponse<T> implements RequestDelegate {
                 if (code == RESPONSE_SUCCESS_CODE) {
                     onSuccessfulRequest((T) json.get(DATA));
                 } else {
+                    System.out.println("[AbstractServerResponse] code is NOT 200");
                     onErrorRequest(RESPONSE_ERROR_CODE);
                 }
             } else {
+                System.out.println("[AbstractServerResponse] json == null");
                 onErrorRequest(RESPONSE_ERROR_CODE);
             }
         } else {
+            System.out.println("[AbstractServerResponse] response is not valid");
             onErrorRequest(RESPONSE_ERROR_CODE);
         }
     }
 
     /**
-     * Actions to perform then the request is successful.
+     * Actions to perform when the request is successful.
      *
-     * @param data
+     * @param data JsonObject or JsonArray containing the response
      */
     public abstract void onSuccessfulRequest(T data);
 
