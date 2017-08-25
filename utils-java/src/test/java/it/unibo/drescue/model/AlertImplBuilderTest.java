@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 public class AlertImplBuilderTest {
 
+    private static final int ALERT_ID = 1558;
     private static final double LATITUDE = 44.139773;
     private static final double LONGITUDE = 12.243283;
     private AlertImpl alert;
@@ -14,9 +15,16 @@ public class AlertImplBuilderTest {
     @Before
     public void createAlertWithLatLng() throws Exception {
         this.alert = new AlertImplBuilder()
+                .setAlertID(this.ALERT_ID)
                 .setLatitude(this.LATITUDE)
                 .setLongitude(this.LONGITUDE)
                 .createAlertImpl();
+    }
+
+    @Test
+    public void checkCorrectID() throws Exception {
+        final int alertID = this.alert.getAlertID();
+        assertTrue(alertID == this.ALERT_ID);
     }
 
     @Test
@@ -35,8 +43,8 @@ public class AlertImplBuilderTest {
     public void checkNonSetFields() throws Exception {
         final int userID = this.alert.getUserID();
         final int eventID = this.alert.getEventID();
-        final int districtID = this.alert.getDistrictID();
-        assertTrue(userID == 0 && eventID == 0 && districtID == 0);
+        final String districtID = this.alert.getDistrictID();
+        assertTrue(userID == 0 && eventID == 0 && districtID.equals(""));
     }
 
 }
