@@ -14,7 +14,7 @@ import it.unibo.mobileuser.R;
 import it.unibo.mobileuser.utils.Utils;
 
 /**
- * Fragment to sign in in the mobileuser App.
+ * Fragment displayed to sign in in the app.
  */
 public class SignInFragment extends Fragment {
 

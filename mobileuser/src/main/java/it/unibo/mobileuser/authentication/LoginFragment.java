@@ -14,7 +14,7 @@ import it.unibo.mobileuser.R;
 import it.unibo.mobileuser.utils.Utils;
 
 /**
- * Fragment to login in the mobileuser App
+ * Fragment displayed to login in the app.
  */
 public class LoginFragment extends Fragment {
 
@@ -48,7 +48,7 @@ public class LoginFragment extends Fragment {
     }
 
     /**
-     * Set the activity listener to the listener implemented by this fragment
+     * Set the activity listener to the listener implemented by this fragment.
      *
      * @param listener
      */

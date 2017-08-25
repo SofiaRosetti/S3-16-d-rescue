@@ -1,7 +1,7 @@
 package it.unibo.mobileuser.authentication;
 
 /**
- * Interface for mobileuser sign in.
+ * Interface for sign in.
  */
 public interface SignInListener {
 

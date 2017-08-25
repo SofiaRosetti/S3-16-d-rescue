@@ -1,17 +1,17 @@
 package it.unibo.mobileuser.authentication;
 
 /**
- * Interface for mobileuser splash screen.
+ * Interface for splash screen.
  */
 public interface SplashListener {
 
     /**
-     * Switch to sign in screen.
+     * Switch to sign in fragment.
      */
     void onRequestSignIn();
 
     /**
-     * Switch to login screen.
+     * Switch to login fragment.
      */
     void onRequestLogin();
 }

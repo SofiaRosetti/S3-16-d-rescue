@@ -12,7 +12,7 @@ import android.widget.TextView;
 import it.unibo.mobileuser.R;
 
 /**
- * Fragment represented on the splash screen.
+ * Fragment displayed on the splash screen.
  */
 public class SplashFragment extends Fragment {
 
