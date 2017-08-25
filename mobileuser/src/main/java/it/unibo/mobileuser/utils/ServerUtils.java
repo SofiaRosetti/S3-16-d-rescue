@@ -29,16 +29,16 @@ public class ServerUtils {
      * @param name
      * @param surname
      * @param phone
-     * @return a sign in request with the given parameters
+     * @return a sign up request with the given parameters
      */
-    public static RequestImpl signIn(final String email, final String password, final String name, final String surname, final String phone) {
-        final RequestImpl signInRequest = new RequestImpl();
-        signInRequest.putKeyValuePair(EMAIL, email);
-        signInRequest.putKeyValuePair(PASSWORD, password);
-        signInRequest.putKeyValuePair(NAME, name);
-        signInRequest.putKeyValuePair(SURNAME, surname);
-        signInRequest.putKeyValuePair(PHONE_NUMBER, phone);
-        return signInRequest;
+    public static RequestImpl signUp(final String email, final String password, final String name, final String surname, final String phone) {
+        final RequestImpl signUpRequest = new RequestImpl();
+        signUpRequest.putKeyValuePair(EMAIL, email);
+        signUpRequest.putKeyValuePair(PASSWORD, password);
+        signUpRequest.putKeyValuePair(NAME, name);
+        signUpRequest.putKeyValuePair(SURNAME, surname);
+        signUpRequest.putKeyValuePair(PHONE_NUMBER, phone);
+        return signUpRequest;
     }
 
     /**
@@ -47,9 +47,9 @@ public class ServerUtils {
      * @return a login request with the given parameters
      */
     public static RequestImpl login(final String email, final String password) {
-        final RequestImpl signInRequest = new RequestImpl();
-        signInRequest.putKeyValuePair(EMAIL, email);
-        signInRequest.putKeyValuePair(PASSWORD, password);
-        return signInRequest;
+        final RequestImpl loginRequest = new RequestImpl();
+        loginRequest.putKeyValuePair(EMAIL, email);
+        loginRequest.putKeyValuePair(PASSWORD, password);
+        return loginRequest;
     }
 }

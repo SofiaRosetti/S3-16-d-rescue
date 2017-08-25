@@ -23,8 +23,8 @@
     <string name="phone_label">Phone:</string>
     <string name="save">Save</string>
     <string name="send">Send</string>
-    <string name="sign_in">Sign in</string>
-    <string name="sign_in_exclamation">Sign in!</string>
+    <string name="sign_up">Sign up</string>
+    <string name="sign_up_exclamation">Sign up!</string>
     <string name="surname">Surname</string>
     <string name="surname_label">Surname:</string>
 
