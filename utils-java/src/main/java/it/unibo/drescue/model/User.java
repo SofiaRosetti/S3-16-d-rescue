@@ -8,7 +8,7 @@ public interface User {
     /**
      * @return the user ID
      */
-    int getID();
+    int getUserID();
 
     /**
      * @return the user name

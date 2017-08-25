@@ -2,15 +2,15 @@ package it.unibo.drescue.model;
 
 public class UserImplBuilder {
 
-    private int ID;
+    private int userID;
     private String name;
     private String surname;
     private String email;
     private String password;
     private String phoneNumber;
 
-    public UserImplBuilder setID(final int ID) {
-        this.ID = ID;
+    public UserImplBuilder setUserID(final int userID) {
+        this.userID = userID;
         return this;
     }
 
@@ -40,6 +40,6 @@ public class UserImplBuilder {
     }
 
     public UserImpl createUserImpl() {
-        return new UserImpl(this.ID, this.name, this.surname, this.email, this.password, this.phoneNumber);
+        return new UserImpl(this.userID, this.name, this.surname, this.email, this.password, this.phoneNumber);
     }
 }
