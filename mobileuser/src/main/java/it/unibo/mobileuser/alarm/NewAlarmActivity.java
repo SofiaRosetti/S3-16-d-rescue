@@ -2,21 +2,18 @@ package it.unibo.mobileuser.alarm;
 
 
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import it.unibo.mobileuser.R;
-import it.unibo.mobileuser.ToolbarActivity;
+import it.unibo.mobileuser.gps.GpsActivityImpl;
 
 /**
  * A class that allows to show graphical interface to report new alarm and sends the alarm to server.
  */
-public class NewAlarmActivity extends ToolbarActivity {
-
-    //ToolbarActivity toolbarUtils;
-    private Toolbar toolbar;
+public class NewAlarmActivity extends GpsActivityImpl {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -33,6 +30,11 @@ public class NewAlarmActivity extends ToolbarActivity {
                 android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
+        final TextView latitudeTextView = (TextView) findViewById(R.id.latitude_field);
+        final TextView longitudeTextView = (TextView) findViewById(R.id.longitude_field);
+        latitudeTextView.setText(getLatitude());
+        longitudeTextView.setText(getLongitude());
 
         final Button sendButton = (Button) findViewById(R.id.send_button);
         sendButton.setOnClickListener(new View.OnClickListener() {
