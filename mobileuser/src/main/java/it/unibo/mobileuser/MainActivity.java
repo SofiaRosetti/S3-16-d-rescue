@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import it.unibo.mobileuser.gps.GpsActivityImpl;
 import it.unibo.mobileuser.home.CardViewModel;
 import it.unibo.mobileuser.home.RecyclerViewAdapter;
 
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import static it.unibo.mobileuser.utils.Utils.getDrawableArrayByResources;
 import static it.unibo.mobileuser.utils.Utils.getStringArrayByResources;
 
-public class MainActivity extends ToolbarActivity {
+public class MainActivity extends /*ToolbarActivity*/GpsActivityImpl {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
