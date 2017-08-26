@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <integer-array name="card_icons">
+    <integer-array name="card_icons"><!--TODO: change with the correct icons-->
         <item>@mipmap/ic_launcher</item>
         <item>@mipmap/ic_launcher</item>
         <item>@mipmap/ic_launcher</item>
@@ -9,14 +9,15 @@
     </integer-array>
 
     <string-array name="card_activities">
-        <item>null</item>
-        <item>it.unibo.mobileuser.alarm.NewAlarmActivity</item>
-        <item>null</item>
+        <item>null</item><!--TODO: in future change with the activity of last alarms-->
+        <item>it.unibo.mobileuser.alarm.NewAlarmActivity
+        </item><!--TODO: in future change with the activity of my alarms-->
+        <item>null</item><!--TODO: in future change with the activity of occured events-->
         <item>it.unibo.mobileuser.profile.ProfileActivity</item>
     </string-array>
     <string-array name="card_titles">
         <item>Last alarms</item>
-        <item>My alarms</item>
+        <item>New alarm</item><!--TODO: in future change with "My alarms"-->
         <item>Occurred events</item>
         <item>Profile</item>
     </string-array>
