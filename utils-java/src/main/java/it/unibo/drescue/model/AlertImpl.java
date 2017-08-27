@@ -7,20 +7,27 @@ import java.sql.Timestamp;
  */
 public class AlertImpl implements Alert {
 
+    private final int alertID;
     private final Timestamp timestamp;
     private final double latitude;
     private final double longitude;
     private final int userID;
     private final int eventID;
-    private final int districtID;
+    private final String districtID;
 
-    public AlertImpl(final Timestamp timestamp, final double latitude, final double longitude, final int userID, final int eventID, final int districtID) {
+    public AlertImpl(final int alertID, final Timestamp timestamp, final double latitude, final double longitude, final int userID, final int eventID, final String districtID) {
+        this.alertID = alertID;
         this.timestamp = timestamp;
         this.latitude = latitude;
         this.longitude = longitude;
         this.userID = userID;
         this.eventID = eventID;
         this.districtID = districtID;
+    }
+
+    @Override
+    public int getAlertID() {
+        return this.alertID;
     }
 
     @Override
@@ -49,7 +56,7 @@ public class AlertImpl implements Alert {
     }
 
     @Override
-    public int getDistrictID() {
+    public String getDistrictID() {
         return this.districtID;
     }
 }

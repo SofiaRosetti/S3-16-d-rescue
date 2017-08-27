@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">mobileuser</string>
 
+    <string name="attention">Attention!</string>
     <string name="change_password">Change password</string>
     <string name="confirm_password">Confirm password</string>
     <string name="description">Description:</string>
@@ -12,11 +13,18 @@
     <string name="exclamation_point">!</string>
     <string name="fill_fields">All fields must be filled.</string>
     <string name="functionality_not_active">Functionality not active</string>
+    <string name="gps_alert_message">The GPS is not active. Please, activate it from Settings->Location.</string>
+    <string name="gps_alert_negative_button">Cancel</string>
+    <string name="gps_alert_positive_button">Settings</string>
+    <string name="gps_permission">You must give permission to GPS to use the application.</string>
     <string name="incorrect_email_format">Incorrect email format.</string>
     <string name="incorrect_login_data">Incorrect login data.</string>
     <string name="incorrect_sign_up_data">Incorrect sign up data.</string>
+    <string name="latitude">Latitude:</string>
+    <string name="location_not_available">Location not available</string>
     <string name="login">Login</string>
     <string name="login_successful">Login successful!</string>
+    <string name="longitude">Longitude:</string>
     <string name="missing_account">You don\'t have an account?</string>
     <string name="name">Name</string>
     <string name="name_label">Name:</string>

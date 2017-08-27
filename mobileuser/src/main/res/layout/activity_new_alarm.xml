@@ -32,17 +32,43 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-        <TextView
-                android:id="@+id/latitude_label"
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Latitude:"/>
+                android:orientation="horizontal"
+                android:id="@+id/latitude_fields">
 
-        <TextView
-                android:id="@+id/longitude_label"
+            <TextView
+                    android:id="@+id/latitude_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/latitude"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/latitude_field"/>
+
+        </LinearLayout>
+
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Longitude:"/>
+                android:orientation="horizontal"
+                android:id="@+id/longitude_fields">
+
+            <TextView
+                    android:id="@+id/longitude_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/longitude"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/longitude_field"/>
+
+        </LinearLayout>
 
         <Button
                 android:id="@+id/send_button"

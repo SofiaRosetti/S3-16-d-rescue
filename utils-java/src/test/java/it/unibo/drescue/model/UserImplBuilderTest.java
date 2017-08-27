@@ -7,18 +7,18 @@ import static org.junit.Assert.assertTrue;
 
 public class UserImplBuilderTest {
 
-    private static final int ID = 1931;
+    private static final int USER_ID = 1931;
     private static final String NAME = "John";
     private static final String SURNAME = "White";
     private static final String EMAIL = "j.white@gmail.com";
     private static final String PASSWORD = "jwhite19";
     private static final String PHONENUMBER = "3459287116";
-    private UserImpl user;
+    private User user;
 
     @Before
     public void createUser() throws Exception {
         this.user = new UserImplBuilder()
-                .setID(this.ID)
+                .setUserID(this.USER_ID)
                 .setName(this.NAME)
                 .setSurname(this.SURNAME)
                 .setEmail(this.EMAIL)
@@ -29,8 +29,8 @@ public class UserImplBuilderTest {
 
     @Test
     public void checkCorrectID() throws Exception {
-        final int ID = this.user.getID();
-        assertTrue(ID == this.ID);
+        final int userID = this.user.getUserID();
+        assertTrue(userID == this.USER_ID);
     }
 
     @Test

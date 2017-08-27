@@ -9,6 +9,11 @@ import java.sql.Timestamp;
 public interface Alert {
 
     /**
+     * @return the alert ID
+     */
+    int getAlertID();
+
+    /**
      * @return the alert timestamp
      */
     Timestamp getTimestamp();
@@ -36,5 +41,5 @@ public interface Alert {
     /**
      * @return the alert district ID
      */
-    int getDistrictID();
+    String getDistrictID();
 }

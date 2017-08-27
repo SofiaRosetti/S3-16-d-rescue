@@ -5,15 +5,15 @@ package it.unibo.drescue.model;
  */
 public class UserImpl implements User {
 
-    private final int ID;
+    private final int userID;
     private final String name;
     private final String surname;
     private final String email;
     private final String password;
     private final String phoneNumber;
 
-    public UserImpl(final int ID, final String name, final String surname, final String email, final String password, final String phoneNumber) {
-        this.ID = ID;
+    public UserImpl(final int userID, final String name, final String surname, final String email, final String password, final String phoneNumber) {
+        this.userID = userID;
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -22,8 +22,8 @@ public class UserImpl implements User {
     }
 
     @Override
-    public int getID() {
-        return this.ID;
+    public int getUserID() {
+        return this.userID;
     }
 
     @Override
