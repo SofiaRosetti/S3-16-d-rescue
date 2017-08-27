@@ -18,7 +18,7 @@ public class UserDaoImplTest {
     private static final String NAME_TEST = "name";
     private static final String SURNAME_TEST = "surname";
     private static final String PHONENUMBER_TEST = "333123123";
-    private final UserDao userDao = null;
+    private UserDao userDao = null;
     private DBConnection dbConnection;
     private User userTest;
 
@@ -34,7 +34,8 @@ public class UserDaoImplTest {
                 .setPhoneNumber(PHONENUMBER_TEST)
                 .createUserImpl();
 
-        //TODO instantiate userDao
+        //Initialize userDao
+        this.userDao = (UserDao) this.dbConnection.getDAO(DBConnection.Table.USER);
     }
 
     @Test
