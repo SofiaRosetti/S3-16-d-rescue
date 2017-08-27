@@ -1,5 +1,8 @@
 package it.unibo.drescue.database;
 
+import it.unibo.drescue.database.dao.GenericDao;
+import it.unibo.drescue.database.dao.UserDaoImpl;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -94,6 +97,26 @@ public class DBConnectionImpl implements DBConnection {
 
     protected String getDbAddress() {
         return dbAddress;
+    }
+
+    @Override
+    public GenericDao getDAO(final Table table) throws SQLException {
+
+        try {
+            if (connection == null || connection.isClosed()) { //Ensure that connection is open
+                this.openConnection();
+            }
+        } catch (final SQLException e) {
+            throw e;
+        }
+
+        switch (table) {
+            case USER:
+                return new UserDaoImpl(connection);
+            default:
+                throw new SQLException("Trying to link to an unexistant table.");
+        }
+
     }
 
     private enum Environment {
