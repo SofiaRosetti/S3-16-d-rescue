@@ -10,6 +10,7 @@
     <string name="edit">Edit</string>
     <string name="email">E-mail</string>
     <string name="email_label">Email:</string>
+    <string name="event_name">Event name</string>
     <string name="event_type">Event type:</string>
     <string name="exclamation_point">!</string>
     <string name="fill_fields">All fields must be filled.</string>
@@ -44,5 +45,7 @@
     <string name="sign_up_successful">Sign up successful!</string>
     <string name="surname">Surname</string>
     <string name="surname_label">Surname:</string>
+    <string name="timestamp">Timestamp</string>
+    <string name="upvotes_number">0</string>
 
 </resources>
