@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.widget.ListView;
 import android.widget.Toast;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.unibo.drescue.model.Alert;
 import it.unibo.drescue.model.AlertImplBuilder;
@@ -35,7 +36,7 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
 
         this.alertList = new ArrayList<>();
 
-        //TODO example elements
+        //TODO delete (example elements)
         for (int i = 0; i < 10; i++) {
             this.alertList.add(new AlertImplBuilder().createAlertImpl());
         }
@@ -59,7 +60,8 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
                     .show();
         });
 
-        //TODO requestAlerts
+        //TODO
+        //onRequestAlerts();
 
     }
 
@@ -78,14 +80,39 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
                     @Override
                     public void onSuccessfulRequest(final JsonObject data) {
                         Toast.makeText(UpvoteAlertActivity.this, R.string.upvote_successful, Toast.LENGTH_LONG).show();
-                        //TODO requestAlerts
+                        onRequestAlerts();
                     }
 
                     @Override
                     public void onErrorRequest(final int code) {
                         showDialog(R.string.upvote, R.string.incorrect_upvote);
                     }
-                });
+                }).execute();
+    }
+
+    /**
+     * Performs the request for the alerts of the district where the logged user is.
+     */
+    private void onRequestAlerts() {
+
+        System.out.println("[UpvoteAlertActivity] onRequestAlerts");
+
+        new RequestAsyncTask(ServerUtils.requestAlerts(getLatitude(), getLongitude()),
+                new AbstractServerResponse<JsonArray>() {
+                    @Override
+                    public void onSuccessfulRequest(final JsonArray data) {
+                        //TODO
+                        //alertAdapter.clear();
+                        //get data and put into new list
+                        //add list into adapter
+                        //UpvoteAlertActivity.this.alertAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onErrorRequest(final int code) {
+                        showDialog(R.string.alerts, R.string.alerts_error);
+                    }
+                }).execute();
     }
 
 }
