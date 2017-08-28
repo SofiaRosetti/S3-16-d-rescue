@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">mobileuser</string>
 
+    <string name="alert_negative_button">Cancel</string>
     <string name="alerts">Alerts</string>
     <string name="attention">Attention!</string>
     <string name="change_password">Change password</string>
@@ -16,7 +17,6 @@
     <string name="fill_fields">All fields must be filled.</string>
     <string name="functionality_not_active">Functionality not active</string>
     <string name="gps_alert_message">The GPS is not active. Please, activate it from Settings->Location.</string>
-    <string name="gps_alert_negative_button">Cancel</string>
     <string name="gps_alert_positive_button">Settings</string>
     <string name="gps_permission">You must give permission to GPS to use the application.</string>
     <string name="incorrect_email_format">Incorrect email format.</string>
@@ -46,6 +46,8 @@
     <string name="surname">Surname</string>
     <string name="surname_label">Surname:</string>
     <string name="timestamp">Timestamp</string>
+    <string name="upvote">Upvote</string>
+    <string name="upvote_message">Do you want to upvote this alert?</string>
     <string name="upvotes_number">0</string>
 
 </resources>

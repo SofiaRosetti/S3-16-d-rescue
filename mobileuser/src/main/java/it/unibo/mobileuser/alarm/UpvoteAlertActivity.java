@@ -1,6 +1,7 @@
 package it.unibo.mobileuser.alarm;
 
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.widget.ListView;
 import it.unibo.drescue.model.Alert;
 import it.unibo.drescue.model.AlertImplBuilder;
@@ -10,6 +11,9 @@ import it.unibo.mobileuser.gps.GpsActivityImpl;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Activity that allows the user to view and upvote last alerts.
+ */
 public class UpvoteAlertActivity extends GpsActivityImpl {
 
     private AlertAdapter alertAdapter;
@@ -34,6 +38,21 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
 
         final ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(this.alertAdapter);
+        listView.setOnItemClickListener((adapterView, view, position, id) -> {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.upvote)
+                    .setMessage(R.string.upvote_message)
+                    .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
+                        //TODO upvote alert
+                        dialogInterface.dismiss();
+                    })
+                    .setNeutralButton(R.string.alert_negative_button, (dialogInterface, i) -> {
+                        dialogInterface.dismiss();
+                    })
+                    .show();
+        });
+
+        //TODO requestAlerts
 
     }
 

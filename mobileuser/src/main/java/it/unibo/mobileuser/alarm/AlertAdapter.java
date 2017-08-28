@@ -12,10 +12,20 @@ import it.unibo.mobileuser.R;
 
 import java.util.List;
 
+/**
+ * Class that is responsible for creating a view for each alert and
+ * for providing access to every data item.
+ */
 public class AlertAdapter extends ArrayAdapter<Alert> {
 
     private final List<Alert> alertList;
 
+    /**
+     * Creates a new adapter for alerts with the given parameters.
+     *
+     * @param context
+     * @param alertList
+     */
     public AlertAdapter(final Context context, final List<Alert> alertList) {
         super(context, 0, alertList);
         this.alertList = alertList;
@@ -52,6 +62,10 @@ public class AlertAdapter extends ArrayAdapter<Alert> {
 
     }
 
+    /**
+     * Class that holds the exact set of views to be shown for every
+     * alert of the data set.
+     */
     private static class AlertViewHolder {
 
         private TextView eventName;
