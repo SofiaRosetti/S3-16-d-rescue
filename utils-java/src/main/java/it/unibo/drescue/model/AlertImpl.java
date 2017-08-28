@@ -14,8 +14,9 @@ public class AlertImpl implements Alert {
     private final int userID;
     private final int eventID;
     private final String districtID;
+    private final int upvotes;
 
-    public AlertImpl(final int alertID, final Timestamp timestamp, final double latitude, final double longitude, final int userID, final int eventID, final String districtID) {
+    public AlertImpl(final int alertID, final Timestamp timestamp, final double latitude, final double longitude, final int userID, final int eventID, final String districtID, final int upvotes) {
         this.alertID = alertID;
         this.timestamp = timestamp;
         this.latitude = latitude;
@@ -23,6 +24,7 @@ public class AlertImpl implements Alert {
         this.userID = userID;
         this.eventID = eventID;
         this.districtID = districtID;
+        this.upvotes = upvotes;
     }
 
     @Override
@@ -58,5 +60,10 @@ public class AlertImpl implements Alert {
     @Override
     public String getDistrictID() {
         return this.districtID;
+    }
+
+    @Override
+    public int getUpvotes() {
+        return this.upvotes;
     }
 }
