@@ -1,12 +1,12 @@
 package it.unibo.mobileuser.connection;
 
 /**
- * Interface implemented for perform different actions after a client request.
+ * Interface implemented to perform different actions on client request.
  */
 public interface RequestDelegate {
 
     /**
-     * Actions to perform after receiving the response from server
+     * Actions to be performed after receiving server response.
      *
      * @param response received from server
      */

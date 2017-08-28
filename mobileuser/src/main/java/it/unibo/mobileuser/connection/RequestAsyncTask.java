@@ -9,16 +9,18 @@ import java.net.Socket;
 /**
  * Class used to send an async request to server.
  */
-public class ClientRequestAsyncTask extends AsyncTask<Void, Void, String> {
+public class RequestAsyncTask extends AsyncTask<Void, Void, String> {
 
     private final RequestImpl request;
     private final RequestDelegate delegate;
 
     /**
-     * @param request
-     * @param delegate
+     * Creates a new AsyncTask which performs the request.
+     *
+     * @param request  request to be performed
+     * @param delegate delegate that handles the response
      */
-    public ClientRequestAsyncTask(final RequestImpl request, final RequestDelegate delegate) {
+    public RequestAsyncTask(final RequestImpl request, final RequestDelegate delegate) {
         this.request = request;
         this.delegate = delegate;
     }
@@ -42,28 +44,22 @@ public class ClientRequestAsyncTask extends AsyncTask<Void, Void, String> {
             final BufferedReader fromServer = new BufferedReader(new InputStreamReader(sin));
             final PrintWriter toServer = new PrintWriter(new OutputStreamWriter(sout));
 
-            //Traduction from JsonObject to String of the request
             String jsonString;
             jsonString = this.request.getRequestData().toString();
             if (!StringUtils.isAValidString(jsonString)) throw new IOException();
 
-            //Send request to server
             toServer.println(jsonString);
             toServer.flush();
 
-            //Waiting for server response
             jsonString = fromServer.readLine();
-            if (!StringUtils.isAValidString(jsonString)) throw new IOException();
+            if (!StringUtils.isAValidString(jsonString)) throw new IOException(); //TODO check
 
             System.out.println("[Client]: Response " + jsonString);
             return jsonString;
 
         } catch (final IOException e) {
             e.printStackTrace();
-        }
-
-        //Close the socket
-        finally {
+        } finally {
             if (socket != null)
                 try {
                     socket.close();

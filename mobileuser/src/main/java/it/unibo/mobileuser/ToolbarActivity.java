@@ -31,12 +31,6 @@ public class ToolbarActivity extends BaseActivity {
         return true;
     }
 
-    @Override
-    public void onBackPressed() {
-        setToolbarVisibility(false);
-        super.onBackPressed();
-    }
-
     /**
      * Set the visibility of the toolbar inside an activity.
      *
