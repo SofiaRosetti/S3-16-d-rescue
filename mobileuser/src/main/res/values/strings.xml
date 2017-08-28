@@ -22,6 +22,7 @@
     <string name="incorrect_email_format">Incorrect email format.</string>
     <string name="incorrect_login_data">Incorrect login data.</string>
     <string name="incorrect_sign_up_data">Incorrect sign up data.</string>
+    <string name="incorrect_upvote">You already upvote this alert.</string>
     <string name="latitude">Latitude:</string>
     <string name="location_not_available">Location not available</string>
     <string name="login">Login</string>
@@ -49,5 +50,6 @@
     <string name="upvote">Upvote</string>
     <string name="upvote_message">Do you want to upvote this alert?</string>
     <string name="upvotes_number">0</string>
+    <string name="upvote_successful">Upvote successful!</string>
 
 </resources>
