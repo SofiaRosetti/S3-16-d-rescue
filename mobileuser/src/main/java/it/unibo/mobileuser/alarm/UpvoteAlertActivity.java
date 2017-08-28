@@ -24,12 +24,16 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
         getSupportActionBar().setTitle(R.string.alerts);
 
         this.alertList = new ArrayList<>();
-        //TODO example element
-        this.alertList.add(new AlertImplBuilder().createAlertImpl());
+
+        //TODO example elements
+        for (int i = 0; i < 10; i++) {
+            this.alertList.add(new AlertImplBuilder().createAlertImpl());
+        }
+
         this.alertAdapter = new AlertAdapter(this, this.alertList);
 
         final ListView listView = (ListView) findViewById(R.id.listView);
-
+        listView.setAdapter(this.alertAdapter);
 
     }
 
