@@ -18,10 +18,16 @@ public class JsonFileUtils {
     public JsonFileUtils() {
     }
 
-    public ArrayList<DistrictImpl> getDistrictsFromFile() {
+    /**
+     * Get an ArrayList of District from a json file
+     *
+     * @param path indicates the path to the json file
+     * @return an ArrayList of Districts with all districts contained in the json file
+     */
+    public ArrayList<DistrictImpl> getDistrictsFromFile(final String path) {
         ArrayList<DistrictImpl> districts = null;
         try {
-            final BufferedReader bufferedReader = new BufferedReader(new FileReader(JSON_DISTRICTS_PATH));
+            final BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
             final Type type = new TypeToken<ArrayList<DistrictImpl>>() {
             }.getType();
             districts = this.gson.fromJson(bufferedReader, type);
