@@ -1,0 +1,52 @@
+[
+  {
+    "districtID": "AG",
+    "districtLongName": "Agrigento",
+    "population": "445129"
+  },
+  {
+    "districtID": "AL",
+    "districtLongName": "Alessandria",
+    "population": "428826"
+  },
+  {
+    "districtID": "AN",
+    "districtLongName": "Ancona",
+    "population": "476192"
+  },
+  {
+    "districtID": "AO",
+    "districtLongName": "Aosta",
+    "population": "127329"
+  },
+  {
+    "districtID": "AR",
+    "districtLongName": "Arezzo",
+    "population": "345110"
+  },
+  {
+    "districtID": "AP",
+    "districtLongName": "Ascoli Piceno",
+    "population": "210066"
+  },
+  {
+    "districtID": "AT",
+    "districtLongName": "Asti",
+    "population": "217574"
+  },
+  {
+    "districtID": "AV",
+    "districtLongName": "Avellino",
+    "population": "425325"
+  },
+  {
+    "districtID": "BA",
+    "districtLongName": "Bari",
+    "population": "1263820"
+  },
+  {
+    "districtID": "BT",
+    "districtLongName": "Barletta-Andria-Trani",
+    "population": "393534"
+  }
+]
