@@ -12,20 +12,10 @@ import java.io.IOException;
 public class Geocoding {
 
     private static final String KEY = "AIzaSyAhBFJafCe2FWr0ZejtEcQqvuB3TtyLZrE";
-    /*private final double latitude;
-    private final double longitude;*/
     private String response;
     private String district = "";
 
-    public Geocoding(/*final double latitude, final double longitude*/) {
-        /*this.latitude = latitude;
-        this.longitude = longitude;
-        this.sendRequest();*/
-    }
-
-    public static void main(final String[] args) {
-        //System.out.println(new Geocoding().getDistrict(44.139773, 12.243283));
-        System.out.println(new Geocoding().getLatLng("Via Sacchi 3 Cesena"));
+    public Geocoding() {
     }
 
     public String getDistrict(final double latitude, final double longitude) {
@@ -49,6 +39,7 @@ public class Geocoding {
     public JsonObject getLatLng(final String address) {
 
         this.geocode(address);
+
         final JsonObject json = new JsonParser().parse(this.response).getAsJsonObject();
         return json;
 
@@ -82,7 +73,6 @@ public class Geocoding {
             results = GeocodingApi.geocode(context, address).await();
             final Gson gson = new GsonBuilder().setPrettyPrinting().create();
             this.response = gson.toJson(results[0].geometry.location);
-            //System.out.println(gson.toJson(results[0].geometry.location));
         } catch (final ApiException e) {
             e.printStackTrace();
         } catch (final InterruptedException e) {
