@@ -24,7 +24,8 @@ public class Geocoding {
     }
 
     public static void main(final String[] args) {
-        System.out.println(new Geocoding().getDistrict(44.139773, 12.243283));
+        //System.out.println(new Geocoding().getDistrict(44.139773, 12.243283));
+        System.out.println(new Geocoding().getLatLng("Via Sacchi 3 Cesena"));
     }
 
     public String getDistrict(final double latitude, final double longitude) {
@@ -45,6 +46,14 @@ public class Geocoding {
         return this.district;
     }
 
+    public JsonObject getLatLng(final String address) {
+
+        this.geocode(address);
+        final JsonObject json = new JsonParser().parse(this.response).getAsJsonObject();
+        return json;
+
+    }
+
     private void reverseGeocode(final double latitude, final double longitude) {
         final GeoApiContext context = new GeoApiContext.Builder()
                 .apiKey(this.KEY)
@@ -62,5 +71,25 @@ public class Geocoding {
         } catch (final IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void geocode(final String address) {
+        final GeoApiContext context = new GeoApiContext.Builder()
+                .apiKey(this.KEY)
+                .build();
+        final GeocodingResult[] results;
+        try {
+            results = GeocodingApi.geocode(context, address).await();
+            final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            this.response = gson.toJson(results[0].geometry.location);
+            //System.out.println(gson.toJson(results[0].geometry.location));
+        } catch (final ApiException e) {
+            e.printStackTrace();
+        } catch (final InterruptedException e) {
+            e.printStackTrace();
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
