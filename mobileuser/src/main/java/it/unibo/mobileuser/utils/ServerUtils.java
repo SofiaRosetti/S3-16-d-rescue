@@ -17,11 +17,15 @@ public class ServerUtils {
     public static final String DATA = "data";
 
     //Json keys in server requests and response
+    private static final String ALERT_ID = "alertID";
     private static final String EMAIL = "email";
+    private static final String LATITUDE = "latitude";
+    private static final String LONGITUDE = "longitude";
     private static final String NAME = "name";
     private static final String PASSWORD = "password";
     private static final String PHONE_NUMBER = "phoneNumber";
     private static final String SURNAME = "surname";
+    private static final String USER_ID = "userID";
 
     /**
      * @param email
@@ -51,5 +55,29 @@ public class ServerUtils {
         loginRequest.putKeyValuePair(EMAIL, email);
         loginRequest.putKeyValuePair(PASSWORD, password);
         return loginRequest;
+    }
+
+    /**
+     * @param userID
+     * @param alertID
+     * @return a request from userID to upvote alertID
+     */
+    public static RequestImpl upvoteAlert(final String userID, final String alertID) {
+        final RequestImpl upvoteRequest = new RequestImpl();
+        upvoteRequest.putKeyValuePair(USER_ID, userID);
+        upvoteRequest.putKeyValuePair(ALERT_ID, alertID);
+        return upvoteRequest;
+    }
+
+    /**
+     * @param latitude
+     * @param longitude
+     * @return a request to get alerts in the same district of the user position
+     */
+    public static RequestImpl requestAlerts(final String latitude, final String longitude) {
+        final RequestImpl alertsRequest = new RequestImpl();
+        alertsRequest.putKeyValuePair(LATITUDE, latitude);
+        alertsRequest.putKeyValuePair(LONGITUDE, longitude);
+        return alertsRequest;
     }
 }

@@ -127,7 +127,7 @@ public class GpsActivityImpl extends ToolbarActivity implements GpsActivity {
                         startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                     }
                 })
-                .setNegativeButton(getResources().getString(R.string.gps_alert_negative_button), new DialogInterface.OnClickListener() {
+                .setNegativeButton(getResources().getString(R.string.alert_negative_button), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialogInterface, final int i) {
                         dialogInterface.cancel();
