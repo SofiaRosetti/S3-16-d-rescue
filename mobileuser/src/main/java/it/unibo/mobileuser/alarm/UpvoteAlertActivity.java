@@ -1,6 +1,7 @@
 package it.unibo.mobileuser.alarm;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -25,6 +26,8 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
 
     private AlertAdapter alertAdapter;
     private List<Alert> alertList;
+
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -58,6 +61,11 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
                         dialogInterface.dismiss();
                     })
                     .show();
+        });
+
+        this.swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        this.swipeRefreshLayout.setOnRefreshListener(() -> {
+            onRequestAlerts();
         });
 
         //TODO
@@ -101,6 +109,7 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
                 new AbstractServerResponse<JsonArray>() {
                     @Override
                     public void onSuccessfulRequest(final JsonArray data) {
+                        UpvoteAlertActivity.this.swipeRefreshLayout.setRefreshing(false);
                         //TODO
                         //alertAdapter.clear();
                         //get data and put into new list
@@ -110,6 +119,7 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
 
                     @Override
                     public void onErrorRequest(final int code) {
+                        UpvoteAlertActivity.this.swipeRefreshLayout.setRefreshing(false);
                         showDialog(R.string.alerts, R.string.alerts_error);
                     }
                 }).execute();

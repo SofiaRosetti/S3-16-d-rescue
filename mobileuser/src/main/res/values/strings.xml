@@ -12,6 +12,7 @@
     <string name="edit">Edit</string>
     <string name="email">E-mail</string>
     <string name="email_label">Email:</string>
+    <string name="empty_layout">Nothing to show.</string>
     <string name="event_name">Event name</string>
     <string name="event_type">Event type:</string>
     <string name="exclamation_point">!</string>
