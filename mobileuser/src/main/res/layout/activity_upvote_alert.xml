@@ -17,7 +17,8 @@
     <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipeContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryLight">
 
         <LinearLayout
                 android:layout_width="match_parent"
