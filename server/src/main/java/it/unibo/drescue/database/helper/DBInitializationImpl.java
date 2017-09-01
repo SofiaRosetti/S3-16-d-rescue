@@ -1,13 +1,13 @@
 package it.unibo.drescue.database.helper;
 
 import it.unibo.drescue.database.DBConnection;
+import it.unibo.drescue.database.JsonFileUtils;
 import it.unibo.drescue.database.dao.DistrictDao;
 import it.unibo.drescue.database.dao.EventTypeDao;
 import it.unibo.drescue.model.District;
 import it.unibo.drescue.model.DistrictImpl;
 import it.unibo.drescue.model.EventType;
 import it.unibo.drescue.model.EventTypeImpl;
-import it.unibo.drescue.utils.JsonFileUtils;
 
 import java.sql.SQLException;
 import java.util.List;

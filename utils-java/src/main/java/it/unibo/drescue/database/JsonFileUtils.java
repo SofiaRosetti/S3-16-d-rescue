@@ -1,4 +1,4 @@
-package it.unibo.drescue.utils;
+package it.unibo.drescue.database;
 
 import com.google.gson.Gson;
 
