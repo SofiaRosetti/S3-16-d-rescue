@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 public class EventTypeDaoImplTest {
 
     private static final EventType EVENT_TYPE_TEST =
-            new EventTypeImpl(Integer.MAX_VALUE, "Test");
+            new EventTypeImpl(Integer.MIN_VALUE, "Test");
 
     private EventTypeDao eventTypeDao = null;
     private DBConnection dbConnection;
@@ -27,17 +27,17 @@ public class EventTypeDaoImplTest {
     @Test
     public void isInsertingAndDeletingEventType() throws Exception {
         this.eventTypeDao.insert(this.EVENT_TYPE_TEST);
-        assertTrue(this.eventTypeDao.findById(this.EVENT_TYPE_TEST.getEventID()) != null);
+        assertTrue(this.eventTypeDao.findByName(this.EVENT_TYPE_TEST.getEventName()) != null);
         this.eventTypeDao.delete(this.EVENT_TYPE_TEST);
-        assertTrue(this.eventTypeDao.findById(this.EVENT_TYPE_TEST.getEventID()) == null);
+        assertTrue(this.eventTypeDao.findByName(this.EVENT_TYPE_TEST.getEventName()) == null);
     }
 
     @Test
-    public void isFindingAllDistricts() throws Exception {
+    public void isFindingAllEventTypes() throws Exception {
         final int initialSize = this.eventTypeDao.findAll().size();
         this.eventTypeDao.insert(this.EVENT_TYPE_TEST);
         assertTrue(this.eventTypeDao.findAll().size() == initialSize + 1);
-        //Deleting test district
+        //Deleting test event_type
         this.eventTypeDao.delete(this.EVENT_TYPE_TEST);
         assertTrue(this.eventTypeDao.findAll().size() == initialSize);
     }

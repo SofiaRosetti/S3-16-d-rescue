@@ -19,28 +19,6 @@ public class EventTypeDaoImpl extends GenericDao implements EventTypeDao {
     }
 
     @Override
-    public EventType findById(final int eventTypeId) {
-
-        EventType eventType = null;
-        final String query = "SELECT eventID,eventName "
-                + "FROM " + TABLENAME + " WHERE eventID = ?";
-        try {
-            final PreparedStatement statement = this.connection.prepareStatement(query);
-            statement.setInt(1, eventTypeId);
-            final ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                eventType = new EventTypeImpl(
-                        resultSet.getInt("eventID"),
-                        resultSet.getString("eventName"));
-            }
-            resultSet.close();
-            statement.close();
-        } catch (final SQLException e) {
-            e.printStackTrace();
-        }
-        return eventType;
-    }
-
     public EventType findByName(final String eventName) {
 
         EventType eventType = null;
@@ -89,7 +67,7 @@ public class EventTypeDaoImpl extends GenericDao implements EventTypeDao {
 
         //Verify if eventID already exists
         if (this.findByName(eventType.getEventName()) != null) {
-            System.out.println("[DB]: INSERT_DISTRICT_FAIL: "
+            System.out.println("[DB]: INSERT_EVENT_TYPE_FAIL: "
                     + eventType.getEventName() + " already in db");
             return false;
         }
@@ -111,11 +89,14 @@ public class EventTypeDaoImpl extends GenericDao implements EventTypeDao {
 
     @Override
     public boolean delete(final EventType eventType) {
+
+        final EventType eventToDelete = this.findByName(eventType.getEventName());
+
         final String query = "DELETE FROM " + TABLENAME
                 + " WHERE eventID = ?";
         try {
             final PreparedStatement statement = this.connection.prepareStatement(query);
-            statement.setInt(1, eventType.getEventID());
+            statement.setInt(1, eventToDelete.getEventID());
             statement.executeUpdate();
             statement.close();
             return true;
