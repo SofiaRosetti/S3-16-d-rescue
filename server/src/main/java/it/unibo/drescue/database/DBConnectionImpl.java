@@ -1,5 +1,7 @@
 package it.unibo.drescue.database;
 
+import it.unibo.drescue.database.dao.DistrictDaoImpl;
+import it.unibo.drescue.database.dao.EventTypeDaoImpl;
 import it.unibo.drescue.database.dao.GenericDao;
 import it.unibo.drescue.database.dao.UserDaoImpl;
 
@@ -113,6 +115,10 @@ public class DBConnectionImpl implements DBConnection {
         switch (table) {
             case USER:
                 return new UserDaoImpl(connection);
+            case DISTRICT:
+                return new DistrictDaoImpl(connection);
+            case EVENT_TYPE:
+                return new EventTypeDaoImpl(connection);
             default:
                 throw new SQLException("Trying to link to an unexistant table.");
         }

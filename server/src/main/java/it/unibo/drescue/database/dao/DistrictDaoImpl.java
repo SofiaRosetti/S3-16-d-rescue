@@ -109,8 +109,6 @@ public class DistrictDaoImpl extends GenericDao<District> implements DistrictDao
     @Override
     public boolean update(final String districtId, final int population) {
 
-        //TODO CHECK IF EXISTS
-
         final String query = "UPDATE " + TABLENAME + " SET population = ? "
                 + "WHERE districtID = ?";
         try {

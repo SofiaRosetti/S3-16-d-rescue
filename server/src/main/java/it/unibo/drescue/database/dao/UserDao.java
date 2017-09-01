@@ -5,13 +5,15 @@ import it.unibo.drescue.model.User;
 public interface UserDao {
 
     /**
+     * Find a user given the email
+     *
      * @param email specify the user's email
-     * @return the user if a user with the given email exist
+     * @return the user if a user with the given email exists
      */
     User findByEmail(String email);
 
     /**
-     * This method register a given user into DB
+     * Register a given user into DB
      *
      * @param user to register
      * @return true if the given user is added into DB
@@ -28,6 +30,8 @@ public interface UserDao {
     boolean delete(User user);
 
     /**
+     * Check credentials
+     *
      * @param email
      * @param password
      * @return true if the credentials are valid, false otherwise

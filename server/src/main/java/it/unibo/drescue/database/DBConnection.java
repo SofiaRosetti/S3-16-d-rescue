@@ -39,7 +39,8 @@ public interface DBConnection {
     enum Table {
         USER,
         DISTRICT,
-        EVENT_TYPE
+        EVENT_TYPE,
+        ALERT
     }
 
 }

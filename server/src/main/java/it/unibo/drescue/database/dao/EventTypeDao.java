@@ -13,7 +13,7 @@ public interface EventTypeDao {
      * @param eventTypeId specify the eventType to find
      * @return the EventType if a event type with the given id exists
      */
-    EventType findById(String eventTypeId);
+    EventType findById(int eventTypeId);
 
     /**
      * Get all event types
