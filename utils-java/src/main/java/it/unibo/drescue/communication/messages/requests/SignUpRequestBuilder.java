@@ -1,4 +1,4 @@
-package it.unibo.drescue.connection.messages.requests;
+package it.unibo.drescue.communication.messages.requests;
 
 /**
  * Builder interface for sign up requests.

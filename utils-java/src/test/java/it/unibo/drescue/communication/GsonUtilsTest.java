@@ -1,6 +1,6 @@
-package it.unibo.drescue.connection;
+package it.unibo.drescue.communication;
 
-import it.unibo.drescue.connection.messages.response.ErrorMessageImpl;
+import it.unibo.drescue.communication.messages.response.ErrorMessageImpl;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

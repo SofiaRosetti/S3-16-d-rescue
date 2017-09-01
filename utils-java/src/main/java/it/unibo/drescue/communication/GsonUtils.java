@@ -1,4 +1,4 @@
-package it.unibo.drescue.connection;
+package it.unibo.drescue.communication;
 
 import com.google.gson.Gson;
 

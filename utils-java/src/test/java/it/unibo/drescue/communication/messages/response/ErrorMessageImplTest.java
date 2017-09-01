@@ -1,4 +1,4 @@
-package it.unibo.drescue.connection.messages.response;
+package it.unibo.drescue.communication.messages.response;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,8 +16,8 @@ public class ErrorMessageImplTest {
     }
 
     @Test
-    public void checkCorrectError(){
-        String error = this.errorMessage.getError();
+    public void checkCorrectError() {
+        final String error = this.errorMessage.getError();
         assertEquals(error, ERROR);
     }
 

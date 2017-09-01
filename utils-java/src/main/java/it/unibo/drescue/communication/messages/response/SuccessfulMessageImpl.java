@@ -1,4 +1,4 @@
-package it.unibo.drescue.connection.messages.response;
+package it.unibo.drescue.communication.messages.response;
 
 /**
  * Class that represents a successful response.

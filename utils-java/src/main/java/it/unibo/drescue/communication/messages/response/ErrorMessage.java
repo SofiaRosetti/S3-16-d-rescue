@@ -1,4 +1,4 @@
-package it.unibo.drescue.connection.messages.response;
+package it.unibo.drescue.communication.messages.response;
 
 /**
  * An interface modelling an error message.

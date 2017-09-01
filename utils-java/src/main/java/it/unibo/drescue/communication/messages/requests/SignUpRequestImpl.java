@@ -1,4 +1,4 @@
-package it.unibo.drescue.connection.messages.requests;
+package it.unibo.drescue.communication.messages.requests;
 
 /**
  * Class that represents a sign up request.
