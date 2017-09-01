@@ -45,7 +45,7 @@ public abstract class AbstractRPCReceiver implements RPCReceiver {
 
                 try {
                     final String message = new String(delivery.getBody(), "UTF-8");
-                    System.out.println(" [x] Received: " + message);
+                    System.out.println("[AbstractRPCReceiver] Received: " + message);
 
                     response = accessDB(message);
 
@@ -62,12 +62,14 @@ public abstract class AbstractRPCReceiver implements RPCReceiver {
 
         } catch (final Exception e) {
             e.printStackTrace();
+            //TODO handle
 
         } finally {
             if (connection != null) {
                 try {
                     connection.close();
                 } catch (final Exception e) {
+                    //TODO handle
                 }
             }
         }

@@ -6,15 +6,18 @@ import it.unibo.drescue.communication.messages.requests.SignUpRequestImpl;
 import it.unibo.drescue.communication.messages.response.ErrorMessageImpl;
 import it.unibo.drescue.communication.messages.response.SuccessfulMessageImpl;
 
-public class AuthenticationRPC extends AbstractRPCReceiver {
+/**
+ * Class that handles login and sign up RPCs.
+ */
+public class AuthenticationRPCReceiver extends AbstractRPCReceiver {
 
     /**
-     * Creates and waits for a message on the specific connection and channel name.
+     * Creates and waits for a request on the specific connection and channel name.
      *
      * @param connection         the connection on which open the channel
-     * @param receiveChannelName the channel name on which waiting for messages.
+     * @param receiveChannelName the channel name on which waiting for requests
      */
-    public AuthenticationRPC(final Connection connection, final String receiveChannelName) {
+    public AuthenticationRPCReceiver(final Connection connection, final String receiveChannelName) {
         super(connection, receiveChannelName);
     }
 
@@ -25,6 +28,9 @@ public class AuthenticationRPC extends AbstractRPCReceiver {
         if (jsonMessage == null) {
             response = GsonUtils.toGson(new ErrorMessageImpl("Received null string."));
         } else {
+
+            //TODO login
+
             final SignUpRequestImpl request = GsonUtils.fromGson(jsonMessage, SignUpRequestImpl.class);
             if (request != null) {
                 final String name = request.getName();
@@ -35,7 +41,7 @@ public class AuthenticationRPC extends AbstractRPCReceiver {
 
                 //TODO access to DB
 
-                System.out.println("[SignUpRPC] name=" + name + " surname=" + surname +
+                System.out.println("[AuthenticationRPC] name=" + name + " surname=" + surname +
                         " email=" + email + " password=" + password + " phoneNumber=" + phoneNumber);
 
                 response = GsonUtils.toGson(new SuccessfulMessageImpl());
@@ -44,10 +50,9 @@ public class AuthenticationRPC extends AbstractRPCReceiver {
             }
         }
 
-        System.out.println("[SignUpRPC] response " + response);
+        System.out.println("[AuthenticationRPC] response " + response);
 
         return response;
     }
-
 
 }
