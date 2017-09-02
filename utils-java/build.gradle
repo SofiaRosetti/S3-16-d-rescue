@@ -1,5 +1,4 @@
 dependencies {
-
     //gson
     compile 'com.google.code.gson:gson:2.8.0'
 
@@ -9,5 +8,4 @@ dependencies {
     // The production code uses the SLF4J logging API at compile time
     //compile 'org.slf4j:slf4j-api:1.7.21'
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
-
 }

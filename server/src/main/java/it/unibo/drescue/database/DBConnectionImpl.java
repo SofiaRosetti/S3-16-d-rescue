@@ -1,23 +1,34 @@
 package it.unibo.drescue.database;
 
-import java.sql.*;
+import it.unibo.drescue.database.dao.DistrictDaoImpl;
+import it.unibo.drescue.database.dao.EventTypeDaoImpl;
+import it.unibo.drescue.database.dao.GenericDao;
+import it.unibo.drescue.database.dao.UserDaoImpl;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class DBConnectionImpl implements DBConnection {
 
-    private static final String STR_ESCAPE = "\'";
+    protected static final String LOCAL_ADDRESS = "jdbc:mysql://localhost:3306/drescueDB";
+    protected static final String REMOTE_ADDRESS =
+            "jdbc:mysql://rds-mysql-drescue.cnwnbp8hx7vq.us-east-2.rds.amazonaws.com:3306/drescueDB";
     private static final String DRIVER_NAME =
             "com.mysql.jdbc.Driver";
     private static Connection connection;
-    private static Statement statement;
     private static String dbAddress;
     private static String dbUsername;
     private static String dbPassword;
 
+    /**
+     * Private constructor, cannot be instantiated
+     */
     private DBConnectionImpl() {
     }
 
     /**
-     * Instantiate a new DB connection to db in local environment
+     * Instantiate a new connection to db in local environment
      *
      * @return a db connection in local
      */
@@ -27,7 +38,7 @@ public class DBConnectionImpl implements DBConnection {
     }
 
     /**
-     * Instantiate a new DB connection to db in remote environment
+     * Instantiate a new connection to db in remote environment
      *
      * @return a db connection in remote
      */
@@ -36,16 +47,15 @@ public class DBConnectionImpl implements DBConnection {
         return new DBConnectionImpl();
     }
 
-    private static void setEnvironment(Environment env) {
+    private static void setEnvironment(final Environment env) {
         switch (env) {
             case LOCAL:
-                dbAddress = "jdbc:mysql://localhost:3306/testschema";
+                dbAddress = LOCAL_ADDRESS;
                 dbUsername = "admin";
                 dbPassword = "4dm1n";
                 break;
             case REMOTE:
-                dbAddress =
-                        "jdbc:mysql://rds-mysql-drescue.cnwnbp8hx7vq.us-east-2.rds.amazonaws.com:3306/drescueDB";
+                dbAddress = REMOTE_ADDRESS;
                 dbUsername = "masterDrescue";
                 dbPassword = "rdsTeamPass";
                 break;
@@ -57,12 +67,10 @@ public class DBConnectionImpl implements DBConnection {
         try {
             if (connection == null || connection.isClosed()) {
                 Class.forName(DRIVER_NAME);
-                System.out.println("[DB]: Connecting with db address: " + dbAddress);
                 connection = DriverManager.getConnection(dbAddress, dbUsername, dbPassword);
-                statement = connection.createStatement();
-                System.out.println("[DB]: Connection and statement created");
+                System.out.println("[DB]: Connection established with db address: " + dbAddress);
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
     }
@@ -70,104 +78,49 @@ public class DBConnectionImpl implements DBConnection {
     @Override
     public void closeConnection() {
         try {
-            statement.close();
-            connection.close();
-            System.out.println("[DB]: Statement and connection closed");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public int getUserId(String email) {
-        int id = -1;
-        String query = "SELECT userID FROM USER WHERE email=" + STR_ESCAPE + email + STR_ESCAPE;
-        try {
-            ResultSet resultSet = statement.executeQuery(query);
-            while (resultSet.next()) {
-                id = resultSet.getInt("userID");
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("[DB]: Connection closed");
             }
-            return id;
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             e.printStackTrace();
-            return -1;
         }
     }
 
     @Override
-    public boolean registerUser(String email, String password, String name, String surname, String phoneNumber) {
-
-        //Verify if email already exists
-        if (this.getUserId(email) != -1) {
-            System.out.println("[DB]: SIGNUP_FAIL: User " + email + " already registered");
+    public boolean isValid() {
+        try {
+            return connection.isValid(5000);
+        } catch (final SQLException e) {
+            e.printStackTrace();
             return false;
         }
+    }
 
-        String query = "INSERT INTO USER (email,password,name,surname,phoneNumber)"
-                + "VALUE ("
-                + STR_ESCAPE + email + STR_ESCAPE + ","
-                + STR_ESCAPE + password + STR_ESCAPE + ","
-                + STR_ESCAPE + name + STR_ESCAPE + ","
-                + STR_ESCAPE + surname + STR_ESCAPE + ","
-                + STR_ESCAPE + phoneNumber + STR_ESCAPE
-                + ")";
-        try {
-            statement.executeUpdate(query);
-            System.out.println("[DB]: SIGNUP_OK: Added user " + email);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
+    protected String getDbAddress() {
+        return dbAddress;
     }
 
     @Override
-    public boolean unregisterUser(int userID) {
+    public GenericDao getDAO(final Table table) throws SQLException {
 
-        String query = "DELETE FROM USER WHERE userID=" + userID;
         try {
-            statement.executeUpdate(query);
-            System.out.println("[DB]: DELETE_USER_OK: Deleted user " + userID);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    /**
-     * @param email
-     * @return the password if the user with the given email exist,
-     * null otherwise
-     */
-    private String getUserPwd(String email) {
-        String strRet = null;
-        String query = "SELECT password FROM USER WHERE email=" + STR_ESCAPE + email + STR_ESCAPE;
-        try {
-            ResultSet resultSet = statement.executeQuery(query);
-            while (resultSet.next()) {
-                strRet = resultSet.getString("password");
+            if (connection == null || connection.isClosed()) { //Ensure that connection is open
+                this.openConnection();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (final SQLException e) {
+            throw e;
         }
-        return strRet;
-    }
 
-    @Override
-    public boolean login(String email, String password) {
-
-        //Check password
-        String passInDb = this.getUserPwd(email);
-        if (passInDb == null) {
-            System.out.println("[DB]: LOGIN_FAIL: User " + email + " not registered yet");
-            return false;
-        } else if (!password.equals(passInDb)) {
-            System.out.println("[DB]: LOGIN_FAIL: User " + email + ", wrong credentials");
-            return false;
-        } else {
-            System.out.println("[DB]: LOGIN_OK: User " + email + " log in correctly");
-            return true;
+        switch (table) {
+            case USER:
+                return new UserDaoImpl(connection);
+            case DISTRICT:
+                return new DistrictDaoImpl(connection);
+            case EVENT_TYPE:
+                return new EventTypeDaoImpl(connection);
+            default:
+                throw new SQLException("Trying to link to an unexistant table.");
         }
 
     }
@@ -176,5 +129,4 @@ public class DBConnectionImpl implements DBConnection {
         LOCAL,
         REMOTE
     }
-
 }

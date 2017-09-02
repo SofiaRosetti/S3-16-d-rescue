@@ -1,5 +1,9 @@
 package it.unibo.drescue.database;
 
+import it.unibo.drescue.database.dao.GenericDao;
+
+import java.sql.SQLException;
+
 /**
  * A class that allows communication with database
  */
@@ -17,40 +21,26 @@ public interface DBConnection {
     void closeConnection();
 
     /**
-     * @param email
-     * @return the userID if the user with the given email exist,
-     * -1 otherwise
-     */
-    int getUserId(String email);
-
-    /**
-     * This method register a given user into DB
+     * Check if connection is still valid
      *
-     * @param email
-     * @param password
-     * @param name
-     * @param surname
-     * @param phoneNumber
-     * @return true if the given user is added into DB
-     * false if the given user email already exist in the DB
+     * @return true if the connection responds within 5 seconds, false otherwise
      */
-    boolean registerUser(String email, String password,
-                         String name, String surname, String phoneNumber);
+    boolean isValid();
 
     /**
-     * Delete a user from DB with the given userID (taken with getUser(email) method)
+     * Factory method for creating DAO of the specified table
      *
-     * @param userID
-     * @return false if something goes wrong
+     * @param table specify the db table to access
+     * @return the DAO for the specified table
+     * @throws SQLException if connection is closed or null
      */
-    boolean unregisterUser(int userID);
+    GenericDao getDAO(Table table) throws SQLException;
 
-    /**
-     * @param email
-     * @param password
-     * @return true if the credentials are valid, false otherwise
-     */
-    boolean login(String email, String password);
-
+    enum Table {
+        USER,
+        DISTRICT,
+        EVENT_TYPE,
+        ALERT
+    }
 
 }
