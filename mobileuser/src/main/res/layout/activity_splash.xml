@@ -33,7 +33,8 @@
                     android:text="@string/app_name"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textStyle="bold"
-                    android:textColor="@color/colorTextIcons"/>
+                    android:textColor="@color/colorTextIcons"
+                    android:textSize="@dimen/title_size"/>
 
         </LinearLayout>
 
@@ -49,20 +50,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/login"
-                    android:padding="6dp"
+                    android:padding="@dimen/padding"
                     android:textStyle="bold"
                     android:clickable="true"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:background="@color/colorAccent"
                     android:textColor="@color/colorPrimaryText"
-                    android:layout_marginBottom="6dp"/>
+                    android:layout_marginBottom="@dimen/marginBottom"
+                    android:textSize="@dimen/button_size"/>
 
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:orientation="horizontal"
-                    android:layout_marginTop="6dp">
+                    android:layout_marginTop="@dimen/marginTop">
 
                 <TextView
                         android:layout_width="wrap_content"
@@ -79,8 +81,9 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textStyle="bold"
                         android:clickable="true"
-                        android:layout_marginStart="6dp"
-                        android:textColor="@color/colorTextIcons"/>
+                        android:layout_marginStart="@dimen/marginTop"
+                        android:textColor="@color/colorTextIcons"
+                        android:textSize="@dimen/enf_text_size"/>
 
             </LinearLayout>
 
