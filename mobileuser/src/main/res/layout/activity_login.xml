@@ -27,12 +27,16 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:padding="12dp">
+                android:padding="@dimen/padding_medium"
+                android:layout_marginBottom="@dimen/margin_large">
 
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorTextIcons">
+                    android:background="@color/colorTextIcons"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:paddingLeft="@dimen/padding_small"
+                    android:paddingRight="@dimen/padding_small">
 
                 <com.rengwuxian.materialedittext.MaterialEditText
                         android:id="@+id/email_login"
@@ -40,14 +44,17 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/email"
                         android:inputType="textEmailAddress"
-                        app:met_floatingLabel="highlight"/>
+                        app:met_floatingLabel="highlight"
+                        app:met_iconLeft="@drawable/ic_account_circle_white_48dp"/>
 
             </LinearLayout>
 
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorTextIcons">
+                    android:background="@color/colorTextIcons"
+                    android:paddingLeft="@dimen/padding_small"
+                    android:paddingRight="@dimen/padding_small">
 
                 <com.rengwuxian.materialedittext.MaterialEditText
                         android:id="@+id/password_login"
@@ -55,7 +62,8 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/password"
                         android:inputType="textPassword"
-                        app:met_floatingLabel="highlight"/>
+                        app:met_floatingLabel="highlight"
+                        app:met_iconLeft="@drawable/ic_vpn_key_white_48dp"/>
 
             </LinearLayout>
 
@@ -63,16 +71,19 @@
 
         <Button
                 android:id="@+id/login"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/login"
-                android:padding="6dp"
+                android:padding="@dimen/padding_small"
                 android:textStyle="bold"
+                android:textSize="@dimen/text_size_large"
                 android:clickable="true"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/colorPrimaryText"
                 android:background="@color/colorAccent"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:layout_marginLeft="@dimen/margin_medium"
+                android:layout_marginRight="@dimen/margin_medium"/>
 
     </LinearLayout>
 

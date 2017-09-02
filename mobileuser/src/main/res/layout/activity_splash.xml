@@ -34,7 +34,7 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textStyle="bold"
                     android:textColor="@color/colorTextIcons"
-                    android:textSize="@dimen/title_size"/>
+                    android:textSize="@dimen/text_size_extralarge"/>
 
         </LinearLayout>
 
@@ -50,21 +50,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/login"
-                    android:padding="@dimen/padding"
+                    android:padding="@dimen/padding_small"
                     android:textStyle="bold"
                     android:clickable="true"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:background="@color/colorAccent"
                     android:textColor="@color/colorPrimaryText"
-                    android:layout_marginBottom="@dimen/marginBottom"
-                    android:textSize="@dimen/button_size"/>
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:textSize="@dimen/text_size_large"/>
 
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:orientation="horizontal"
-                    android:layout_marginTop="@dimen/marginTop">
+                    android:layout_marginTop="@dimen/margin_small">
 
                 <TextView
                         android:layout_width="wrap_content"
@@ -81,9 +81,9 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textStyle="bold"
                         android:clickable="true"
-                        android:layout_marginStart="@dimen/marginTop"
+                        android:layout_marginStart="@dimen/margin_small"
                         android:textColor="@color/colorTextIcons"
-                        android:textSize="@dimen/enf_text_size"/>
+                        android:textSize="@dimen/text_size_medium"/>
 
             </LinearLayout>
 

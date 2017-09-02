@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="padding">6dp</dimen>
-    <dimen name="marginBottom">6dp</dimen>
-    <dimen name="marginTop">6dp</dimen>
-    <dimen name="title_size">50sp</dimen>
-    <dimen name="enf_text_size">16dp</dimen>
-    <dimen name="button_size">20sp</dimen>
+    <dimen name="margin_large">50dp</dimen>
+    <dimen name="margin_medium">12dp</dimen>
+    <dimen name="margin_small">6dp</dimen>
+    <dimen name="padding_medium">12dp</dimen>
+    <dimen name="padding_small">6dp</dimen>
+    <dimen name="text_size_extralarge">50sp</dimen>
+    <dimen name="text_size_large">20sp</dimen>
+    <dimen name="text_size_medium">16dp</dimen>
 
 </resources>
