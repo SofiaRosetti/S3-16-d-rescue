@@ -42,4 +42,9 @@ public interface Alert {
      * @return the alert district ID
      */
     String getDistrictID();
+
+    /**
+     * @return the number of upvotes of the alert
+     */
+    int getUpvotes();
 }

@@ -11,6 +11,7 @@ public class AlertImplBuilder {
     private int userID = 0;
     private int eventID = 0;
     private String districtID = "";
+    private int upvotes = 0;
 
     public AlertImplBuilder setAlertID(final int alertID) {
         this.alertID = alertID;
@@ -47,7 +48,12 @@ public class AlertImplBuilder {
         return this;
     }
 
+    public AlertImplBuilder setUpvotes(final int upvotes) {
+        this.upvotes = upvotes;
+        return this;
+    }
+
     public AlertImpl createAlertImpl() {
-        return new AlertImpl(this.alertID, this.timestamp, this.latitude, this.longitude, this.userID, this.eventID, this.districtID);
+        return new AlertImpl(this.alertID, this.timestamp, this.latitude, this.longitude, this.userID, this.eventID, this.districtID, this.upvotes);
     }
 }

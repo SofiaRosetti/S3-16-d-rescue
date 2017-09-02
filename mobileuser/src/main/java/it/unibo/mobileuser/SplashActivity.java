@@ -1,84 +1,77 @@
 package it.unibo.mobileuser;
 
+import android.content.Intent;
 import android.os.Bundle;
-import com.google.gson.JsonObject;
-import it.unibo.mobileuser.authentication.*;
-import it.unibo.mobileuser.connection.ClientRequestAsyncTask;
-import it.unibo.mobileuser.connection.AbstractServerResponse;
-import it.unibo.mobileuser.utils.ServerUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import it.unibo.mobileuser.authentication.LoginActivity;
+import it.unibo.mobileuser.authentication.SignUpActivity;
+import it.unibo.mobileuser.utils.Utils;
 
 /**
  * Launcher activity of the App.
  */
-public class SplashActivity extends ToolbarActivity
-        implements SplashListener, SignInListener, LoginListener {
+public class SplashActivity extends ToolbarActivity {
+
+    private static final int LOGIN_CODE = 100;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        checkIfUserIsLogged();
+
         setToolbar(false);
 
-        setFragment(new SplashFragment(), R.id.container, false);
+        final Button loginButton = (Button) findViewById(R.id.splash_login);
+        loginButton.setOnClickListener((View v) -> {
+
+            final Intent loginIntent = new Intent(this, LoginActivity.class);
+            startActivityForResult(loginIntent, LOGIN_CODE);
+        });
+
+        final TextView signUpButton = (TextView) findViewById(R.id.splash_sign_up);
+        signUpButton.setOnClickListener((View v) -> {
+
+            final Intent signUpIntent = new Intent(this, SignUpActivity.class);
+            startActivity(signUpIntent);
+        });
 
     }
 
     @Override
-    public void onRequestSignIn() {
-        setFragment(new SignInFragment(), R.id.container, true);
-
-        setToolbarVisibility(true);
-        getSupportActionBar().setTitle(R.string.sign_in);
+    protected void onResume() {
+        setToolbarVisibility(false);
+        super.onResume();
     }
 
     @Override
-    public void onRequestLogin() {
-        setFragment(new LoginFragment(), R.id.container, true);
-
-        setToolbarVisibility(true);
-        getSupportActionBar().setTitle(R.string.login);
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == LOGIN_CODE && resultCode == RESULT_OK) {
+            goToMainActivity();
+            finish();
+        }
     }
 
-    @Override
-    public void login(final String email, final String password) {
-        System.out.println("[SplashActivity] login: email=" + email + " password=" + password);
-
-        new ClientRequestAsyncTask(ServerUtils.login(email, password),
-                new AbstractServerResponse<JsonObject>() {
-
-                    @Override
-                    public void onSuccessfulRequest(final JsonObject data) {
-                        System.out.println("[SplashActivity] login successful");
-                        //TODO perform login saving userID in preferences
-                    }
-
-                    @Override
-                    public void onErrorRequest(final int code) {
-                        System.out.println("[SplashActivity] login error");
-                        //TODO show error dialog
-                    }
-                }).execute();
+    /**
+     * Go to MainActivity because a user is logged.
+     */
+    private void goToMainActivity() {
+        final Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 
-    @Override
-    public void signIn(final String name, final String surname, final String email, final String phone, final String password) {
-        System.out.println("[SplashActivity] signIn: name=" + name + " surname=" + surname +
-                " email=" + email + " phone=" + phone + " password=" + password);
-
-        new ClientRequestAsyncTask(ServerUtils.signIn(email, password, name, surname, phone),
-                new AbstractServerResponse<JsonObject>() {
-                    @Override
-                    public void onSuccessfulRequest(final JsonObject data) {
-                        System.out.println("[SplashActivity] signIn successful");
-                        //TODO get data and switch to SplashFragment
-                    }
-
-                    @Override
-                    public void onErrorRequest(final int code) {
-                        System.out.println("[SplashActivity] signIn error");
-                        //TODO show error dialog
-                    }
-                }).execute();
+    /**
+     * Checks if a user is already logged when opening the app.
+     */
+    private void checkIfUserIsLogged() {
+        final String userID = Utils.getUserIDfromSharedPreferences(getApplicationContext());
+        if (userID.length() != 0) {
+            goToMainActivity();
+            finish();
+        }
     }
 }

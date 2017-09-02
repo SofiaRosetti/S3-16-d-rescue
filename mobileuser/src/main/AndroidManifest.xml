@@ -3,6 +3,9 @@
           package="it.unibo.mobileuser">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+    <uses-feature android:name="android.hardware.location.gps"/>
 
     <application
             android:allowBackup="true"
@@ -11,7 +14,52 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <!--<activity android:name=".SplashActivity"
+        <activity
+                android:name=".SplashActivity"
+                android:configChanges="orientation"
+                android:screenOrientation="portrait">
+        </activity>
+        <activity
+                android:name=".MainActivity"
+                android:configChanges="orientation"
+                android:screenOrientation="portrait">
+        </activity>
+        <activity
+                android:name=".BaseActivity"
+                android:configChanges="orientation"
+                android:screenOrientation="portrait">
+        </activity>
+        <activity
+                android:name=".alarm.NewAlarmActivity"
+                android:configChanges="orientation"
+                android:screenOrientation="portrait">
+        </activity>
+        <activity
+                android:name=".profile.ProfileActivity"
+                android:configChanges="orientation"
+                android:screenOrientation="portrait">
+        </activity>
+        <activity
+                android:name=".profile.EditProfileActivity"
+                android:configChanges="orientation"
+                android:screenOrientation="portrait">
+        </activity>
+        <activity
+                android:name=".profile.ChangePasswordActivity"
+                android:configChanges="orientation"
+                android:screenOrientation="portrait">
+        </activity>
+        <activity
+                android:name=".authentication.LoginActivity"
+                android:configChanges="orientation"
+                android:screenOrientation="portrait">
+        </activity>
+        <activity
+                android:name=".authentication.SignUpActivity"
+                android:configChanges="orientation"
+                android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".alarm.UpvoteAlertActivity"
                   android:configChanges="orientation"
                   android:screenOrientation="portrait">
             <intent-filter>
@@ -19,25 +67,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity>-->
-        <activity android:name=".MainActivity"
-                  android:configChanges="orientation"
-                  android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-        <activity android:name=".BaseActivity">
-        </activity>
-        <activity android:name=".alarm.NewAlarmActivity">
-        </activity>
-        <activity android:name=".profile.ProfileActivity">
-        </activity>
-        <activity android:name=".profile.EditProfileActivity">
-        </activity>
-        <activity android:name=".profile.ChangePasswordActivity">
         </activity>
     </application>
 
