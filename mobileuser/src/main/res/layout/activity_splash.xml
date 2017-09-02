@@ -56,7 +56,7 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:background="@color/colorAccent"
                     android:textColor="@color/colorPrimaryText"
-                    android:layout_marginBottom="@dimen/margin_small"
+                    android:layout_marginBottom="@dimen/margin_xsmall"
                     android:textSize="@dimen/text_size_large"/>
 
             <LinearLayout
@@ -64,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:orientation="horizontal"
-                    android:layout_marginTop="@dimen/margin_small">
+                    android:layout_marginTop="@dimen/margin_xsmall">
 
                 <TextView
                         android:layout_width="wrap_content"
@@ -81,7 +81,7 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textStyle="bold"
                         android:clickable="true"
-                        android:layout_marginStart="@dimen/margin_small"
+                        android:layout_marginStart="@dimen/margin_xsmall"
                         android:textColor="@color/colorTextIcons"
                         android:textSize="@dimen/text_size_medium"/>
 
