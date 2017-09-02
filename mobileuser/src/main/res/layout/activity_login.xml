@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical"
-            android:background="@color/colorPrimary">
+            android:background="@color/colorPrimaryLight">
 
         <LinearLayout
                 android:layout_width="match_parent"
@@ -29,25 +29,35 @@
                 android:gravity="center"
                 android:padding="12dp">
 
-            <com.rengwuxian.materialedittext.MaterialEditText
-                    android:id="@+id/email_login"
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/email"
-                    android:inputType="textEmailAddress"
-                    app:met_baseColor="@color/white"
-                    app:met_primaryColor="@color/white"
-                    app:met_floatingLabel="highlight"/>
+                    android:background="@color/colorTextIcons">
 
-            <com.rengwuxian.materialedittext.MaterialEditText
-                    android:id="@+id/password_login"
+                <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/email_login"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/email"
+                        android:inputType="textEmailAddress"
+                        app:met_floatingLabel="highlight"/>
+
+            </LinearLayout>
+
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/password"
-                    android:inputType="textPassword"
-                    app:met_baseColor="@color/white"
-                    app:met_primaryColor="@color/white"
-                    app:met_floatingLabel="highlight"/>
+                    android:background="@color/colorTextIcons">
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/password_login"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/password"
+                        android:inputType="textPassword"
+                        app:met_floatingLabel="highlight"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -60,7 +70,8 @@
                 android:textStyle="bold"
                 android:clickable="true"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/colorAccent"
+                android:textColor="@color/colorPrimaryText"
+                android:background="@color/colorAccent"
                 android:gravity="center"/>
 
     </LinearLayout>
