@@ -4,7 +4,7 @@ package it.unibo.drescue.model;
  * An interface modelling a Civil Protection.
  */
 
-public interface CivilProtection {
+public interface CivilProtection extends ObjectModel {
 
     /**
      * @return the civil protection ID
