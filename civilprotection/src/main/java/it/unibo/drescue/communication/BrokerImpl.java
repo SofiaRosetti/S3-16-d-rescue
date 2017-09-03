@@ -18,67 +18,67 @@ public class BrokerImpl implements Broker {
     private String queueName;
 
     @Override
-    public void createConnection(String[] bindingQueue) throws IOException, TimeoutException {
+    public void createConnection(final String[] bindingQueue) throws IOException, TimeoutException {
         //TODO See Authentication Mechanisms
-        ConnectionFactory factory = new ConnectionFactory();
+        final ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
         factory.setUsername("guest");
         factory.setPassword("guest");
 
-        Connection connection = factory.newConnection();
-        channel = connection.createChannel();
+        final Connection connection = factory.newConnection();
+        this.channel = connection.createChannel();
 
-        channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
-        queueName = channel.queueDeclare().getQueue();
+        this.channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
+        this.queueName = this.channel.queueDeclare().getQueue();
 
         //One binding for each rescueTeam
-        for(String routingKey : bindingQueue){
-            channel.queueBind(queueName, EXCHANGE_NAME, routingKey);
+        for (final String routingKey : bindingQueue) {
+            this.channel.queueBind(this.queueName, EXCHANGE_NAME, routingKey);
         }
     }
 
     @Override
     public void newConsumer() throws IOException {
         //TODO Refactor Consumer into new java class and delete consolo log
-        Consumer consumer = new DefaultConsumer(channel) {
+        final Consumer consumer = new DefaultConsumer(BrokerImpl.this.channel) {
 
             @Override
-            public void handleDelivery(String consumerTag, Envelope envelope,
-                                       AMQP.BasicProperties properties, byte[] body) throws IOException {
-                String msg = new String(body, "UTF-8");
-                System.out.println("received message :[ "+ msg+ " ]");
-                JsonElement je = new JsonParser().parse(msg);
-                JsonObject jo = je.getAsJsonObject();
-                String messageType = jo.get("messageType").getAsString();
+            public void handleDelivery(final String consumerTag, final Envelope envelope,
+                                       final AMQP.BasicProperties properties, final byte[] body) throws IOException {
+                final String msg = new String(body, "UTF-8");
+                System.out.println("received message :[ " + msg + " ]");
+                final JsonElement je = new JsonParser().parse(msg);
+                final JsonObject jo = je.getAsJsonObject();
+                final String messageType = jo.get("messageType").getAsString();
 
-                switch (messageType){
+                switch (messageType) {
                     case CPCoordinationMessage.COORDINATION_MESSAGE:
-                        CPCoordinationMessage cpCoordinationMessage = GsonUtils.fromGson(msg, CPCoordinationMessage.class);
-                        System.out.println("RescueTeam name: "+ cpCoordinationMessage.getRescueTeam().getName());
-                        System.out.println("From: "+ cpCoordinationMessage.getFrom());
-                        System.out.println("To: "+ cpCoordinationMessage.getTo());
-                    break;
+                        final CPCoordinationMessage cpCoordinationMessage = GsonUtils.fromGson(msg, CPCoordinationMessage.class);
+                        System.out.println("RescueTeam name: " + cpCoordinationMessage.getRescueTeam().getName());
+                        System.out.println("From: " + cpCoordinationMessage.getFrom());
+                        System.out.println("To: " + cpCoordinationMessage.getTo());
+                        break;
                     case CPConfigurationMessage.CONFIGURATION_MESSAGE:
-                        CPConfigurationMessage cpConfigurationMessage = GsonUtils.fromGson(msg, CPConfigurationMessage.class);
-                        System.out.println("RescueTeam name: "+ cpConfigurationMessage.getRescueTeamCollection().get(0).getName());
-                        System.out.println("From: "+ cpConfigurationMessage.getFrom());
-                        System.out.println("To: "+ cpConfigurationMessage.getTo());
-                    break;
+                        final CPConfigurationMessage cpConfigurationMessage = GsonUtils.fromGson(msg, CPConfigurationMessage.class);
+                        System.out.println("RescueTeam name: " + cpConfigurationMessage.getRescueTeamCollection().get(0).getName());
+                        System.out.println("From: " + cpConfigurationMessage.getFrom());
+                        System.out.println("To: " + cpConfigurationMessage.getTo());
+                        break;
                 }
             }
         };
-        channel.basicConsume(queueName, true, consumer);
+        this.channel.basicConsume(this.queueName, true, consumer);
     }
 
 
     @Override
     public Channel getChannel() {
-        return channel;
+        return this.channel;
     }
 
     @Override
     public String getQueueName() {
-        return queueName;
+        return this.queueName;
     }
 
 

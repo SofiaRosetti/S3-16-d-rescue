@@ -4,9 +4,9 @@ import it.unibo.drescue.communication.messages.CPCoordinationMessage;
 import it.unibo.drescue.communication.messages.Message;
 import it.unibo.drescue.model.RescueTeamImpl;
 
-public class CPCoordinationMessageBuilderImpl implements CPCoordinationMessageBuilder{
+public class CPCoordinationMessageBuilderImpl implements CPCoordinationMessageBuilder {
 
-    private CPCoordinationMessage message;
+    private final CPCoordinationMessage message;
 
     public CPCoordinationMessageBuilderImpl() {
         this.message = new CPCoordinationMessage();
@@ -14,30 +14,24 @@ public class CPCoordinationMessageBuilderImpl implements CPCoordinationMessageBu
 
     @Override
     public CPCoordinationMessageBuilder setFrom(final String from) {
-        message.setFrom(from);
+        this.message.setFrom(from);
         return this;
     }
 
     @Override
     public CPCoordinationMessageBuilder setTo(final String to) {
-        message.setTo(to);
-        return this;
-    }
-
-    @Override
-    public CPCoordinationMessageBuilder setMessageType() {
-        message.setMessageType();
+        this.message.setTo(to);
         return this;
     }
 
     @Override
     public CPCoordinationMessageBuilder setRescueTeam(final RescueTeamImpl rescueTeam) {
-        message.setRescueTeam(rescueTeam);
+        this.message.setRescueTeam(rescueTeam);
         return this;
     }
 
     @Override
     public Message build() {
-        return message;
+        return this.message;
     }
 }

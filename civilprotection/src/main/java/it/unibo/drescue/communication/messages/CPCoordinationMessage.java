@@ -7,23 +7,18 @@ public class CPCoordinationMessage extends AbstractRoutingMessage {
 
     public final static String COORDINATION_MESSAGE = "coordination_message";
 
-    private String messageType;
     private RescueTeamImpl rescueTeam;
 
-    public RescueTeam getRescueTeam() {
-        return rescueTeam;
+    public CPCoordinationMessage() {
+        super(COORDINATION_MESSAGE);
     }
 
-    public void setRescueTeam(RescueTeamImpl rescueTeam) {
+    public RescueTeam getRescueTeam() {
+        return this.rescueTeam;
+    }
+
+    public void setRescueTeam(final RescueTeamImpl rescueTeam) {
         this.rescueTeam = rescueTeam;
     }
 
-    @Override
-    public String getMessageType() {
-        return messageType;
-    }
-
-    public void setMessageType() {
-        this.messageType = COORDINATION_MESSAGE;
-    }
 }
