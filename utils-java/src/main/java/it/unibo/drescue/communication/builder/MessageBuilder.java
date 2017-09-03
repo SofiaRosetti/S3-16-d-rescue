@@ -8,13 +8,8 @@ import it.unibo.drescue.communication.messages.Message;
 public interface MessageBuilder {
 
     /**
-     * Set the message type
-     * @return the message builder
-     */
-    MessageBuilder setMessageType();
-
-    /**
      * Build the message
+     *
      * @return the message builder
      */
     Message build();

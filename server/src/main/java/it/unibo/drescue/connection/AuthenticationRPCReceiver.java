@@ -1,8 +1,10 @@
 package it.unibo.drescue.connection;
 
 import com.rabbitmq.client.Connection;
+import it.unibo.drescue.StringUtils;
 import it.unibo.drescue.communication.GsonUtils;
-import it.unibo.drescue.communication.messages.requests.SignUpRequestImpl;
+import it.unibo.drescue.communication.messages.requests.LoginMessageImpl;
+import it.unibo.drescue.communication.messages.requests.SignUpMessageImpl;
 import it.unibo.drescue.communication.messages.response.ErrorMessageImpl;
 import it.unibo.drescue.communication.messages.response.SuccessfulMessageImpl;
 
@@ -23,34 +25,26 @@ public class AuthenticationRPCReceiver extends AbstractRPCReceiver {
 
     @Override
     public String accessDB(final String jsonMessage) {
-        final String response;
+        String response = null;
 
-        if (jsonMessage == null) {
-            response = GsonUtils.toGson(new ErrorMessageImpl("Received null string."));
-        } else {
+        final String messageType = StringUtils.getMessageType(jsonMessage);
 
-            //TODO login
-
-            final SignUpRequestImpl request = GsonUtils.fromGson(jsonMessage, SignUpRequestImpl.class);
-            if (request != null) {
-                final String name = request.getName();
-                final String surname = request.getSurname();
-                final String email = request.getEmail();
-                final String password = request.getPassword();
-                final String phoneNumber = request.getPhoneNumber();
-
-                //TODO access to DB
-
-                System.out.println("[AuthenticationRPC] name=" + name + " surname=" + surname +
-                        " email=" + email + " password=" + password + " phoneNumber=" + phoneNumber);
-
+        switch (messageType) {
+            case SignUpMessageImpl.SIGN_UP_MESSAGE:
+                System.out.println("Received SIGN UP message");
+                final SignUpMessageImpl signUpMessage = GsonUtils.fromGson(jsonMessage, SignUpMessageImpl.class);
+                //TODO accessDB maybe using worker and futures
                 response = GsonUtils.toGson(new SuccessfulMessageImpl());
-            } else {
-                response = GsonUtils.toGson(new ErrorMessageImpl("Received wrong message."));
-            }
-        }
+                break;
 
-        System.out.println("[AuthenticationRPC] response " + response);
+            case LoginMessageImpl.LOGIN_MESSAGE:
+                System.out.println("Received LOGIN message");
+                //TODO accessDB
+                //TODO modify
+                response = GsonUtils.toGson(new ErrorMessageImpl("testError"));
+                break;
+
+        }
 
         return response;
     }

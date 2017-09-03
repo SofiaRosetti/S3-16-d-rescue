@@ -13,16 +13,16 @@ import java.util.concurrent.BlockingQueue;
 public class RPCSenderImpl implements RPCSender {
 
     Channel channel;
-    String receiverChannelName;
+    String receiverQueueName;
     String replyQueueName;
 
     /**
      * Creates and waits for a response on the specific connection.
      *
-     * @param connection          the connection on which open the channel
-     * @param receiverChannelName the channel name on which to send the request
+     * @param connection        the connection on which open the channel
+     * @param receiverQueueName the queue name on which to send the request
      */
-    public RPCSenderImpl(final Connection connection, final String receiverChannelName) {
+    public RPCSenderImpl(final Connection connection, final String receiverQueueName) {
 
         try {
             this.channel = connection.createChannel();
@@ -31,7 +31,7 @@ public class RPCSenderImpl implements RPCSender {
             e.printStackTrace();
             //TODO handle
         }
-        this.receiverChannelName = receiverChannelName;
+        this.receiverQueueName = receiverQueueName;
 
     }
 
@@ -46,7 +46,7 @@ public class RPCSenderImpl implements RPCSender {
                 .build();
 
         try {
-            this.channel.basicPublish("", this.receiverChannelName, props, jsonMessage.getBytes("UTF-8"));
+            this.channel.basicPublish("", this.receiverQueueName, props, jsonMessage.getBytes("UTF-8"));
         } catch (final IOException e) {
             e.printStackTrace();
             //TODO handle

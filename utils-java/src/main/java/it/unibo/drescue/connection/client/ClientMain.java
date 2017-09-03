@@ -1,9 +1,9 @@
 package it.unibo.drescue.connection.client;
 
+import it.unibo.drescue.StringUtils;
 import it.unibo.drescue.communication.GsonUtils;
-import it.unibo.drescue.communication.messages.requests.SignUpRequestBuilder;
-import it.unibo.drescue.communication.messages.requests.SignUpRequestBuilderImpl;
-import it.unibo.drescue.communication.messages.requests.SignUpRequestImpl;
+import it.unibo.drescue.communication.builder.requests.SignUpMessageBuilderImpl;
+import it.unibo.drescue.communication.messages.Message;
 import it.unibo.drescue.communication.messages.response.ErrorMessageImpl;
 import it.unibo.drescue.communication.messages.response.SuccessfulMessageImpl;
 import it.unibo.drescue.connection.RabbitMQConnectionImpl;
@@ -21,30 +21,32 @@ public class ClientMain {
         connection.openConnection();
 
         final RPCSenderImpl requestRPC = new RPCSenderImpl(connection.getConnection(),
-                ServerUtils.AUTHENTICATION_CHANNEL_RPC);
+                ServerUtils.AUTHENTICATION_QUEUE_RPC);
 
-        final SignUpRequestBuilder signUpMessageBuilder = new SignUpRequestBuilderImpl()
+        final Message signUpMessageBuilder = new SignUpMessageBuilderImpl()
                 .setName("testName")
                 .setSurname("testSurname")
                 .setEmail("test.email@test.com")
                 .setPassword("testPassword")
-                .setPhoneNumber("3214567890");
-        final SignUpRequestImpl signUpMessage = signUpMessageBuilder.build();
+                .setPhoneNumber("3214567890")
+                .build();
 
-        final String response = requestRPC.doRequest(GsonUtils.toGson(signUpMessage));
+        final String response = requestRPC.doRequest(GsonUtils.toGson(signUpMessageBuilder));
 
         System.out.println("[ClientMain] Response: " + response);
 
-        final ErrorMessageImpl errorMessage = GsonUtils.fromGson(response, ErrorMessageImpl.class);
-        if (errorMessage.getError() != null && !errorMessage.getError().isEmpty()) {
-            System.out.println("[ClientMain] Error response: " + errorMessage.getError());
-        } else {
-            final SuccessfulMessageImpl successfulMessage = GsonUtils.fromGson(response, SuccessfulMessageImpl.class);
-            if (successfulMessage != null) {
-                System.out.println("[ClientMain] Successful response");
-            }
+        final String messageType = StringUtils.getMessageType(response);
+        switch (messageType) {
+            case ErrorMessageImpl.ERROR_MESSAGE:
+                final ErrorMessageImpl errorMessage = GsonUtils.fromGson(response, ErrorMessageImpl.class);
+                System.out.println("[ClientMain] error message " + errorMessage.getError());
+            case SuccessfulMessageImpl.SUCCESSFUL_MESSAGE:
+                final SuccessfulMessageImpl successfulMessage = GsonUtils.fromGson(response, SuccessfulMessageImpl.class);
+                System.out.println("[ClientMain] successful message");
         }
+
         connection.closeConnection();
+
     }
 
 }
