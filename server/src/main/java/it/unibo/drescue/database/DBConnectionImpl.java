@@ -2,7 +2,7 @@ package it.unibo.drescue.database;
 
 import it.unibo.drescue.database.dao.DistrictDaoImpl;
 import it.unibo.drescue.database.dao.EventTypeDaoImpl;
-import it.unibo.drescue.database.dao.GenericDao;
+import it.unibo.drescue.database.dao.GenericDaoAbstract;
 import it.unibo.drescue.database.dao.UserDaoImpl;
 
 import java.sql.Connection;
@@ -102,7 +102,7 @@ public class DBConnectionImpl implements DBConnection {
     }
 
     @Override
-    public GenericDao getDAO(final Table table) throws SQLException {
+    public GenericDaoAbstract getDAO(final Table table) throws SQLException {
 
         try {
             if (connection == null || connection.isClosed()) { //Ensure that connection is open

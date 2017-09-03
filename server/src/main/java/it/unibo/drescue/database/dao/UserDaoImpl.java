@@ -1,6 +1,8 @@
 package it.unibo.drescue.database.dao;
 
+import it.unibo.drescue.model.ObjectModel;
 import it.unibo.drescue.model.User;
+import it.unibo.drescue.model.UserImpl;
 import it.unibo.drescue.model.UserImplBuilder;
 
 import java.sql.Connection;
@@ -8,7 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserDaoImpl extends GenericDao<User> implements UserDao {
+public class UserDaoImpl extends GenericDaoAbstract<User> implements UserDao {
 
     private final static String TABLENAME = "USER";
 
@@ -17,11 +19,28 @@ public class UserDaoImpl extends GenericDao<User> implements UserDao {
     }
 
     @Override
+    public String getQuery(final QueryType queryType) {
+        switch (queryType) {
+            case INSERT:
+                return "INSERT INTO " + TABLENAME + "(email,password,name,surname,phoneNumber)"
+                        + "VALUE (?,?,?,?,?)";
+            case DELETE:
+                return "DELETE FROM " + TABLENAME
+                        + " WHERE userID = ?";
+            case FIND_ONE:
+                return "SELECT userID,email,password,name,surname,phoneNumber "
+                        + "FROM " + TABLENAME + " WHERE email = ?";
+            default:
+                //TODO Manage exception
+                return null;
+        }
+    }
+
+    @Override
     public User findByEmail(final String email) {
 
         User user = null;
-        final String query = "SELECT userID,email,password,name,surname,phoneNumber "
-                + "FROM " + TABLENAME + " WHERE email = ?";
+        final String query = getQuery(QueryType.FIND_ONE);
         try {
             final PreparedStatement statement = this.connection.prepareStatement(query);
             statement.setString(1, email);
@@ -42,50 +61,6 @@ public class UserDaoImpl extends GenericDao<User> implements UserDao {
             e.printStackTrace();
         }
         return user;
-    }
-
-    @Override
-    public boolean insert(final User user) {
-
-        //Verify if email already exists
-        if (this.findByEmail(user.getEmail()) != null) {
-            System.out.println("[DB]: SIGNUP_FAIL: " + user.getEmail() + " already registered");
-            return false;
-        }
-        final String query = "INSERT INTO " + TABLENAME + "(email,password,name,surname,phoneNumber)"
-                + "VALUE (?,?,?,?,?)";
-        try {
-            final PreparedStatement statement = this.connection.prepareStatement(query);
-            statement.setString(1, user.getEmail());
-            statement.setString(2, user.getPassword());
-            statement.setString(3, user.getName());
-            statement.setString(4, user.getSurname());
-            statement.setString(5, user.getPhoneNumber());
-            statement.executeUpdate();
-            statement.close();
-            System.out.println("[DB]: SIGNUP_OK: Added user " + user.getEmail());
-            return true;
-        } catch (final SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    @Override
-    public boolean delete(final User user) {
-        final int userID = this.findByEmail(user.getEmail()).getUserID();
-        final String query = "DELETE FROM " + TABLENAME
-                + " WHERE userID = ?";
-        try {
-            final PreparedStatement statement = this.connection.prepareStatement(query);
-            statement.setInt(1, userID);
-            statement.executeUpdate();
-            statement.close();
-            return true;
-        } catch (final SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 
     /**
@@ -129,6 +104,43 @@ public class UserDaoImpl extends GenericDao<User> implements UserDao {
             return true;
         }
 
+    }
+
+    @Override
+    public ObjectModel getObject(final ObjectModel objectModel) {
+        final User user = (UserImpl) objectModel;
+        return this.findByEmail(user.getEmail());
+    }
+
+    @Override
+    public PreparedStatement compileInsertStatement(final ObjectModel objectModel, final PreparedStatement statement) {
+        final User user = (UserImpl) objectModel;
+        try {
+            statement.setString(1, user.getEmail());
+            statement.setString(2, user.getPassword());
+            statement.setString(3, user.getName());
+            statement.setString(4, user.getSurname());
+            statement.setString(5, user.getPhoneNumber());
+        } catch (final SQLException e) {
+            e.printStackTrace();
+            //TODO handle exception
+            return null;
+        }
+        return statement;
+    }
+
+    @Override
+    protected PreparedStatement compileDeleteStatement(final ObjectModel objectModel, final PreparedStatement statement) {
+        final User user = (UserImpl) objectModel;
+        final int userID = this.findByEmail(user.getEmail()).getUserID();
+        try {
+            statement.setInt(1, userID);
+        } catch (final SQLException e) {
+            e.printStackTrace();
+            //TODO handle exception
+            return null;
+        }
+        return statement;
     }
 
 }

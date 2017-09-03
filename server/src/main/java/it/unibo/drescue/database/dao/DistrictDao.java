@@ -4,8 +4,7 @@ import it.unibo.drescue.model.District;
 
 import java.util.List;
 
-public interface DistrictDao {
-
+public interface DistrictDao extends GenericDao {
 
     /**
      * Find a specific district with the given id
@@ -21,23 +20,6 @@ public interface DistrictDao {
      * @return a list with all districts
      */
     List<District> findAll();
-
-    /**
-     * Insert a given district into DB
-     *
-     * @param district to insert
-     * @return true if the given district is added into DB
-     * false if the given district already exists in the DB
-     */
-    boolean insert(District district);
-
-    /**
-     * Delete a district from DB
-     *
-     * @param district to delete
-     * @return false if something goes wrong
-     */
-    boolean delete(District district);
 
     /**
      * Update a specific district with the new population given

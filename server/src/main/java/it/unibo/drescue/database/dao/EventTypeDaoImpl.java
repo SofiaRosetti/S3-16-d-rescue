@@ -2,6 +2,7 @@ package it.unibo.drescue.database.dao;
 
 import it.unibo.drescue.model.EventType;
 import it.unibo.drescue.model.EventTypeImpl;
+import it.unibo.drescue.model.ObjectModel;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventTypeDaoImpl extends GenericDao implements EventTypeDao {
+public class EventTypeDaoImpl extends GenericDaoAbstract implements EventTypeDao {
 
     private final static String TABLENAME = "EVENT_TYPE";
 
@@ -19,11 +20,30 @@ public class EventTypeDaoImpl extends GenericDao implements EventTypeDao {
     }
 
     @Override
+    public String getQuery(final QueryType queryType) {
+        switch (queryType) {
+            case INSERT:
+                return "INSERT INTO " + TABLENAME + "(eventName)"
+                        + "VALUE (?)";
+            case DELETE:
+                return "DELETE FROM " + TABLENAME
+                        + " WHERE eventID = ?";
+            case FIND_ONE:
+                return "SELECT eventID,eventName "
+                        + "FROM " + TABLENAME + " WHERE eventName = ?";
+            case FIND_ALL:
+                return "SELECT  eventID, eventName FROM " + TABLENAME;
+            default:
+                //TODO manage exception
+                return null;
+        }
+    }
+
+    @Override
     public EventType findByName(final String eventName) {
 
         EventType eventType = null;
-        final String query = "SELECT eventID,eventName "
-                + "FROM " + TABLENAME + " WHERE eventName = ?";
+        final String query = this.getQuery(QueryType.FIND_ONE);
         try {
             final PreparedStatement statement = this.connection.prepareStatement(query);
             statement.setString(1, eventName);
@@ -44,7 +64,7 @@ public class EventTypeDaoImpl extends GenericDao implements EventTypeDao {
     @Override
     public List<EventType> findAll() {
         final List<EventType> eventTypeList = new ArrayList<>();
-        final String query = "SELECT  eventID, eventName FROM " + TABLENAME;
+        final String query = this.getQuery(QueryType.FIND_ALL);
         try {
             final PreparedStatement statement = this.connection.prepareStatement(query);
             final ResultSet resultSet = statement.executeQuery();
@@ -63,46 +83,36 @@ public class EventTypeDaoImpl extends GenericDao implements EventTypeDao {
     }
 
     @Override
-    public boolean insert(final EventType eventType) {
-
-        //Verify if eventID already exists
-        if (this.findByName(eventType.getEventName()) != null) {
-            System.out.println("[DB]: INSERT_EVENT_TYPE_FAIL: "
-                    + eventType.getEventName() + " already in db");
-            return false;
-        }
-
-        final String query = "INSERT INTO " + TABLENAME + "(eventName)"
-                + "VALUE (?)";
-        try {
-            final PreparedStatement statement = this.connection.prepareStatement(query);
-            statement.setString(1, eventType.getEventName());
-            statement.executeUpdate();
-            statement.close();
-            System.out.println("[DB]: INSERT_EVENT_TYPE_OK: Added event " + eventType.getEventName());
-            return true;
-        } catch (final SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
+    public ObjectModel getObject(final ObjectModel objectModel) {
+        final EventType eventType = (EventType) objectModel;
+        return this.findByName(eventType.getEventName());
     }
 
     @Override
-    public boolean delete(final EventType eventType) {
-
-        final EventType eventToDelete = this.findByName(eventType.getEventName());
-
-        final String query = "DELETE FROM " + TABLENAME
-                + " WHERE eventID = ?";
+    public PreparedStatement compileInsertStatement(final ObjectModel objectModel, final PreparedStatement statement) {
+        final EventType eventType = (EventType) objectModel;
         try {
-            final PreparedStatement statement = this.connection.prepareStatement(query);
-            statement.setInt(1, eventToDelete.getEventID());
-            statement.executeUpdate();
-            statement.close();
-            return true;
+            statement.setString(1, eventType.getEventName());
         } catch (final SQLException e) {
+            //TODO handle
             e.printStackTrace();
+            return null;
         }
-        return false;
+        return statement;
     }
+
+    @Override
+    protected PreparedStatement compileDeleteStatement(final ObjectModel objectModel, final PreparedStatement statement) {
+        final EventType eventType = (EventType) objectModel;
+        final EventType eventToDel = this.findByName(eventType.getEventName());
+        try {
+            statement.setInt(1, eventToDel.getEventID());
+        } catch (final SQLException e) {
+            //TODO handle
+            e.printStackTrace();
+            return null;
+        }
+        return statement;
+    }
+
 }

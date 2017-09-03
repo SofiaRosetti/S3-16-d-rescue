@@ -8,8 +8,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class UserDaoImplTest {
 
@@ -58,10 +57,15 @@ public class UserDaoImplTest {
     }
 
 
+    //TODO handle exception
     @Test
     public void isRejectingDuplicateEmail() throws Exception {
-        assertTrue(this.userDao.insert(this.userTest));
-        assertFalse(this.userDao.insert(this.userTest));
+        this.userDao.insert(this.userTest);
+        assertNotNull(this.userDao.findByEmail(this.userTest.getEmail()));
+
+        //assertFalse(this.userDao.insert(this.userTest));
+        //TODO handle exception
+        
         //Deleting test user
         this.userDao.delete(this.userTest);
     }
