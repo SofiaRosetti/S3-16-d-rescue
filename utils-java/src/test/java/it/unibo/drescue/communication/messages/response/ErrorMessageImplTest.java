@@ -18,7 +18,9 @@ public class ErrorMessageImplTest {
     @Test
     public void checkCorrectError() {
         final String error = this.errorMessage.getError();
+        final String messageType = this.errorMessage.getMessageType();
         assertEquals(error, ERROR);
+        assertEquals(messageType, ErrorMessageImpl.ERROR_MESSAGE);
     }
 
 }
