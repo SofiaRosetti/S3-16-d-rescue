@@ -18,7 +18,7 @@ public abstract class UpdatableDaoAbstract<T> extends GenericDaoAbstract impleme
         final String query = this.getQuery(QueryType.UPDATE);
         try {
             final PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-            this.fillUpdateStatement(objectModel, preparedStatement);
+            this.fillStatement(objectModel, preparedStatement, QueryType.UPDATE);
             preparedStatement.executeUpdate();
         } catch (final SQLException e) {
             e.printStackTrace();
@@ -26,13 +26,4 @@ public abstract class UpdatableDaoAbstract<T> extends GenericDaoAbstract impleme
         }
     }
 
-    /**
-     * TODO
-     *
-     * @param objectModel
-     * @param statement
-     * @return
-     */
-    protected abstract PreparedStatement fillUpdateStatement(ObjectModel objectModel,
-                                                             PreparedStatement statement);
 }

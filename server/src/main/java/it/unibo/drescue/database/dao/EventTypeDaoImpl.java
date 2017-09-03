@@ -40,6 +40,30 @@ public class EventTypeDaoImpl extends GenericDaoAbstract implements EventTypeDao
     }
 
     @Override
+    public PreparedStatement fillStatement(final ObjectModel objectModel, final PreparedStatement statement, final QueryType queryType) {
+        final EventType eventType = ((EventType) objectModel);
+        try {
+            switch (queryType) {
+                case INSERT:
+                    statement.setString(1, eventType.getEventName());
+                    break;
+                case DELETE:
+                    final EventType eventToDel = this.findByName(eventType.getEventName());
+                    statement.setInt(1, eventToDel.getEventID());
+                    break;
+                default:
+                    //TODO Exception 'query not available for this object'
+            }
+
+        } catch (final SQLException e) {
+            e.printStackTrace();
+            //TODO handle exception
+            return null;
+        }
+        return statement;
+    }
+
+    @Override
     public EventType findByName(final String eventName) {
 
         EventType eventType = null;
@@ -86,33 +110,6 @@ public class EventTypeDaoImpl extends GenericDaoAbstract implements EventTypeDao
     public ObjectModel getObject(final ObjectModel objectModel) {
         final EventType eventType = (EventType) objectModel;
         return this.findByName(eventType.getEventName());
-    }
-
-    @Override
-    public PreparedStatement fillInsertStatement(final ObjectModel objectModel, final PreparedStatement statement) {
-        final EventType eventType = (EventType) objectModel;
-        try {
-            statement.setString(1, eventType.getEventName());
-        } catch (final SQLException e) {
-            //TODO handle
-            e.printStackTrace();
-            return null;
-        }
-        return statement;
-    }
-
-    @Override
-    protected PreparedStatement fillDeleteStatement(final ObjectModel objectModel, final PreparedStatement statement) {
-        final EventType eventType = (EventType) objectModel;
-        final EventType eventToDel = this.findByName(eventType.getEventName());
-        try {
-            statement.setInt(1, eventToDel.getEventID());
-        } catch (final SQLException e) {
-            //TODO handle
-            e.printStackTrace();
-            return null;
-        }
-        return statement;
     }
 
 }

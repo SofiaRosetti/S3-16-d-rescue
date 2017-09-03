@@ -33,30 +33,18 @@ public abstract class GenericDaoAbstract<T> implements GenericDao {
     public abstract String getQuery(QueryType queryType);
 
     /**
-     * Useful method for the template method 'insert'
+     * Useful method for all template methods
      * Given an object and a prepared statement it returns
      * that prepared statement filled with the useful information
      * to execute the specified query
      *
-     * @param objectModel that contains the information of the object to insert
+     * @param objectModel that contains the information of the object
      * @param statement   to fill
-     * @return the statement filled with the information of the object
+     * @param queryType   specify the query
+     * @return the statement filled with the information of the object for the specific query
      */
-    public abstract PreparedStatement fillInsertStatement(
-            ObjectModel objectModel, PreparedStatement statement);
-
-    /**
-     * Useful method for the template method 'delete'
-     * Given an object and a prepared statement it returns
-     * that prepared statement filled with the useful information
-     * to execute the specified query
-     *
-     * @param objectModel that contains the information of the object to delete
-     * @param statement   to fill
-     * @return the statement filled with the information of the object
-     */
-    protected abstract PreparedStatement fillDeleteStatement(
-            ObjectModel objectModel, PreparedStatement statement);
+    public abstract PreparedStatement fillStatement(
+            ObjectModel objectModel, PreparedStatement statement, QueryType queryType);
 
     @Override
     public void insert(final ObjectModel objectModel) {
@@ -68,7 +56,7 @@ public abstract class GenericDaoAbstract<T> implements GenericDao {
         final String query = this.getQuery(QueryType.INSERT);
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-            preparedStatement = this.fillInsertStatement(objectModel, preparedStatement);
+            preparedStatement = this.fillStatement(objectModel, preparedStatement, QueryType.INSERT);
             preparedStatement.executeUpdate();
             preparedStatement.close();
             System.out.println("[DB]: INSERT_OK: Added object");
@@ -89,7 +77,7 @@ public abstract class GenericDaoAbstract<T> implements GenericDao {
         final String query = this.getQuery(QueryType.DELETE);
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-            preparedStatement = this.fillDeleteStatement(objectModel, preparedStatement);
+            preparedStatement = this.fillStatement(objectModel, preparedStatement, QueryType.DELETE);
             preparedStatement.executeUpdate();
             preparedStatement.close();
             System.out.println("[DB]: DELETE OK: Deleted an object");

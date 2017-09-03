@@ -40,6 +40,41 @@ public class UserDaoImpl extends UpdatableDaoAbstract<User> implements UserDao {
     }
 
     @Override
+    public PreparedStatement fillStatement(final ObjectModel objectModel, final PreparedStatement statement, final QueryType queryType) {
+        final User user = (UserImpl) objectModel;
+        try {
+            switch (queryType) {
+                case INSERT:
+                    statement.setString(1, user.getEmail());
+                    statement.setString(2, user.getPassword());
+                    statement.setString(3, user.getName());
+                    statement.setString(4, user.getSurname());
+                    statement.setString(5, user.getPhoneNumber());
+                    break;
+                case DELETE:
+                    final int userIDToDel = this.findByEmail(user.getEmail()).getUserID();
+                    statement.setInt(1, userIDToDel);
+                    break;
+                case UPDATE:
+                    final int userIDToUpdate = this.findByEmail(user.getEmail()).getUserID();
+                    final String newPassword = user.getPassword();
+                    statement.setString(1, newPassword);
+                    statement.setInt(2, userIDToUpdate);
+                    break;
+                default:
+                    //TODO Excepion
+            }
+
+        } catch (final SQLException e) {
+            e.printStackTrace();
+            //TODO handle exception
+            return null;
+        }
+        return statement;
+
+    }
+
+    @Override
     public User findByEmail(final String email) {
 
         User user = null;
@@ -115,50 +150,4 @@ public class UserDaoImpl extends UpdatableDaoAbstract<User> implements UserDao {
         return this.findByEmail(user.getEmail());
     }
 
-    @Override
-    public PreparedStatement fillInsertStatement(final ObjectModel objectModel, final PreparedStatement statement) {
-        final User user = (UserImpl) objectModel;
-        try {
-            statement.setString(1, user.getEmail());
-            statement.setString(2, user.getPassword());
-            statement.setString(3, user.getName());
-            statement.setString(4, user.getSurname());
-            statement.setString(5, user.getPhoneNumber());
-        } catch (final SQLException e) {
-            e.printStackTrace();
-            //TODO handle exception
-            return null;
-        }
-        return statement;
-    }
-
-    @Override
-    protected PreparedStatement fillDeleteStatement(final ObjectModel objectModel, final PreparedStatement statement) {
-        final User user = (UserImpl) objectModel;
-        final int userID = this.findByEmail(user.getEmail()).getUserID();
-        try {
-            statement.setInt(1, userID);
-        } catch (final SQLException e) {
-            e.printStackTrace();
-            //TODO handle exception
-            return null;
-        }
-        return statement;
-    }
-
-    @Override
-    protected PreparedStatement fillUpdateStatement(final ObjectModel objectModel, final PreparedStatement statement) {
-        final User user = (UserImpl) objectModel;
-        final int userID = this.findByEmail(user.getEmail()).getUserID();
-        final String newPassword = user.getPassword();
-        try {
-            statement.setString(1, newPassword);
-            statement.setInt(2, userID);
-        } catch (final SQLException e) {
-            e.printStackTrace();
-            //TODO handle exception
-            return null;
-        }
-        return statement;
-    }
 }

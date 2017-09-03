@@ -43,6 +43,37 @@ public class DistrictDaoImpl extends UpdatableDaoAbstract<District> implements D
     }
 
     @Override
+    public PreparedStatement fillStatement(final ObjectModel objectModel, final PreparedStatement statement, final QueryType queryType) {
+        final District district = ((DistrictImpl) objectModel);
+        try {
+            switch (queryType) {
+                case INSERT:
+                    statement.setString(1, district.getDistrictID());
+                    statement.setString(2, district.getDistrictLongName());
+                    statement.setInt(3, district.getPopulation());
+                    break;
+                case DELETE:
+                    statement.setString(1, district.getDistrictID());
+                    break;
+                case UPDATE:
+                    //used to update population of that specific districtID
+                    statement.setInt(1, district.getPopulation());
+                    statement.setString(2, district.getDistrictID());
+                    statement.executeUpdate();
+                    break;
+                default:
+                    //TODO Exception 'query not available for this object'
+            }
+
+        } catch (final SQLException e) {
+            e.printStackTrace();
+            //TODO handle exception
+            return null;
+        }
+        return statement;
+    }
+
+    @Override
     public District findById(final String districtId) {
 
         District district = null;
@@ -93,52 +124,4 @@ public class DistrictDaoImpl extends UpdatableDaoAbstract<District> implements D
         return findById(((DistrictImpl) objectModel).getDistrictID());
     }
 
-    @Override
-    public PreparedStatement fillInsertStatement(final ObjectModel objectModel, final PreparedStatement statement) {
-        final District district = ((DistrictImpl) objectModel);
-        try {
-            statement.setString(1, district.getDistrictID());
-            statement.setString(2, district.getDistrictLongName());
-            statement.setInt(3, district.getPopulation());
-        } catch (final SQLException e) {
-            //TODO handle
-            e.printStackTrace();
-            return null;
-        }
-        return statement;
-    }
-
-    @Override
-    protected PreparedStatement fillDeleteStatement(final ObjectModel objectModel, final PreparedStatement statement) {
-        final District district = ((DistrictImpl) objectModel);
-        try {
-            statement.setString(1, district.getDistrictID());
-        } catch (final SQLException e) {
-            //TODO handle
-            e.printStackTrace();
-            return null;
-        }
-        return statement;
-    }
-
-    /**
-     * TODO write javadoc
-     * used to update population of that specific districtID
-     *
-     * @return
-     */
-    @Override
-    protected PreparedStatement fillUpdateStatement(final ObjectModel objectModel, final PreparedStatement statement) {
-        final District district = ((DistrictImpl) objectModel);
-        try {
-            statement.setInt(1, district.getPopulation());
-            statement.setString(2, district.getDistrictID());
-            statement.executeUpdate();
-            return statement;
-        } catch (final SQLException e) {
-            //TODO handle
-            e.printStackTrace();
-            return null;
-        }
-    }
 }
