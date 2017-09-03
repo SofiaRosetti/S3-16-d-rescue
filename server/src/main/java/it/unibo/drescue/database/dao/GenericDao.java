@@ -19,4 +19,12 @@ public interface GenericDao {
      *                    TODO Exception if the object NOT already exists in the DB
      */
     void delete(ObjectModel objectModel);
+
+    /**
+     * Find an object with the id included in the the given objectModel
+     *
+     * @param objectModel the object that contains the identifier to search
+     * @return the object if an object with the given id in objectModel exists
+     */
+    ObjectModel selectByIdentifier(ObjectModel objectModel);
 }

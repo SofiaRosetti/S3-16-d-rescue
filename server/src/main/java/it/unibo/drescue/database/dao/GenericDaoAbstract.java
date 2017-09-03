@@ -4,6 +4,7 @@ import it.unibo.drescue.model.ObjectModel;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public abstract class GenericDaoAbstract<T> implements GenericDao {
@@ -15,14 +16,6 @@ public abstract class GenericDaoAbstract<T> implements GenericDao {
         this.tableName = tableName;
         this.connection = connection;
     }
-
-    /**
-     * Search if an object like the given object is already in DB
-     *
-     * @param objectModel that contains some parameter for the object to search in DB
-     * @return null if object is not found, otherwise the object searched
-     */
-    public abstract ObjectModel getObject(ObjectModel objectModel);
 
     /**
      * Given a query type it returns the prepared query for this object
@@ -48,7 +41,7 @@ public abstract class GenericDaoAbstract<T> implements GenericDao {
 
     @Override
     public void insert(final ObjectModel objectModel) {
-        if (this.getObject(objectModel) != null) {
+        if (this.selectByIdentifier(objectModel) != null) {
             //TODO Throws exception 'object already in DB'
             System.out.println("INSERT: object already in DB");
             return;
@@ -69,7 +62,7 @@ public abstract class GenericDaoAbstract<T> implements GenericDao {
 
     @Override
     public void delete(final ObjectModel objectModel) {
-        if (this.getObject(objectModel) == null) {
+        if (this.selectByIdentifier(objectModel) == null) {
             //TODO Throws exception 'object NOT already in DB'
             System.out.println("DELETE: object NOT already in DB");
             return;
@@ -87,6 +80,33 @@ public abstract class GenericDaoAbstract<T> implements GenericDao {
         }
 
     }
+
+    @Override
+    public ObjectModel selectByIdentifier(final ObjectModel objectModel) {
+        ObjectModel objectModelToRet = null;
+        final String query = getQuery(QueryType.FIND_ONE);
+        try {
+            final PreparedStatement statement = this.connection.prepareStatement(query);
+            this.fillStatement(objectModel, statement, QueryType.FIND_ONE);
+            final ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                objectModelToRet = this.getOneObjFromSelect(resultSet);
+            }
+            resultSet.close();
+            statement.close();
+        } catch (final SQLException e) {
+            e.printStackTrace();
+        }
+        return objectModelToRet;
+    }
+
+    /**
+     * TODO
+     *
+     * @param resultSet
+     * @return
+     */
+    protected abstract ObjectModel getOneObjFromSelect(ResultSet resultSet);
 
     protected enum QueryType {
         INSERT,

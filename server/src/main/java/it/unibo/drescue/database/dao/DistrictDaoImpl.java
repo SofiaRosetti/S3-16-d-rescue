@@ -29,6 +29,9 @@ public class DistrictDaoImpl extends UpdatableDaoAbstract<District> implements D
                 return "DELETE FROM " + TABLENAME
                         + " WHERE districtID = ?";
             case FIND_ONE:
+                /*
+                * Note: The identifier in district is 'districtID'
+                */
                 return "SELECT districtID,districtLongName,population "
                         + "FROM " + TABLENAME + " WHERE districtID = ?";
             case FIND_ALL:
@@ -37,7 +40,7 @@ public class DistrictDaoImpl extends UpdatableDaoAbstract<District> implements D
                 return "UPDATE " + TABLENAME + " SET population = ? "
                         + "WHERE districtID = ?";
             default:
-                //TODO Manage Exception
+                //TODO Handle Exception
                 return null;
         }
     }
@@ -53,6 +56,9 @@ public class DistrictDaoImpl extends UpdatableDaoAbstract<District> implements D
                     statement.setInt(3, district.getPopulation());
                     break;
                 case DELETE:
+                    statement.setString(1, district.getDistrictID());
+                    break;
+                case FIND_ONE:
                     statement.setString(1, district.getDistrictID());
                     break;
                 case UPDATE:
@@ -74,24 +80,16 @@ public class DistrictDaoImpl extends UpdatableDaoAbstract<District> implements D
     }
 
     @Override
-    public District findById(final String districtId) {
-
+    protected ObjectModel getOneObjFromSelect(final ResultSet resultSet) {
         District district = null;
-        final String query = this.getQuery(QueryType.FIND_ONE);
         try {
-            final PreparedStatement statement = this.connection.prepareStatement(query);
-            statement.setString(1, districtId);
-            final ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                district = new DistrictImpl(
-                        resultSet.getString("districtID"),
-                        resultSet.getString("districtLongName"),
-                        resultSet.getInt("population"));
-            }
-            resultSet.close();
-            statement.close();
+            district = new DistrictImpl(
+                    resultSet.getString("districtID"),
+                    resultSet.getString("districtLongName"),
+                    resultSet.getInt("population"));
         } catch (final SQLException e) {
             e.printStackTrace();
+            //TODO handle
         }
         return district;
     }
@@ -117,11 +115,6 @@ public class DistrictDaoImpl extends UpdatableDaoAbstract<District> implements D
             e.printStackTrace();
         }
         return districtList;
-    }
-
-    @Override
-    public ObjectModel getObject(final ObjectModel objectModel) {
-        return findById(((DistrictImpl) objectModel).getDistrictID());
     }
 
 }

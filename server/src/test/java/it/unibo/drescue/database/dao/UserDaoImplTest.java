@@ -39,7 +39,7 @@ public class UserDaoImplTest {
 
     @Test
     public void isUserNotAlreadyInDB() throws Exception {
-        assertTrue(this.userDao.findByEmail(this.userTest.getEmail()) == null);
+        assertTrue(this.userDao.selectByIdentifier(this.userTest) == null);
     }
 
     @Test
@@ -49,7 +49,7 @@ public class UserDaoImplTest {
         //Registering user
         this.userDao.insert(this.userTest);
         //After registration
-        assertTrue(this.userDao.findByEmail(this.userTest.getEmail()) != null);
+        assertTrue(this.userDao.selectByIdentifier(this.userTest) != null);
         //Deleting user
         this.userDao.delete(this.userTest);
         //After delete
@@ -61,7 +61,7 @@ public class UserDaoImplTest {
     @Test
     public void isRejectingDuplicateEmail() throws Exception {
         this.userDao.insert(this.userTest);
-        assertNotNull(this.userDao.findByEmail(this.userTest.getEmail()));
+        assertNotNull(this.userDao.selectByIdentifier(this.userTest));
 
         //assertFalse(this.userDao.insert(this.userTest));
         //TODO handle exception
@@ -74,7 +74,7 @@ public class UserDaoImplTest {
     public void isUpdatingPassword() throws Exception {
         final String newPassword = "pass2";
         this.userDao.insert(this.userTest);
-        User userInDb = this.userDao.findByEmail(this.userTest.getEmail());
+        User userInDb = (User) this.userDao.selectByIdentifier(this.userTest);
         assertTrue(userInDb.getPassword().equals(this.userTest.getPassword()));
         final User userToUpdate = new UserImplBuilder()
                 .setUserID(userInDb.getUserID())
@@ -82,7 +82,7 @@ public class UserDaoImplTest {
                 .setPassword(newPassword)
                 .createUserImpl();
         this.userDao.update(userToUpdate);
-        userInDb = this.userDao.findByEmail(this.userTest.getEmail());
+        userInDb = (User) this.userDao.selectByIdentifier(this.userTest);
         assertTrue(userInDb.getPassword().equals(newPassword));
         //Deleting user test
         this.userDao.delete(this.userTest);

@@ -28,6 +28,9 @@ public class UserDaoImpl extends UpdatableDaoAbstract<User> implements UserDao {
                 return "DELETE FROM " + TABLENAME
                         + " WHERE userID = ?";
             case FIND_ONE:
+                /*
+                * Note: in User the identifier is 'email'
+                */
                 return "SELECT userID,email,password,name,surname,phoneNumber "
                         + "FROM " + TABLENAME + " WHERE email = ?";
             case UPDATE:
@@ -52,11 +55,14 @@ public class UserDaoImpl extends UpdatableDaoAbstract<User> implements UserDao {
                     statement.setString(5, user.getPhoneNumber());
                     break;
                 case DELETE:
-                    final int userIDToDel = this.findByEmail(user.getEmail()).getUserID();
+                    final int userIDToDel = ((User) this.selectByIdentifier(user)).getUserID();
                     statement.setInt(1, userIDToDel);
                     break;
+                case FIND_ONE:
+                    statement.setString(1, user.getEmail());
+                    break;
                 case UPDATE:
-                    final int userIDToUpdate = this.findByEmail(user.getEmail()).getUserID();
+                    final int userIDToUpdate = ((User) this.selectByIdentifier(user)).getUserID();
                     final String newPassword = user.getPassword();
                     statement.setString(1, newPassword);
                     statement.setInt(2, userIDToUpdate);
@@ -75,28 +81,20 @@ public class UserDaoImpl extends UpdatableDaoAbstract<User> implements UserDao {
     }
 
     @Override
-    public User findByEmail(final String email) {
-
+    protected ObjectModel getOneObjFromSelect(final ResultSet resultSet) {
         User user = null;
-        final String query = getQuery(QueryType.FIND_ONE);
         try {
-            final PreparedStatement statement = this.connection.prepareStatement(query);
-            statement.setString(1, email);
-            final ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                user = new UserImplBuilder()
-                        .setUserID(resultSet.getInt("userID"))
-                        .setEmail(resultSet.getString("email"))
-                        .setPassword(resultSet.getString("password"))
-                        .setName(resultSet.getString("name"))
-                        .setSurname(resultSet.getString("surname"))
-                        .setPhoneNumber(resultSet.getString("phoneNumber"))
-                        .createUserImpl();
-            }
-            resultSet.close();
-            statement.close();
+            user = new UserImplBuilder()
+                    .setUserID(resultSet.getInt("userID"))
+                    .setEmail(resultSet.getString("email"))
+                    .setPassword(resultSet.getString("password"))
+                    .setName(resultSet.getString("name"))
+                    .setSurname(resultSet.getString("surname"))
+                    .setPhoneNumber(resultSet.getString("phoneNumber"))
+                    .createUserImpl();
         } catch (final SQLException e) {
             e.printStackTrace();
+            //TODO handle exception
         }
         return user;
     }
@@ -144,10 +142,5 @@ public class UserDaoImpl extends UpdatableDaoAbstract<User> implements UserDao {
 
     }
 
-    @Override
-    public ObjectModel getObject(final ObjectModel objectModel) {
-        final User user = (UserImpl) objectModel;
-        return this.findByEmail(user.getEmail());
-    }
 
 }

@@ -27,9 +27,9 @@ public class EventTypeDaoImplTest {
     @Test
     public void isInsertingAndDeletingEventType() throws Exception {
         this.eventTypeDao.insert(this.EVENT_TYPE_TEST);
-        assertTrue(this.eventTypeDao.findByName(this.EVENT_TYPE_TEST.getEventName()) != null);
+        assertTrue(this.eventTypeDao.selectByIdentifier(this.EVENT_TYPE_TEST) != null);
         this.eventTypeDao.delete(this.EVENT_TYPE_TEST);
-        assertTrue(this.eventTypeDao.findByName(this.EVENT_TYPE_TEST.getEventName()) == null);
+        assertTrue(this.eventTypeDao.selectByIdentifier(this.EVENT_TYPE_TEST) == null);
     }
 
     @Test
