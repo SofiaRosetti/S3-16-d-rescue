@@ -37,7 +37,7 @@ public class EventTypeDaoImpl extends GenericDaoAbstract implements EventTypeDao
             case FIND_ALL:
                 return "SELECT  eventID, eventName FROM " + TABLENAME;
             default:
-                //TODO manage exception
+                //TODO handle exception
                 return null;
         }
     }

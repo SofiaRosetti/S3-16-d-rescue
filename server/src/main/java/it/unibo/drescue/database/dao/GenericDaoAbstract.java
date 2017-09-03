@@ -101,10 +101,10 @@ public abstract class GenericDaoAbstract<T> implements GenericDao {
     }
 
     /**
-     * TODO
+     * Get an object from a resultSet given, obtained from a select query by identifier
      *
-     * @param resultSet
-     * @return
+     * @param resultSet from which it takes data for the object
+     * @return an object created from data obtained from the result set
      */
     protected abstract ObjectModel getOneObjFromSelect(ResultSet resultSet);
 
