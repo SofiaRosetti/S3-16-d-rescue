@@ -5,6 +5,6 @@ package it.unibo.drescue.connection;
  */
 public class ServerUtils {
 
-    public static final String AUTHENTICATION_CHANNEL_RPC = "authentication_channel_RPC";
+    public static final String AUTHENTICATION_QUEUE_RPC = "authentication_channel_RPC";
 
 }

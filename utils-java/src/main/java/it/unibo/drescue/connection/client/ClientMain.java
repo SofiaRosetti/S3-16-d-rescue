@@ -21,7 +21,7 @@ public class ClientMain {
         connection.openConnection();
 
         final RPCSenderImpl requestRPC = new RPCSenderImpl(connection.getConnection(),
-                ServerUtils.AUTHENTICATION_CHANNEL_RPC);
+                ServerUtils.AUTHENTICATION_QUEUE_RPC);
 
         final Message signUpMessageBuilder = new SignUpMessageBuilderImpl()
                 .setName("testName")

@@ -17,19 +17,19 @@ public abstract class AbstractRPCReceiver implements RPCReceiver {
     /**
      * Creates and waits for a message on the specific connection and channel name.
      *
-     * @param connection         the connection on which open the channel
-     * @param receiveChannelName the channel name on which waiting for messages.
+     * @param connection       the connection on which open the channel
+     * @param receiveQueueName the queue name on which waiting for messages.
      */
-    public AbstractRPCReceiver(final Connection connection, final String receiveChannelName) {
+    public AbstractRPCReceiver(final Connection connection, final String receiveQueueName) {
 
         try {
             this.channel = connection.createChannel();
-            this.channel.queueDeclare(receiveChannelName, false, false, false, null);
+            this.channel.queueDeclare(receiveQueueName, false, false, false, null);
             this.channel.basicQos(1);
 
 
             final QueueingConsumer consumer = new QueueingConsumer(this.channel);
-            this.channel.basicConsume(receiveChannelName, false, consumer);
+            this.channel.basicConsume(receiveQueueName, false, consumer);
 
             while (true) {
 
@@ -77,4 +77,5 @@ public abstract class AbstractRPCReceiver implements RPCReceiver {
 
     @Override
     public abstract String accessDB(String jsonMessage);
+
 }
