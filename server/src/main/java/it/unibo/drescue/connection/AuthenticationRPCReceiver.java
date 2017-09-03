@@ -1,9 +1,10 @@
 package it.unibo.drescue.connection;
 
 import com.rabbitmq.client.Connection;
+import it.unibo.drescue.StringUtils;
 import it.unibo.drescue.communication.GsonUtils;
-import it.unibo.drescue.communication.messages.requests.SignUpRequestImpl;
-import it.unibo.drescue.communication.messages.response.ErrorMessageImpl;
+import it.unibo.drescue.communication.messages.requests.LoginMessageImpl;
+import it.unibo.drescue.communication.messages.requests.SignUpMessageImpl;
 import it.unibo.drescue.communication.messages.response.SuccessfulMessageImpl;
 
 /**
@@ -23,9 +24,22 @@ public class AuthenticationRPCReceiver extends AbstractRPCReceiver {
 
     @Override
     public String accessDB(final String jsonMessage) {
-        final String response;
+        String response = null;
 
-        if (jsonMessage == null) {
+        final String messageType = StringUtils.getMessageType(jsonMessage);
+
+        switch (messageType) {
+            case SignUpMessageImpl.SIGN_UP_MESSAGE:
+                System.out.println("Received SIGN UP message");
+                final SignUpMessageImpl signUpMessage = GsonUtils.fromGson(jsonMessage, SignUpMessageImpl.class);
+                response = GsonUtils.toGson(new SuccessfulMessageImpl());
+                break;
+
+            case LoginMessageImpl.LOGIN_MESSAGE:
+                break;
+
+        }
+        /*if (jsonMessage == null) {
             response = GsonUtils.toGson(new ErrorMessageImpl("Received null string."));
         } else {
 
@@ -50,7 +64,7 @@ public class AuthenticationRPCReceiver extends AbstractRPCReceiver {
             }
         }
 
-        System.out.println("[AuthenticationRPC] response " + response);
+        System.out.println("[AuthenticationRPC] response " + response);*/
 
         return response;
     }

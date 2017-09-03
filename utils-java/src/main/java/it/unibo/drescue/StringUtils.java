@@ -1,5 +1,9 @@
 package it.unibo.drescue;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,6 +13,7 @@ import java.util.regex.Pattern;
 public class StringUtils {
 
     private static final String EMAIL_REGEX = "^[-\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,}$";
+    private static final String MESSAGE_TYPE = "messageType";
 
     /**
      * Checks if a string is null or empty
@@ -33,5 +38,17 @@ public class StringUtils {
         final Matcher matcher = pattern.matcher(charSequenceEmail);
 
         return matcher.matches();
+    }
+
+    /**
+     * Gets the message type of the given json message.
+     *
+     * @param jsonMessage
+     * @return the json message type
+     */
+    public static String getMessageType(final String jsonMessage) {
+        final JsonElement je = new JsonParser().parse(jsonMessage);
+        final JsonObject jo = je.getAsJsonObject();
+        return jo.get(MESSAGE_TYPE).getAsString();
     }
 }

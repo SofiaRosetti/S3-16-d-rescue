@@ -1,9 +1,7 @@
 package it.unibo.drescue.communication;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.rabbitmq.client.*;
+import it.unibo.drescue.StringUtils;
 import it.unibo.drescue.communication.messages.CPConfigurationMessage;
 import it.unibo.drescue.communication.messages.CPCoordinationMessage;
 
@@ -47,9 +45,7 @@ public class BrokerImpl implements Broker {
                                        final AMQP.BasicProperties properties, final byte[] body) throws IOException {
                 final String msg = new String(body, "UTF-8");
                 System.out.println("received message :[ " + msg + " ]");
-                final JsonElement je = new JsonParser().parse(msg);
-                final JsonObject jo = je.getAsJsonObject();
-                final String messageType = jo.get("messageType").getAsString();
+                final String messageType = StringUtils.getMessageType(msg);
 
                 switch (messageType) {
                     case CPCoordinationMessage.COORDINATION_MESSAGE:
