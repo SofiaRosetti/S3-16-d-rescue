@@ -2,7 +2,7 @@ package it.unibo.drescue.database.dao;
 
 import it.unibo.drescue.model.User;
 
-public interface UserDao extends GenericDao {
+public interface UserDao extends UpdatableDao {
 
     /**
      * Find a user given the email
@@ -20,6 +20,5 @@ public interface UserDao extends GenericDao {
      * @return true if the credentials are valid, false otherwise
      */
     boolean login(String email, String password);
-
 
 }

@@ -65,8 +65,26 @@ public class UserDaoImplTest {
 
         //assertFalse(this.userDao.insert(this.userTest));
         //TODO handle exception
-        
+
         //Deleting test user
+        this.userDao.delete(this.userTest);
+    }
+
+    @Test
+    public void isUpdatingPassword() throws Exception {
+        final String newPassword = "pass2";
+        this.userDao.insert(this.userTest);
+        User userInDb = this.userDao.findByEmail(this.userTest.getEmail());
+        assertTrue(userInDb.getPassword().equals(this.userTest.getPassword()));
+        final User userToUpdate = new UserImplBuilder()
+                .setUserID(userInDb.getUserID())
+                .setEmail(userInDb.getEmail())
+                .setPassword(newPassword)
+                .createUserImpl();
+        this.userDao.update(userToUpdate);
+        userInDb = this.userDao.findByEmail(this.userTest.getEmail());
+        assertTrue(userInDb.getPassword().equals(newPassword));
+        //Deleting user test
         this.userDao.delete(this.userTest);
     }
 

@@ -10,7 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserDaoImpl extends GenericDaoAbstract<User> implements UserDao {
+public class UserDaoImpl extends UpdatableDaoAbstract<User> implements UserDao {
 
     private final static String TABLENAME = "USER";
 
@@ -30,6 +30,9 @@ public class UserDaoImpl extends GenericDaoAbstract<User> implements UserDao {
             case FIND_ONE:
                 return "SELECT userID,email,password,name,surname,phoneNumber "
                         + "FROM " + TABLENAME + " WHERE email = ?";
+            case UPDATE:
+                return "UPDATE " + TABLENAME + " SET password = ? "
+                        + "WHERE userID = ?";
             default:
                 //TODO Manage exception
                 return null;
@@ -143,4 +146,19 @@ public class UserDaoImpl extends GenericDaoAbstract<User> implements UserDao {
         return statement;
     }
 
+    @Override
+    protected PreparedStatement fillUpdateStatement(final ObjectModel objectModel, final PreparedStatement statement) {
+        final User user = (UserImpl) objectModel;
+        final int userID = this.findByEmail(user.getEmail()).getUserID();
+        final String newPassword = user.getPassword();
+        try {
+            statement.setString(1, newPassword);
+            statement.setInt(2, userID);
+        } catch (final SQLException e) {
+            e.printStackTrace();
+            //TODO handle exception
+            return null;
+        }
+        return statement;
+    }
 }
