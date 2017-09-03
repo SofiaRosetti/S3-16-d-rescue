@@ -2,10 +2,10 @@ package it.unibo.drescue.view
 
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
-import scalafx.geometry.Insets
+import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.Scene
-import scalafx.scene.control.{Label, PasswordField, TextField}
-import scalafx.scene.layout.GridPane
+import scalafx.scene.control.{Button, Label, PasswordField, TextField}
+import scalafx.scene.layout.{GridPane, HBox}
 import scalafx.scene.text.Font
 
 object Login extends JFXApp {
@@ -44,6 +44,16 @@ object Login extends JFXApp {
         }
         add(password, 1, 1)
 
+        val loginButton = new Button() {
+          text = "Login"
+          font = defaultFont
+        }
+        val buttonBox = new HBox() {
+          children = loginButton
+          alignment = Pos.Center
+        }
+        add(buttonBox, 0, 4)
+        GridPane.setConstraints(buttonBox, 0, 4, 2, 1)
       }
       content = grid
     }
