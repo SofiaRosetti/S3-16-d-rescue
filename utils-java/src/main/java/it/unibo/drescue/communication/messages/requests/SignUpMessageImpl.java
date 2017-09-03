@@ -15,9 +15,6 @@ public class SignUpMessageImpl extends AbstractMessage implements SignUpMessage 
     private String phoneNumber;
     private String password;
 
-    /**
-     * Creates a message containing user's sign up data.
-     */
     public SignUpMessageImpl() {
         super(SIGN_UP_MESSAGE);
     }

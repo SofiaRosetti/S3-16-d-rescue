@@ -3,6 +3,9 @@ package it.unibo.drescue.communication.builder.requests;
 import it.unibo.drescue.communication.messages.Message;
 import it.unibo.drescue.communication.messages.requests.SignUpMessageImpl;
 
+/**
+ * Builder class for sign up messages.
+ */
 public class SignUpMessageBuilderImpl implements SignUpMessageBuilder {
 
     private final SignUpMessageImpl message;
@@ -10,7 +13,6 @@ public class SignUpMessageBuilderImpl implements SignUpMessageBuilder {
     public SignUpMessageBuilderImpl() {
         this.message = new SignUpMessageImpl();
     }
-
 
     @Override
     public SignUpMessageBuilder setName(final String name) {
