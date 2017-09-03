@@ -47,8 +47,9 @@ public class DistrictDaoImplTest {
         this.districtDao.insert(this.DISTRICT_TEST);
         final int populationBefore = this.districtDao.findById(this.DISTRICT_TEST.getDistrictID()).getPopulation();
         final int newPopulation = 500;
+        final District districtToUpdate = new DistrictImpl(DISTRICT_TEST.getDistrictID(), null, newPopulation);
         assertTrue(populationBefore != newPopulation);
-        this.districtDao.update(this.DISTRICT_TEST.getDistrictID(), newPopulation);
+        this.districtDao.update(districtToUpdate);
         final int populationAfter = this.districtDao.findById(this.DISTRICT_TEST.getDistrictID()).getPopulation();
         assertTrue(populationAfter == newPopulation);
         //Deleting test district

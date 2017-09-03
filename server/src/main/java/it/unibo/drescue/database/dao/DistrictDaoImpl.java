@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DistrictDaoImpl extends GenericDaoAbstract<District> implements DistrictDao {
+public class DistrictDaoImpl extends UpdatableDaoAbstract<District> implements DistrictDao {
 
     private final static String TABLENAME = "DISTRICT";
 
@@ -33,6 +33,9 @@ public class DistrictDaoImpl extends GenericDaoAbstract<District> implements Dis
                         + "FROM " + TABLENAME + " WHERE districtID = ?";
             case FIND_ALL:
                 return "SELECT  districtID, districtLongName, population FROM " + TABLENAME;
+            case UPDATE:
+                return "UPDATE " + TABLENAME + " SET population = ? "
+                        + "WHERE districtID = ?";
             default:
                 //TODO Manage Exception
                 return null;
@@ -86,23 +89,6 @@ public class DistrictDaoImpl extends GenericDaoAbstract<District> implements Dis
     }
 
     @Override
-    public boolean update(final String districtId, final int population) {
-
-        final String query = "UPDATE " + TABLENAME + " SET population = ? "
-                + "WHERE districtID = ?";
-        try {
-            final PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-            preparedStatement.setInt(1, population);
-            preparedStatement.setString(2, districtId);
-            preparedStatement.executeUpdate();
-            return true;
-        } catch (final SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    @Override
     public ObjectModel getObject(final ObjectModel objectModel) {
         return findById(((DistrictImpl) objectModel).getDistrictID());
     }
@@ -133,5 +119,26 @@ public class DistrictDaoImpl extends GenericDaoAbstract<District> implements Dis
             return null;
         }
         return statement;
+    }
+
+    /**
+     * TODO write javadoc
+     * used to update population of that specific districtID
+     *
+     * @return
+     */
+    @Override
+    protected PreparedStatement fillUpdateStatement(final ObjectModel objectModel, final PreparedStatement statement) {
+        final District district = ((DistrictImpl) objectModel);
+        try {
+            statement.setInt(1, district.getPopulation());
+            statement.setString(2, district.getDistrictID());
+            statement.executeUpdate();
+            return statement;
+        } catch (final SQLException e) {
+            //TODO handle
+            e.printStackTrace();
+            return null;
+        }
     }
 }
