@@ -25,40 +25,39 @@ public abstract class GenericDaoAbstract<T> implements GenericDao {
     public abstract ObjectModel getObject(ObjectModel objectModel);
 
     /**
-     * TODO
+     * Given a query type it returns the prepared query for this object
      *
-     * @param queryType
-     * @return
+     * @param queryType gives instruction on which query to be prepared
+     * @return the prepared query for the object
      */
     public abstract String getQuery(QueryType queryType);
 
     /**
-     * TODO
+     * Useful method for the template method 'insert'
+     * Given an object and a prepared statement it returns
+     * that prepared statement filled with the useful information
+     * to execute the specified query
      *
-     * @param objectModel
-     * @param stmt
-     * @return
+     * @param objectModel that contains the information of the object to insert
+     * @param statement   to fill
+     * @return the statement filled with the information of the object
      */
-    public abstract PreparedStatement compileInsertStatement(
-            ObjectModel objectModel, PreparedStatement stmt);
+    public abstract PreparedStatement fillInsertStatement(
+            ObjectModel objectModel, PreparedStatement statement);
 
     /**
-     * TODO
+     * Useful method for the template method 'delete'
+     * Given an object and a prepared statement it returns
+     * that prepared statement filled with the useful information
+     * to execute the specified query
      *
-     * @param objectModel
-     * @param stmt
-     * @return
+     * @param objectModel that contains the information of the object to delete
+     * @param statement   to fill
+     * @return the statement filled with the information of the object
      */
-    protected abstract PreparedStatement compileDeleteStatement(
-            ObjectModel objectModel, PreparedStatement stmt);
+    protected abstract PreparedStatement fillDeleteStatement(
+            ObjectModel objectModel, PreparedStatement statement);
 
-    /**
-     * Insert a given object model into DB
-     *
-     * @param objectModel to insert
-     * @return true if the given object is added into DB
-     * false if the given object already exists in the DB
-     */
     @Override
     public void insert(final ObjectModel objectModel) {
         if (this.getObject(objectModel) != null) {
@@ -69,7 +68,7 @@ public abstract class GenericDaoAbstract<T> implements GenericDao {
         final String query = this.getQuery(QueryType.INSERT);
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-            preparedStatement = this.compileInsertStatement(objectModel, preparedStatement);
+            preparedStatement = this.fillInsertStatement(objectModel, preparedStatement);
             preparedStatement.executeUpdate();
             preparedStatement.close();
             System.out.println("[DB]: INSERT_OK: Added object");
@@ -80,13 +79,6 @@ public abstract class GenericDaoAbstract<T> implements GenericDao {
 
     }
 
-    /**
-     * Delete a given object model in DB
-     *
-     * @param objectModel to delete
-     * @return true if the given object is deleted from DB
-     * false if the given object NOT already exists in the DB
-     */
     @Override
     public void delete(final ObjectModel objectModel) {
         if (this.getObject(objectModel) == null) {
@@ -97,7 +89,7 @@ public abstract class GenericDaoAbstract<T> implements GenericDao {
         final String query = this.getQuery(QueryType.DELETE);
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-            preparedStatement = this.compileDeleteStatement(objectModel, preparedStatement);
+            preparedStatement = this.fillDeleteStatement(objectModel, preparedStatement);
             preparedStatement.executeUpdate();
             preparedStatement.close();
             System.out.println("[DB]: DELETE OK: Deleted an object");
@@ -108,9 +100,6 @@ public abstract class GenericDaoAbstract<T> implements GenericDao {
 
     }
 
-    /**
-     * TODO
-     */
     protected enum QueryType {
         INSERT,
         DELETE,

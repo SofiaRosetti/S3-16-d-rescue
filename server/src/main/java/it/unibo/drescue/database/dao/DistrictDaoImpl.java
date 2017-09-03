@@ -108,7 +108,7 @@ public class DistrictDaoImpl extends GenericDaoAbstract<District> implements Dis
     }
 
     @Override
-    public PreparedStatement compileInsertStatement(final ObjectModel objectModel, final PreparedStatement statement) {
+    public PreparedStatement fillInsertStatement(final ObjectModel objectModel, final PreparedStatement statement) {
         final District district = ((DistrictImpl) objectModel);
         try {
             statement.setString(1, district.getDistrictID());
@@ -123,7 +123,7 @@ public class DistrictDaoImpl extends GenericDaoAbstract<District> implements Dis
     }
 
     @Override
-    protected PreparedStatement compileDeleteStatement(final ObjectModel objectModel, final PreparedStatement statement) {
+    protected PreparedStatement fillDeleteStatement(final ObjectModel objectModel, final PreparedStatement statement) {
         final District district = ((DistrictImpl) objectModel);
         try {
             statement.setString(1, district.getDistrictID());

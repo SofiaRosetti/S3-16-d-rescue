@@ -113,7 +113,7 @@ public class UserDaoImpl extends GenericDaoAbstract<User> implements UserDao {
     }
 
     @Override
-    public PreparedStatement compileInsertStatement(final ObjectModel objectModel, final PreparedStatement statement) {
+    public PreparedStatement fillInsertStatement(final ObjectModel objectModel, final PreparedStatement statement) {
         final User user = (UserImpl) objectModel;
         try {
             statement.setString(1, user.getEmail());
@@ -130,7 +130,7 @@ public class UserDaoImpl extends GenericDaoAbstract<User> implements UserDao {
     }
 
     @Override
-    protected PreparedStatement compileDeleteStatement(final ObjectModel objectModel, final PreparedStatement statement) {
+    protected PreparedStatement fillDeleteStatement(final ObjectModel objectModel, final PreparedStatement statement) {
         final User user = (UserImpl) objectModel;
         final int userID = this.findByEmail(user.getEmail()).getUserID();
         try {

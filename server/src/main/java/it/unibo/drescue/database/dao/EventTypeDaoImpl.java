@@ -89,7 +89,7 @@ public class EventTypeDaoImpl extends GenericDaoAbstract implements EventTypeDao
     }
 
     @Override
-    public PreparedStatement compileInsertStatement(final ObjectModel objectModel, final PreparedStatement statement) {
+    public PreparedStatement fillInsertStatement(final ObjectModel objectModel, final PreparedStatement statement) {
         final EventType eventType = (EventType) objectModel;
         try {
             statement.setString(1, eventType.getEventName());
@@ -102,7 +102,7 @@ public class EventTypeDaoImpl extends GenericDaoAbstract implements EventTypeDao
     }
 
     @Override
-    protected PreparedStatement compileDeleteStatement(final ObjectModel objectModel, final PreparedStatement statement) {
+    protected PreparedStatement fillDeleteStatement(final ObjectModel objectModel, final PreparedStatement statement) {
         final EventType eventType = (EventType) objectModel;
         final EventType eventToDel = this.findByName(eventType.getEventName());
         try {
