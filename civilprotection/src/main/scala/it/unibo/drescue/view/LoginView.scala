@@ -8,7 +8,7 @@ import scalafx.scene.control.{Button, Label, PasswordField, TextField}
 import scalafx.scene.layout.{GridPane, HBox}
 import scalafx.scene.text.Font
 
-object Login extends JFXApp {
+object LoginView extends JFXApp {
 
   stage = new PrimaryStage {
     title = "D-rescue"
