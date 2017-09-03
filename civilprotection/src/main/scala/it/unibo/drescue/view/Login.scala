@@ -4,7 +4,7 @@ import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.geometry.Insets
 import scalafx.scene.Scene
-import scalafx.scene.control.Label
+import scalafx.scene.control.{Label, PasswordField, TextField}
 import scalafx.scene.layout.GridPane
 import scalafx.scene.text.Font
 
@@ -31,6 +31,18 @@ object Login extends JFXApp {
           font = defaultFont
         }
         add(passwordLabel, 0, 1)
+
+        val username = new TextField {
+          promptText = "Username"
+          font = defaultFont
+        }
+        add(username, 1, 0)
+
+        val password = new PasswordField {
+          promptText = "Password"
+          font = defaultFont
+        }
+        add(password, 1, 1)
 
       }
       content = grid
