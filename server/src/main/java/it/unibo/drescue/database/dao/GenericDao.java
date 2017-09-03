@@ -1,15 +1,10 @@
 package it.unibo.drescue.database.dao;
 
-import java.sql.Connection;
+import it.unibo.drescue.model.ObjectModel;
 
-public abstract class GenericDao<T> {
+public interface GenericDao {
 
-    protected final String tableName;
-    protected Connection connection;
+    public void insert(ObjectModel objectModel);
 
-    protected GenericDao(final Connection connection, final String tableName) {
-        this.tableName = tableName;
-        this.connection = connection;
-    }
-
+    public void delete(ObjectModel objectModel);
 }
