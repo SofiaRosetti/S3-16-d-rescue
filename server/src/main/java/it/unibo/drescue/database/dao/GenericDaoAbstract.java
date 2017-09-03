@@ -104,7 +104,8 @@ public abstract class GenericDaoAbstract<T> implements GenericDao {
         INSERT,
         DELETE,
         FIND_ONE,
-        FIND_ALL
+        FIND_ALL,
+        UPDATE
     }
 
 
