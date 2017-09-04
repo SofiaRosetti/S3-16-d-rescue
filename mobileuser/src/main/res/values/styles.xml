@@ -74,6 +74,20 @@
         <item name="android:layout_marginBottom">@dimen/margin_small</item>
     </style>
 
+    <style name="label_title_look">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="label_text_look">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingStart">@dimen/padding_medium</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
     <style name="layout_base">
         <item name="android:orientation">vertical</item>
         <item name="android:layout_width">match_parent</item>
@@ -110,6 +124,12 @@
         <item name="android:paddingRight">@dimen/padding_xsmall</item>
         <item name="android:layout_marginBottom">@dimen/margin_xsmall</item>
         <item name="android:background">@color/colorTextIcons</item>
+    </style>
+
+    <style name="layout_container_label">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
     </style>
 
     <style name="material_edit_text_look">

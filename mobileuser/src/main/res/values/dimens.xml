@@ -2,16 +2,20 @@
 <resources>
 
     <dimen name="border_width">2dp</dimen>
-    <dimen name="height_fixed">100dp</dimen>
+    <dimen name="fixed_dimension_big">150dp</dimen>
+    <dimen name="fixed_dimension_small">100dp</dimen>
     <dimen name="margin_large">50dp</dimen>
     <dimen name="margin_medium">20dp</dimen>
     <dimen name="margin_small">12dp</dimen>
     <dimen name="margin_xsmall">6dp</dimen>
-    <dimen name="padding_icon">120dp</dimen>
+    <dimen name="padding_icon_big">120dp</dimen>
+    <dimen name="padding_icon_medium">100dp</dimen>
+    <dimen name="padding_icon_small">50dp</dimen>
     <dimen name="padding_medium">12dp</dimen>
     <dimen name="padding_small">10dp</dimen>
     <dimen name="padding_xsmall">6dp</dimen>
-    <dimen name="padding_text_icon">-100dp</dimen>
+    <dimen name="padding_text_icon_big">-100dp</dimen>
+    <dimen name="padding_text_icon_small">-30dp</dimen>
     <dimen name="radius_small">5dp</dimen>
     <dimen name="radius_xsmall">4dp</dimen>
     <dimen name="text_size_xxlarge">50sp</dimen>

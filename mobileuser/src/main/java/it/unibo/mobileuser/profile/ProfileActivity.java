@@ -18,6 +18,7 @@ public class ProfileActivity extends ToolbarActivity {
         setContentView(R.layout.activity_profile);
 
         setToolbar(true);
+        getSupportActionBar().setTitle(R.string.profile);
 
         final Button changePassword = (Button) findViewById(R.id.password_change_button);
         changePassword.setOnClickListener(new View.OnClickListener() {
@@ -32,6 +33,14 @@ public class ProfileActivity extends ToolbarActivity {
             @Override
             public void onClick(final View view) {
                 startActivity(new Intent(view.getContext(), EditProfileActivity.class));
+            }
+        });
+
+        final Button logoutProfile = (Button) findViewById(R.id.logout_button);
+        logoutProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                //TODO: logout
             }
         });
     }

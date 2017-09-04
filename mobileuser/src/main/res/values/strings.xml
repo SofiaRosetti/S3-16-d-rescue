@@ -44,6 +44,7 @@
     <string name="password_old">Old password</string>
     <string name="phone">Phone</string>
     <string name="phone_label">Phone:</string>
+    <string name="profile">Profile</string>
     <string name="save">Save</string>
     <string name="send">Send</string>
     <string name="sign_up">Sign up</string>
