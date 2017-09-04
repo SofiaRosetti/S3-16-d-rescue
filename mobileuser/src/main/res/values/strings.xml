@@ -31,6 +31,7 @@
     <string name="login">Login</string>
     <string name="login_successful">Login successful!</string>
     <string name="longitude">Longitude:</string>
+    <string name="logout">Logout</string>
     <string name="missing_account">You don\'t have an account?</string>
     <string name="name">Name</string>
     <string name="name_label">Name:</string>
