@@ -36,6 +36,14 @@ object HomeView extends JFXApp {
         add(titleBox, 0, 0)
         GridPane.setConstraints(titleBox, 0, 0, 2, 1)
 
+        val map = new Label {
+          text = "MAP"
+          prefWidth = 300
+          prefHeight = 300
+        }
+        add(map, 0, 1)
+        GridPane.setConstraints(map, 0, 1, 1, 3)
+
 
       }
       content = grid
