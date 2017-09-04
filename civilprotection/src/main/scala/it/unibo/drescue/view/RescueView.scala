@@ -5,7 +5,7 @@ import scalafx.application.JFXApp.PrimaryStage
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.Scene
-import scalafx.scene.control.{ComboBox, Label}
+import scalafx.scene.control.{Button, ComboBox, Label}
 import scalafx.scene.layout.{GridPane, HBox}
 import scalafx.scene.text.Font
 
@@ -61,6 +61,30 @@ object RescueView extends JFXApp {
         }
         teamChoice.setStyle("-fx-font-size:25")
         add(teamChoice, 2, 2)
+
+        val sendButton = new Button {
+          text = "Send"
+          font = defaultFont
+          padding = Insets(5)
+          margin = Insets(30)
+          prefWidth = 150
+        }
+
+        val cancelButton = new Button {
+          text = "Cancel"
+          font = defaultFont
+          padding = Insets(5)
+          margin = Insets(30)
+          prefWidth = 150
+        }
+
+        val buttonBox = new HBox {
+          alignment = Pos.Center
+          padding = Insets(30)
+          children.addAll(sendButton, cancelButton)
+        }
+        add(buttonBox, 0, 3)
+        GridPane.setConstraints(buttonBox, 0, 3, 3, 1)
       }
       content = grid
     }
