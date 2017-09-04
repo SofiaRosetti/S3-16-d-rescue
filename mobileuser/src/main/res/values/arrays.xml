@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <integer-array name="card_icons"><!--TODO: change with the correct icons-->
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
+    <integer-array name="card_icons">
+        <item>@drawable/ic_warning_black_48dp</item>
+        <item>@drawable/ic_notifications_none_black_48dp</item>
+        <item>@drawable/ic_event_black_48dp</item>
+        <item>@drawable/ic_person_black_48dp</item>
     </integer-array>
 
     <string-array name="card_activities">
-        <item>it.unibo.mobileuser.alarm.UpvoteAlertActivity
-        </item><!--TODO: in future change with the activity of last alarms-->
+        <item>it.unibo.mobileuser.alarm.UpvoteAlertActivity</item>
         <item>it.unibo.mobileuser.alarm.NewAlarmActivity
         </item><!--TODO: in future change with the activity of my alarms-->
         <item>null</item><!--TODO: in future change with the activity of occured events-->
