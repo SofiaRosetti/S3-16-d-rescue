@@ -29,6 +29,32 @@
         <item name="android:clickable">true</item>
     </style>
 
+    <style name="card_view_look" parent="CardView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="cardCornerRadius">@dimen/radius_xsmall</item>
+    </style>
+
+    <style name="card_view_look_container">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="card_view_look_list" parent="card_view_look">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
+    <style name="card_view_look_text_view">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
+    </style>
+
     <style name="gps_label_look">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
