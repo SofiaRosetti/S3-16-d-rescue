@@ -4,7 +4,7 @@ import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.Scene
-import scalafx.scene.control.Label
+import scalafx.scene.control.{CheckBox, Label}
 import scalafx.scene.layout.{GridPane, HBox}
 import scalafx.scene.text.Font
 
@@ -54,6 +54,42 @@ object HomeView extends JFXApp {
           alignment = Pos.Center
         }
         add(filterBox, 1, 1)
+
+        val fireCheckBox = new CheckBox {
+          text = "Fire"
+          font = checkBoxFont
+          padding = Insets(20)
+        }
+        val earthquakeCheckBox = new CheckBox {
+          text = "Earthquake"
+          font = checkBoxFont
+          padding = Insets(20)
+        }
+        val landslideCheckBox = new CheckBox {
+          text = "Landslide"
+          font = checkBoxFont
+          padding = Insets(20)
+        }
+        val avalancheCheckBox = new CheckBox {
+          text = "Avalanche"
+          font = checkBoxFont
+          padding = Insets(20)
+        }
+        val floodingCheckBox = new CheckBox {
+          text = "Flooding"
+          font = checkBoxFont
+          padding = Insets(20)
+        }
+        val otherCheckBox = new CheckBox {
+          text = "Other"
+          font = checkBoxFont
+          padding = Insets(20)
+        }
+        val checkBoxList = new HBox() {
+          children.addAll(fireCheckBox, earthquakeCheckBox, landslideCheckBox, avalancheCheckBox, floodingCheckBox, otherCheckBox)
+          alignment = Pos.Center
+        }
+        add(checkBoxList, 1, 2)
 
 
       }
