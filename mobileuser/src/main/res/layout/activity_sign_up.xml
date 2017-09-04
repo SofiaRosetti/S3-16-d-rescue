@@ -18,11 +18,11 @@
             style="@style/layout_base_secondary">
 
         <LinearLayout
-                style="@style/external_layout_material_edit_text"
+                style="@style/layout_container"
                 android:layout_marginBottom="@dimen/margin_medium">
 
             <LinearLayout
-                    style="@style/layout_material_edit_text">
+                    style="@style/layout_container_item_base">
 
                 <com.rengwuxian.materialedittext.MaterialEditText
                         style="@style/material_edit_text_look"
@@ -35,7 +35,7 @@
             </LinearLayout>
 
             <LinearLayout
-                    style="@style/layout_material_edit_text">
+                    style="@style/layout_container_item_base">
 
                 <com.rengwuxian.materialedittext.MaterialEditText
                         style="@style/material_edit_text_look"
@@ -48,7 +48,7 @@
             </LinearLayout>
 
             <LinearLayout
-                    style="@style/layout_material_edit_text">
+                    style="@style/layout_container_item_base">
 
                 <com.rengwuxian.materialedittext.MaterialEditText
                         style="@style/material_edit_text_look"
@@ -61,7 +61,7 @@
             </LinearLayout>
 
             <LinearLayout
-                    style="@style/layout_material_edit_text">
+                    style="@style/layout_container_item_base">
 
                 <com.rengwuxian.materialedittext.MaterialEditText
                         style="@style/material_edit_text_look"
@@ -74,7 +74,7 @@
             </LinearLayout>
 
             <LinearLayout
-                    style="@style/layout_material_edit_text">
+                    style="@style/layout_container_item_base">
 
                 <com.rengwuxian.materialedittext.MaterialEditText
                         style="@style/material_edit_text_look"
@@ -87,7 +87,7 @@
             </LinearLayout>
 
             <LinearLayout
-                    style="@style/layout_material_edit_text">
+                    style="@style/layout_container_item_base">
 
                 <com.rengwuxian.materialedittext.MaterialEditText
                         style="@style/material_edit_text_look"
@@ -104,7 +104,7 @@
         <Button
                 style="@style/button_look"
                 android:id="@+id/sign_up"
-                android:text="@string/sign_up_exclamation"
+                android:text="@string/sign_up"
                 android:layout_marginBottom="@dimen/margin_small"/>
 
     </LinearLayout>

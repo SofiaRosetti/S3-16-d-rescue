@@ -18,11 +18,11 @@
             style="@style/layout_base_secondary">
 
         <LinearLayout
-                style="@style/external_layout_material_edit_text"
+                style="@style/layout_container"
                 android:layout_marginBottom="@dimen/margin_large">
 
             <LinearLayout
-                    style="@style/layout_material_edit_text">
+                    style="@style/layout_container_item_base">
 
                 <com.rengwuxian.materialedittext.MaterialEditText
                         style="@style/material_edit_text_look"
@@ -35,7 +35,7 @@
             </LinearLayout>
 
             <LinearLayout
-                    style="@style/layout_material_edit_text">
+                    style="@style/layout_container_item_base">
 
                 <com.rengwuxian.materialedittext.MaterialEditText
                         style="@style/material_edit_text_look"
