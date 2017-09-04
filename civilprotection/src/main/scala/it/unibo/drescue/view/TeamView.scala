@@ -2,9 +2,10 @@ package it.unibo.drescue.view
 
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
+import scalafx.collections.ObservableBuffer
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.Scene
-import scalafx.scene.control.Label
+import scalafx.scene.control.{ComboBox, Label}
 import scalafx.scene.layout.{GridPane, HBox}
 import scalafx.scene.text.Font
 
@@ -54,6 +55,15 @@ object TeamView extends JFXApp {
           alignment = Pos.Center
         }
         add(insertBox, 1, 1)
+
+        val choices = ObservableBuffer("Team X", "Team Y", "Team Z")
+        val teamChoice = new ComboBox[String] {
+          maxWidth = 250
+          editable = true
+          items = choices
+        }
+        teamChoice.setStyle("-fx-font-size:25")
+        add(teamChoice, 0, 2)
 
       }
       content = grid
