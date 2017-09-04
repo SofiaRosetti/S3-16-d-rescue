@@ -33,6 +33,19 @@ object RescueView extends JFXApp {
         add(titleBox, 0, 0)
         GridPane.setConstraints(titleBox, 0, 0, 3, 1)
 
+        val recTeamLabel = new Label {
+          text = "Recommended team:"
+          font = defaultFont
+          padding = Insets(10)
+        }
+        add(recTeamLabel, 0, 1)
+
+        val recTeam = new Label {
+          text = "Team X"
+          font = defaultFont
+        }
+        add(recTeam, 2, 1)
+
       }
       content = grid
     }
