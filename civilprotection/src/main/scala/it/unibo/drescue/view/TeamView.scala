@@ -5,7 +5,7 @@ import scalafx.application.JFXApp.PrimaryStage
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.Scene
-import scalafx.scene.control.{ComboBox, Label, TextField}
+import scalafx.scene.control.{Button, ComboBox, Label, TextField}
 import scalafx.scene.layout.{GridPane, HBox}
 import scalafx.scene.text.Font
 
@@ -109,6 +109,26 @@ object TeamView extends JFXApp {
           alignment = Pos.CenterRight
         }
         add(IDBox, 1, 4)
+
+        val addButton = new Button {
+          text = "Add"
+          font = defaultFont
+          margin = Insets(30)
+          prefWidth = 150
+        }
+        val cancelButton = new Button {
+          text = "Cancel"
+          font = defaultFont
+          margin = Insets(30)
+          prefWidth = 150
+        }
+        val buttonBox = new HBox {
+          alignment = Pos.Center
+          padding = Insets(30)
+          children.addAll(addButton, cancelButton)
+        }
+        add(buttonBox, 0, 5)
+        GridPane.setConstraints(buttonBox, 0, 5, 2, 1)
 
       }
       content = grid
