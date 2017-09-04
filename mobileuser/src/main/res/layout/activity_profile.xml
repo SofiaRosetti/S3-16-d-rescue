@@ -26,8 +26,8 @@
 
             <ImageView
                     android:id="@+id/profile_image"
-                    android:layout_width="@dimen/fixed_dimension_big"
-                    android:layout_height="@dimen/fixed_dimension_big"
+                    android:layout_width="@dimen/fixed_dimension_medium"
+                    android:layout_height="@dimen/fixed_dimension_medium"
                     android:src="@drawable/ic_account_box_black_48dp"
                     android:tint="@color/colorPrimaryDark"
                     android:scaleType="centerCrop"

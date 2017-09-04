@@ -20,6 +20,7 @@
     <string name="gps_alert_message">The GPS is not active. Please, activate it from Settings->Location.</string>
     <string name="gps_alert_positive_button">Settings</string>
     <string name="gps_permission">You must give permission to GPS to use the application.</string>
+    <string name="icon_card_view">Icon of card view.</string>
     <string name="incorrect_email_format">Incorrect email format.</string>
     <string name="incorrect_login_data">Incorrect login data.</string>
     <string name="incorrect_sign_up_data">Incorrect sign up data.</string>
