@@ -44,11 +44,11 @@ object LoginView extends JFXApp {
         }
         add(password, 1, 1)
 
-        val loginButton = new Button() {
+        val loginButton = new Button {
           text = "Login"
           font = defaultFont
         }
-        val buttonBox = new HBox() {
+        val buttonBox = new HBox {
           children = loginButton
           alignment = Pos.Center
         }
