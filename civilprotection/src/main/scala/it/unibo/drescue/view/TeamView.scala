@@ -5,7 +5,7 @@ import scalafx.application.JFXApp.PrimaryStage
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.Scene
-import scalafx.scene.control.{ComboBox, Label}
+import scalafx.scene.control.{ComboBox, Label, TextField}
 import scalafx.scene.layout.{GridPane, HBox}
 import scalafx.scene.text.Font
 
@@ -64,6 +64,51 @@ object TeamView extends JFXApp {
         }
         teamChoice.setStyle("-fx-font-size:25")
         add(teamChoice, 0, 2)
+
+        val nameLabel = new Label {
+          text = "Name:"
+          font = defaultFont
+          padding = Insets(10)
+        }
+        val nameField = new TextField {
+          promptText = "Username"
+          font = defaultFont
+        }
+        val nameBox = new HBox {
+          children.addAll(nameLabel, nameField)
+          alignment = Pos.CenterRight
+        }
+        add(nameBox, 1, 2)
+
+        val districtLabel = new Label {
+          text = "District:"
+          font = defaultFont
+          padding = Insets(10)
+        }
+        val districtField = new TextField {
+          promptText = "Username"
+          font = defaultFont
+        }
+        val districtBox = new HBox {
+          children.addAll(districtLabel, districtField)
+          alignment = Pos.CenterRight
+        }
+        add(districtBox, 1, 3)
+
+        val IDLabel = new Label {
+          text = "ID:"
+          font = defaultFont
+          padding = Insets(10)
+        }
+        val IDField = new TextField {
+          promptText = "Username"
+          font = defaultFont
+        }
+        val IDBox = new HBox {
+          children.addAll(IDLabel, IDField)
+          alignment = Pos.CenterRight
+        }
+        add(IDBox, 1, 4)
 
       }
       content = grid
