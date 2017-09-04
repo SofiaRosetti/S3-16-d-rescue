@@ -2,9 +2,10 @@ package it.unibo.drescue.view
 
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
+import scalafx.collections.ObservableBuffer
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.Scene
-import scalafx.scene.control.{CheckBox, Label}
+import scalafx.scene.control.{CheckBox, Label, ListView}
 import scalafx.scene.layout.{GridPane, HBox}
 import scalafx.scene.text.Font
 
@@ -85,13 +86,22 @@ object HomeView extends JFXApp {
           font = checkBoxFont
           padding = Insets(20)
         }
-        val checkBoxList = new HBox() {
+        val checkBoxList = new HBox {
           children.addAll(fireCheckBox, earthquakeCheckBox, landslideCheckBox, avalancheCheckBox, floodingCheckBox, otherCheckBox)
           alignment = Pos.Center
         }
         add(checkBoxList, 1, 2)
 
-
+        val alarmsList = new ListView[String] {
+          items = ObservableBuffer("Alarm 1", "Alarm 2", "Alarm 3", "Alarm 4", "Alarm 5", "Alarm 6", "Alarm 7")
+          prefHeight = 100
+          prefWidth = 400
+        }
+        val alarmsBox = new HBox {
+          children = alarmsList
+          alignment = Pos.Center
+        }
+        add(alarmsBox, 1, 3)
       }
       content = grid
     }
