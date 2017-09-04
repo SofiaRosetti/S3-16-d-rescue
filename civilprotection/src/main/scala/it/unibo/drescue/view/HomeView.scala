@@ -102,6 +102,24 @@ object HomeView extends JFXApp {
           alignment = Pos.Center
         }
         add(alarmsBox, 1, 3)
+
+        val liveRescuesLabel = new Label {
+          text = "Live rescues:"
+          font = titleFont
+          padding = Insets(20)
+        }
+        val rescuesBox = new HBox {
+          children = liveRescuesLabel
+          alignment = Pos.Center
+        }
+        add(rescuesBox, 0, 4)
+
+        val rescuesList = new ListView[String] {
+          items = ObservableBuffer("Rescue 1", "Rescue 2", "Rescue 3", "Rescue 4", "Rescue 5")
+          prefHeight = 100
+          prefWidth = 400
+        }
+        add(rescuesList, 0, 5)
       }
       content = grid
     }
