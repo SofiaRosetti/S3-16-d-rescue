@@ -9,135 +9,91 @@
         tools:context="it.unibo.mobileuser.authentication.SignUpActivity">
 
     <include
-            android:layout_width="match_parent"
-            layout="@layout/toolbar"
             android:id="@+id/toolbar"
-            android:layout_height="?attr/actionBarSize">
+            layout="@layout/toolbar"
+            style="@style/toolbar_look">
     </include>
 
     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:background="@color/colorPrimaryLight">
+            style="@style/layout_base_secondary">
 
         <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:padding="@dimen/padding_medium"
+                style="@style/external_layout_material_edit_text"
                 android:layout_marginBottom="@dimen/margin_medium">
 
             <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorTextIcons"
-                    android:layout_marginBottom="@dimen/margin_xsmall">
+                    style="@style/layout_material_edit_text">
 
                 <com.rengwuxian.materialedittext.MaterialEditText
+                        style="@style/material_edit_text_look"
                         android:id="@+id/name_sign_up"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:hint="@string/name"
                         android:inputType="text"
-                        android:paddingLeft="@dimen/padding_small"
-                        android:paddingRight="@dimen/padding_small"
                         app:met_floatingLabel="highlight"
                         app:met_iconLeft="@drawable/ic_account_circle_white_48dp"/>
 
             </LinearLayout>
 
             <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorTextIcons"
-                    android:layout_marginBottom="@dimen/margin_xsmall">
+                    style="@style/layout_material_edit_text">
 
                 <com.rengwuxian.materialedittext.MaterialEditText
+                        style="@style/material_edit_text_look"
                         android:id="@+id/surname_sign_up"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:hint="@string/surname"
                         android:inputType="text"
-                        android:paddingLeft="@dimen/padding_small"
-                        android:paddingRight="@dimen/padding_small"
                         app:met_floatingLabel="highlight"
                         app:met_iconLeft="@drawable/ic_account_circle_white_48dp"/>
 
             </LinearLayout>
 
             <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorTextIcons"
-                    android:layout_marginBottom="@dimen/margin_xsmall">
+                    style="@style/layout_material_edit_text">
 
                 <com.rengwuxian.materialedittext.MaterialEditText
+                        style="@style/material_edit_text_look"
                         android:id="@+id/email_sign_up"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:hint="@string/email"
                         android:inputType="textEmailAddress"
-                        android:paddingLeft="@dimen/padding_small"
-                        android:paddingRight="@dimen/padding_small"
                         app:met_floatingLabel="highlight"
                         app:met_iconLeft="@drawable/ic_mail_outline_white_48dp"/>
 
             </LinearLayout>
 
             <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorTextIcons"
-                    android:layout_marginBottom="@dimen/margin_xsmall">
+                    style="@style/layout_material_edit_text">
 
                 <com.rengwuxian.materialedittext.MaterialEditText
+                        style="@style/material_edit_text_look"
                         android:id="@+id/phone_sign_up"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:hint="@string/phone"
                         android:inputType="phone"
-                        android:paddingLeft="@dimen/padding_small"
-                        android:paddingRight="@dimen/padding_small"
                         app:met_floatingLabel="highlight"
                         app:met_iconLeft="@drawable/ic_phone_white_48dp"/>
 
             </LinearLayout>
 
             <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorTextIcons"
-                    android:layout_marginBottom="@dimen/margin_xsmall">
+                    style="@style/layout_material_edit_text">
 
                 <com.rengwuxian.materialedittext.MaterialEditText
+                        style="@style/material_edit_text_look"
                         android:id="@+id/password_sign_up"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:hint="@string/password"
                         android:inputType="textPassword"
-                        android:paddingLeft="@dimen/padding_small"
-                        android:paddingRight="@dimen/padding_small"
                         app:met_floatingLabel="highlight"
                         app:met_iconLeft="@drawable/ic_vpn_key_white_48dp"/>
 
             </LinearLayout>
 
             <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorTextIcons">
+                    style="@style/layout_material_edit_text">
 
                 <com.rengwuxian.materialedittext.MaterialEditText
+                        style="@style/material_edit_text_look"
                         android:id="@+id/confirm_password_sign_up"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:hint="@string/confirm_password"
                         android:inputType="textPassword"
-                        android:paddingLeft="@dimen/padding_small"
-                        android:paddingRight="@dimen/padding_small"
                         app:met_floatingLabel="highlight"
                         app:met_iconLeft="@drawable/ic_vpn_key_white_48dp"/>
 
@@ -146,20 +102,10 @@
         </LinearLayout>
 
         <Button
+                style="@style/button_look"
                 android:id="@+id/sign_up"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:text="@string/sign_up_exclamation"
-                android:padding="@dimen/padding_small"
-                android:layout_marginLeft="@dimen/margin_small"
-                android:layout_marginRight="@dimen/margin_small"
-                android:textSize="@dimen/text_size_medium"
-                android:textStyle="bold"
-                android:clickable="true"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/colorPrimaryText"
-                android:background="@color/colorAccent"
-                android:gravity="center"/>
+                android:layout_marginBottom="@dimen/margin_small"/>
 
     </LinearLayout>
 
