@@ -44,6 +44,17 @@ object HomeView extends JFXApp {
         add(map, 0, 1)
         GridPane.setConstraints(map, 0, 1, 1, 3)
 
+        val filterLabel = new Label {
+          text = "Filter by type:"
+          font = defaultFont
+          padding = Insets(20)
+        }
+        val filterBox = new HBox {
+          children = filterLabel
+          alignment = Pos.Center
+        }
+        add(filterBox, 1, 1)
+
 
       }
       content = grid
