@@ -5,7 +5,7 @@ import scalafx.application.JFXApp.PrimaryStage
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.Scene
-import scalafx.scene.control.{CheckBox, Label, ListView}
+import scalafx.scene.control.{Button, CheckBox, Label, ListView}
 import scalafx.scene.layout.{GridPane, HBox}
 import scalafx.scene.text.Font
 
@@ -120,6 +120,25 @@ object HomeView extends JFXApp {
           prefWidth = 400
         }
         add(rescuesList, 0, 5)
+
+        val newRescueButton = new Button {
+          text = "New rescue"
+          font = buttonFont
+          margin = Insets(30)
+          prefWidth = 250
+        }
+        val newTeamButton = new Button {
+          text = "New team"
+          font = buttonFont
+          margin = Insets(30)
+          prefWidth = 250
+        }
+        val buttonBox = new HBox {
+          alignment = Pos.Center
+          padding = Insets(30)
+          children.addAll(newRescueButton, newTeamButton)
+        }
+        add(buttonBox, 1, 5)
       }
       content = grid
     }
