@@ -2,7 +2,7 @@
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="@dimen/height_fixed"
+        android:layout_height="@dimen/fixed_dimension_small"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
         android:padding="@dimen/padding_xsmall">

@@ -100,8 +100,8 @@
                 android:text="@string/send"
                 style="@style/button_look"
                 android:drawableStart="@drawable/ic_send_black_36dp"
-                android:drawablePadding="@dimen/padding_text_icon"
-                android:paddingStart="@dimen/padding_icon"/>
+                android:drawablePadding="@dimen/padding_text_icon_big"
+                android:paddingStart="@dimen/padding_icon_big"/>
 
     </LinearLayout>
 
