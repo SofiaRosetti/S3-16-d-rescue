@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <dimen name="border_width">2dp</dimen>
     <dimen name="margin_large">50dp</dimen>
     <dimen name="margin_medium">20dp</dimen>
     <dimen name="margin_small">12dp</dimen>
     <dimen name="margin_xsmall">6dp</dimen>
+    <dimen name="padding_icon">120dp</dimen>
     <dimen name="padding_medium">12dp</dimen>
-    <dimen name="padding_small">6dp</dimen>
-    <dimen name="text_size_extralarge">50sp</dimen>
-    <dimen name="text_size_large">20sp</dimen>
+    <dimen name="padding_small">10dp</dimen>
+    <dimen name="padding_xsmall">6dp</dimen>
+    <dimen name="padding_text_icon">-100dp</dimen>
+    <dimen name="radius">5dp</dimen>
+    <dimen name="text_size_xxlarge">50sp</dimen>
+    <dimen name="text_size_xlarge">20sp</dimen>
+    <dimen name="text_size_large">18sp</dimen>
     <dimen name="text_size_medium">16sp</dimen>
 
 </resources>

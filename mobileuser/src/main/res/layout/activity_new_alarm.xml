@@ -8,76 +8,100 @@
         tools:context="it.unibo.mobileuser.alarm.NewAlarmActivity">
 
     <include
-            android:layout_width="match_parent"
             layout="@layout/toolbar"
             android:id="@+id/toolbar"
-            android:layout_height="?attr/actionBarSize">
+            style="@style/toolbar_look">
     </include>
 
     <LinearLayout
             android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
-
-        <TextView
-                android:id="@+id/event_type_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/event_type"/>
-
-        <Spinner
-                android:id="@+id/event_type_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            style="@style/layout_base_secondary">
 
         <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/latitude_fields">
+                style="@style/layout_container"
+                android:layout_marginBottom="@dimen/margin_medium">
 
-            <TextView
-                    android:id="@+id/latitude_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/latitude"/>
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/latitude_field"
-                    android:textColor="@color/colorPrimaryText"/>
+            <LinearLayout
+                    style="@style/layout_container_item"
+                    android:layout_marginBottom="@dimen/margin_medium">
 
-        </LinearLayout>
+                <TextView
+                        android:id="@+id/event_type_label"
+                        android:text="@string/event_type"
+                        style="@style/label_look"/>
 
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/longitude_fields">
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/spinner_event_type_border">
 
-            <TextView
-                    android:id="@+id/longitude_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/longitude"/>
+                    <Spinner
+                            android:id="@+id/event_type_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"/>
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/longitude_field"
-                    android:textColor="@color/colorPrimaryText"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    style="@style/layout_container_item">
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/your_position"
+                        android:gravity="center"
+                        android:textSize="@dimen/text_size_xlarge"
+                        android:textAllCaps="true"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="bold"
+                        android:paddingBottom="@dimen/padding_medium"/>
+
+                <LinearLayout
+                        style="@style/layout_base"
+                        android:id="@+id/latitude_fields">
+
+                    <TextView
+                            android:id="@+id/latitude_label"
+                            android:text="@string/latitude"
+                            style="@style/label_look"/>
+
+                    <TextView
+                            android:id="@+id/latitude_field"
+                            style="@style/gps_label_look"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                        style="@style/layout_base"
+                        android:id="@+id/longitude_fields"
+                        android:paddingTop="@dimen/padding_small">
+
+                    <TextView
+                            android:id="@+id/longitude_label"
+                            android:text="@string/longitude"
+                            style="@style/label_look"/>
+
+                    <TextView
+                            android:id="@+id/longitude_field"
+                            style="@style/gps_label_look"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
         <Button
                 android:id="@+id/send_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="@string/send"
-                android:background="@color/colorAccent"/>
+                style="@style/button_look"
+                android:drawableStart="@drawable/ic_send_black_36dp"
+                android:drawablePadding="@dimen/padding_text_icon"
+                android:paddingStart="@dimen/padding_icon"/>
 
     </LinearLayout>
 
