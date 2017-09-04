@@ -2,9 +2,10 @@ package it.unibo.drescue.view
 
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
+import scalafx.collections.ObservableBuffer
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.Scene
-import scalafx.scene.control.Label
+import scalafx.scene.control.{ComboBox, Label}
 import scalafx.scene.layout.{GridPane, HBox}
 import scalafx.scene.text.Font
 
@@ -46,6 +47,20 @@ object RescueView extends JFXApp {
         }
         add(recTeam, 2, 1)
 
+        val otherTeamLabel = new Label {
+          text = "Choose another team:"
+          font = defaultFont
+        }
+        add(otherTeamLabel, 0, 2)
+
+        val choices = ObservableBuffer("Team X", "Team Y", "Team Z")
+        val teamChoice = new ComboBox[String] {
+          maxWidth = 200
+          editable = true
+          items = choices
+        }
+        teamChoice.setStyle("-fx-font-size:25")
+        add(teamChoice, 2, 2)
       }
       content = grid
     }
