@@ -17,6 +17,7 @@ public class ChangePasswordActivity extends ToolbarActivity {
         setContentView(R.layout.activity_change_password);
 
         setToolbar(true);
+        getSupportActionBar().setTitle(R.string.change_password);
 
         final Button saveButton = (Button) findViewById(R.id.save_button);
         saveButton.setOnClickListener(new View.OnClickListener() {

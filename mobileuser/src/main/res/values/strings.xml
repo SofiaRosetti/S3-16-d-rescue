@@ -1,8 +1,7 @@
 <resources>
-    <string name="app_name">mobileuser</string>
+    <string name="app_name">DRescue</string>
 
     <string name="alert_negative_button">Cancel</string>
-    <string name="alerts">Alerts</string>
     <string name="alerts_error">Error in loading alerts.</string>
     <string name="attention">Attention!</string>
     <string name="change_password">Change password</string>
@@ -21,18 +20,23 @@
     <string name="gps_alert_message">The GPS is not active. Please, activate it from Settings->Location.</string>
     <string name="gps_alert_positive_button">Settings</string>
     <string name="gps_permission">You must give permission to GPS to use the application.</string>
+    <string name="icon_card_view">Icon of card view.</string>
     <string name="incorrect_email_format">Incorrect email format.</string>
     <string name="incorrect_login_data">Incorrect login data.</string>
     <string name="incorrect_sign_up_data">Incorrect sign up data.</string>
     <string name="incorrect_upvote">You already upvote this alert.</string>
+    <string name="last_alerts">Last alerts</string>
     <string name="latitude">Latitude:</string>
+    <string name="location">Location</string>
     <string name="location_not_available">Location not available</string>
     <string name="login">Login</string>
     <string name="login_successful">Login successful!</string>
     <string name="longitude">Longitude:</string>
+    <string name="logout">Logout</string>
     <string name="missing_account">You don\'t have an account?</string>
     <string name="name">Name</string>
     <string name="name_label">Name:</string>
+    <string name="new_alarm">New alarm</string>
     <string name="ok">ok</string>
     <string name="password">Password</string>
     <string name="password_confirm">Confirm password</string>
@@ -41,6 +45,7 @@
     <string name="password_old">Old password</string>
     <string name="phone">Phone</string>
     <string name="phone_label">Phone:</string>
+    <string name="profile">Profile</string>
     <string name="save">Save</string>
     <string name="send">Send</string>
     <string name="sign_up">Sign up</string>
@@ -50,8 +55,10 @@
     <string name="surname_label">Surname:</string>
     <string name="timestamp">Timestamp</string>
     <string name="upvote">Upvote</string>
+    <string name="upvote_content_description">Upvote this alert</string>
     <string name="upvote_message">Do you want to upvote this alert?</string>
     <string name="upvotes_number">0</string>
     <string name="upvote_successful">Upvote successful!</string>
+    <string name="your_position">Your position</string>
 
 </resources>
