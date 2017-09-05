@@ -9,12 +9,12 @@ import java.util.concurrent.TimeoutException;
 public interface Broker {
 
     /**
-     *
+     * Create a new connection to Broker
      */
     void createConnection(String[] bindingQueue) throws IOException, TimeoutException;
 
     /**
-     *
+     * Add a new consumer
      */
     void newConsumer() throws IOException;
 

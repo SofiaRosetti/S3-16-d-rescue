@@ -1,9 +1,9 @@
 package it.unibo.drescue;
 
+import it.unibo.drescue.communication.messages.response.SuccessfulMessageImpl;
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class StringUtilsTest {
 
@@ -30,6 +30,13 @@ public class StringUtilsTest {
         assertTrue(StringUtils.isAValidEmail(RIGHT_EMAIL2));
         assertTrue(StringUtils.isAValidEmail(RIGHT_EMAIL3));
         assertFalse(StringUtils.isAValidEmail(WRONG_EMAIL));
+
+    }
+
+    @Test
+    public void isMessageTypeCorrect() {
+        final SuccessfulMessageImpl message = new SuccessfulMessageImpl();
+        assertEquals(message.getMessageType(), SuccessfulMessageImpl.SUCCESSFUL_MESSAGE);
 
     }
 
