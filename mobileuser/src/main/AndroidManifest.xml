@@ -20,17 +20,17 @@
                 android:screenOrientation="portrait">
         </activity>
         <activity
-                android:name=".MainActivity"
-                android:configChanges="orientation"
-                android:screenOrientation="portrait">
-        </activity>
-        <activity
                 android:name=".BaseActivity"
                 android:configChanges="orientation"
                 android:screenOrientation="portrait">
         </activity>
         <activity
                 android:name=".alarm.NewAlarmActivity"
+                android:configChanges="orientation"
+                android:screenOrientation="portrait">
+        </activity>
+        <activity
+                android:name=".alarm.UpvoteAlertActivity"
                 android:configChanges="orientation"
                 android:screenOrientation="portrait">
         </activity>
@@ -59,7 +59,7 @@
                 android:configChanges="orientation"
                 android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".alarm.UpvoteAlertActivity"
+        <activity android:name=".MainActivity"
                   android:configChanges="orientation"
                   android:screenOrientation="portrait">
             <intent-filter>

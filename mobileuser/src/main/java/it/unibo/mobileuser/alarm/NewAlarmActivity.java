@@ -21,14 +21,15 @@ public class NewAlarmActivity extends GpsActivityImpl {
         setContentView(R.layout.activity_new_alarm);
 
         setToolbar(true);
+        getSupportActionBar().setTitle(R.string.new_alarm);
 
         //TODO: Change with an array of events coming from database
         final Spinner spinner = (Spinner) findViewById(R.id.event_type_spinner);
         final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.event_type_array,
-                android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.layout.spinner_event_type_item);
+        adapter.setDropDownViewResource(R.layout.spinner_event_type_dropdown_item);
         spinner.setAdapter(adapter);
 
         final TextView latitudeTextView = (TextView) findViewById(R.id.latitude_field);

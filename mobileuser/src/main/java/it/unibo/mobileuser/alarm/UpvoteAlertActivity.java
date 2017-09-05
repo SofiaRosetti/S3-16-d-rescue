@@ -35,7 +35,7 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
         setContentView(R.layout.activity_upvote_alert);
 
         setToolbar(true);
-        getSupportActionBar().setTitle(R.string.alerts);
+        getSupportActionBar().setTitle(R.string.last_alerts);
 
         this.alertList = new ArrayList<>();
 
@@ -49,7 +49,7 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
         final ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(this.alertAdapter);
         listView.setOnItemClickListener((adapterView, view, position, id) -> {
-            new AlertDialog.Builder(this)
+            new AlertDialog.Builder(this, R.style.alert_dialog_theme)
                     .setTitle(R.string.upvote)
                     .setMessage(R.string.upvote_message)
                     .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
@@ -120,7 +120,7 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
                     @Override
                     public void onErrorRequest(final int code) {
                         UpvoteAlertActivity.this.swipeRefreshLayout.setRefreshing(false);
-                        showDialog(R.string.alerts, R.string.alerts_error);
+                        showDialog(R.string.last_alerts, R.string.alerts_error);
                     }
                 }).execute();
     }

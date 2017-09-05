@@ -8,24 +8,16 @@
         tools:context="it.unibo.mobileuser.SplashActivity">
 
     <include
-            android:layout_width="match_parent"
-            layout="@layout/toolbar"
             android:id="@+id/toolbar"
-            android:layout_height="?attr/actionBarSize">
+            layout="@layout/toolbar"
+            style="@style/toolbar_look">
     </include>
 
     <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary">
+            style="@style/layout_base_primary">
 
         <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
+                style="@style/splash_section">
 
             <TextView
                     android:layout_width="wrap_content"
@@ -33,42 +25,41 @@
                     android:text="@string/app_name"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textStyle="bold"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/colorTextIcons"
+                    android:textSize="@dimen/text_size_xxlarge"/>
 
         </LinearLayout>
 
         <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
+                style="@style/splash_section">
 
             <Button
                     android:id="@+id/splash_login"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/login"
-                    android:padding="6dp"
+                    android:padding="@dimen/padding_xsmall"
                     android:textStyle="bold"
                     android:clickable="true"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/colorAccent"
-                    android:layout_marginBottom="6dp"/>
+                    android:background="@color/colorAccent"
+                    android:textColor="@color/colorPrimaryText"
+                    android:layout_marginBottom="@dimen/margin_xsmall"
+                    android:textSize="@dimen/text_size_xlarge"/>
 
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:orientation="horizontal"
-                    android:layout_marginTop="6dp">
+                    android:layout_marginTop="@dimen/margin_xsmall">
 
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/missing_account"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/colorPrimaryText"/>
 
                 <TextView
                         android:id="@+id/splash_sign_up"
@@ -78,8 +69,9 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textStyle="bold"
                         android:clickable="true"
-                        android:textColor="@color/white"
-                        android:layout_marginStart="6dp"/>
+                        android:layout_marginStart="@dimen/margin_xsmall"
+                        android:textColor="@color/colorTextIcons"
+                        android:textSize="@dimen/text_size_medium"/>
 
             </LinearLayout>
 
