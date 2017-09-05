@@ -13,6 +13,18 @@
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
+    <style name="alert_dialog_theme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/colorPrimaryDark</item>
+        <item name="android:textColorPrimary">@color/colorPrimaryText</item>
+        <item name="android:windowBackground">@drawable/dialog_background</item>
+        <item name="android:windowTitleStyle">@style/alert_dialog_title_style</item>
+    </style>
+
+    <style name="alert_dialog_title_style">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
+    </style>
+
     <style name="button_look">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

@@ -6,6 +6,7 @@
     <dimen name="fixed_dimension_big">180dp</dimen>
     <dimen name="fixed_dimension_medium">150dp</dimen>
     <dimen name="fixed_dimension_small">100dp</dimen>
+    <dimen name="inset">16dp</dimen>
     <dimen name="margin_large">50dp</dimen>
     <dimen name="margin_medium">20dp</dimen>
     <dimen name="margin_small">12dp</dimen>
