@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content"
+              android:layout_height="@dimen/fixed_dimension_big"
               android:orientation="vertical"
-              android:padding="10dp"
+              android:padding="@dimen/padding_small"
               android:layout_gravity="center">
 
     <android.support.v7.widget.CardView
@@ -12,32 +12,35 @@
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/card_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            card_view:cardCornerRadius="4dp"
-            card_view:cardElevation="7dp"
-            android:layout_margin="5dp">
+            android:layout_height="match_parent"
+            card_view:cardCornerRadius="@dimen/radius_small"
+            card_view:cardElevation="@dimen/card_elevation"
+            android:layout_margin="@dimen/margin_small">
 
         <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:orientation="vertical"
+                style="@style/layout_base"
+                android:padding="@dimen/padding_big"
                 android:layout_gravity="center_horizontal"
-                android:gravity="center">
+                android:gravity="center"
+                android:background="@color/colorAccent">
 
             <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/cardview_icon"
-                    app:srcCompat="@mipmap/ic_launcher"/>
+                    app:srcCompat="@mipmap/ic_launcher"
+                    android:contentDescription="@string/icon_card_view"/>
 
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/cardview_title"
-                    android:textSize="20sp"
-                    android:text="Profile"
-                    android:gravity="center"/>
+                    android:textSize="@dimen/text_size_xlarge"
+                    android:text="@string/app_name"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textStyle="bold"
+                    android:gravity="center"
+            />
 
         </LinearLayout>
 

@@ -15,7 +15,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
-                android:name=".SplashActivity"
+                android:name=".MainActivity"
                 android:configChanges="orientation"
                 android:screenOrientation="portrait">
             <intent-filter>
@@ -25,17 +25,17 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".MainActivity"
-                android:configChanges="orientation"
-                android:screenOrientation="portrait">
-        </activity>
-        <activity
                 android:name=".BaseActivity"
                 android:configChanges="orientation"
                 android:screenOrientation="portrait">
         </activity>
         <activity
                 android:name=".alarm.NewAlarmActivity"
+                android:configChanges="orientation"
+                android:screenOrientation="portrait">
+        </activity>
+        <activity
+                android:name=".alarm.UpvoteAlertActivity"
                 android:configChanges="orientation"
                 android:screenOrientation="portrait">
         </activity>
@@ -64,7 +64,7 @@
                 android:configChanges="orientation"
                 android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".alarm.UpvoteAlertActivity"
+        <activity android:name=".SplashActivity"
                   android:configChanges="orientation"
                   android:screenOrientation="portrait">
 

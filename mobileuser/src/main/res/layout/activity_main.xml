@@ -8,21 +8,41 @@
         tools:context="it.unibo.mobileuser.MainActivity">
 
     <include
-            android:layout_width="match_parent"
             layout="@layout/toolbar"
             android:id="@+id/toolbar"
-            android:layout_height="?attr/actionBarSize">
+            style="@style/toolbar_look">
     </include>
 
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center">
+            android:background="@color/colorPrimary"
+            android:orientation="vertical"
+            android:weightSum="100">
 
-        <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="30"
+                android:text="@string/app_name"
+                android:gravity="center"
+                android:textColor="@color/colorTextIcons"
+                android:textSize="@dimen/text_size_xxlarge"
+                android:textStyle="bold"/>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="70"
+                android:gravity="center">
+
+            <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
 
     </LinearLayout>
 

@@ -117,7 +117,7 @@ public class GpsActivityImpl extends ToolbarActivity implements GpsActivity {
      * Show an alert to inform the user who must turn on the GPS to use the application.
      */
     protected void showGPSAlert() {
-        final AlertDialog alert = new AlertDialog.Builder(this)
+        final AlertDialog alert = new AlertDialog.Builder(this, R.style.alert_dialog_theme)
                 .setTitle(getResources().getString(R.string.attention))
                 .setMessage(getResources().getString(R.string.gps_alert_message))
                 .setCancelable(false)
@@ -127,7 +127,7 @@ public class GpsActivityImpl extends ToolbarActivity implements GpsActivity {
                         startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                     }
                 })
-                .setNegativeButton(getResources().getString(R.string.alert_negative_button), new DialogInterface.OnClickListener() {
+                .setNeutralButton(getResources().getString(R.string.alert_negative_button), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialogInterface, final int i) {
                         dialogInterface.cancel();
