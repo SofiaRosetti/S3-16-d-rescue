@@ -60,12 +60,7 @@ public class RabbitMQImpl implements RabbitMQ {
         this.channel.basicConsume(receiveQueue, new DefaultConsumer(this.channel) {
             @Override
             public void handleDelivery(final String consumerTag, final Envelope envelope, final AMQP.BasicProperties properties, final byte[] body) throws IOException {
-                try {
-                    response.offer(new String(body, "UTF-8"), 15000, TimeUnit.MILLISECONDS);
-                } catch (final InterruptedException e) {
-                    response.offer("");
-                }
-
+                response.offer(new String(body, "UTF-8"));
             }
         });
         return response.poll(15000, TimeUnit.MILLISECONDS);

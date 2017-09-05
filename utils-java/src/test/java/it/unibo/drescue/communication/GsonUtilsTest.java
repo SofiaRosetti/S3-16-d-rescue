@@ -9,6 +9,8 @@ public class GsonUtilsTest {
 
     private static final String ERROR_STRING = "{\"error\":\"test\"}";
 
+    private static final String ERROR_MESSAGE = "{\"error\":\"test\",\"messageType\":\"error_message\"}";
+
     @Test
     public void fromStringToObject() {
         final ErrorMessageImpl errorMessage = new ErrorMessageImpl("test");
@@ -19,7 +21,7 @@ public class GsonUtilsTest {
     @Test
     public void fromObjectToString() {
         final ErrorMessageImpl errorMessage = new ErrorMessageImpl("test");
-        assertEquals(ERROR_STRING, GsonUtils.toGson(errorMessage));
+        assertEquals(ERROR_MESSAGE, GsonUtils.toGson(errorMessage));
     }
 
 }
