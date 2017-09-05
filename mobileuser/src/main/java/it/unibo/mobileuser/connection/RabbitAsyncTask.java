@@ -17,6 +17,8 @@ import java.util.concurrent.BlockingQueue;
  */
 public class RabbitAsyncTask extends AsyncTask<Void, Void, String> {
 
+    private static final String ERROR_SERVER = "Error during server communication.";
+
     private final String destinationQueue;
     private final Message message;
     private final RequestDelegate delegate;
@@ -58,33 +60,18 @@ public class RabbitAsyncTask extends AsyncTask<Void, Void, String> {
 
             //if request reach timeout
             if (!StringUtils.isAValidString(responseMessage)) {
-                responseMessage = GsonUtils.toGson(new ErrorMessageImpl("Error during server communication."));
+                responseMessage = GsonUtils.toGson(new ErrorMessageImpl(ERROR_SERVER));
             }
 
-            System.out.println("responseMessage " + responseMessage);
+            System.out.println("[RabbitAsyncTask] responseMessage=" + responseMessage);
 
         } catch (final Exception e) {
-            responseMessage = GsonUtils.toGson(new ErrorMessageImpl("Error during server communication."));
-            System.out.println("responseMessage inside exception" + responseMessage);
+            responseMessage = GsonUtils.toGson(new ErrorMessageImpl(ERROR_SERVER));
         } finally {
             if (connection.getConnection() != null) {
                 connection.closeConnection();
             }
         }
-
-        /*final RabbitMQConnectionImpl connection = new RabbitMQConnectionImpl("10.0.2.2");
-        connection.openConnection();
-
-        final RPCSenderImpl requestRPC = new RPCSenderImpl(connection.getConnection(), this.destinationQueue);
-
-        String response = requestRPC.doRequest(GsonUtils.toGson(this.message));
-        System.out.println("[RabbitAsyncTask] Response " + response);
-
-        if (response == null) {
-            response = GsonUtils.toGson(new ErrorMessageImpl("Error contacting server.")); //TODO
-        }
-
-        connection.closeConnection();*/
 
         return responseMessage;
     }
