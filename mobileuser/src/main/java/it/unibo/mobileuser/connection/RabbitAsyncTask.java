@@ -1,11 +1,16 @@
 package it.unibo.mobileuser.connection;
 
 import android.os.AsyncTask;
+import com.rabbitmq.client.AMQP;
+import it.unibo.drescue.StringUtils;
 import it.unibo.drescue.communication.GsonUtils;
 import it.unibo.drescue.communication.messages.Message;
 import it.unibo.drescue.communication.messages.response.ErrorMessageImpl;
 import it.unibo.drescue.connection.RabbitMQConnectionImpl;
-import it.unibo.drescue.connection.client.RPCSenderImpl;
+import it.unibo.drescue.connection.RabbitMQImpl;
+
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * Class used to send an async request to server.
@@ -32,7 +37,42 @@ public class RabbitAsyncTask extends AsyncTask<Void, Void, String> {
     @Override
     protected String doInBackground(final Void... voids) {
 
-        final RabbitMQConnectionImpl connection = new RabbitMQConnectionImpl("10.0.2.2");
+        RabbitMQConnectionImpl connection = null;
+        RabbitMQImpl rabbitMQ = null;
+
+        String responseMessage;
+
+        try {
+
+            connection = new RabbitMQConnectionImpl("10.0.2.2");
+            connection.openConnection();
+
+            rabbitMQ = new RabbitMQImpl(connection);
+            final String replyQueue = rabbitMQ.addReplyQueue();
+            final AMQP.BasicProperties props = rabbitMQ.setReplyTo(replyQueue);
+
+            rabbitMQ.sendMessage("", this.destinationQueue, props, this.message);
+
+            final BlockingQueue<String> response = new ArrayBlockingQueue<>(1);
+            responseMessage = rabbitMQ.addRPCClientConsumer(response, replyQueue);
+
+            //if request reach timeout
+            if (!StringUtils.isAValidString(responseMessage)) {
+                responseMessage = GsonUtils.toGson(new ErrorMessageImpl("Error during server communication."));
+            }
+
+            System.out.println("responseMessage " + responseMessage);
+
+        } catch (final Exception e) {
+            responseMessage = GsonUtils.toGson(new ErrorMessageImpl("Error during server communication."));
+            System.out.println("responseMessage inside exception" + responseMessage);
+        } finally {
+            if (connection.getConnection() != null) {
+                connection.closeConnection();
+            }
+        }
+
+        /*final RabbitMQConnectionImpl connection = new RabbitMQConnectionImpl("10.0.2.2");
         connection.openConnection();
 
         final RPCSenderImpl requestRPC = new RPCSenderImpl(connection.getConnection(), this.destinationQueue);
@@ -44,9 +84,9 @@ public class RabbitAsyncTask extends AsyncTask<Void, Void, String> {
             response = GsonUtils.toGson(new ErrorMessageImpl("Error contacting server.")); //TODO
         }
 
-        connection.closeConnection();
+        connection.closeConnection();*/
 
-        return response;
+        return responseMessage;
     }
 
     @Override

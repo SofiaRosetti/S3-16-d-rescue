@@ -58,8 +58,6 @@ public class ClientMain {
 
         } catch (final Exception e) {
             responseMessage = GsonUtils.toGson(new ErrorMessageImpl("Error during server communication."));
-            System.out.println("responseMessage inside exception" + responseMessage);
-
         } finally {
             if (connection.getConnection() != null) { //se c'è stata un eccezione e la connessione è ancora aperta la chiudo
                 connection.closeConnection();
