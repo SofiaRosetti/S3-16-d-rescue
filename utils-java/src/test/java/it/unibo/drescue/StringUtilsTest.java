@@ -37,7 +37,6 @@ public class StringUtilsTest {
     public void isMessageTypeCorrect() {
         final SuccessfulMessageImpl message = new SuccessfulMessageImpl();
         assertEquals(message.getMessageType(), SuccessfulMessageImpl.SUCCESSFUL_MESSAGE);
-
     }
 
 }

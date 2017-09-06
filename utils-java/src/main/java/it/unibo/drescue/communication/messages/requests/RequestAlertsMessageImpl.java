@@ -1,12 +1,14 @@
 package it.unibo.drescue.communication.messages.requests;
 
+import it.unibo.drescue.communication.builder.MessageBuilder;
 import it.unibo.drescue.communication.messages.AbstractMessage;
+import it.unibo.drescue.communication.messages.Message;
 
 /**
  * Class that represents a message containing a request of alerts of a
  * specific area.
  */
-public class RequestAlertsMessageImpl extends AbstractMessage implements RequestAlertsMessage {
+public class RequestAlertsMessageImpl extends AbstractMessage implements RequestAlertsMessage, MessageBuilder {
 
     public final static String REQUEST_ALERTS_MESSAGE = "request_alerts_message";
 
@@ -33,5 +35,10 @@ public class RequestAlertsMessageImpl extends AbstractMessage implements Request
     @Override
     public double getLongitude() {
         return this.longitude;
+    }
+
+    @Override
+    public Message build() {
+        return this;
     }
 }
