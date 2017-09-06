@@ -1,11 +1,13 @@
 package it.unibo.drescue.communication.messages.requests;
 
+import it.unibo.drescue.communication.builder.MessageBuilder;
 import it.unibo.drescue.communication.messages.AbstractMessage;
+import it.unibo.drescue.communication.messages.Message;
 
 /**
  * Class that represents a message containing a request of user data.
  */
-public class RequestProfileMessageImpl extends AbstractMessage implements RequestProfileMessage {
+public class RequestProfileMessageImpl extends AbstractMessage implements RequestProfileMessage, MessageBuilder {
 
     public static final String REQUEST_PROFILE_MESSAGE = "request_profile_message";
 
@@ -24,5 +26,10 @@ public class RequestProfileMessageImpl extends AbstractMessage implements Reques
     @Override
     public int getUserID() {
         return this.userID;
+    }
+
+    @Override
+    public Message build() {
+        return this;
     }
 }

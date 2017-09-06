@@ -1,12 +1,14 @@
 package it.unibo.drescue.communication.messages.response;
 
+import it.unibo.drescue.communication.builder.MessageBuilder;
 import it.unibo.drescue.communication.messages.AbstractMessage;
+import it.unibo.drescue.communication.messages.Message;
 import it.unibo.drescue.model.User;
 
 /**
  * Class that represents a message containing a response of user data.
  */
-public class ProfileMessageImpl extends AbstractMessage implements ProfileMessage {
+public class ProfileMessageImpl extends AbstractMessage implements ProfileMessage, MessageBuilder {
 
     public static final String PROFILE_MESSAGE = "profile_message";
 
@@ -25,5 +27,10 @@ public class ProfileMessageImpl extends AbstractMessage implements ProfileMessag
     @Override
     public User getProfile() {
         return this.user;
+    }
+
+    @Override
+    public Message build() {
+        return this;
     }
 }
