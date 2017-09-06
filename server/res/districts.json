@@ -48,5 +48,505 @@
     "districtID": "BT",
     "districtLongName": "Barletta-Andria-Trani",
     "population": "393534"
+  },
+  {
+    "districtID": "BL",
+    "districtLongName": "Belluno",
+    "population": "206856"
+  },
+  {
+    "districtID": "BN",
+    "districtLongName": "Benevento",
+    "population": "280707"
+  },
+  {
+    "districtID": "BG",
+    "districtLongName": "Bergamo",
+    "population": "1108298"
+  },
+  {
+    "districtID": "BI",
+    "districtLongName": "Biella",
+    "population": "179685"
+  },
+  {
+    "districtID": "BO",
+    "districtLongName": "Bologna",
+    "population": "1005831"
+  },
+  {
+    "districtID": "BZ",
+    "districtLongName": "Bolzano",
+    "population": "520891"
+  },
+  {
+    "districtID": "BS",
+    "districtLongName": "Brescia",
+    "population": "1264105"
+  },
+  {
+    "districtID": "BR",
+    "districtLongName": "Brindisi",
+    "population": "398661"
+  },
+  {
+    "districtID": "CA",
+    "districtLongName": "Cagliari",
+    "population": "561289"
+  },
+  {
+    "districtID": "CL",
+    "districtLongName": "Caltanissetta",
+    "population": "271758"
+  },
+  {
+    "districtID": "CB",
+    "districtLongName": "Campobasso",
+    "population": "225622"
+  },
+  {
+    "districtID": "CI",
+    "districtLongName": "Carbonia-Iglesias",
+    "population": "127062"
+  },
+  {
+    "districtID": "CE",
+    "districtLongName": "Caserta",
+    "population": "924414"
+  },
+  {
+    "districtID": "CT",
+    "districtLongName": "Catania",
+    "population": "1115535"
+  },
+  {
+    "districtID": "CZ",
+    "districtLongName": "Catanzaro",
+    "population": "363057"
+  },
+  {
+    "districtID": "CH",
+    "districtLongName": "Chieti",
+    "population": "390962"
+  },
+  {
+    "districtID": "CO",
+    "districtLongName": "Como",
+    "population": "599654"
+  },
+  {
+    "districtID": "CS",
+    "districtLongName": "Cosenza",
+    "population": "714400"
+  },
+  {
+    "districtID": "CR",
+    "districtLongName": "Cremona",
+    "population": "360444"
+  },
+  {
+    "districtID": "KR",
+    "districtLongName": "Crotone",
+    "population": "174712"
+  },
+  {
+    "districtID": "CN",
+    "districtLongName": "Cuneo",
+    "population": "590421"
+  },
+  {
+    "districtID": "EN",
+    "districtLongName": "Enna",
+    "population": "169782"
+  },
+  {
+    "districtID": "FM",
+    "districtLongName": "Fermo",
+    "population": "175625"
+  },
+  {
+    "districtID": "FE",
+    "districtLongName": "Ferrara",
+    "population": "351436"
+  },
+  {
+    "districtID": "FI",
+    "districtLongName": "Firenze",
+    "population": "1013348"
+  },
+  {
+    "districtID": "FG",
+    "districtLongName": "Foggia",
+    "population": "630851"
+  },
+  {
+    "districtID": "FC",
+    "districtLongName": "Forlì-Cesena",
+    "population": "394601"
+  },
+  {
+    "districtID": "FR",
+    "districtLongName": "Frosinone",
+    "population": "495026"
+  },
+  {
+    "districtID": "GE",
+    "districtLongName": "Genova",
+    "population": "854099"
+  },
+  {
+    "districtID": "GO",
+    "districtLongName": "Gorizia",
+    "population": "140268"
+  },
+  {
+    "districtID": "GR",
+    "districtLongName": "Grosseto",
+    "population": "223652"
+  },
+  {
+    "districtID": "IM",
+    "districtLongName": "Imperia",
+    "population": "215244"
+  },
+  {
+    "districtID": "IS",
+    "districtLongName": "Isernia",
+    "population": "86405"
+  },
+  {
+    "districtID": "SP",
+    "districtLongName": "La Spezia",
+    "population": "221003"
+  },
+  {
+    "districtID": "AQ",
+    "districtLongName": "L'Aquila",
+    "population": "303239"
+  },
+  {
+    "districtID": "LT",
+    "districtLongName": "Latina",
+    "population": "574226"
+  },
+  {
+    "districtID": "LE",
+    "districtLongName": "Lecce",
+    "population": "804239"
+  },
+  {
+    "districtID": "LC",
+    "districtLongName": "Lecco",
+    "population": "339254"
+  },
+  {
+    "districtID": "LI",
+    "districtLongName": "Livorno",
+    "population": "337951"
+  },
+  {
+    "districtID": "LO",
+    "districtLongName": "Lodi",
+    "population": "229413"
+  },
+  {
+    "districtID": "LU",
+    "districtLongName": "Lucca",
+    "population": "391228"
+  },
+  {
+    "districtID": "MC",
+    "districtLongName": "Macerata",
+    "population": "320308"
+  },
+  {
+    "districtID": "MN",
+    "districtLongName": "Mantova",
+    "population": "412868"
+  },
+  {
+    "districtID": "MS",
+    "districtLongName": "Massa-Carrara",
+    "population": "197722"
+  },
+  {
+    "districtID": "MT",
+    "districtLongName": "Matera",
+    "population": "200597"
+  },
+  {
+    "districtID": "ME",
+    "districtLongName": "Messina",
+    "population": "640675"
+  },
+  {
+    "districtID": "MI",
+    "districtLongName": "Milano",
+    "population": "3208509"
+  },
+  {
+    "districtID": "MO",
+    "districtLongName": "Modena",
+    "population": "701642"
+  },
+  {
+    "districtID": "MB",
+    "districtLongName": "Monza e della Brianza",
+    "population": "866076"
+  },
+  {
+    "districtID": "NA",
+    "districtLongName": "Napoli",
+    "population": "3113898"
+  },
+  {
+    "districtID": "NO",
+    "districtLongName": "Novara",
+    "population": "370525"
+  },
+  {
+    "districtID": "NU",
+    "districtLongName": "Nuoro",
+    "population": "157078"
+  },
+  {
+    "districtID": "OT",
+    "districtLongName": "Olbia-Tempio",
+    "population": "160368"
+  },
+  {
+    "districtID": "OR",
+    "districtLongName": "Oristano",
+    "population": "161600"
+  },
+  {
+    "districtID": "PD",
+    "districtLongName": "Padova",
+    "population": "936887"
+  },
+  {
+    "districtID": "PA",
+    "districtLongName": "Palermo",
+    "population": "1271406"
+  },
+  {
+    "districtID": "PR",
+    "districtLongName": "Parma",
+    "population": "447779"
+  },
+  {
+    "districtID": "PV",
+    "districtLongName": "Pavia",
+    "population": "547926"
+  },
+  {
+    "districtID": "PG",
+    "districtLongName": "Perugia",
+    "population": "662110"
+  },
+  {
+    "districtID": "PU",
+    "districtLongName": "Pesaro e Urbino",
+    "population": "361.561"
+  },
+  {
+    "districtID": "PE",
+    "districtLongName": "Pescara",
+    "population": "321973"
+  },
+  {
+    "districtID": "PC",
+    "districtLongName": "Piacenza",
+    "population": "286997"
+  },
+  {
+    "districtID": "PI",
+    "districtLongName": "Pisa",
+    "population": "420913"
+  },
+  {
+    "districtID": "PT",
+    "districtLongName": "Pistoia",
+    "population": "291963"
+  },
+  {
+    "districtID": "PN",
+    "districtLongName": "Pordenone",
+    "population": "312794"
+  },
+  {
+    "districtID": "PZ",
+    "districtLongName": "Potenza",
+    "population": "373097"
+  },
+  {
+    "districtID": "PO",
+    "districtLongName": "Prato",
+    "population": "253123"
+  },
+  {
+    "districtID": "RG",
+    "districtLongName": "Ragusa",
+    "population": "320226"
+  },
+  {
+    "districtID": "RA",
+    "districtLongName": "Ravenna",
+    "population": "391525"
+  },
+  {
+    "districtID": "RC",
+    "districtLongName": "Reggio Calabria",
+    "population": "555836"
+  },
+  {
+    "districtID": "RE",
+    "districtLongName": "Reggio Emilia",
+    "population": "532872"
+  },
+  {
+    "districtID": "RI",
+    "districtLongName": "Rieti",
+    "population": "158467"
+  },
+  {
+    "districtID": "RN",
+    "districtLongName": "Rimini",
+    "population": "335463"
+  },
+  {
+    "districtID": "RM",
+    "districtLongName": "Roma",
+    "population": "4340474"
+  },
+  {
+    "districtID": "RO",
+    "districtLongName": "Rovigo",
+    "population": "240540"
+  },
+  {
+    "districtID": "SA",
+    "districtLongName": "Salerno",
+    "population": "1106506"
+  },
+  {
+    "districtID": "VS",
+    "districtLongName": "Medio Campidano",
+    "population": "99320"
+  },
+  {
+    "districtID": "SS",
+    "districtLongName": "Sassari",
+    "population": "334103"
+  },
+  {
+    "districtID": "SV",
+    "districtLongName": "Savona",
+    "population": "280707"
+  },
+  {
+    "districtID": "SI",
+    "districtLongName": "Siena",
+    "population": "269388"
+  },
+  {
+    "districtID": "SR",
+    "districtLongName": "Siracusa",
+    "population": "403985"
+  },
+  {
+    "districtID": "SO",
+    "districtLongName": "Sondrio",
+    "population": "181712"
+  },
+  {
+    "districtID": "TA",
+    "districtLongName": "Taranto",
+    "population": "586061"
+  },
+  {
+    "districtID": "TE",
+    "districtLongName": "Teramo",
+    "population": "310339"
+  },
+  {
+    "districtID": "TR",
+    "districtLongName": "Terni",
+    "population": "229071"
+  },
+  {
+    "districtID": "TO",
+    "districtLongName": "Torino",
+    "population": "2282197"
+  },
+  {
+    "districtID": "OG",
+    "districtLongName": "Ogliastra",
+    "population": "57318"
+  },
+  {
+    "districtID": "TP",
+    "districtLongName": "Trapani",
+    "population": "435765"
+  },
+  {
+    "districtID": "TN",
+    "districtLongName": "Trento",
+    "population": "538223"
+  },
+  {
+    "districtID": "TV",
+    "districtLongName": "Treviso",
+    "population": "885447"
+  },
+  {
+    "districtID": "TS",
+    "districtLongName": "Trieste",
+    "population": "234874"
+  },
+  {
+    "districtID": "UD",
+    "districtLongName": "Udine",
+    "population": "533282"
+  },
+  {
+    "districtID": "VA",
+    "districtLongName": "Varese",
+    "population": "890090"
+  },
+  {
+    "districtID": "VE",
+    "districtLongName": "Venezia",
+    "population": "855696"
+  },
+  {
+    "districtID": "VB",
+    "districtLongName": "Verbano-Cusio-Ossola",
+    "population": "160114"
+  },
+  {
+    "districtID": "VC",
+    "districtLongName": "Vercelli",
+    "population": "174904"
+  },
+  {
+    "districtID": "VR",
+    "districtLongName": "Verona",
+    "population": "922383"
+  },
+  {
+    "districtID": "VV",
+    "districtLongName": "Vibo Valentia",
+    "population": "162516"
+  },
+  {
+    "districtID": "VI",
+    "districtLongName": "Vicenza",
+    "population": "867314"
+  },
+  {
+    "districtID": "VT",
+    "districtLongName": "Viterbo",
+    "population": "320279"
   }
 ]
