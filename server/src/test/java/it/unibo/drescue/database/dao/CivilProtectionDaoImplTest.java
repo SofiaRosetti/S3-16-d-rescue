@@ -4,6 +4,7 @@ import it.unibo.drescue.database.DBConnection;
 import it.unibo.drescue.database.DBConnectionImpl;
 import it.unibo.drescue.model.CivilProtection;
 import it.unibo.drescue.model.CivilProtectionImpl;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -67,6 +68,11 @@ public class CivilProtectionDaoImplTest {
                 CIVIL_PROTECTION_TEST.getCpID(), CIVIL_PROTECTION_TEST.getPassword()));
         //Deleting test user
         this.civilProtectionDao.delete(CIVIL_PROTECTION_TEST);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        this.dbConnection.closeConnection();
     }
 
 }

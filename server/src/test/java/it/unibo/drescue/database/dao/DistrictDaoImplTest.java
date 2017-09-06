@@ -26,29 +26,30 @@ public class DistrictDaoImplTest {
 
     @Test
     public void isInsertingAndDeletingDistrict() throws Exception {
-        this.districtDao.insert(this.DISTRICT_TEST);
-        assertTrue(this.districtDao.selectByIdentifier(this.DISTRICT_TEST) != null);
-        this.districtDao.delete(this.DISTRICT_TEST);
-        assertTrue(this.districtDao.selectByIdentifier(this.DISTRICT_TEST) == null);
+        this.districtDao.insert(DISTRICT_TEST);
+        assertTrue(this.districtDao.selectByIdentifier(DISTRICT_TEST) != null);
+        this.districtDao.delete(DISTRICT_TEST);
+        assertTrue(this.districtDao.selectByIdentifier(DISTRICT_TEST) == null);
     }
 
     @Test
     public void isFindingAllDistricts() throws Exception {
         final int initialSize = this.districtDao.findAll().size();
-        this.districtDao.insert(this.DISTRICT_TEST);
+        this.districtDao.insert(DISTRICT_TEST);
         assertTrue(this.districtDao.findAll().size() == initialSize + 1);
         //Deleting test district
-        this.districtDao.delete(this.DISTRICT_TEST);
+        this.districtDao.delete(DISTRICT_TEST);
         assertTrue(this.districtDao.findAll().size() == initialSize);
     }
 
     @Test
     public void isUpdatingPopulation() throws Exception {
-        this.districtDao.insert(this.DISTRICT_TEST);
+        this.districtDao.insert(DISTRICT_TEST);
         District districtInDb = (District) this.districtDao.selectByIdentifier(this.DISTRICT_TEST);
         final int populationBefore = districtInDb.getPopulation();
         final int newPopulation = 500;
-        final District districtToUpdate = new DistrictImpl(DISTRICT_TEST.getDistrictID(), null, newPopulation);
+        final District districtToUpdate = new DistrictImpl(
+                DISTRICT_TEST.getDistrictID(), null, newPopulation);
         assertTrue(populationBefore != newPopulation);
         this.districtDao.update(districtToUpdate);
         districtInDb = (District) this.districtDao.selectByIdentifier(this.DISTRICT_TEST);

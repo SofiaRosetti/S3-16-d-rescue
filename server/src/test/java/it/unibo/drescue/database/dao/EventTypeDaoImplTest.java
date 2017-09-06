@@ -4,6 +4,7 @@ import it.unibo.drescue.database.DBConnection;
 import it.unibo.drescue.database.DBConnectionImpl;
 import it.unibo.drescue.model.EventType;
 import it.unibo.drescue.model.EventTypeImpl;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,5 +43,9 @@ public class EventTypeDaoImplTest {
         assertTrue(this.eventTypeDao.findAll().size() == initialSize);
     }
 
+    @After
+    public void tearDown() throws Exception {
+        this.dbConnection.closeConnection();
+    }
 
 }
