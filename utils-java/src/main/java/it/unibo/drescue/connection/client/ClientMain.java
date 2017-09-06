@@ -1,13 +1,18 @@
 package it.unibo.drescue.connection.client;
 
+import com.rabbitmq.client.AMQP;
+import it.unibo.drescue.StringUtils;
 import it.unibo.drescue.communication.GsonUtils;
-import it.unibo.drescue.communication.messages.requests.SignUpRequestBuilder;
-import it.unibo.drescue.communication.messages.requests.SignUpRequestBuilderImpl;
-import it.unibo.drescue.communication.messages.requests.SignUpRequestImpl;
+import it.unibo.drescue.communication.builder.requests.SignUpMessageBuilderImpl;
+import it.unibo.drescue.communication.messages.Message;
 import it.unibo.drescue.communication.messages.response.ErrorMessageImpl;
 import it.unibo.drescue.communication.messages.response.SuccessfulMessageImpl;
 import it.unibo.drescue.connection.RabbitMQConnectionImpl;
+import it.unibo.drescue.connection.RabbitMQImpl;
 import it.unibo.drescue.connection.ServerUtils;
+
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 public class ClientMain {
 
@@ -17,34 +22,61 @@ public class ClientMain {
 
         //TODO AsyncTask Android App
 
-        final RabbitMQConnectionImpl connection = new RabbitMQConnectionImpl("localhost");
-        connection.openConnection();
+        RabbitMQConnectionImpl connection = null;
+        RabbitMQImpl rabbitMQ = null;
 
-        final RPCSenderImpl requestRPC = new RPCSenderImpl(connection.getConnection(),
-                ServerUtils.AUTHENTICATION_CHANNEL_RPC);
+        String responseMessage;
 
-        final SignUpRequestBuilder signUpMessageBuilder = new SignUpRequestBuilderImpl()
-                .setName("testName")
-                .setSurname("testSurname")
-                .setEmail("test.email@test.com")
-                .setPassword("testPassword")
-                .setPhoneNumber("3214567890");
-        final SignUpRequestImpl signUpMessage = signUpMessageBuilder.build();
+        try {
 
-        final String response = requestRPC.doRequest(GsonUtils.toGson(signUpMessage));
+            connection = new RabbitMQConnectionImpl("localhost");
+            connection.openConnection();
 
-        System.out.println("[ClientMain] Response: " + response);
+            rabbitMQ = new RabbitMQImpl(connection); //create channel
+            final String replyQueue = rabbitMQ.addReplyQueue(); //queue for response
+            final AMQP.BasicProperties props = rabbitMQ.setReplyTo(replyQueue);
+            //set in properties queue for response
 
-        final ErrorMessageImpl errorMessage = GsonUtils.fromGson(response, ErrorMessageImpl.class);
-        if (errorMessage.getError() != null && !errorMessage.getError().isEmpty()) {
-            System.out.println("[ClientMain] Error response: " + errorMessage.getError());
-        } else {
-            final SuccessfulMessageImpl successfulMessage = GsonUtils.fromGson(response, SuccessfulMessageImpl.class);
-            if (successfulMessage != null) {
-                System.out.println("[ClientMain] Successful response");
+            final Message signUpMessageBuilder = new SignUpMessageBuilderImpl()
+                    .setName("testName")
+                    .setSurname("testSurname")
+                    .setEmail("test.email@test.com")
+                    .setPassword("testPassword")
+                    .setPhoneNumber("3214567890")
+                    .build();
+
+            rabbitMQ.sendMessage("", ServerUtils.AUTHENTICATION_QUEUE_RPC, props, signUpMessageBuilder);
+
+            final BlockingQueue<String> response = new ArrayBlockingQueue<>(1);
+            responseMessage = rabbitMQ.addRPCClientConsumer(response, replyQueue);
+
+            if (!StringUtils.isAValidString(responseMessage)) { //TODO is not valid if request reach timeout
+                responseMessage = GsonUtils.toGson(new ErrorMessageImpl("Error during server communication."));
+            }
+
+            System.out.println("responseMessage " + responseMessage);
+
+        } catch (final Exception e) {
+            responseMessage = GsonUtils.toGson(new ErrorMessageImpl("Error during server communication."));
+        } finally {
+            if (connection.getConnection() != null) { //se c'è stata un eccezione e la connessione è ancora aperta la chiudo
+                connection.closeConnection();
             }
         }
-        connection.closeConnection();
+
+        //handle reply to AbstractResponse
+        final String messageType = StringUtils.getMessageType(responseMessage);
+        switch (messageType) {
+            case ErrorMessageImpl.ERROR_MESSAGE:
+                final ErrorMessageImpl errorMessage = GsonUtils.fromGson(responseMessage, ErrorMessageImpl.class);
+                System.out.println("[ClientMain] error message " + errorMessage.getError());
+                break;
+            case SuccessfulMessageImpl.SUCCESSFUL_MESSAGE:
+                final SuccessfulMessageImpl successfulMessage = GsonUtils.fromGson(responseMessage, SuccessfulMessageImpl.class);
+                System.out.println("[ClientMain] successful message");
+                break;
+        }
+
     }
 
 }

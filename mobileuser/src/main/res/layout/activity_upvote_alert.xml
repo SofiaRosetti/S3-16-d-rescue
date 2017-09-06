@@ -8,29 +8,25 @@
         tools:context="it.unibo.mobileuser.alarm.UpvoteAlertActivity">
 
     <include
-            android:layout_width="match_parent"
             layout="@layout/toolbar"
             android:id="@+id/toolbar"
-            android:layout_height="?attr/actionBarSize">
+            style="@style/toolbar_look">
     </include>
 
     <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipeContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryLight">
 
         <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
+                style="@style/layout_base"
+                android:gravity="center">
 
             <ListView
                     android:id="@+id/listView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
                     android:divider="@null"
                     android:dividerHeight="0dp"/>
 

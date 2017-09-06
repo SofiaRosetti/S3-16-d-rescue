@@ -4,16 +4,10 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.widget.ListView;
-import android.widget.Toast;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import it.unibo.drescue.model.Alert;
 import it.unibo.drescue.model.AlertImplBuilder;
 import it.unibo.mobileuser.R;
-import it.unibo.mobileuser.connection.AbstractServerResponse;
-import it.unibo.mobileuser.connection.RequestAsyncTask;
 import it.unibo.mobileuser.gps.GpsActivityImpl;
-import it.unibo.mobileuser.utils.ServerUtils;
 import it.unibo.mobileuser.utils.Utils;
 
 import java.util.ArrayList;
@@ -35,7 +29,7 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
         setContentView(R.layout.activity_upvote_alert);
 
         setToolbar(true);
-        getSupportActionBar().setTitle(R.string.alerts);
+        getSupportActionBar().setTitle(R.string.last_alerts);
 
         this.alertList = new ArrayList<>();
 
@@ -49,7 +43,7 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
         final ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(this.alertAdapter);
         listView.setOnItemClickListener((adapterView, view, position, id) -> {
-            new AlertDialog.Builder(this)
+            new AlertDialog.Builder(this, R.style.alert_dialog_theme)
                     .setTitle(R.string.upvote)
                     .setMessage(R.string.upvote_message)
                     .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
@@ -83,19 +77,7 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
 
         System.out.println("[UpvoteAlertActivity] upvoteAlert: userID=" + userID + " alertID=" + alertID);
 
-        new RequestAsyncTask(ServerUtils.upvoteAlert(userID, String.valueOf(alertID)),
-                new AbstractServerResponse<JsonObject>() {
-                    @Override
-                    public void onSuccessfulRequest(final JsonObject data) {
-                        Toast.makeText(UpvoteAlertActivity.this, R.string.upvote_successful, Toast.LENGTH_LONG).show();
-                        onRequestAlerts();
-                    }
 
-                    @Override
-                    public void onErrorRequest(final int code) {
-                        showDialog(R.string.upvote, R.string.incorrect_upvote);
-                    }
-                }).execute();
     }
 
     /**
@@ -105,24 +87,7 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
 
         System.out.println("[UpvoteAlertActivity] onRequestAlerts");
 
-        new RequestAsyncTask(ServerUtils.requestAlerts(getLatitude(), getLongitude()),
-                new AbstractServerResponse<JsonArray>() {
-                    @Override
-                    public void onSuccessfulRequest(final JsonArray data) {
-                        UpvoteAlertActivity.this.swipeRefreshLayout.setRefreshing(false);
-                        //TODO
-                        //alertAdapter.clear();
-                        //get data and put into new list
-                        //add list into adapter
-                        //UpvoteAlertActivity.this.alertAdapter.notifyDataSetChanged();
-                    }
 
-                    @Override
-                    public void onErrorRequest(final int code) {
-                        UpvoteAlertActivity.this.swipeRefreshLayout.setRefreshing(false);
-                        showDialog(R.string.alerts, R.string.alerts_error);
-                    }
-                }).execute();
     }
 
 }

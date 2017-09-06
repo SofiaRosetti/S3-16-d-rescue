@@ -15,7 +15,7 @@ public class ChannelSetup {
 
         //TODO setup channels
 
-        new AuthenticationRPCReceiver(connection.getConnection(), ServerUtils.AUTHENTICATION_CHANNEL_RPC);
+        new AuthenticationRPCReceiver(connection.getConnection(), ServerUtils.AUTHENTICATION_QUEUE_RPC);
 
     }
 }

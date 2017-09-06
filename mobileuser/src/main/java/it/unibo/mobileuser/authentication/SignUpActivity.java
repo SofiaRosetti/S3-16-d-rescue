@@ -4,14 +4,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-import com.google.gson.JsonObject;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import it.unibo.drescue.StringUtils;
+import it.unibo.drescue.communication.builder.requests.SignUpMessageBuilderImpl;
+import it.unibo.drescue.communication.messages.Message;
+import it.unibo.drescue.communication.messages.response.SuccessfulMessageImpl;
 import it.unibo.mobileuser.R;
 import it.unibo.mobileuser.ToolbarActivity;
-import it.unibo.mobileuser.connection.AbstractServerResponse;
-import it.unibo.mobileuser.connection.RequestAsyncTask;
-import it.unibo.mobileuser.utils.ServerUtils;
+import it.unibo.mobileuser.connection.AbstractResponse;
+import it.unibo.mobileuser.connection.RabbitAsyncTask;
 import it.unibo.mobileuser.utils.Utils;
 
 public class SignUpActivity extends ToolbarActivity {
@@ -45,7 +46,16 @@ public class SignUpActivity extends ToolbarActivity {
                     StringUtils.isAValidString(password) && StringUtils.isAValidString(confirmPassword)) {
                 if (StringUtils.isAValidEmail(email)) {
                     if (password.equals(confirmPassword)) {
-                        signUp(name, surname, email, phone, password);
+
+                        final Message message = new SignUpMessageBuilderImpl()
+                                .setName(name)
+                                .setSurname(surname)
+                                .setEmail(email)
+                                .setPhoneNumber(phone)
+                                .setPassword(password)
+                                .build();
+
+                        signUp(message);
                     } else {
                         showDialog(R.string.sign_up, R.string.password_mismatch);
                     }
@@ -59,31 +69,30 @@ public class SignUpActivity extends ToolbarActivity {
     }
 
     /**
-     * Performs sign up with the given parameters.
+     * Performs sign up request with the given message.
      *
-     * @param name
-     * @param surname
-     * @param email
-     * @param phone
-     * @param password
+     * @param message message containing user's sign up data
      */
-    private void signUp(final String name, final String surname, final String email, final String phone, final String password) {
+    private void signUp(final Message message) {
 
-        System.out.println("[SignUpActivity] signUp: name=" + name + " surname=" + surname +
-                " email=" + email + " phone=" + phone + " password=" + password);
+        new RabbitAsyncTask(it.unibo.drescue.connection.ServerUtils.AUTHENTICATION_QUEUE_RPC,
+                message,
+                new AbstractResponse() {
 
-        new RequestAsyncTask(ServerUtils.signUp(email, password, name, surname, phone),
-                new AbstractServerResponse<JsonObject>() {
                     @Override
-                    public void onSuccessfulRequest(final JsonObject data) {
-                        Toast.makeText(SignUpActivity.this, R.string.sign_up_successful, Toast.LENGTH_LONG).show();
-                        finish();
+                    public void onSuccessfulRequest(final String response) {
+                        if (StringUtils.getMessageType(response).equals(SuccessfulMessageImpl.SUCCESSFUL_MESSAGE)) {
+                            Toast.makeText(SignUpActivity.this, R.string.sign_up_successful, Toast.LENGTH_LONG).show();
+                            finish();
+                        }
                     }
 
                     @Override
-                    public void onErrorRequest(final int code) {
-                        showDialog(R.string.sign_up, R.string.incorrect_sign_up_data);
+                    public void onErrorRequest(final String errorMessage) {
+                        showDialog(R.string.sign_up, errorMessage);
                     }
+
                 }).execute();
+
     }
 }

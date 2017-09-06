@@ -1,7 +1,7 @@
 package it.unibo.drescue.communication.messages.response;
 
 /**
- * An interface modelling an error message.
+ * Interface modelling an error message.
  */
 public interface ErrorMessage {
 

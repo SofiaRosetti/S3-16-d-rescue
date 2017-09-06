@@ -1,6 +1,7 @@
 package it.unibo.drescue.communication;
 
-import it.unibo.drescue.message.JSONMessage;
+import it.unibo.drescue.communication.messages.*;
+
 import java.io.IOException;
 
 public interface CpProducer {
@@ -11,5 +12,5 @@ public interface CpProducer {
      * @param routingKey
      * @throws IOException
      */
-    void sendMessage(JSONMessage msg, String routingKey) throws IOException;
+    void sendMessage(Message msg, String routingKey) throws IOException;
 }
