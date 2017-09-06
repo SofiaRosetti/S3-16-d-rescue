@@ -81,7 +81,7 @@ public class UserDaoImpl extends UpdatableDaoAbstract<User> implements UserDao {
     }
 
     @Override
-    protected ObjectModel getOneObjFromSelect(final ResultSet resultSet) {
+    protected ObjectModel mapRecordToModel(final ResultSet resultSet) {
         User user = null;
         try {
             user = new UserImplBuilder()

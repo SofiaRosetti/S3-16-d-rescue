@@ -29,7 +29,7 @@ public class EventTypeDaoImpl extends GenericDaoAbstract implements EventTypeDao
                 return "DELETE FROM " + TABLENAME
                         + " WHERE eventID = ?";
             case FIND_ONE:
-                /**
+                /*
                  * Note: The identifier in EventType is 'eventName'
                  */
                 return "SELECT eventID,eventName "
@@ -44,7 +44,7 @@ public class EventTypeDaoImpl extends GenericDaoAbstract implements EventTypeDao
 
     @Override
     public PreparedStatement fillStatement(final ObjectModel objectModel, final PreparedStatement statement, final QueryType queryType) {
-        final EventType eventType = ((EventType) objectModel);
+        final EventType eventType = (EventType) objectModel;
         try {
             switch (queryType) {
                 case INSERT:
@@ -70,7 +70,7 @@ public class EventTypeDaoImpl extends GenericDaoAbstract implements EventTypeDao
     }
 
     @Override
-    protected ObjectModel getOneObjFromSelect(final ResultSet resultSet) {
+    protected ObjectModel mapRecordToModel(final ResultSet resultSet) {
         EventType eventType = null;
         try {
             eventType = new EventTypeImpl(

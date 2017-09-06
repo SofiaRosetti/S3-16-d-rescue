@@ -90,7 +90,7 @@ public abstract class GenericDaoAbstract<T> implements GenericDao {
             this.fillStatement(objectModel, statement, QueryType.FIND_ONE);
             final ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                objectModelToRet = this.getOneObjFromSelect(resultSet);
+                objectModelToRet = this.mapRecordToModel(resultSet);
             }
             resultSet.close();
             statement.close();
@@ -106,7 +106,7 @@ public abstract class GenericDaoAbstract<T> implements GenericDao {
      * @param resultSet from which it takes data for the object
      * @return an object created from data obtained from the result set
      */
-    protected abstract ObjectModel getOneObjFromSelect(ResultSet resultSet);
+    protected abstract ObjectModel mapRecordToModel(ResultSet resultSet);
 
     protected enum QueryType {
         INSERT,

@@ -40,7 +40,9 @@ public interface DBConnection {
         USER,
         DISTRICT,
         EVENT_TYPE,
-        ALERT
+        ALERT,
+        CIVIL_PROTECTION,
+        CP_AREA
     }
 
 }

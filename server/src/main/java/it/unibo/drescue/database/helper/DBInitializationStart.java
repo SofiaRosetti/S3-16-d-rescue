@@ -13,6 +13,10 @@ public class DBInitializationStart {
      * Used to initialize DB with static tables contents
      */
     public static void main(final String[] args) {
+        start();
+    }
+
+    public static void start() {
         final DBInitialization dbInitialization =
                 new DBInitializationImpl(DBConnectionImpl.getLocalConnection());
 
@@ -21,6 +25,5 @@ public class DBInitializationStart {
         dbInitialization.insertAllEventTypesFrom(FILE_PATH + EVENT_TYPES_FILE);
 
         //TODO insert all Civil_Protections
-
     }
 }

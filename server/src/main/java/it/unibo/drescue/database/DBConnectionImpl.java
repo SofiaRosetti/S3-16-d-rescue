@@ -1,9 +1,6 @@
 package it.unibo.drescue.database;
 
-import it.unibo.drescue.database.dao.DistrictDaoImpl;
-import it.unibo.drescue.database.dao.EventTypeDaoImpl;
-import it.unibo.drescue.database.dao.GenericDaoAbstract;
-import it.unibo.drescue.database.dao.UserDaoImpl;
+import it.unibo.drescue.database.dao.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -119,6 +116,13 @@ public class DBConnectionImpl implements DBConnection {
                 return new DistrictDaoImpl(connection);
             case EVENT_TYPE:
                 return new EventTypeDaoImpl(connection);
+            case ALERT:
+                //TODO
+                //return new AlertDaoImpl(connection);
+            case CIVIL_PROTECTION:
+                return new CivilProtectionDaoImpl(connection);
+            case CP_AREA:
+                return new CpAreaDaoImpl(connection);
             default:
                 throw new SQLException("Trying to link to an unexistant table.");
         }

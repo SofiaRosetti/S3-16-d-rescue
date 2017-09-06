@@ -80,7 +80,7 @@ public class DistrictDaoImpl extends UpdatableDaoAbstract<District> implements D
     }
 
     @Override
-    protected ObjectModel getOneObjFromSelect(final ResultSet resultSet) {
+    protected ObjectModel mapRecordToModel(final ResultSet resultSet) {
         District district = null;
         try {
             district = new DistrictImpl(
