@@ -5,8 +5,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import it.unibo.drescue.StringUtils;
 import it.unibo.drescue.communication.builder.requests.SignUpMessageBuilderImpl;
 import it.unibo.drescue.communication.messages.Message;
+import it.unibo.drescue.communication.messages.response.SuccessfulMessageImpl;
 import it.unibo.mobileuser.R;
 import it.unibo.mobileuser.ToolbarActivity;
 import it.unibo.mobileuser.connection.AbstractResponse;
@@ -39,22 +41,22 @@ public class SignUpActivity extends ToolbarActivity {
             final String phone = Utils.getEditTextString(phoneEditText);
             final String password = Utils.getEditTextString(passwordEditText);
             final String confirmPassword = Utils.getEditTextString(confirmPasswordEditText);
-            /*if (StringUtils.isAValidString(name) && StringUtils.isAValidString(surname) &&
+            if (StringUtils.isAValidString(name) && StringUtils.isAValidString(surname) &&
                     StringUtils.isAValidString(email) && StringUtils.isAValidString(phone) &&
                     StringUtils.isAValidString(password) && StringUtils.isAValidString(confirmPassword)) {
                 if (StringUtils.isAValidEmail(email)) {
-                    if (password.equals(confirmPassword)) {*/
+                    if (password.equals(confirmPassword)) {
 
-            final Message message = new SignUpMessageBuilderImpl()
-                    .setName(name)
-                    .setSurname(surname)
-                    .setEmail(email)
-                    .setPhoneNumber(phone)
-                    .setPassword(password)
-                    .build();
+                        final Message message = new SignUpMessageBuilderImpl()
+                                .setName(name)
+                                .setSurname(surname)
+                                .setEmail(email)
+                                .setPhoneNumber(phone)
+                                .setPassword(password)
+                                .build();
 
-            signUp(message);
-                    /*} else {
+                        signUp(message);
+                    } else {
                         showDialog(R.string.sign_up, R.string.password_mismatch);
                     }
                 } else {
@@ -62,7 +64,7 @@ public class SignUpActivity extends ToolbarActivity {
                 }
             } else {
                 showDialog(R.string.sign_up, R.string.fill_fields);
-            }*/
+            }
         });
     }
 
@@ -79,13 +81,15 @@ public class SignUpActivity extends ToolbarActivity {
 
                     @Override
                     public void onSuccessfulRequest(final String response) {
-                        Toast.makeText(SignUpActivity.this, R.string.sign_up_successful, Toast.LENGTH_LONG).show();
-                        finish();
+                        if (StringUtils.getMessageType(response).equals(SuccessfulMessageImpl.SUCCESSFUL_MESSAGE)) {
+                            Toast.makeText(SignUpActivity.this, R.string.sign_up_successful, Toast.LENGTH_LONG).show();
+                            finish();
+                        }
                     }
 
                     @Override
                     public void onErrorRequest(final String errorMessage) {
-                        showDialog(R.string.sign_up, R.string.incorrect_sign_up_data);
+                        showDialog(R.string.sign_up, errorMessage);
                     }
 
                 }).execute();
