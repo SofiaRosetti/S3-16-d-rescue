@@ -21,7 +21,7 @@ public class CivilProtectionDaoImplTest {
 
     @Before
     public void setUp() throws Exception {
-        this.dbConnection = DBConnectionImpl.getLocalConnection();
+        this.dbConnection = DBConnectionImpl.getRemoteConnection();
         //Initialize EventDao
         this.civilProtectionDao = (CivilProtectionDao)
                 this.dbConnection.getDAO(DBConnection.Table.CIVIL_PROTECTION);

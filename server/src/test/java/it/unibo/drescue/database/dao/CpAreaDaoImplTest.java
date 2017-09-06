@@ -25,7 +25,7 @@ public class CpAreaDaoImplTest {
 
     @Before
     public void setUp() throws Exception {
-        this.dbConnection = DBConnectionImpl.getLocalConnection();
+        this.dbConnection = DBConnectionImpl.getRemoteConnection();
         this.dbConnection.openConnection();
         this.districtDao = (DistrictDao)
                 this.dbConnection.getDAO(DBConnection.Table.DISTRICT);

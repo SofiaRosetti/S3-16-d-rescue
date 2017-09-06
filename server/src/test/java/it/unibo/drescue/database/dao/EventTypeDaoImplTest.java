@@ -20,7 +20,7 @@ public class EventTypeDaoImplTest {
 
     @Before
     public void setUp() throws Exception {
-        this.dbConnection = DBConnectionImpl.getLocalConnection();
+        this.dbConnection = DBConnectionImpl.getRemoteConnection();
         //Initialize EventDao
         this.eventTypeDao = (EventTypeDao) this.dbConnection.getDAO(DBConnection.Table.EVENT_TYPE);
     }

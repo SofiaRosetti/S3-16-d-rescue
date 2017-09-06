@@ -19,7 +19,7 @@ public class DistrictDaoImplTest {
 
     @Before
     public void setUp() throws Exception {
-        this.dbConnection = DBConnectionImpl.getLocalConnection();
+        this.dbConnection = DBConnectionImpl.getRemoteConnection();
         //Initialize DistrictDao
         this.districtDao = (DistrictDao) this.dbConnection.getDAO(DBConnection.Table.DISTRICT);
     }

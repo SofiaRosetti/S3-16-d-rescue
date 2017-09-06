@@ -23,7 +23,7 @@ public class UserDaoImplTest {
 
     @Before
     public void setUp() throws Exception {
-        this.dbConnection = DBConnectionImpl.getLocalConnection();
+        this.dbConnection = DBConnectionImpl.getRemoteConnection();
         this.dbConnection.openConnection();
         this.userTest = new UserImplBuilder()
                 .setEmail(EMAIL_TEST)
