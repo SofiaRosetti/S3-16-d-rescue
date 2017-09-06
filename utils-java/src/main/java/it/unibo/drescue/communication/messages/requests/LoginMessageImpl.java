@@ -1,11 +1,13 @@
 package it.unibo.drescue.communication.messages.requests;
 
+import it.unibo.drescue.communication.builder.MessageBuilder;
 import it.unibo.drescue.communication.messages.AbstractMessage;
+import it.unibo.drescue.communication.messages.Message;
 
 /**
  * Class that represents a message containing login data.
  */
-public class LoginMessageImpl extends AbstractMessage implements LoginMessage {
+public class LoginMessageImpl extends AbstractMessage implements LoginMessage, MessageBuilder {
 
     public final static String LOGIN_MESSAGE = "login_message";
 
@@ -32,5 +34,10 @@ public class LoginMessageImpl extends AbstractMessage implements LoginMessage {
     @Override
     public String getPassword() {
         return this.password;
+    }
+
+    @Override
+    public Message build() {
+        return this;
     }
 }
