@@ -10,7 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserDaoImpl extends UpdatableDaoAbstract<User> implements UserDao {
+public class UserDaoImpl extends LoggableDaoAbstract<User> implements UserDao {
 
     private final static String TABLENAME = "USER";
 
@@ -98,49 +98,5 @@ public class UserDaoImpl extends UpdatableDaoAbstract<User> implements UserDao {
         }
         return user;
     }
-
-    /**
-     * @param email specify the unique user email
-     * @return the password if the user with the given email exist,
-     * null otherwise
-     */
-    private String getUserPwd(final String email) {
-        String strRet = null;
-        final String query = "SELECT password FROM " + TABLENAME
-                + " WHERE email = ?";
-        try {
-            final PreparedStatement statement = this.connection.prepareStatement(query);
-            statement.setString(1, email);
-            final ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                strRet = resultSet.getString("password");
-            }
-            resultSet.close();
-            statement.close();
-        } catch (final SQLException e) {
-            e.printStackTrace();
-        }
-        return strRet;
-    }
-
-    @Override
-    public boolean login(final String email, final String password) {
-        //TODO CHECK
-        //Get password from DB
-        final String passInDb = this.getUserPwd(email);
-        //Check password
-        if (passInDb == null) {
-            System.out.println("[DB]: LOGIN_FAIL: User " + email + " not registered yet");
-            return false;
-        } else if (!password.equals(passInDb)) {
-            System.out.println("[DB]: LOGIN_FAIL: User " + email + ", wrong credentials");
-            return false;
-        } else {
-            System.out.println("[DB]: LOGIN_OK: User " + email + " log in correctly");
-            return true;
-        }
-
-    }
-
 
 }
