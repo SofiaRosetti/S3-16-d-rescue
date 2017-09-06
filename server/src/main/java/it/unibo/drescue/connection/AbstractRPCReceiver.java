@@ -1,11 +1,10 @@
 package it.unibo.drescue.connection;
 
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.QueueingConsumer;
+import com.rabbitmq.client.*;
 import it.unibo.drescue.communication.GsonUtils;
 import it.unibo.drescue.communication.messages.response.ErrorMessageImpl;
+
+import java.io.IOException;
 
 /**
  * Abstract class that waits to receive a message.
@@ -27,51 +26,39 @@ public abstract class AbstractRPCReceiver implements RPCReceiver {
             this.channel.queueDeclare(receiveQueueName, false, false, false, null);
             this.channel.basicQos(1);
 
+            final Consumer consumer = new DefaultConsumer(this.channel) {
+                @Override
+                public void handleDelivery(final String consumerTag, final Envelope envelope,
+                                           final AMQP.BasicProperties properties, final byte[] body)
+                        throws IOException {
 
-            final QueueingConsumer consumer = new QueueingConsumer(this.channel);
-            this.channel.basicConsume(receiveQueueName, false, consumer);
+                    super.handleDelivery(consumerTag, envelope, properties, body);
 
-            while (true) {
+                    String response = "";
 
-                String response = null;
+                    try {
+                        final String message = new String(body, "UTF-8");
+                        System.out.println("[AbstractRPCReceiver] Received: " + message);
 
-                final QueueingConsumer.Delivery delivery = consumer.nextDelivery();
+                        response = accessDB(message);
 
-                final AMQP.BasicProperties props = delivery.getProperties();
-                final AMQP.BasicProperties replyProps =
-                        new AMQP.BasicProperties.Builder()
-                                .correlationId(props.getCorrelationId())
-                                .build();
+                    } catch (final Exception e) {
+                        response = GsonUtils.toGson(new ErrorMessageImpl("Exception."));
+                    } finally {
+                        AbstractRPCReceiver.this.channel.basicPublish("", properties.getReplyTo(), null,
+                                response.getBytes("UTF-8"));
+                        AbstractRPCReceiver.this.channel.basicAck(envelope.getDeliveryTag(), false);
+                    }
 
-                try {
-                    final String message = new String(delivery.getBody(), "UTF-8");
-                    System.out.println("[AbstractRPCReceiver] Received: " + message);
-
-                    response = accessDB(message);
-
-                } catch (final Exception e) {
-                    e.printStackTrace();
-                    response = GsonUtils.toGson(new ErrorMessageImpl("Exception."));
-
-                } finally {
-                    this.channel.basicPublish("", props.getReplyTo(), replyProps,
-                            response.getBytes("UTF-8"));
-                    this.channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
                 }
-            }
+            };
+
+            this.channel.basicConsume(receiveQueueName, false, consumer);
 
         } catch (final Exception e) {
             e.printStackTrace();
             //TODO handle
 
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (final Exception e) {
-                    //TODO handle
-                }
-            }
         }
     }
 

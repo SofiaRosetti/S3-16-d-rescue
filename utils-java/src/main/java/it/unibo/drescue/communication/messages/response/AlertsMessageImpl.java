@@ -1,6 +1,8 @@
 package it.unibo.drescue.communication.messages.response;
 
+import it.unibo.drescue.communication.builder.MessageBuilder;
 import it.unibo.drescue.communication.messages.AbstractMessage;
+import it.unibo.drescue.communication.messages.Message;
 import it.unibo.drescue.model.AlertImpl;
 
 import java.util.List;
@@ -8,7 +10,7 @@ import java.util.List;
 /**
  * Class that represents a message containing a list of alert.
  */
-public class AlertsMessageImpl extends AbstractMessage implements AlertsMessage {
+public class AlertsMessageImpl extends AbstractMessage implements AlertsMessage, MessageBuilder {
 
     public final static String ALERTS_MESSAGE = "alerts_message";
 
@@ -28,5 +30,10 @@ public class AlertsMessageImpl extends AbstractMessage implements AlertsMessage 
     @Override
     public List<AlertImpl> getAlerts() {
         return this.alertCollection;
+    }
+
+    @Override
+    public Message build() {
+        return this;
     }
 }

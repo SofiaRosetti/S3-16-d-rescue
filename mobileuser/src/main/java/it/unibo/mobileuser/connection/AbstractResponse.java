@@ -20,9 +20,10 @@ public abstract class AbstractResponse implements RequestDelegate {
                     break;
                 default:
                     onSuccessfulRequest(response);
+                    break;
             }
         } else {
-            onErrorRequest("Error on contacting server."); //TODO
+            onErrorRequest("Error on contacting server.");
         }
     }
 
