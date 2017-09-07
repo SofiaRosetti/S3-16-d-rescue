@@ -5,8 +5,8 @@ package it.unibo.drescue.model;
  */
 public class UpvotedAlertImpl implements UpvotedAlert {
 
-    private final int userID;
-    private final int alertID;
+    private int userID;
+    private int alertID;
 
     public UpvotedAlertImpl(final int userID, final int alertID) {
         this.userID = userID;
@@ -19,7 +19,17 @@ public class UpvotedAlertImpl implements UpvotedAlert {
     }
 
     @Override
+    public void setUserID(final int userID) {
+        this.userID = userID;
+    }
+
+    @Override
     public int getAlertID() {
         return this.alertID;
+    }
+
+    @Override
+    public void setAlertID(final int alertID) {
+        this.alertID = alertID;
     }
 }
