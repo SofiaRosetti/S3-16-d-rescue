@@ -3,7 +3,7 @@ package it.unibo.drescue.model;
 /**
  * An interface modelling a Civil Protection area.
  */
-public interface CpArea {
+public interface CpArea extends ObjectModel {
 
     /**
      * @return the civil protection ID

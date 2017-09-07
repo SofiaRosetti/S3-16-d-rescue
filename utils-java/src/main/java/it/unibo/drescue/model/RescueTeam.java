@@ -3,7 +3,7 @@ package it.unibo.drescue.model;
 /**
  * An interface modelling a Rescue Team.
  */
-public interface RescueTeam {
+public interface RescueTeam extends ObjectModel {
 
     /**
      * @return the rescue team ID

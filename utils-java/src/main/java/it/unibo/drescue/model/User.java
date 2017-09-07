@@ -3,7 +3,7 @@ package it.unibo.drescue.model;
 /**
  * An interface modelling a User.
  */
-public interface User {
+public interface User extends ObjectModel {
 
     /**
      * @return the user ID

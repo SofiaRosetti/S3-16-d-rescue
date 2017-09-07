@@ -22,4 +22,5 @@ public class EventTypeImpl implements EventType {
     public String getEventName() {
         return this.eventName;
     }
+
 }
