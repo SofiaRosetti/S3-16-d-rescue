@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.sql.Timestamp;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class OccurredEventImplBuilderTest {
@@ -20,44 +21,44 @@ public class OccurredEventImplBuilderTest {
     @Before
     public void createOccurredEvent() throws Exception {
         this.event = new OccurredEventImplBuilder()
-                .setTimestamp(this.TIMESTAMP)
-                .setLatitude(this.LATITUDE)
-                .setLongitude(this.LONGITUDE)
-                .setDescription(this.DESCRIPTION)
-                .setEventID(this.EVENT_ID)
-                .setCpID(this.CP_ID)
+                .setTimestamp(TIMESTAMP)
+                .setLatitude(LATITUDE)
+                .setLongitude(LONGITUDE)
+                .setDescription(DESCRIPTION)
+                .setEventID(EVENT_ID)
+                .setCpID(CP_ID)
                 .createOccurredEvent();
     }
 
     @Test
     public void checkCorrectTimestamp() throws Exception {
         final Timestamp timestamp = this.event.getTimestamp();
-        assertTrue(timestamp.equals(this.TIMESTAMP));
+        assertEquals(timestamp, TIMESTAMP);
     }
 
     @Test
     public void checkCorrectLatLng() throws Exception {
         final double latitude = this.event.getLatitude();
         final double longitude = this.event.getLongitude();
-        assertTrue(latitude == this.LATITUDE && longitude == this.LONGITUDE);
+        assertTrue(latitude == LATITUDE && longitude == LONGITUDE);
     }
 
     @Test
     public void checkCorrectDescription() throws Exception {
         final String description = this.event.getDescription();
-        assertTrue(description.equals(this.DESCRIPTION));
+        assertEquals(description, DESCRIPTION);
     }
 
     @Test
     public void checkCorrectEventID() throws Exception {
         final int eventID = this.event.getEventID();
-        assertTrue(eventID == this.EVENT_ID);
+        assertEquals(eventID, EVENT_ID);
     }
 
     @Test
     public void checkCorrectCpID() throws Exception {
         final String cpID = this.event.getCpID();
-        assertTrue(cpID.equals(this.CP_ID));
+        assertEquals(cpID, CP_ID);
     }
 
 }
