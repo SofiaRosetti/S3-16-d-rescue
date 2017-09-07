@@ -13,14 +13,14 @@ public class EventTypeImplTest {
 
     @Before
     public void createEventType() throws Exception {
-        this.eventType = new EventTypeImpl(this.EVENT_ID, this.EVENT_NAME);
+        this.eventType = new EventTypeImpl(EVENT_ID, EVENT_NAME);
     }
 
     @Test
     public void checkEventTypeCreation() throws Exception {
         final int eventID = this.eventType.getEventID();
         final String eventName = this.eventType.getEventName();
-        assertTrue(eventID == this.EVENT_ID && eventName.equals(this.EVENT_NAME));
+        assertTrue(eventID == EVENT_ID && eventName.equals(EVENT_NAME));
     }
 
 }
