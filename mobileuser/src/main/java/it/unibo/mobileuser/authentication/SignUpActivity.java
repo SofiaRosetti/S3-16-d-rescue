@@ -8,7 +8,7 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 import it.unibo.drescue.StringUtils;
 import it.unibo.drescue.communication.builder.requests.SignUpMessageBuilderImpl;
 import it.unibo.drescue.communication.messages.Message;
-import it.unibo.drescue.communication.messages.response.SuccessfulMessageImpl;
+import it.unibo.drescue.communication.messages.MessageType;
 import it.unibo.mobileuser.R;
 import it.unibo.mobileuser.ToolbarActivity;
 import it.unibo.mobileuser.connection.AbstractResponse;
@@ -81,7 +81,7 @@ public class SignUpActivity extends ToolbarActivity {
 
                     @Override
                     public void onSuccessfulRequest(final String response) {
-                        if (StringUtils.getMessageType(response).equals(SuccessfulMessageImpl.SUCCESSFUL_MESSAGE)) {
+                        if (StringUtils.getMessageType(response).equals(MessageType.SUCCESSFUL_MESSAGE.getMessageType())) {
                             Toast.makeText(SignUpActivity.this, R.string.sign_up_successful, Toast.LENGTH_LONG).show();
                             finish();
                         }
