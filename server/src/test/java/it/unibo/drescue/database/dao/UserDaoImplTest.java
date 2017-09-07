@@ -8,8 +8,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class UserDaoImplTest {
 
@@ -24,7 +23,7 @@ public class UserDaoImplTest {
 
     @Before
     public void setUp() throws Exception {
-        this.dbConnection = DBConnectionImpl.getLocalConnection();
+        this.dbConnection = DBConnectionImpl.getRemoteConnection();
         this.dbConnection.openConnection();
         this.userTest = new UserImplBuilder()
                 .setEmail(EMAIL_TEST)
@@ -40,7 +39,7 @@ public class UserDaoImplTest {
 
     @Test
     public void isUserNotAlreadyInDB() throws Exception {
-        assertTrue(this.userDao.findByEmail(this.userTest.getEmail()) == null);
+        assertTrue(this.userDao.selectByIdentifier(this.userTest) == null);
     }
 
     @Test
@@ -50,7 +49,7 @@ public class UserDaoImplTest {
         //Registering user
         this.userDao.insert(this.userTest);
         //After registration
-        assertTrue(this.userDao.findByEmail(this.userTest.getEmail()) != null);
+        assertTrue(this.userDao.selectByIdentifier(this.userTest) != null);
         //Deleting user
         this.userDao.delete(this.userTest);
         //After delete
@@ -58,11 +57,34 @@ public class UserDaoImplTest {
     }
 
 
+    //TODO handle exception
     @Test
     public void isRejectingDuplicateEmail() throws Exception {
-        assertTrue(this.userDao.insert(this.userTest));
-        assertFalse(this.userDao.insert(this.userTest));
+        this.userDao.insert(this.userTest);
+        assertNotNull(this.userDao.selectByIdentifier(this.userTest));
+
+        //assertFalse(this.userDao.insert(this.userTest));
+        //TODO handle exception
+
         //Deleting test user
+        this.userDao.delete(this.userTest);
+    }
+
+    @Test
+    public void isUpdatingPassword() throws Exception {
+        final String newPassword = "pass2";
+        this.userDao.insert(this.userTest);
+        User userInDb = (User) this.userDao.selectByIdentifier(this.userTest);
+        assertTrue(userInDb.getPassword().equals(this.userTest.getPassword()));
+        final User userToUpdate = new UserImplBuilder()
+                .setUserID(userInDb.getUserID())
+                .setEmail(userInDb.getEmail())
+                .setPassword(newPassword)
+                .createUserImpl();
+        this.userDao.update(userToUpdate);
+        userInDb = (User) this.userDao.selectByIdentifier(this.userTest);
+        assertTrue(userInDb.getPassword().equals(newPassword));
+        //Deleting user test
         this.userDao.delete(this.userTest);
     }
 

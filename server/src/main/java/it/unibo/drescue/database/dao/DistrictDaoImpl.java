@@ -2,6 +2,7 @@ package it.unibo.drescue.database.dao;
 
 import it.unibo.drescue.model.District;
 import it.unibo.drescue.model.DistrictImpl;
+import it.unibo.drescue.model.ObjectModel;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DistrictDaoImpl extends GenericDao<District> implements DistrictDao {
+public class DistrictDaoImpl extends UpdatableDaoAbstract<District> implements DistrictDao {
 
     private final static String TABLENAME = "DISTRICT";
 
@@ -19,25 +20,76 @@ public class DistrictDaoImpl extends GenericDao<District> implements DistrictDao
     }
 
     @Override
-    public District findById(final String districtId) {
+    public String getQuery(final QueryType queryType) {
+        switch (queryType) {
+            case INSERT:
+                return "INSERT INTO " + TABLENAME + "(districtID,districtLongName,population)"
+                        + "VALUE (?,?,?)";
+            case DELETE:
+                return "DELETE FROM " + TABLENAME
+                        + " WHERE districtID = ?";
+            case FIND_ONE:
+                /*
+                * Note: The identifier in district is 'districtID'
+                */
+                return "SELECT districtID,districtLongName,population "
+                        + "FROM " + TABLENAME + " WHERE districtID = ?";
+            case FIND_ALL:
+                return "SELECT  districtID, districtLongName, population FROM " + TABLENAME;
+            case UPDATE:
+                return "UPDATE " + TABLENAME + " SET population = ? "
+                        + "WHERE districtID = ?";
+            default:
+                //TODO Handle Exception
+                return null;
+        }
+    }
 
-        District district = null;
-        final String query = "SELECT districtID,districtLongName,population "
-                + "FROM " + TABLENAME + " WHERE districtID = ?";
+    @Override
+    public PreparedStatement fillStatement(final ObjectModel objectModel, final PreparedStatement statement, final QueryType queryType) {
+        final District district = ((DistrictImpl) objectModel);
         try {
-            final PreparedStatement statement = this.connection.prepareStatement(query);
-            statement.setString(1, districtId);
-            final ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                district = new DistrictImpl(
-                        resultSet.getString("districtID"),
-                        resultSet.getString("districtLongName"),
-                        resultSet.getInt("population"));
+            switch (queryType) {
+                case INSERT:
+                    statement.setString(1, district.getDistrictID());
+                    statement.setString(2, district.getDistrictLongName());
+                    statement.setInt(3, district.getPopulation());
+                    break;
+                case DELETE:
+                    statement.setString(1, district.getDistrictID());
+                    break;
+                case FIND_ONE:
+                    statement.setString(1, district.getDistrictID());
+                    break;
+                case UPDATE:
+                    //used to update population of that specific districtID
+                    statement.setInt(1, district.getPopulation());
+                    statement.setString(2, district.getDistrictID());
+                    statement.executeUpdate();
+                    break;
+                default:
+                    //TODO Exception 'query not available for this object'
             }
-            resultSet.close();
-            statement.close();
+
         } catch (final SQLException e) {
             e.printStackTrace();
+            //TODO handle exception
+            return null;
+        }
+        return statement;
+    }
+
+    @Override
+    protected ObjectModel mapRecordToModel(final ResultSet resultSet) {
+        District district = null;
+        try {
+            district = new DistrictImpl(
+                    resultSet.getString("districtID"),
+                    resultSet.getString("districtLongName"),
+                    resultSet.getInt("population"));
+        } catch (final SQLException e) {
+            e.printStackTrace();
+            //TODO handle
         }
         return district;
     }
@@ -45,7 +97,7 @@ public class DistrictDaoImpl extends GenericDao<District> implements DistrictDao
     @Override
     public List<District> findAll() {
         final List<District> districtList = new ArrayList<>();
-        final String query = "SELECT  districtID, districtLongName, population FROM " + TABLENAME;
+        final String query = this.getQuery(QueryType.FIND_ALL);
         try {
             final PreparedStatement statement = this.connection.prepareStatement(query);
             final ResultSet resultSet = statement.executeQuery();
@@ -65,61 +117,4 @@ public class DistrictDaoImpl extends GenericDao<District> implements DistrictDao
         return districtList;
     }
 
-    @Override
-    public boolean insert(final District district) {
-
-        //Verify if districtID already exists
-        if (this.findById(district.getDistrictID()) != null) {
-            System.out.println("[DB]: INSERT_DISTRICT_FAIL: " + district.getDistrictID() + " already in db");
-            return false;
-        }
-        final String query = "INSERT INTO " + TABLENAME + "(districtID,districtLongName,population)"
-                + "VALUE (?,?,?)";
-        try {
-            final PreparedStatement statement = this.connection.prepareStatement(query);
-            statement.setString(1, district.getDistrictID());
-            statement.setString(2, district.getDistrictLongName());
-            statement.setInt(3, district.getPopulation());
-            statement.executeUpdate();
-            statement.close();
-            System.out.println("[DB]: INSERT_DISTRICT_OK: Added district " + district.getDistrictLongName());
-            return true;
-        } catch (final SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    @Override
-    public boolean delete(final District district) {
-        final String query = "DELETE FROM " + TABLENAME
-                + " WHERE districtID = ?";
-        try {
-            final PreparedStatement statement = this.connection.prepareStatement(query);
-            statement.setString(1, district.getDistrictID());
-            statement.executeUpdate();
-            statement.close();
-            return true;
-        } catch (final SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    @Override
-    public boolean update(final String districtId, final int population) {
-
-        final String query = "UPDATE " + TABLENAME + " SET population = ? "
-                + "WHERE districtID = ?";
-        try {
-            final PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-            preparedStatement.setInt(1, population);
-            preparedStatement.setString(2, districtId);
-            preparedStatement.executeUpdate();
-            return true;
-        } catch (final SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 }

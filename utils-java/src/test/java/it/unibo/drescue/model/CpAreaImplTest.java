@@ -3,7 +3,7 @@ package it.unibo.drescue.model;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 public class CpAreaImplTest {
 
@@ -13,19 +13,19 @@ public class CpAreaImplTest {
 
     @Before
     public void createCpArea() throws Exception {
-        this.cpArea = new CpAreaImpl(this.CP_ID, this.DISTRICT_ID);
+        this.cpArea = new CpAreaImpl(CP_ID, DISTRICT_ID);
     }
 
     @Test
     public void checkCorrectID() throws Exception {
         final String cpID = this.cpArea.getCpID();
-        assertTrue(cpID.equals(this.CP_ID));
+        assertEquals(cpID, CP_ID);
     }
 
     @Test
     public void checkCorrectDistrictID() throws Exception {
         final String districtID = this.cpArea.getDistrictID();
-        assertTrue(districtID.equals(this.DISTRICT_ID));
+        assertEquals(districtID, DISTRICT_ID);
     }
 
 }
