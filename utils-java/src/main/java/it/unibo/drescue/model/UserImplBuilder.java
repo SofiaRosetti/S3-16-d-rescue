@@ -1,13 +1,7 @@
 package it.unibo.drescue.model;
 
 public class UserImplBuilder {
-
-    /*private int userID;
-    private String name;
-    private String surname;
-    private String email;
-    private String password;
-    private String phoneNumber;*/
+    
     private final UserImpl user;
 
     public UserImplBuilder() {
