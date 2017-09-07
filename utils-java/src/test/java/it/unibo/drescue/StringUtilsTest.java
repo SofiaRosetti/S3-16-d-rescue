@@ -1,5 +1,6 @@
 package it.unibo.drescue;
 
+import it.unibo.drescue.communication.messages.MessageType;
 import it.unibo.drescue.communication.messages.response.SuccessfulMessageImpl;
 import org.junit.Test;
 
@@ -13,6 +14,8 @@ public class StringUtilsTest {
     private static final String RIGHT_EMAIL2 = "test-email@test.com";
     private static final String RIGHT_EMAIL3 = "test.email.test@test.com";
     private static final String WRONG_EMAIL = "test.email@test.1";
+
+    private static final String MESSAGE = "alerts_message";
 
     @Test
     public void isAValidString() {
@@ -36,7 +39,12 @@ public class StringUtilsTest {
     @Test
     public void isMessageTypeCorrect() {
         final SuccessfulMessageImpl message = new SuccessfulMessageImpl();
-        assertEquals(message.getMessageType(), SuccessfulMessageImpl.SUCCESSFUL_MESSAGE);
+        assertEquals(message.getMessageType(), MessageType.SUCCESSFUL_MESSAGE.getMessageType());
+    }
+
+    @Test
+    public void checkCorrectMessageNameByType() {
+        assertEquals(MessageType.ALERTS_MESSAGE, StringUtils.getMessageNameByType(MESSAGE));
     }
 
 }
