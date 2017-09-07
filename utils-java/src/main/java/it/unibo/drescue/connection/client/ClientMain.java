@@ -5,6 +5,7 @@ import it.unibo.drescue.StringUtils;
 import it.unibo.drescue.communication.GsonUtils;
 import it.unibo.drescue.communication.builder.requests.SignUpMessageBuilderImpl;
 import it.unibo.drescue.communication.messages.Message;
+import it.unibo.drescue.communication.messages.MessageType;
 import it.unibo.drescue.communication.messages.response.ErrorMessageImpl;
 import it.unibo.drescue.communication.messages.response.SuccessfulMessageImpl;
 import it.unibo.drescue.connection.RabbitMQConnectionImpl;
@@ -66,12 +67,13 @@ public class ClientMain {
 
         //handle reply to AbstractResponse
         final String messageType = StringUtils.getMessageType(responseMessage);
-        switch (messageType) {
-            case ErrorMessageImpl.ERROR_MESSAGE:
+        final MessageType nameMessage = StringUtils.getMessageNameByType(messageType);
+        switch (nameMessage) {
+            case ERROR_MESSAGE:
                 final ErrorMessageImpl errorMessage = GsonUtils.fromGson(responseMessage, ErrorMessageImpl.class);
                 System.out.println("[ClientMain] error message " + errorMessage.getError());
                 break;
-            case SuccessfulMessageImpl.SUCCESSFUL_MESSAGE:
+            case SUCCESSFUL_MESSAGE:
                 final SuccessfulMessageImpl successfulMessage = GsonUtils.fromGson(responseMessage, SuccessfulMessageImpl.class);
                 System.out.println("[ClientMain] successful message");
                 break;

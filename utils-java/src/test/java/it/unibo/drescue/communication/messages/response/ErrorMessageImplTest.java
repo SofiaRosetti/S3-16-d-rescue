@@ -1,5 +1,6 @@
 package it.unibo.drescue.communication.messages.response;
 
+import it.unibo.drescue.communication.messages.MessageType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,7 +21,7 @@ public class ErrorMessageImplTest {
         final String error = this.errorMessage.getError();
         final String messageType = this.errorMessage.getMessageType();
         assertEquals(error, ERROR);
-        assertEquals(messageType, ErrorMessageImpl.ERROR_MESSAGE);
+        assertEquals(messageType, MessageType.ERROR_MESSAGE.getMessageType());
     }
 
 }

@@ -1,13 +1,12 @@
 package it.unibo.drescue.communication.messages.requests;
 
 import it.unibo.drescue.communication.messages.AbstractMessage;
+import it.unibo.drescue.communication.messages.MessageType;
 
 /**
  * Class that represent a message for performing the submit of a new alert.
  */
 public class NewAlertMessageImpl extends AbstractMessage implements NewAlertMessage {
-
-    public final static String NEW_ALERT_MESSAGE = "new_alert_message";
 
     private int userID;
     private int eventType;
@@ -15,7 +14,7 @@ public class NewAlertMessageImpl extends AbstractMessage implements NewAlertMess
     private double longitude;
 
     public NewAlertMessageImpl() {
-        super(NEW_ALERT_MESSAGE);
+        super(MessageType.NEW_ALERT_MESSAGE);
     }
 
     @Override

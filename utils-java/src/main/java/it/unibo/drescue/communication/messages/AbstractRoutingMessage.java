@@ -13,7 +13,7 @@ public abstract class AbstractRoutingMessage extends AbstractMessage implements 
      *
      * @param messageType type of the message
      */
-    public AbstractRoutingMessage(final String messageType) {
+    public AbstractRoutingMessage(final MessageType messageType) {
         super(messageType);
     }
 

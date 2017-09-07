@@ -1,5 +1,6 @@
 package it.unibo.drescue.communication.messages.response;
 
+import it.unibo.drescue.communication.messages.MessageType;
 import it.unibo.drescue.model.User;
 import it.unibo.drescue.model.UserImplBuilder;
 import org.junit.Before;
@@ -46,6 +47,6 @@ public class ProfileMessageTest {
 
     @Test
     public void checkCorrectMessageType() {
-        assertEquals(this.profileMessage.getMessageType(), ProfileMessageImpl.PROFILE_MESSAGE);
+        assertEquals(this.profileMessage.getMessageType(), MessageType.PROFILE_MESSAGE.getMessageType());
     }
 }

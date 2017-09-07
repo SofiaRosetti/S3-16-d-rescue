@@ -1,6 +1,7 @@
 package it.unibo.drescue.communication.messages.requests;
 
 import it.unibo.drescue.communication.messages.Message;
+import it.unibo.drescue.communication.messages.MessageType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,7 +14,7 @@ public class RequestProfileMessageTest {
 
     private static final int USER_ID = 12345;
 
-    private RequestProfileMessageImpl requestProfileMessageImpl;
+    private RequestProfileMessage requestProfileMessageImpl;
 
     /**
      * Creates a test message containing the identifier of a test user.
@@ -21,7 +22,7 @@ public class RequestProfileMessageTest {
     @Before
     public void init() {
         final Message requestProfileMessage = new RequestProfileMessageImpl(USER_ID);
-        if (requestProfileMessage.getMessageType().equals(RequestProfileMessageImpl.REQUEST_PROFILE_MESSAGE)) {
+        if (requestProfileMessage.getMessageType().equals(MessageType.REQUEST_PROFILE_MESSAGE.getMessageType())) {
             this.requestProfileMessageImpl = (RequestProfileMessageImpl) requestProfileMessage;
         }
     }
