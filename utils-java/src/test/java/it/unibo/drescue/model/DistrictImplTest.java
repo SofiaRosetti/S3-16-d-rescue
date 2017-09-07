@@ -9,6 +9,7 @@ public class DistrictImplTest {
 
     private static final String DISTRICT_ID = "FC";
     private static final String DISTRICT_LONGNAME = "Forlì-Cesena";
+    private static final String NEW_DISTRICT_LONGNAME = "NewLongNameTest";
     private static final int POPULATION = 398322;
     private District district;
 
@@ -33,6 +34,13 @@ public class DistrictImplTest {
     public void checkCorrectPopulation() throws Exception {
         final int population = this.district.getPopulation();
         assertEquals(population, POPULATION);
+    }
+
+    @Test
+    public void checkLongNameChange() throws Exception {
+        this.district.setDistrictLongName(NEW_DISTRICT_LONGNAME);
+        final String newDistrictLongName = this.district.getDistrictLongName();
+        assertEquals(newDistrictLongName, NEW_DISTRICT_LONGNAME);
     }
 
 }
