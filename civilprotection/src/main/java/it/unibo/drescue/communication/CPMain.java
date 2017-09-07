@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 
-public class CpMain {
+public class CPMain {
 
     public static void main(final String[] args) throws IOException, TimeoutException {
 
@@ -24,9 +24,10 @@ public class CpMain {
 
         final Broker broker = new BrokerImpl();
         broker.createConnection(bindingQueue);
-        broker.newConsumer();
+        final CPConsumer consumer = new CPConsumer(broker.getChannel());
+        broker.newConsumer(consumer);
 
-        final CpProducer producer = new CpProducerImpl(broker.getChannel());
+        final CPProducer producer = new CPProducerImpl(broker.getChannel());
 
         //*************************************************************
         //TODO Insert into Test class
