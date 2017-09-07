@@ -3,7 +3,7 @@ package it.unibo.drescue.model;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 public class DistrictImplTest {
 
@@ -14,25 +14,25 @@ public class DistrictImplTest {
 
     @Before
     public void createDistrict() throws Exception {
-        this.district = new DistrictImpl(this.DISTRICT_ID, this.DISTRICT_LONGNAME, this.POPULATION);
+        this.district = new DistrictImpl(DISTRICT_ID, DISTRICT_LONGNAME, POPULATION);
     }
 
     @Test
     public void checkCorrectID() throws Exception {
         final String districtID = this.district.getDistrictID();
-        assertTrue(districtID.equals(this.DISTRICT_ID));
+        assertEquals(districtID, DISTRICT_ID);
     }
 
     @Test
     public void checkCorrectLongName() throws Exception {
         final String districtLongName = this.district.getDistrictLongName();
-        assertTrue(districtLongName.equals(this.DISTRICT_LONGNAME));
+        assertEquals(districtLongName, DISTRICT_LONGNAME);
     }
 
     @Test
     public void checkCorrectPopulation() throws Exception {
         final int population = this.district.getPopulation();
-        assertTrue(population == this.POPULATION);
+        assertEquals(population, POPULATION);
     }
 
 }
