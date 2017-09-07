@@ -8,7 +8,7 @@ public enum MessageType {
     ERROR_MESSAGE("error_message"),
     LOGIN_MESSAGE("login_message"),
     NEW_ALERT_MESSAGE("new_alert_message"),
-    NO_MESSAGE(""),
+    UNKNOWN_MESSAGE(""),
     PROFILE_MESSAGE("profile_message"),
     REQUEST_ALERTS_MESSAGE("request_alerts_message"),
     REQUEST_PROFILE_MESSAGE("request_profile_message"),

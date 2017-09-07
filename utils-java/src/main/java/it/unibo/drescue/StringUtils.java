@@ -3,7 +3,6 @@ package it.unibo.drescue;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import it.unibo.drescue.communication.messages.MessageType;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,18 +52,4 @@ public class StringUtils {
         return jo.get(MESSAGE_TYPE).getAsString();
     }
 
-    /**
-     * Gets an object MessageType of the given message value.
-     *
-     * @param messageType message value
-     * @return the message name, otherwise the message name of no message if it does not match .
-     */
-    public static MessageType getMessageNameByType(final String messageType) {
-        for (final MessageType name : MessageType.values()) {
-            if (messageType.equals(name.getMessageType())) {
-                return name;
-            }
-        }
-        return MessageType.NO_MESSAGE;
-    }
 }

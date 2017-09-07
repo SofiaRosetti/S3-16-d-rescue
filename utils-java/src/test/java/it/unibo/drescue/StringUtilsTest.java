@@ -15,8 +15,6 @@ public class StringUtilsTest {
     private static final String RIGHT_EMAIL3 = "test.email.test@test.com";
     private static final String WRONG_EMAIL = "test.email@test.1";
 
-    private static final String MESSAGE = "alerts_message";
-
     @Test
     public void isAValidString() {
 
@@ -41,10 +39,5 @@ public class StringUtilsTest {
         final SuccessfulMessageImpl message = new SuccessfulMessageImpl();
         assertEquals(message.getMessageType(), MessageType.SUCCESSFUL_MESSAGE.getMessageType());
     }
-
-    @Test
-    public void checkCorrectMessageNameByType() {
-        assertEquals(MessageType.ALERTS_MESSAGE, StringUtils.getMessageNameByType(MESSAGE));
-    }
-
+    
 }
