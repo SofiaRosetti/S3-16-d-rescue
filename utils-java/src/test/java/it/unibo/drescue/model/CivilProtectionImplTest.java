@@ -3,7 +3,7 @@ package it.unibo.drescue.model;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 public class CivilProtectionImplTest {
 
@@ -13,19 +13,19 @@ public class CivilProtectionImplTest {
 
     @Before
     public void createCivilProtection() throws Exception {
-        this.civilProtection = new CivilProtectionImpl(this.CP_ID, this.PASSWORD);
+        this.civilProtection = new CivilProtectionImpl(CP_ID, PASSWORD);
     }
 
     @Test
     public void checkCorrectID() throws Exception {
         final String cpID = this.civilProtection.getCpID();
-        assertTrue(cpID.equals(this.CP_ID));
+        assertEquals(cpID, CP_ID);
     }
 
     @Test
     public void checkCorrectPassword() throws Exception {
         final String password = this.civilProtection.getPassword();
-        assertTrue(password.equals(this.PASSWORD));
+        assertEquals(password, PASSWORD);
     }
 
 }
