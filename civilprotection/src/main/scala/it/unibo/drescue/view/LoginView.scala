@@ -14,6 +14,7 @@ object LoginView extends JFXApp {
     title = "D-rescue"
     scene = new Scene {
       val grid = new GridPane {
+        resizable = false
         hgap = 10
         vgap = 10
         padding = Insets(100)

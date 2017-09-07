@@ -4,6 +4,7 @@ import it.unibo.drescue.database.DBConnection;
 import it.unibo.drescue.database.DBConnectionImpl;
 import it.unibo.drescue.model.EventType;
 import it.unibo.drescue.model.EventTypeImpl;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,7 +20,7 @@ public class EventTypeDaoImplTest {
 
     @Before
     public void setUp() throws Exception {
-        this.dbConnection = DBConnectionImpl.getLocalConnection();
+        this.dbConnection = DBConnectionImpl.getRemoteConnection();
         //Initialize EventDao
         this.eventTypeDao = (EventTypeDao) this.dbConnection.getDAO(DBConnection.Table.EVENT_TYPE);
     }
@@ -27,9 +28,9 @@ public class EventTypeDaoImplTest {
     @Test
     public void isInsertingAndDeletingEventType() throws Exception {
         this.eventTypeDao.insert(this.EVENT_TYPE_TEST);
-        assertTrue(this.eventTypeDao.findByName(this.EVENT_TYPE_TEST.getEventName()) != null);
+        assertTrue(this.eventTypeDao.selectByIdentifier(this.EVENT_TYPE_TEST) != null);
         this.eventTypeDao.delete(this.EVENT_TYPE_TEST);
-        assertTrue(this.eventTypeDao.findByName(this.EVENT_TYPE_TEST.getEventName()) == null);
+        assertTrue(this.eventTypeDao.selectByIdentifier(this.EVENT_TYPE_TEST) == null);
     }
 
     @Test
@@ -42,5 +43,9 @@ public class EventTypeDaoImplTest {
         assertTrue(this.eventTypeDao.findAll().size() == initialSize);
     }
 
+    @After
+    public void tearDown() throws Exception {
+        this.dbConnection.closeConnection();
+    }
 
 }

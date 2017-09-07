@@ -6,7 +6,7 @@ import java.sql.Timestamp;
  * An interface modelling an Alert.
  */
 
-public interface Alert {
+public interface Alert extends ObjectModel {
 
     /**
      * @return the alert ID

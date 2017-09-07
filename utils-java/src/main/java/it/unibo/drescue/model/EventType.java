@@ -4,7 +4,7 @@ package it.unibo.drescue.model;
  * An interface modelling an Alert.
  */
 
-public interface EventType {
+public interface EventType extends ObjectModel {
 
     /**
      * @return the event ID

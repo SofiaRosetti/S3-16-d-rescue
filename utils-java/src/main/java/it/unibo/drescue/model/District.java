@@ -4,7 +4,7 @@ package it.unibo.drescue.model;
  * An interface modelling a District.
  */
 
-public interface District {
+public interface District extends ObjectModel {
 
     /**
      * @return the district ID

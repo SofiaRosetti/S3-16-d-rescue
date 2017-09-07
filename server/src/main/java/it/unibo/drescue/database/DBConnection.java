@@ -1,6 +1,6 @@
 package it.unibo.drescue.database;
 
-import it.unibo.drescue.database.dao.GenericDao;
+import it.unibo.drescue.database.dao.GenericDaoAbstract;
 
 import java.sql.SQLException;
 
@@ -34,13 +34,15 @@ public interface DBConnection {
      * @return the DAO for the specified table
      * @throws SQLException if connection is closed or null
      */
-    GenericDao getDAO(Table table) throws SQLException;
+    GenericDaoAbstract getDAO(Table table) throws SQLException;
 
     enum Table {
         USER,
         DISTRICT,
         EVENT_TYPE,
-        ALERT
+        ALERT,
+        CIVIL_PROTECTION,
+        CP_AREA
     }
 
 }

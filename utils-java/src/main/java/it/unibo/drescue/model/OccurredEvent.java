@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 /**
  * An interface modelling an event that really happened.
  */
-public interface OccurredEvent {
+public interface OccurredEvent extends ObjectModel {
 
     /**
      * @return the event timestamp

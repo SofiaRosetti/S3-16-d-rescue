@@ -43,14 +43,11 @@ public class DBInitializationImpl implements DBInitialization {
         }
         //Inserting districts
         for (final District district : districts) {
-            if (!districtDao.insert(district)) {
-                //TODO Exception
-                System.out.println("Error inserting district " + district.getDistrictLongName());
-                return;
-            }
+            districtDao.insert(district);
+            //TODO handle exception
         }
-
     }
+
 
     @Override
     public void insertAllEventTypesFrom(final String pathFile) {
@@ -72,11 +69,8 @@ public class DBInitializationImpl implements DBInitialization {
         }
         //Inserting events_type
         for (final EventType eventType : eventTypeList) {
-            if (!eventTypeDao.insert(eventType)) {
-                //TODO Exception
-                System.out.println("Error inserting event " + eventType.getEventName());
-                return;
-            }
+            eventTypeDao.insert(eventType);
+            //TODO Handle Exception
         }
 
     }
