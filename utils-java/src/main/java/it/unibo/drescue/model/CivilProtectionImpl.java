@@ -5,8 +5,8 @@ package it.unibo.drescue.model;
  */
 public class CivilProtectionImpl implements CivilProtection {
 
-    private final String cpID;
-    private final String password;
+    private String cpID;
+    private String password;
 
     public CivilProtectionImpl(final String cpID, final String password) {
         this.cpID = cpID;
@@ -19,7 +19,17 @@ public class CivilProtectionImpl implements CivilProtection {
     }
 
     @Override
+    public void setCpID(final String cpID) {
+        this.cpID = cpID;
+    }
+
+    @Override
     public String getPassword() {
         return this.password;
+    }
+
+    @Override
+    public void setPassword(final String password) {
+        this.password = password;
     }
 }
