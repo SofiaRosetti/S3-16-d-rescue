@@ -37,9 +37,6 @@ public class BrokerImpl implements Broker {
 
     @Override
     public void newConsumer(Consumer consumer) throws IOException {
-        //TODO Refactor Consumer into new java class and delete consolo log
-
-
         this.channel.basicConsume(this.queueName, true, consumer);
     }
 
