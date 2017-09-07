@@ -11,7 +11,21 @@ public interface UpvotedAlert extends ObjectModel {
     int getUserID();
 
     /**
+     * Sets the user ID
+     *
+     * @param userID the user ID
+     */
+    void setUserID(int userID);
+
+    /**
      * @return the alert ID
      */
     int getAlertID();
+
+    /**
+     * Sets the alert ID
+     *
+     * @param alertID the alert ID
+     */
+    void setAlertID(int alertID);
 }
