@@ -1,14 +1,15 @@
 package it.unibo.drescue.communication.messages.response;
 
 import it.unibo.drescue.communication.builder.MessageBuilder;
+import it.unibo.drescue.model.User;
 
 /**
- * Interface modelling a response message to the login request containing user identifier.
+ * Interface modelling a response message to the login request containing user data.
  */
 public interface ResponseLoginMessage extends MessageBuilder {
 
     /**
-     * @return user identifier
+     * @return user data
      */
-    int getUserID();
+    User getUser();
 }
