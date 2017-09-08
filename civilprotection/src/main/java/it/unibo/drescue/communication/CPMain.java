@@ -1,10 +1,13 @@
 package it.unibo.drescue.communication;
 
+import com.rabbitmq.client.BuiltinExchangeType;
 import it.unibo.drescue.communication.builder.CPConfigurationMessageBuilder;
 import it.unibo.drescue.communication.builder.CPConfigurationMessageBuilderImpl;
 import it.unibo.drescue.communication.builder.CPCoordinationMessageBuilder;
 import it.unibo.drescue.communication.builder.CPCoordinationMessageBuilderImpl;
 import it.unibo.drescue.communication.messages.Message;
+import it.unibo.drescue.connection.RabbitMQConnectionImpl;
+import it.unibo.drescue.connection.RabbitMQImpl;
 import it.unibo.drescue.model.RescueTeamImpl;
 import it.unibo.drescue.model.RescueTeamImplBuilder;
 
@@ -14,24 +17,13 @@ import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 
-public class CpMain {
+public class CPMain {
+
+    public final static String EXCHANGE_NAME = "rabbitmq_rescueteam";
 
     public static void main(final String[] args) throws IOException, TimeoutException {
 
-
-        //TODO Make a server request in order to get the cp's rescue team
-        final String[] bindingQueue = {"RT001", "RT002",};
-        final String cpID = args[0];
-
-        final Broker broker = new BrokerImpl();
-        broker.createConnection(bindingQueue);
-        broker.newConsumer();
-
-        final CpProducer producer = new CpProducerImpl(broker.getChannel());
-
-        //*************************************************************
         //TODO Insert into Test class
-
         final RescueTeamImpl rescueTeamRA01 = new RescueTeamImplBuilder()
                 .setRescueTeamID("Ra01")
                 .setPassword("Ra01")
@@ -56,24 +48,48 @@ public class CpMain {
 
         final CPCoordinationMessageBuilder coordinationBuilder = new CPCoordinationMessageBuilderImpl();
 
-        final Message message = coordinationBuilder
+        final Message coordinationMessage = coordinationBuilder
                 .setRescueTeam(rescueTeamRA01)
                 .setFrom("Martina")
                 .setTo("Anna")
                 .build();
 
-
-        producer.sendMessage(message, bindingQueue[1]);
-
         final CPConfigurationMessageBuilder configurationBuilder = new CPConfigurationMessageBuilderImpl();
 
-        final Message m = configurationBuilder
+        final Message configurationMessage = configurationBuilder
                 .setRescueTeamCollection(rescueTeamCollection)
                 .setFrom("Martina")
                 .setTo("Anna")
                 .build();
 
-        producer.sendMessage(m, bindingQueue[1]);
+
+        //TODO Make a server request in order to get the cp's rescue team
+        final String[] bindingQueue = {"RT001", "RT002",};
+
+        RabbitMQConnectionImpl connection = null;
+        RabbitMQImpl rabbitMQ = null;
+
+        try {
+
+            connection =  new RabbitMQConnectionImpl("localhost");
+            connection.openConnection();
+            rabbitMQ = new RabbitMQImpl(connection);
+
+            rabbitMQ.declareExchange(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
+
+            final String queueName = rabbitMQ.addReplyQueue();
+            rabbitMQ.bindQueueToExchange(queueName, EXCHANGE_NAME, bindingQueue);
+
+            final CPConsumer consumer = new CPConsumer(rabbitMQ.getChannel());
+            rabbitMQ.addConsumer(consumer, queueName);
+
+            rabbitMQ.sendMessage(EXCHANGE_NAME,  bindingQueue[1], null, coordinationMessage);
+            rabbitMQ.sendMessage(EXCHANGE_NAME,  bindingQueue[1], null, configurationMessage);
+
+        }
+        catch (Exception e){
+            //TODO
+        }
 
     }
 }

@@ -4,7 +4,7 @@ import it.unibo.drescue.communication.messages.*;
 
 import java.io.IOException;
 
-public interface CpProducer {
+public interface CPProducer {
 
     /**
      *

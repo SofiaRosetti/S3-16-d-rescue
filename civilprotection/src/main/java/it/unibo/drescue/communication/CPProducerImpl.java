@@ -5,11 +5,11 @@ import it.unibo.drescue.communication.messages.Message;
 
 import java.io.IOException;
 
-public class CpProducerImpl implements CpProducer {
+public class CPProducerImpl implements CPProducer {
 
     private Channel channel;
 
-    public CpProducerImpl(Channel channel) {
+    public CPProducerImpl(Channel channel) {
         this.channel = channel;
     }
 
