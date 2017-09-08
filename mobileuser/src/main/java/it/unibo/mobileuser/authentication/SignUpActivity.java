@@ -9,6 +9,7 @@ import it.unibo.drescue.StringUtils;
 import it.unibo.drescue.communication.builder.requests.SignUpMessageBuilderImpl;
 import it.unibo.drescue.communication.messages.Message;
 import it.unibo.drescue.communication.messages.MessageType;
+import it.unibo.drescue.connection.QueueType;
 import it.unibo.mobileuser.R;
 import it.unibo.mobileuser.ToolbarActivity;
 import it.unibo.mobileuser.connection.AbstractResponse;
@@ -75,7 +76,7 @@ public class SignUpActivity extends ToolbarActivity {
      */
     private void signUp(final Message message) {
 
-        new RabbitAsyncTask(it.unibo.drescue.connection.ServerUtils.AUTHENTICATION_QUEUE_RPC,
+        new RabbitAsyncTask(QueueType.AUTHENTICATION_QUEUE_RPC.getQueueName(),
                 message,
                 new AbstractResponse() {
 

@@ -19,11 +19,11 @@ public abstract class AbstractRPCReceiver implements RPCReceiver {
      * @param connection       the connection on which open the channel
      * @param receiveQueueName the queue name on which waiting for messages.
      */
-    public AbstractRPCReceiver(final Connection connection, final String receiveQueueName) {
+    public AbstractRPCReceiver(final Connection connection, final QueueType receiveQueueName) {
 
         try {
             this.channel = connection.createChannel();
-            this.channel.queueDeclare(receiveQueueName, false, false, false, null);
+            this.channel.queueDeclare(receiveQueueName.getQueueName(), false, false, false, null);
             this.channel.basicQos(1);
 
             final Consumer consumer = new DefaultConsumer(this.channel) {
@@ -53,7 +53,7 @@ public abstract class AbstractRPCReceiver implements RPCReceiver {
                 }
             };
 
-            this.channel.basicConsume(receiveQueueName, false, consumer);
+            this.channel.basicConsume(receiveQueueName.getQueueName(), false, consumer);
 
         } catch (final Exception e) {
             e.printStackTrace();

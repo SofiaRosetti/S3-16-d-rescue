@@ -20,7 +20,7 @@ public class AuthenticationRPCReceiver extends AbstractRPCReceiver {
      * @param connection         the connection on which open the channel
      * @param receiveChannelName the channel name on which waiting for requests
      */
-    public AuthenticationRPCReceiver(final Connection connection, final String receiveChannelName) {
+    public AuthenticationRPCReceiver(final Connection connection, final QueueType receiveChannelName) {
         super(connection, receiveChannelName);
     }
 
