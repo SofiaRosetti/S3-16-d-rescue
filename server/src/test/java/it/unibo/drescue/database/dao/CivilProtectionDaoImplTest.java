@@ -1,66 +1,82 @@
 package it.unibo.drescue.database.dao;
 
 import it.unibo.drescue.database.DBConnection;
-import it.unibo.drescue.database.DBConnectionImpl;
 import it.unibo.drescue.model.CivilProtection;
 import it.unibo.drescue.model.CivilProtectionImpl;
-import org.junit.After;
-import org.junit.Before;
+import it.unibo.drescue.model.ObjectModel;
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-public class CivilProtectionDaoImplTest {
+public class CivilProtectionDaoImplTest extends GenericDaoAbstractTest {
 
-    protected static final CivilProtection CIVIL_PROTECTION_TEST =
+    private static final CivilProtection CIVIL_PROTECTION_TEST =
             new CivilProtectionImpl("TEST001", "password");
 
     private CivilProtectionDao civilProtectionDao = null;
-    private DBConnection dbConnection;
 
-    @Before
-    public void setUp() throws Exception {
-        this.dbConnection = DBConnectionImpl.getRemoteConnection();
-        //Initialize EventDao
-        this.civilProtectionDao = (CivilProtectionDao)
-                this.dbConnection.getDAO(DBConnection.Table.CIVIL_PROTECTION);
+    @Override
+    protected GenericDao getDaoForTest(final DBConnection connection) throws Exception {
+        return this.civilProtectionDao = (CivilProtectionDao)
+                connection.getDAO(DBConnection.Table.CIVIL_PROTECTION);
     }
 
-    @Test
-    public void isInsertingAndDeletingCivilProtection() throws Exception {
-        this.civilProtectionDao.insert(CIVIL_PROTECTION_TEST);
-        assertTrue(this.civilProtectionDao.selectByIdentifier(CIVIL_PROTECTION_TEST) != null);
-        this.civilProtectionDao.delete(CIVIL_PROTECTION_TEST);
-        assertTrue(this.civilProtectionDao.selectByIdentifier(CIVIL_PROTECTION_TEST) == null);
+    @Override
+    protected ObjectModel getTestObject() {
+        return CIVIL_PROTECTION_TEST;
     }
 
+    @Override
+    protected void doOtherSetUp(final DBConnection connectionForTest) {
+        //DO NOTHING
+    }
+
+    @Override
+    protected void doOtherTearDown() {
+        //DO NOTHING
+    }
+
+    /**
+     * TODO
+     *
+     * @throws Exception
+     */
     @Test
     public void isUpdatingPassword() throws Exception {
         final String newPassword = "password2";
         this.civilProtectionDao.insert(CIVIL_PROTECTION_TEST);
-        CivilProtection civilProtectionInDb = (CivilProtection)
+        CivilProtection cpInDb = (CivilProtection)
                 this.civilProtectionDao.selectByIdentifier(CIVIL_PROTECTION_TEST);
-        assertTrue(civilProtectionInDb.getPassword().equals(CIVIL_PROTECTION_TEST.getPassword()));
+        assertEquals(cpInDb.getPassword(), CIVIL_PROTECTION_TEST.getPassword());
         final CivilProtection civilProtectionToUpdate = new CivilProtectionImpl(
-                civilProtectionInDb.getCpID(),
+                cpInDb.getCpID(),
                 newPassword
         );
         this.civilProtectionDao.update(civilProtectionToUpdate);
-        civilProtectionInDb = (CivilProtection)
+        cpInDb = (CivilProtection)
                 this.civilProtectionDao.selectByIdentifier(CIVIL_PROTECTION_TEST);
-        assertTrue(civilProtectionInDb.getPassword().equals(newPassword));
+        assertEquals(cpInDb.getPassword(), newPassword);
         //Deleting civil protection test
         this.civilProtectionDao.delete(CIVIL_PROTECTION_TEST);
     }
 
 
+    /**
+     * TODO
+     *
+     * @throws Exception
+     */
     @Test
     public void isRejectingUnregisteredCp() throws Exception {
         assertFalse(this.civilProtectionDao.login(
                 CIVIL_PROTECTION_TEST.getCpID(), CIVIL_PROTECTION_TEST.getPassword()));
     }
 
+    /**
+     * TODO
+     *
+     * @throws Exception
+     */
     @Test
     public void isLoggingInRegisteredCp() throws Exception {
         this.civilProtectionDao.insert(CIVIL_PROTECTION_TEST);
@@ -68,11 +84,6 @@ public class CivilProtectionDaoImplTest {
                 CIVIL_PROTECTION_TEST.getCpID(), CIVIL_PROTECTION_TEST.getPassword()));
         //Deleting test user
         this.civilProtectionDao.delete(CIVIL_PROTECTION_TEST);
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        this.dbConnection.closeConnection();
     }
 
 }

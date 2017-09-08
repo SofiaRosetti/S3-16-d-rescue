@@ -1,63 +1,82 @@
 package it.unibo.drescue.database.dao;
 
 import it.unibo.drescue.database.DBConnection;
-import it.unibo.drescue.database.DBConnectionImpl;
 import it.unibo.drescue.model.District;
 import it.unibo.drescue.model.DistrictImpl;
-import org.junit.Before;
+import it.unibo.drescue.model.ObjectModel;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
-public class DistrictDaoImplTest {
+public class DistrictDaoImplTest extends GenericDaoAbstractTest {
 
     private static final District DISTRICT_TEST =
             new DistrictImpl("TT", "Test-Test", 300);
 
     private DistrictDao districtDao = null;
-    private DBConnection dbConnection;
 
-    @Before
-    public void setUp() throws Exception {
-        this.dbConnection = DBConnectionImpl.getRemoteConnection();
-        //Initialize DistrictDao
-        this.districtDao = (DistrictDao) this.dbConnection.getDAO(DBConnection.Table.DISTRICT);
+    @Override
+    protected GenericDao getDaoForTest(final DBConnection connectionForTest) throws Exception {
+        return this.districtDao = (DistrictDao)
+                connectionForTest.getDAO(DBConnection.Table.DISTRICT);
     }
 
-    @Test
-    public void isInsertingAndDeletingDistrict() throws Exception {
-        this.districtDao.insert(DISTRICT_TEST);
-        assertTrue(this.districtDao.selectByIdentifier(DISTRICT_TEST) != null);
-        this.districtDao.delete(DISTRICT_TEST);
-        assertTrue(this.districtDao.selectByIdentifier(DISTRICT_TEST) == null);
+    @Override
+    protected ObjectModel getTestObject() {
+        return DISTRICT_TEST;
     }
 
+    @Override
+    protected void doOtherSetUp(final DBConnection connectionForTest) throws Exception {
+        //DO NOTHING
+    }
+
+    @Override
+    protected void doOtherTearDown() {
+        //DO NOTHING
+    }
+
+    /**
+     * TODO
+     *
+     * @throws Exception
+     */
     @Test
     public void isFindingAllDistricts() throws Exception {
         final int initialSize = this.districtDao.findAll().size();
         this.districtDao.insert(DISTRICT_TEST);
-        assertTrue(this.districtDao.findAll().size() == initialSize + 1);
+        assertEquals(this.districtDao.findAll().size(), initialSize + 1);
         //Deleting test district
         this.districtDao.delete(DISTRICT_TEST);
-        assertTrue(this.districtDao.findAll().size() == initialSize);
+        assertEquals(this.districtDao.findAll().size(), initialSize);
     }
 
+    /**
+     * TODO
+     *
+     * @throws Exception
+     */
     @Test
     public void isUpdatingPopulation() throws Exception {
         this.districtDao.insert(DISTRICT_TEST);
-        District districtInDb = (District) this.districtDao.selectByIdentifier(this.DISTRICT_TEST);
+
+        District districtInDb = (District) this.districtDao.selectByIdentifier(DISTRICT_TEST);
         final int populationBefore = districtInDb.getPopulation();
         final int newPopulation = 500;
+
         final District districtToUpdate = new DistrictImpl(
                 DISTRICT_TEST.getDistrictID(), null, newPopulation);
-        assertTrue(populationBefore != newPopulation);
+
+        assertNotEquals(populationBefore, newPopulation);
+
         this.districtDao.update(districtToUpdate);
-        districtInDb = (District) this.districtDao.selectByIdentifier(this.DISTRICT_TEST);
+        districtInDb = (District) this.districtDao.selectByIdentifier(DISTRICT_TEST);
         final int populationAfter = districtInDb.getPopulation();
-        assertTrue(populationAfter == newPopulation);
+
+        assertEquals(populationAfter, newPopulation);
+
         //Deleting test district
-        this.districtDao.delete(this.DISTRICT_TEST);
+        this.districtDao.delete(DISTRICT_TEST);
     }
-
-
 }
