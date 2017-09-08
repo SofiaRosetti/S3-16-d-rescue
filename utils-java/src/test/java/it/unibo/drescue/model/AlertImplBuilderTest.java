@@ -3,7 +3,7 @@ package it.unibo.drescue.model;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class AlertImplBuilderTest {
 
@@ -15,36 +15,38 @@ public class AlertImplBuilderTest {
     @Before
     public void createAlertWithLatLng() throws Exception {
         this.alert = new AlertImplBuilder()
-                .setAlertID(this.ALERT_ID)
-                .setLatitude(this.LATITUDE)
-                .setLongitude(this.LONGITUDE)
+                .setAlertID(ALERT_ID)
+                .setLatitude(LATITUDE)
+                .setLongitude(LONGITUDE)
                 .createAlertImpl();
     }
 
     @Test
     public void checkCorrectID() throws Exception {
         final int alertID = this.alert.getAlertID();
-        assertTrue(alertID == this.ALERT_ID);
+        assertEquals(alertID, ALERT_ID);
     }
 
     @Test
     public void checkCorrectLatitude() throws Exception {
         final double latitude = this.alert.getLatitude();
-        assertTrue(latitude == this.LATITUDE);
+        assertTrue(latitude == LATITUDE);
     }
 
     @Test
     public void checkCorrectLongitude() throws Exception {
         final double longitude = this.alert.getLongitude();
-        assertTrue(longitude == this.LONGITUDE);
+        assertTrue(longitude == LONGITUDE);
     }
 
     @Test
     public void checkNonSetFields() throws Exception {
         final int userID = this.alert.getUserID();
         final int eventID = this.alert.getEventID();
+        final int upvotes = this.alert.getUpvotes();
         final String districtID = this.alert.getDistrictID();
-        assertTrue(userID == 0 && eventID == 0 && districtID.equals(""));
+        assertTrue(userID == 0 && eventID == 0 && upvotes == 0);
+        assertNull(districtID);
     }
 
 }

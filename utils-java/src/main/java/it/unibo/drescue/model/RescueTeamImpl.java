@@ -5,20 +5,14 @@ package it.unibo.drescue.model;
  */
 public class RescueTeamImpl implements RescueTeam {
 
-    private final String rescueTeamID;
-    private final String password;
-    private final String name;
-    private final double latitude;
-    private final double longitude;
-    private final String phoneNumber;
+    private String rescueTeamID;
+    private String password;
+    private String name;
+    private double latitude;
+    private double longitude;
+    private String phoneNumber;
 
-    public RescueTeamImpl(final String rescueTeamID, final String password, final String name, final double latitude, final double longitude, final String phoneNumber) {
-        this.rescueTeamID = rescueTeamID;
-        this.password = password;
-        this.name = name;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.phoneNumber = phoneNumber;
+    public RescueTeamImpl() {
     }
 
     @Override
@@ -27,8 +21,18 @@ public class RescueTeamImpl implements RescueTeam {
     }
 
     @Override
+    public void setRescueTeamID(final String rescueTeamID) {
+        this.rescueTeamID = rescueTeamID;
+    }
+
+    @Override
     public String getPassword() {
         return this.password;
+    }
+
+    @Override
+    public void setPassword(final String password) {
+        this.password = password;
     }
 
     @Override
@@ -37,8 +41,18 @@ public class RescueTeamImpl implements RescueTeam {
     }
 
     @Override
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    @Override
     public double getLatitude() {
         return this.latitude;
+    }
+
+    @Override
+    public void setLatitude(final double latitude) {
+        this.latitude = latitude;
     }
 
     @Override
@@ -47,7 +61,17 @@ public class RescueTeamImpl implements RescueTeam {
     }
 
     @Override
+    public void setLongitude(final double longitude) {
+        this.longitude = longitude;
+    }
+
+    @Override
     public String getPhoneNumber() {
         return this.phoneNumber;
+    }
+
+    @Override
+    public void setPhoneNumber(final String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

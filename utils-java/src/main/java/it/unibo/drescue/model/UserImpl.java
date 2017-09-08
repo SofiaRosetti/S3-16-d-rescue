@@ -5,20 +5,14 @@ package it.unibo.drescue.model;
  */
 public class UserImpl implements User {
 
-    private final int userID;
-    private final String name;
-    private final String surname;
-    private final String email;
-    private final String password;
-    private final String phoneNumber;
+    private int userID;
+    private String name;
+    private String surname;
+    private String email;
+    private String password;
+    private String phoneNumber;
 
-    public UserImpl(final int userID, final String name, final String surname, final String email, final String password, final String phoneNumber) {
-        this.userID = userID;
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
+    public UserImpl() {
     }
 
     @Override
@@ -27,8 +21,18 @@ public class UserImpl implements User {
     }
 
     @Override
+    public void setUserID(final int userID) {
+        this.userID = userID;
+    }
+
+    @Override
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public void setName(final String name) {
+        this.name = name;
     }
 
     @Override
@@ -37,8 +41,18 @@ public class UserImpl implements User {
     }
 
     @Override
+    public void setSurname(final String surname) {
+        this.surname = surname;
+    }
+
+    @Override
     public String getEmail() {
         return this.email;
+    }
+
+    @Override
+    public void setEmail(final String email) {
+        this.email = email;
     }
 
     @Override
@@ -47,7 +61,17 @@ public class UserImpl implements User {
     }
 
     @Override
+    public void setPassword(final String password) {
+        this.password = password;
+    }
+
+    @Override
     public String getPhoneNumber() {
         return this.phoneNumber;
+    }
+
+    @Override
+    public void setPhoneNumber(final String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

@@ -3,7 +3,7 @@ package it.unibo.drescue.model;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 public class CpEnrollmentImplTest {
 
@@ -13,19 +13,19 @@ public class CpEnrollmentImplTest {
 
     @Before
     public void createEnrollment() throws Exception {
-        this.enrollment = new CpEnrollmentImpl(this.CP_ID, this.RESCUETEAM_ID);
+        this.enrollment = new CpEnrollmentImpl(CP_ID, RESCUETEAM_ID);
     }
 
     @Test
     public void checkCorrectCpID() throws Exception {
         final String cpID = this.enrollment.getCpID();
-        assertTrue(cpID.equals(this.CP_ID));
+        assertEquals(cpID, CP_ID);
     }
 
     @Test
     public void checkCorrectTeamID() throws Exception {
         final String rescueTeamID = this.enrollment.getRescueTeamID();
-        assertTrue(rescueTeamID.equals(this.RESCUETEAM_ID));
+        assertEquals(rescueTeamID, RESCUETEAM_ID);
     }
 
 }

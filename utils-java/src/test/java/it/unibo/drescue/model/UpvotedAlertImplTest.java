@@ -3,7 +3,7 @@ package it.unibo.drescue.model;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 public class UpvotedAlertImplTest {
 
@@ -13,19 +13,19 @@ public class UpvotedAlertImplTest {
 
     @Before
     public void createUpvotedAlert() throws Exception {
-        this.upvotedAlert = new UpvotedAlertImpl(this.USER_ID, this.ALERT_ID);
+        this.upvotedAlert = new UpvotedAlertImpl(USER_ID, ALERT_ID);
     }
 
     @Test
     public void checkCorrectUserID() throws Exception {
         final int userID = this.upvotedAlert.getUserID();
-        assertTrue(userID == this.USER_ID);
+        assertEquals(userID, USER_ID);
     }
 
     @Test
     public void checkCorrectAlertID() throws Exception {
         final int alertID = this.upvotedAlert.getAlertID();
-        assertTrue(alertID == this.ALERT_ID);
+        assertEquals(alertID, ALERT_ID);
     }
 
 }

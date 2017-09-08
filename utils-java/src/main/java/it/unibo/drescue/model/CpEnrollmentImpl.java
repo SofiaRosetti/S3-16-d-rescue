@@ -6,8 +6,8 @@ package it.unibo.drescue.model;
  */
 public class CpEnrollmentImpl implements CpEnrollment {
 
-    private final String cpID;
-    private final String rescueTeamID;
+    private String cpID;
+    private String rescueTeamID;
 
     public CpEnrollmentImpl(final String cpID, final String rescueTeamID) {
         this.cpID = cpID;
@@ -20,7 +20,17 @@ public class CpEnrollmentImpl implements CpEnrollment {
     }
 
     @Override
+    public void setCpID(final String cpID) {
+        this.cpID = cpID;
+    }
+
+    @Override
     public String getRescueTeamID() {
         return this.rescueTeamID;
+    }
+
+    @Override
+    public void setRescueTeamID(final String rescueTeamID) {
+        this.rescueTeamID = rescueTeamID;
     }
 }

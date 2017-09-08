@@ -11,9 +11,23 @@ public interface RescueTeam extends ObjectModel {
     String getRescueTeamID();
 
     /**
+     * Sets the rescue team ID
+     *
+     * @param rescueTeamID the team iD
+     */
+    void setRescueTeamID(String rescueTeamID);
+
+    /**
      * @return the rescue team password
      */
     String getPassword();
+
+    /**
+     * Sets the rescue team password
+     *
+     * @param password the team password
+     */
+    void setPassword(String password);
 
     /**
      * @return the rescue team name
@@ -21,9 +35,23 @@ public interface RescueTeam extends ObjectModel {
     String getName();
 
     /**
+     * Sets the rescue team name
+     *
+     * @param name the team name
+     */
+    void setName(String name);
+
+    /**
      * @return the rescue team latitude
      */
     double getLatitude();
+
+    /**
+     * Sets the rescue team latitude
+     *
+     * @param latitude the team latitude
+     */
+    void setLatitude(double latitude);
 
     /**
      * @return the rescue team longitude
@@ -31,8 +59,22 @@ public interface RescueTeam extends ObjectModel {
     double getLongitude();
 
     /**
+     * Sets the rescue team longitude
+     *
+     * @param longitude the team longitude
+     */
+    void setLongitude(double longitude);
+
+    /**
      * @return the rescue team phone number
      */
     String getPhoneNumber();
+
+    /**
+     * Sets the rescue team phone number
+     *
+     * @param phoneNumber the team phone number
+     */
+    void setPhoneNumber(String phoneNumber);
 
 }

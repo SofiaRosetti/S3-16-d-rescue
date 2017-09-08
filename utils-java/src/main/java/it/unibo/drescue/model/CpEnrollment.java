@@ -12,7 +12,21 @@ public interface CpEnrollment extends ObjectModel {
     String getCpID();
 
     /**
+     * Sets the civil protection ID
+     *
+     * @param cpID the civil protection ID
+     */
+    void setCpID(String cpID);
+
+    /**
      * @return the rescue team ID
      */
     String getRescueTeamID();
+
+    /**
+     * Sets the rescue team ID
+     *
+     * @param rescueTeamID the rescue team ID
+     */
+    void setRescueTeamID(String rescueTeamID);
 }

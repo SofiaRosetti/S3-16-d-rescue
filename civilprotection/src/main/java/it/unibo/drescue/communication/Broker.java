@@ -16,7 +16,7 @@ public interface Broker {
     /**
      * Add a new consumer
      */
-    void newConsumer() throws IOException;
+    void newConsumer(Consumer consumer) throws IOException;
 
     /**
      *
