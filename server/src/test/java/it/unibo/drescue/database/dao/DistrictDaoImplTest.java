@@ -37,10 +37,9 @@ public class DistrictDaoImplTest extends GenericDaoAbstractTest {
         //DO NOTHING
     }
 
+
     /**
-     * TODO
-     *
-     * @throws Exception
+     * Test findAll functionality.
      */
     @Test
     public void isFindingAllDistricts() throws Exception {
@@ -53,9 +52,8 @@ public class DistrictDaoImplTest extends GenericDaoAbstractTest {
     }
 
     /**
-     * TODO
-     *
-     * @throws Exception
+     * Test update method functionality.
+     * For districts the update concerns the population
      */
     @Test
     public void isUpdatingPopulation() throws Exception {

@@ -53,13 +53,16 @@ public class CpAreaDaoImplTest extends GenericDaoAbstractTest {
         this.civilProtectionDao.delete(CP_TEST);
     }
 
+    /**
+     * Test findAll functionality.
+     */
     @Test
     public void isFindingAllCpAreas() throws Exception {
         final int initialSize = this.cpAreaDao.findAll().size();
-        this.cpAreaDao.insert(this.cpAreaTest);
+        this.cpAreaDao.insert(cpAreaTest);
         assertEquals(this.cpAreaDao.findAll().size(), initialSize + 1);
         //Deleting test cp_area
-        this.cpAreaDao.delete(this.cpAreaTest);
+        this.cpAreaDao.delete(cpAreaTest);
         assertEquals(this.cpAreaDao.findAll().size(), initialSize);
     }
 

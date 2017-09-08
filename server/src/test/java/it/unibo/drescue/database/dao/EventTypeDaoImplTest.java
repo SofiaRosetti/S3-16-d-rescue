@@ -37,9 +37,7 @@ public class EventTypeDaoImplTest extends GenericDaoAbstractTest {
     }
 
     /**
-     * TODO
-     *
-     * @throws Exception
+     * Test findAll functionality.
      */
     @Test
     public void isFindingAllEventTypes() throws Exception {

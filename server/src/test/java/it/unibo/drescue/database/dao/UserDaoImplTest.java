@@ -65,9 +65,8 @@ public class UserDaoImplTest extends GenericDaoAbstractTest {
     }
 
     /**
-     * TODO
-     *
-     * @throws Exception
+     * Test update method functionality.
+     * For users the update concerns the password
      */
     @Test
     public void isUpdatingPassword() throws Exception {
@@ -88,9 +87,8 @@ public class UserDaoImplTest extends GenericDaoAbstractTest {
     }
 
     /**
-     * TODO
-     *
-     * @throws Exception
+     * Test login functionality.
+     * Verify that an unregistered user couldn't login
      */
     @Test
     public void isRejectingUnregisteredUser() throws Exception {
@@ -98,9 +96,8 @@ public class UserDaoImplTest extends GenericDaoAbstractTest {
     }
 
     /**
-     * TODO
-     *
-     * @throws Exception
+     * Test login functionality.
+     * Verify that a registered user could login
      */
     @Test
     public void isLoggingInRegisteredUser() throws Exception {

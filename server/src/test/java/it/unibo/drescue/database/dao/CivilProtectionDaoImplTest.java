@@ -37,14 +37,15 @@ public class CivilProtectionDaoImplTest extends GenericDaoAbstractTest {
     }
 
     /**
-     * TODO
-     *
-     * @throws Exception
+     * Test update method functionality.
+     * For civil protection the update concerns the password
      */
     @Test
     public void isUpdatingPassword() throws Exception {
-        final String newPassword = "password2";
+
         this.civilProtectionDao.insert(CIVIL_PROTECTION_TEST);
+
+        final String newPassword = "password2";
         CivilProtection cpInDb = (CivilProtection)
                 this.civilProtectionDao.selectByIdentifier(CIVIL_PROTECTION_TEST);
         assertEquals(cpInDb.getPassword(), CIVIL_PROTECTION_TEST.getPassword());
@@ -52,19 +53,20 @@ public class CivilProtectionDaoImplTest extends GenericDaoAbstractTest {
                 cpInDb.getCpID(),
                 newPassword
         );
+
         this.civilProtectionDao.update(civilProtectionToUpdate);
         cpInDb = (CivilProtection)
                 this.civilProtectionDao.selectByIdentifier(CIVIL_PROTECTION_TEST);
         assertEquals(cpInDb.getPassword(), newPassword);
+
         //Deleting civil protection test
         this.civilProtectionDao.delete(CIVIL_PROTECTION_TEST);
     }
 
 
     /**
-     * TODO
-     *
-     * @throws Exception
+     * Test login functionality.
+     * Verify that an unregistered civil protection couldn't login
      */
     @Test
     public void isRejectingUnregisteredCp() throws Exception {
@@ -73,16 +75,15 @@ public class CivilProtectionDaoImplTest extends GenericDaoAbstractTest {
     }
 
     /**
-     * TODO
-     *
-     * @throws Exception
+     * Test login functionality.
+     * Verify that a registered civil protection could login with right credentials
      */
     @Test
     public void isLoggingInRegisteredCp() throws Exception {
         this.civilProtectionDao.insert(CIVIL_PROTECTION_TEST);
         assertTrue(this.civilProtectionDao.login(
                 CIVIL_PROTECTION_TEST.getCpID(), CIVIL_PROTECTION_TEST.getPassword()));
-        //Deleting test user
+        //Deleting test civil protection
         this.civilProtectionDao.delete(CIVIL_PROTECTION_TEST);
     }
 
