@@ -7,24 +7,17 @@ import java.sql.Timestamp;
  */
 public class AlertImpl implements Alert {
 
-    private final int alertID;
-    private final Timestamp timestamp;
-    private final double latitude;
-    private final double longitude;
-    private final int userID;
-    private final int eventID;
-    private final String districtID;
-    private final int upvotes;
+    private int alertID;
+    private Timestamp timestamp;
+    private double latitude;
+    private double longitude;
+    private int userID;
+    private int eventID;
+    private String districtID;
+    private int upvotes;
 
-    public AlertImpl(final int alertID, final Timestamp timestamp, final double latitude, final double longitude, final int userID, final int eventID, final String districtID, final int upvotes) {
-        this.alertID = alertID;
-        this.timestamp = timestamp;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.userID = userID;
-        this.eventID = eventID;
-        this.districtID = districtID;
-        this.upvotes = upvotes;
+    public AlertImpl() {
+
     }
 
     @Override
@@ -33,8 +26,18 @@ public class AlertImpl implements Alert {
     }
 
     @Override
+    public void setAlertID(final int alertID) {
+        this.alertID = alertID;
+    }
+
+    @Override
     public Timestamp getTimestamp() {
         return this.timestamp;
+    }
+
+    @Override
+    public void setTimestamp(final Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
 
     @Override
@@ -43,8 +46,18 @@ public class AlertImpl implements Alert {
     }
 
     @Override
+    public void setLatitude(final double latitude) {
+        this.latitude = latitude;
+    }
+
+    @Override
     public double getLongitude() {
         return this.longitude;
+    }
+
+    @Override
+    public void setLongitude(final double longitude) {
+        this.longitude = longitude;
     }
 
     @Override
@@ -53,8 +66,18 @@ public class AlertImpl implements Alert {
     }
 
     @Override
+    public void setUserID(final int userID) {
+        this.userID = userID;
+    }
+
+    @Override
     public int getEventID() {
         return this.eventID;
+    }
+
+    @Override
+    public void setEventID(final int eventID) {
+        this.eventID = eventID;
     }
 
     @Override
@@ -63,7 +86,17 @@ public class AlertImpl implements Alert {
     }
 
     @Override
+    public void setDistrictID(final String districtID) {
+        this.districtID = districtID;
+    }
+
+    @Override
     public int getUpvotes() {
         return this.upvotes;
+    }
+
+    @Override
+    public void setUpvotes(final int upvotes) {
+        this.upvotes = upvotes;
     }
 }

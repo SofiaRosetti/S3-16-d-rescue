@@ -1,9 +1,6 @@
 package it.unibo.drescue.connection;
 
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.DefaultConsumer;
-import com.rabbitmq.client.Envelope;
+import com.rabbitmq.client.*;
 import it.unibo.drescue.communication.GsonUtils;
 import it.unibo.drescue.communication.messages.Message;
 
@@ -64,6 +61,24 @@ public class RabbitMQImpl implements RabbitMQ {
             }
         });
         return response.poll(15000, TimeUnit.MILLISECONDS);
+    }
+
+    @Override
+    public void addConsumer(final Consumer consumer, final String queueName) throws IOException {
+        this.channel.basicConsume(queueName, true, consumer);
+    }
+
+
+    @Override
+    public void declareExchange(final String exchangeName, final BuiltinExchangeType exchangeType) throws IOException {
+        this.channel.exchangeDeclare(exchangeName, exchangeType);
+    }
+
+    @Override
+    public void bindQueueToExchange(final String queue, final String exchange,final String[] routingKeys) throws IOException {
+        for (final String routingKey : routingKeys) {
+            this.channel.queueBind(queue, exchange, routingKey);
+        }
     }
 
 }

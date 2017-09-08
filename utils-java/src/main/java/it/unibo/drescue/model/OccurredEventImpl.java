@@ -7,20 +7,14 @@ import java.sql.Timestamp;
  */
 public class OccurredEventImpl implements OccurredEvent {
 
-    private final Timestamp timestamp;
-    private final double latitude;
-    private final double longitude;
-    private final String description;
-    private final int eventID;
-    private final String cpID;
+    private Timestamp timestamp;
+    private double latitude;
+    private double longitude;
+    private String description;
+    private int eventID;
+    private String cpID;
 
-    public OccurredEventImpl(final Timestamp timestamp, final double latitude, final double longitude, final String description, final int eventID, final String cpID) {
-        this.timestamp = timestamp;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.description = description;
-        this.eventID = eventID;
-        this.cpID = cpID;
+    public OccurredEventImpl() {
     }
 
     @Override
@@ -29,8 +23,18 @@ public class OccurredEventImpl implements OccurredEvent {
     }
 
     @Override
+    public void setTimestamp(final Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    @Override
     public double getLatitude() {
         return this.latitude;
+    }
+
+    @Override
+    public void setLatitude(final double latitude) {
+        this.latitude = latitude;
     }
 
     @Override
@@ -39,8 +43,18 @@ public class OccurredEventImpl implements OccurredEvent {
     }
 
     @Override
+    public void setLongitude(final double longitude) {
+        this.longitude = longitude;
+    }
+
+    @Override
     public String getDescription() {
         return this.description;
+    }
+
+    @Override
+    public void setDescription(final String description) {
+        this.description = description;
     }
 
     @Override
@@ -49,7 +63,17 @@ public class OccurredEventImpl implements OccurredEvent {
     }
 
     @Override
+    public void setEventID(final int eventID) {
+        this.eventID = eventID;
+    }
+
+    @Override
     public String getCpID() {
         return this.cpID;
+    }
+
+    @Override
+    public void setCpID(final String cpID) {
+        this.cpID = cpID;
     }
 }
