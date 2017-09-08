@@ -12,16 +12,16 @@ import static org.junit.Assert.assertEquals;
  */
 public class RequestProfileMessageTest {
 
-    private static final int USER_ID = 12345;
+    private static final String USER_EMAIL = "j.doe@test.com";
 
     private RequestProfileMessage requestProfileMessageImpl;
 
     /**
-     * Creates a test message containing the identifier of a test user.
+     * Creates a test message containing the email of a test user.
      */
     @Before
     public void init() {
-        final Message requestProfileMessage = new RequestProfileMessageImpl(USER_ID);
+        final Message requestProfileMessage = new RequestProfileMessageImpl(USER_EMAIL);
         if (requestProfileMessage.getMessageType().equals(MessageType.REQUEST_PROFILE_MESSAGE.getMessageType())) {
             this.requestProfileMessageImpl = (RequestProfileMessageImpl) requestProfileMessage;
         }
@@ -29,7 +29,7 @@ public class RequestProfileMessageTest {
 
     @Test
     public void checkCorrectUserID() {
-        assertEquals(USER_ID, this.requestProfileMessageImpl.getUserID());
+        assertEquals(USER_EMAIL, this.requestProfileMessageImpl.getUserEmail());
     }
 
 }
