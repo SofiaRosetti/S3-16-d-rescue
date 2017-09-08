@@ -16,7 +16,8 @@ public enum MessageType {
     REQUEST_UPVOTE_MESSAGE("request_upvote_message"),
     RESPONSE_LOGIN_MESSAGE("response_login_message"),
     SIGN_UP_MESSAGE("sign_up_message"),
-    SUCCESSFUL_MESSAGE("successful_message");
+    SUCCESSFUL_MESSAGE("successful_message"),
+    UPVOTE_MESSAGE("upvote_message");
 
     private final String messageType;
 
