@@ -7,7 +7,7 @@ public enum QueueType {
     ALERTS_QUEUE_RPC("alerts_channel_RPC"),
     AUTHENTICATION_QUEUE_RPC("authentication_channel_RPC"),
     NEW_ALERT_QUEUE_PS("new_alert_channel_PS"),
-    PROFILE_QUEUE_RPC("profile_channel_RPC"),;
+    PROFILE_QUEUE_RPC("profile_channel_RPC");
 
     private final String queueName;
 
