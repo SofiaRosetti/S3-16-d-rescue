@@ -85,8 +85,7 @@ public class EventTypeDaoImpl extends GenericDaoAbstract implements EventTypeDao
             final PreparedStatement statement = this.connection.prepareStatement(query);
             final ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                final EventTypeImpl eventType = new EventTypeImpl(
-                        resultSet.getString("eventName"));
+                final EventType eventType = (EventType) mapRecordToModel(resultSet);
                 eventTypeList.add(eventType);
             }
             resultSet.close();
