@@ -59,7 +59,7 @@ public abstract class GenericDaoAbstractTest {
      * Test inserting and deleting functionality together.
      */
     @Test
-    public void isInsertingAndDeletingCivilProtection() throws Exception {
+    public void isInsertingAndDeletingObject() throws Exception {
         this.genericDao.insert(this.getTestObject());
         assertNotNull(this.genericDao.selectByIdentifier(this.getTestObject()));
         this.genericDao.delete(this.getTestObject());
