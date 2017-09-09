@@ -5,8 +5,6 @@ import it.unibo.drescue.model.*;
 import org.junit.Test;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,8 +12,6 @@ public class AlertDaoImplTest extends GenericDaoAbstractTest {
 
     private static final double LATITUDE_TEST = -34.397;
     private static final double LONGITUDE_TEST = 150.644;
-    private static final String DATA_PATTERN = "yyyy-MM-dd HH:mm:ss";
-    private static final String TIMESTAMP_TEST = "2017-07-04 18:55:21";
     private District districtTest = (District) new DistrictDaoImplTest().getTestObject();
     private EventType eventTypeTest = (EventType) new EventTypeDaoImplTest().getTestObject();
     private User userTest = (User) new UserDaoImplTest().getTestObject();
@@ -46,11 +42,8 @@ public class AlertDaoImplTest extends GenericDaoAbstractTest {
         this.eventTypeDao.insert(this.eventTypeTest);
         this.eventTypeTest = (EventType) this.eventTypeDao.selectByIdentifier(this.eventTypeTest);
 
-        //Create alert
-        final SimpleDateFormat dateFormat = new SimpleDateFormat(DATA_PATTERN, Locale.US);
-        final Timestamp timestamp = new Timestamp(dateFormat.parse(TIMESTAMP_TEST).getTime());
         this.alertTest = new AlertImplBuilder()
-                .setTimestamp(timestamp)
+                .setTimestamp(this.getCurrentTimestampForDb())
                 .setLatitude(LATITUDE_TEST)
                 .setLongitude(LONGITUDE_TEST)
                 .setUserID(this.userTest.getUserID())
@@ -93,7 +86,13 @@ public class AlertDaoImplTest extends GenericDaoAbstractTest {
 
         assertEquals(upvotesBefore + 1, alertInDb.getUpvotes());
 
-        //Deleting test district
+        //Deleting test alert
         this.alertDao.delete(this.alertTest);
+    }
+
+    private Timestamp getCurrentTimestampForDb() {
+        final Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+        currentTimestamp.setNanos(0);
+        return currentTimestamp;
     }
 }
