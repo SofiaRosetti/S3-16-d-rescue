@@ -24,11 +24,11 @@ public class AlertDaoImpl extends UpdatableDaoAbstract<Alert> implements AlertDa
              * Note: the identifier in event is timestamp & userID
              */
             case FIND_ONE:
-                return "SELECT alertID,timestamp,latitude,longitude,userID,eventID,districtID,upvotes"
+                return "SELECT alertID,timestamp,latitude,longitude,userID,eventName,districtID,upvotes"
                         + " FROM " + TABLENAME + " WHERE timestamp = ? AND userID = ?";
             case INSERT:
                 return "INSERT INTO " + TABLENAME
-                        + " (timestamp,latitude,longitude,userID,eventID,districtID,upvotes)"
+                        + " (timestamp,latitude,longitude,userID,eventName,districtID,upvotes)"
                         + " VALUES (?,?,?,?,?,?,?)";
             case DELETE:
                 return "DELETE FROM " + TABLENAME
@@ -52,7 +52,7 @@ public class AlertDaoImpl extends UpdatableDaoAbstract<Alert> implements AlertDa
                     statement.setDouble(2, alert.getLatitude());
                     statement.setDouble(3, alert.getLongitude());
                     statement.setInt(4, alert.getUserID());
-                    statement.setInt(5, alert.getEventID());
+                    statement.setString(5, alert.getEventName());
                     statement.setString(6, alert.getDistrictID());
                     /*
                      * Note: At creation an alert has zero upvotes
@@ -92,7 +92,7 @@ public class AlertDaoImpl extends UpdatableDaoAbstract<Alert> implements AlertDa
                     .setLatitude(resultSet.getDouble("latitude"))
                     .setLongitude(resultSet.getDouble("longitude"))
                     .setUserID(resultSet.getInt("userID"))
-                    .setEventID(resultSet.getInt("eventID"))
+                    .setEventName(resultSet.getString("eventName"))
                     .setDistrictID(resultSet.getString("districtID"))
                     .setUpvotes(resultSet.getInt("upvotes"))
                     .createAlertImpl();

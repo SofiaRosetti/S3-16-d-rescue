@@ -42,10 +42,10 @@ public class AlertImplBuilderTest {
     @Test
     public void checkNonSetFields() throws Exception {
         final int userID = this.alert.getUserID();
-        final int eventID = this.alert.getEventID();
+        final String eventName = this.alert.getEventName();
         final int upvotes = this.alert.getUpvotes();
         final String districtID = this.alert.getDistrictID();
-        assertTrue(userID == 0 && eventID == 0 && upvotes == 0);
+        assertTrue(userID == 0 && eventName == null && upvotes == 0);
         assertNull(districtID);
     }
 

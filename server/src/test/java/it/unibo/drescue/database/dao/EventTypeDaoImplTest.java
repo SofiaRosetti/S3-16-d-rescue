@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 public class EventTypeDaoImplTest extends GenericDaoAbstractTest {
 
     private static final EventType EVENT_TYPE_TEST =
-            new EventTypeImpl(Integer.MIN_VALUE, "Test");
+            new EventTypeImpl("Test");
 
     private EventTypeDao eventTypeDao = null;
 

@@ -48,7 +48,7 @@ public class AlertAndUpvotedAlertDaoTest extends GenericDaoAbstractTest {
                 .setLatitude(LATITUDE_TEST)
                 .setLongitude(LONGITUDE_TEST)
                 .setUserID(this.userTest.getUserID())
-                .setEventID(this.eventTypeTest.getEventID())
+                .setEventName(this.eventTypeTest.getEventName())
                 .setDistrictID(this.districtTest.getDistrictID())
                 .setUpvotes(0)
                 .createAlertImpl();

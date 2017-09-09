@@ -69,16 +69,16 @@ public interface Alert extends ObjectModel {
     void setUserID(int userID);
 
     /**
-     * @return the alert event ID
+     * @return the alert event name
      */
-    int getEventID();
+    String getEventName();
 
     /**
-     * Sets the event ID
+     * Sets the event name
      *
-     * @param eventID the event ID
+     * @param eventName the event name
      */
-    void setEventID(int eventID);
+    void setEventName(String eventName);
 
     /**
      * @return the alert district ID
