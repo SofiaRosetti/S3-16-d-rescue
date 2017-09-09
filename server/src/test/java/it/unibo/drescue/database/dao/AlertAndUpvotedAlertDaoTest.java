@@ -5,11 +5,14 @@ import it.unibo.drescue.model.*;
 import org.junit.Test;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class AlertAndUpvotedAlertDaoTest extends GenericDaoAbstractTest {
 
+    private static final int LAST_X = 50;
     private static final double LATITUDE_TEST = -34.397;
     private static final double LONGITUDE_TEST = 150.644;
     private District districtTest = (District) new DistrictDaoImplTest().getTestObject();
@@ -107,6 +110,15 @@ public class AlertAndUpvotedAlertDaoTest extends GenericDaoAbstractTest {
         //Deleting test upvote
         this.upvotedAlertDao.delete(upvotedAlert);
         //Deleting test alert
+        this.alertDao.delete(this.alertTest);
+    }
+
+    @Test
+    public void isFindingLastXAlert() throws Exception {
+        this.alertDao.insert(this.alertTest);
+        final List<Alert> alertList = this.alertDao.findLast(LAST_X);
+        assertNotEquals(alertList.size(), 0);
+        //assertTrue(alertList.contains(this.alertTest)); //TODO
         this.alertDao.delete(this.alertTest);
     }
 

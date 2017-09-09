@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AlertDaoImpl extends UpdatableDaoAbstract<Alert> implements AlertDao {
 
@@ -101,5 +103,29 @@ public class AlertDaoImpl extends UpdatableDaoAbstract<Alert> implements AlertDa
             //TODO handle
         }
         return alert;
+    }
+
+    @Override
+    public List<Alert> findLast(final int x) {
+
+        final List<Alert> alertList = new ArrayList<>();
+        final String query = "SELECT alertID,timestamp,latitude,longitude,userID,eventName,districtID,upvotes"
+                + " FROM " + TABLENAME
+                + " ORDER BY timestamp DESC"
+                + " LIMIT ?";
+        try {
+            final PreparedStatement statement = this.connection.prepareStatement(query);
+            statement.setInt(1, x);
+            final ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                final Alert alert = (Alert) mapRecordToModel(resultSet);
+                alertList.add(alert);
+            }
+            resultSet.close();
+            statement.close();
+        } catch (final SQLException e) {
+            e.printStackTrace();
+        }
+        return alertList;
     }
 }
