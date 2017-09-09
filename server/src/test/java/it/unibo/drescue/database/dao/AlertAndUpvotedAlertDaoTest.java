@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 
 import static org.junit.Assert.assertEquals;
 
-public class AlertDaoImplTest extends GenericDaoAbstractTest {
+public class AlertAndUpvotedAlertDaoTest extends GenericDaoAbstractTest {
 
     private static final double LATITUDE_TEST = -34.397;
     private static final double LONGITUDE_TEST = 150.644;
@@ -19,6 +19,7 @@ public class AlertDaoImplTest extends GenericDaoAbstractTest {
     private UserDao userDao;
     private DistrictDao districtDao;
     private EventTypeDao eventTypeDao;
+    private UpvotedAlertDao upvotedAlertDao;
     private Alert alertTest;
 
     @Override
@@ -51,6 +52,13 @@ public class AlertDaoImplTest extends GenericDaoAbstractTest {
                 .setDistrictID(this.districtTest.getDistrictID())
                 .setUpvotes(0)
                 .createAlertImpl();
+
+
+        //Setup upvotedAlertDao
+        this.upvotedAlertDao = (UpvotedAlertDao)
+                connectionForTest.getDAO(DBConnection.Table.UPVOTED_ALERT);
+
+
     }
 
     @Override
@@ -74,18 +82,30 @@ public class AlertDaoImplTest extends GenericDaoAbstractTest {
      */
     @Test
     public void isUpvotingAnAlert() throws Exception {
+
+        //Insert test alert
         this.alertDao.insert(this.alertTest);
 
+        //get upvotes before updating for testing
         Alert alertInDb = (Alert) this.alertDao.selectByIdentifier(this.alertTest);
         final int upvotesBefore = alertInDb.getUpvotes();
 
+        //Insert upvoted alert
+        final UpvotedAlert upvotedAlert =
+                new UpvotedAlertImpl(this.userTest.getUserID(), alertInDb.getAlertID());
+        this.upvotedAlertDao.insert(upvotedAlert);
+
+        //If this ended up without exception the record is added into DB
+        //Now we have to update redundant field "upvotes" in alert table
         alertInDb.setUpvotes(alertInDb.getUpvotes() + 1);
-
         this.alertDao.update(alertInDb);
-        alertInDb = (Alert) this.alertDao.selectByIdentifier(alertInDb);
 
+        //check if the field in db was updated
+        alertInDb = (Alert) this.alertDao.selectByIdentifier(alertInDb);
         assertEquals(upvotesBefore + 1, alertInDb.getUpvotes());
 
+        //Deleting test upvote
+        this.upvotedAlertDao.delete(upvotedAlert);
         //Deleting test alert
         this.alertDao.delete(this.alertTest);
     }
