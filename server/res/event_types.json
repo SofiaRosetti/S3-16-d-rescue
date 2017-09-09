@@ -1,34 +1,26 @@
 [
   {
-    "eventID": 0,
     "eventName": "Avalanches and landslides"
   },
   {
-    "eventID": 0,
     "eventName": "Earthquakes"
   },
   {
-    "eventID": 0,
     "eventName": "Floods"
   },
   {
-    "eventID": 0,
     "eventName": "Volcanic eruptions"
   },
   {
-    "eventID": 0,
     "eventName": "Tsunami"
   },
   {
-    "eventID": 0,
     "eventName": "Thunderstorms"
   },
   {
-    "eventID": 0,
     "eventName": "Tornadoes"
   },
   {
-    "eventID": 0,
     "eventName": "Wildfires"
   }
 ]
