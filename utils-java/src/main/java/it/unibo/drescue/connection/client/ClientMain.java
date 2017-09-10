@@ -9,9 +9,9 @@ import it.unibo.drescue.communication.messages.MessageType;
 import it.unibo.drescue.communication.messages.MessageUtils;
 import it.unibo.drescue.communication.messages.response.ErrorMessageImpl;
 import it.unibo.drescue.communication.messages.response.SuccessfulMessageImpl;
+import it.unibo.drescue.connection.QueueType;
 import it.unibo.drescue.connection.RabbitMQConnectionImpl;
 import it.unibo.drescue.connection.RabbitMQImpl;
-import it.unibo.drescue.connection.ServerUtils;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -47,7 +47,7 @@ public class ClientMain {
                     .setPhoneNumber("3214567890")
                     .build();
 
-            rabbitMQ.sendMessage("", ServerUtils.AUTHENTICATION_QUEUE_RPC, props, signUpMessageBuilder);
+            rabbitMQ.sendMessage("", QueueType.AUTHENTICATION_QUEUE_RPC.getQueueName(), props, signUpMessageBuilder);
 
             final BlockingQueue<String> response = new ArrayBlockingQueue<>(1);
             responseMessage = rabbitMQ.addRPCClientConsumer(response, replyQueue);
