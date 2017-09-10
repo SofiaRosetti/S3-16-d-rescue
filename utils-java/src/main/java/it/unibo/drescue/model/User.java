@@ -3,7 +3,7 @@ package it.unibo.drescue.model;
 /**
  * An interface modelling a User.
  */
-public interface User extends ObjectModel {
+public interface User extends LoggableModel {
 
     /**
      * @return the user ID
@@ -24,6 +24,7 @@ public interface User extends ObjectModel {
 
     /**
      * Sets the user name
+     *
      * @param name the user name
      */
     void setName(String name);
@@ -35,6 +36,7 @@ public interface User extends ObjectModel {
 
     /**
      * Sets the user surname
+     *
      * @param surname the user surname
      */
     void setSurname(String surname);
@@ -46,20 +48,10 @@ public interface User extends ObjectModel {
 
     /**
      * Sets the user email
+     *
      * @param email the user email
      */
     void setEmail(String email);
-
-    /**
-     * @return the user password
-     */
-    String getPassword();
-
-    /**
-     * Sets the user password
-     * @param password the user password
-     */
-    void setPassword(String password);
 
     /**
      * @return the user phone number
@@ -68,6 +60,7 @@ public interface User extends ObjectModel {
 
     /**
      * Sets the user phone number
+     *
      * @param phoneNumber the user phone number
      */
     void setPhoneNumber(String phoneNumber);
