@@ -102,11 +102,7 @@ public class DistrictDaoImpl extends UpdatableDaoAbstract<District> implements D
             final PreparedStatement statement = this.connection.prepareStatement(query);
             final ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                final District district = new DistrictImpl(
-                        resultSet.getString("districtID"),
-                        resultSet.getString("districtLongName"),
-                        resultSet.getInt("population")
-                );
+                final District district = (District) mapRecordToModel(resultSet);
                 districtList.add(district);
             }
             resultSet.close();

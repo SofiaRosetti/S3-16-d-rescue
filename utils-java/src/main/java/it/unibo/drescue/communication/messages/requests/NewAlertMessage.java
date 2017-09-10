@@ -18,12 +18,12 @@ public interface NewAlertMessage {
     /**
      * @return the event type that the user wants to report
      */
-    int getEventType();
+    String getEventType();
 
     /**
      * Sets the event type that the user wats to report.
      */
-    void setEventType(int eventType);
+    void setEventType(String eventType);
 
     /**
      * @return tha latitude at which the event happened

@@ -35,8 +35,8 @@ public class AlertImplBuilder {
         return this;
     }
 
-    public AlertImplBuilder setEventID(final int eventID) {
-        this.alert.setEventID(eventID);
+    public AlertImplBuilder setEventName(final String eventName) {
+        this.alert.setEventName(eventName);
         return this;
     }
 
