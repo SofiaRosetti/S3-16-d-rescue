@@ -54,10 +54,10 @@ public class UserDaoImplTest extends GenericDaoAbstractTest {
     //TODO handle exception
     @Test
     public void isRejectingDuplicateEmail() throws Exception {
-        this.userDao.insert(this.userTest);
-        assertNotNull(this.userDao.selectByIdentifier(this.userTest));
 
-        //assertFalse(this.userDao.insert(this.userTest));
+        assertNotNull(this.userDao.insertAndGet(this.userTest));
+
+        //assertNull(this.userDao.insertAndGet(this.userTest));
         //TODO handle exception
 
         //Deleting test user
@@ -71,8 +71,7 @@ public class UserDaoImplTest extends GenericDaoAbstractTest {
     @Test
     public void isUpdatingPassword() throws Exception {
         final String newPassword = "password2";
-        this.userDao.insert(this.userTest);
-        User userInDb = (User) this.userDao.selectByIdentifier(this.userTest);
+        User userInDb = (User) this.userDao.insertAndGet(this.userTest);
         assertEquals(userInDb.getPassword(), this.userTest.getPassword());
         final User userToUpdate = new UserImplBuilder()
                 .setUserID(userInDb.getUserID())
@@ -121,7 +120,7 @@ public class UserDaoImplTest extends GenericDaoAbstractTest {
                 .setEmail(EMAIL_TEST)
                 .setPassword(PASSWORD_TEST)
                 .createUserImpl();
-        
+
         assertNull(userWithoutData.getName());
         assertNull(userWithoutData.getSurname());
         assertNull(userWithoutData.getPhoneNumber());

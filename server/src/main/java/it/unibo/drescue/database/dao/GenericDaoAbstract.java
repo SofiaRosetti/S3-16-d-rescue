@@ -108,6 +108,14 @@ public abstract class GenericDaoAbstract<T> implements GenericDao {
      */
     protected abstract ObjectModel mapRecordToModel(ResultSet resultSet);
 
+    @Override
+    public ObjectModel insertAndGet(final ObjectModel objectModel) {
+        //Inserting the object in db
+        this.insert(objectModel);
+        //Return the object in DB
+        return this.selectByIdentifier(objectModel);
+    }
+
     protected enum QueryType {
         INSERT,
         DELETE,

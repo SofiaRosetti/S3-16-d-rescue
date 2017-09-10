@@ -27,4 +27,14 @@ public interface GenericDao {
      * @return the object if an object with the given id in objectModel exists
      */
     ObjectModel selectByIdentifier(ObjectModel objectModel);
+
+    /**
+     * Insert a given object model into DB and return the object in db
+     * Utils for getting the id of an object in DB
+     *
+     * @param objectModel to insert
+     *                    TODO Exception if the given object already exists in the DB
+     * @return the object inserted
+     */
+    ObjectModel insertAndGet(ObjectModel objectModel);
 }

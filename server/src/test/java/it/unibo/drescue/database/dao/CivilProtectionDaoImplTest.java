@@ -43,12 +43,13 @@ public class CivilProtectionDaoImplTest extends GenericDaoAbstractTest {
     @Test
     public void isUpdatingPassword() throws Exception {
 
-        this.civilProtectionDao.insert(CIVIL_PROTECTION_TEST);
+        CivilProtection cpInDb =
+                (CivilProtection) this.civilProtectionDao.insertAndGet(CIVIL_PROTECTION_TEST);
+
+        assertEquals(cpInDb.getPassword(), CIVIL_PROTECTION_TEST.getPassword());
 
         final String newPassword = "password2";
-        CivilProtection cpInDb = (CivilProtection)
-                this.civilProtectionDao.selectByIdentifier(CIVIL_PROTECTION_TEST);
-        assertEquals(cpInDb.getPassword(), CIVIL_PROTECTION_TEST.getPassword());
+
         final CivilProtection civilProtectionToUpdate = new CivilProtectionImpl(
                 cpInDb.getCpID(),
                 newPassword
