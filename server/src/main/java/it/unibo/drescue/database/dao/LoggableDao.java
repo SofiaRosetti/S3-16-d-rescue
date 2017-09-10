@@ -1,13 +1,14 @@
 package it.unibo.drescue.database.dao;
 
+import it.unibo.drescue.model.LoggableModel;
+
 public interface LoggableDao extends UpdatableDao {
 
     /**
      * Check credentials
      *
-     * @param identifier
-     * @param password
-     * @return true if the credentials are valid, false otherwise
+     * @param loggableModel with filled credentials fields to check
+     * @return the object (with hidden pwd) if the credentials are valid, null otherwise
      */
-    boolean login(String identifier, String password);
+    LoggableModel login(LoggableModel loggableModel);
 }

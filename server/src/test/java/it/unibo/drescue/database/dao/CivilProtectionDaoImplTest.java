@@ -63,15 +63,15 @@ public class CivilProtectionDaoImplTest extends GenericDaoAbstractTest {
         this.civilProtectionDao.delete(CIVIL_PROTECTION_TEST);
     }
 
-
     /**
      * Test login functionality.
      * Verify that an unregistered civil protection couldn't login
      */
     @Test
     public void isRejectingUnregisteredCp() throws Exception {
-        assertFalse(this.civilProtectionDao.login(
-                CIVIL_PROTECTION_TEST.getCpID(), CIVIL_PROTECTION_TEST.getPassword()));
+        final CivilProtection cpNotRegistered = CIVIL_PROTECTION_TEST;
+        cpNotRegistered.setCpID("1");
+        assertNull(this.civilProtectionDao.login(cpNotRegistered));
     }
 
     /**
@@ -81,8 +81,7 @@ public class CivilProtectionDaoImplTest extends GenericDaoAbstractTest {
     @Test
     public void isLoggingInRegisteredCp() throws Exception {
         this.civilProtectionDao.insert(CIVIL_PROTECTION_TEST);
-        assertTrue(this.civilProtectionDao.login(
-                CIVIL_PROTECTION_TEST.getCpID(), CIVIL_PROTECTION_TEST.getPassword()));
+        assertNotNull(this.civilProtectionDao.login(CIVIL_PROTECTION_TEST));
         //Deleting test civil protection
         this.civilProtectionDao.delete(CIVIL_PROTECTION_TEST);
     }

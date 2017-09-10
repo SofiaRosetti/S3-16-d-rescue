@@ -92,7 +92,9 @@ public class UserDaoImplTest extends GenericDaoAbstractTest {
      */
     @Test
     public void isRejectingUnregisteredUser() throws Exception {
-        assertFalse(this.userDao.login(EMAIL_TEST, PASSWORD_TEST));
+        this.userTest.setEmail("a@a.com");
+        assertNull(this.userDao.login(this.userTest));
+        this.userTest.setEmail(EMAIL_TEST);
     }
 
     /**
@@ -102,7 +104,34 @@ public class UserDaoImplTest extends GenericDaoAbstractTest {
     @Test
     public void isLoggingInRegisteredUser() throws Exception {
         this.userDao.insert(this.userTest);
-        assertTrue(this.userDao.login(EMAIL_TEST, PASSWORD_TEST));
+        assertNotNull(this.userDao.login(this.userTest));
+        //Deleting test user
+        this.userDao.delete(this.userTest);
+    }
+
+    /**
+     * Test login functionality.
+     * Verify that return all user data
+     */
+    @Test
+    public void isLoginReturningAllData() throws Exception {
+        this.userDao.insert(this.userTest);
+
+        final User userWithoutData = new UserImplBuilder()
+                .setEmail(EMAIL_TEST)
+                .setPassword(PASSWORD_TEST)
+                .createUserImpl();
+        
+        assertNull(userWithoutData.getName());
+        assertNull(userWithoutData.getSurname());
+        assertNull(userWithoutData.getPhoneNumber());
+
+        final User userWithData = (User) this.userDao.login(userWithoutData);
+
+        assertEquals(userWithData.getName(), NAME_TEST);
+        assertEquals(userWithData.getSurname(), SURNAME_TEST);
+        assertEquals(userWithData.getPhoneNumber(), PHONENUMBER_TEST);
+
         //Deleting test user
         this.userDao.delete(this.userTest);
     }
