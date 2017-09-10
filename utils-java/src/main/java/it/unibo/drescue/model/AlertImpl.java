@@ -12,7 +12,7 @@ public class AlertImpl implements Alert {
     private double latitude;
     private double longitude;
     private int userID;
-    private int eventID;
+    private String eventName;
     private String districtID;
     private int upvotes;
 
@@ -71,13 +71,13 @@ public class AlertImpl implements Alert {
     }
 
     @Override
-    public int getEventID() {
-        return this.eventID;
+    public String getEventName() {
+        return this.eventName;
     }
 
     @Override
-    public void setEventID(final int eventID) {
-        this.eventID = eventID;
+    public void setEventName(final String eventName) {
+        this.eventName = eventName;
     }
 
     @Override

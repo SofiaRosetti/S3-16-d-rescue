@@ -30,7 +30,7 @@ public class CpAreaDaoImpl extends GenericDaoAbstract<CpArea> implements CpAreaD
                         + "FROM " + TABLENAME + " WHERE cpID = ? AND districtID = ?";
             case INSERT:
                 return "INSERT INTO " + TABLENAME + "(cpID,districtID)"
-                        + "VALUE (?,?)";
+                        + " VALUE (?,?)";
             case DELETE:
                 return "DELETE FROM " + TABLENAME
                         + " WHERE cpID = ? AND districtID = ?";

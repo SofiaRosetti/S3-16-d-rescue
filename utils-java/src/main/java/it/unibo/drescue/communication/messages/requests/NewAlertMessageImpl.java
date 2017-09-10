@@ -9,7 +9,7 @@ import it.unibo.drescue.communication.messages.MessageType;
 public class NewAlertMessageImpl extends AbstractMessage implements NewAlertMessage {
 
     private int userID;
-    private int eventType;
+    private String eventType;
     private double latitude;
     private double longitude;
 
@@ -28,12 +28,12 @@ public class NewAlertMessageImpl extends AbstractMessage implements NewAlertMess
     }
 
     @Override
-    public int getEventType() {
+    public String getEventType() {
         return this.eventType;
     }
 
     @Override
-    public void setEventType(final int eventType) {
+    public void setEventType(final String eventType) {
         this.eventType = eventType;
     }
 

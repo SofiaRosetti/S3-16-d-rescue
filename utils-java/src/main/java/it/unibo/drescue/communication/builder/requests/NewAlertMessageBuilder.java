@@ -17,7 +17,7 @@ public interface NewAlertMessageBuilder extends MessageBuilder {
      * @param eventType
      * @return the builder with the given eventType
      */
-    NewAlertMessageBuilder setEventType(int eventType);
+    NewAlertMessageBuilder setEventType(String eventType);
 
     /**
      * @param latitude

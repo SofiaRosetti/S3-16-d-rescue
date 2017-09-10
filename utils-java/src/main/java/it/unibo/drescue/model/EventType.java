@@ -7,18 +7,6 @@ package it.unibo.drescue.model;
 public interface EventType extends ObjectModel {
 
     /**
-     * @return the event ID
-     */
-    int getEventID();
-
-    /**
-     * Sets the event ID
-     *
-     * @param eventID the event ID
-     */
-    void setEventID(int eventID);
-
-    /**
      * @return the event name
      */
     String getEventName();

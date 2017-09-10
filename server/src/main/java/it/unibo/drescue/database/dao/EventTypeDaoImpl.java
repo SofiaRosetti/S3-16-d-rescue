@@ -27,15 +27,15 @@ public class EventTypeDaoImpl extends GenericDaoAbstract implements EventTypeDao
                         + "VALUE (?)";
             case DELETE:
                 return "DELETE FROM " + TABLENAME
-                        + " WHERE eventID = ?";
+                        + " WHERE eventName = ?";
             case FIND_ONE:
                 /*
                  * Note: The identifier in EventType is 'eventName'
                  */
-                return "SELECT eventID,eventName "
+                return "SELECT eventName "
                         + "FROM " + TABLENAME + " WHERE eventName = ?";
             case FIND_ALL:
-                return "SELECT  eventID, eventName FROM " + TABLENAME;
+                return "SELECT eventName FROM " + TABLENAME;
             default:
                 //TODO handle exception
                 return null;
@@ -48,12 +48,7 @@ public class EventTypeDaoImpl extends GenericDaoAbstract implements EventTypeDao
         try {
             switch (queryType) {
                 case INSERT:
-                    statement.setString(1, eventType.getEventName());
-                    break;
                 case DELETE:
-                    final EventType eventToDel = (EventType) this.selectByIdentifier(eventType);
-                    statement.setInt(1, eventToDel.getEventID());
-                    break;
                 case FIND_ONE:
                     statement.setString(1, eventType.getEventName());
                     break;
@@ -74,7 +69,6 @@ public class EventTypeDaoImpl extends GenericDaoAbstract implements EventTypeDao
         EventType eventType = null;
         try {
             eventType = new EventTypeImpl(
-                    resultSet.getInt("eventID"),
                     resultSet.getString("eventName"));
         } catch (final SQLException e) {
             e.printStackTrace();
@@ -91,9 +85,7 @@ public class EventTypeDaoImpl extends GenericDaoAbstract implements EventTypeDao
             final PreparedStatement statement = this.connection.prepareStatement(query);
             final ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                final EventTypeImpl eventType = new EventTypeImpl(
-                        resultSet.getInt("eventID"),
-                        resultSet.getString("eventName"));
+                final EventType eventType = (EventType) mapRecordToModel(resultSet);
                 eventTypeList.add(eventType);
             }
             resultSet.close();

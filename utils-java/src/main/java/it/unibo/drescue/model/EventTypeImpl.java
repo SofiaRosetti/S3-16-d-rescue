@@ -5,22 +5,10 @@ package it.unibo.drescue.model;
  */
 public class EventTypeImpl implements EventType {
 
-    private int eventID;
     private String eventName;
 
-    public EventTypeImpl(final int eventID, final String eventName) {
-        this.eventID = eventID;
+    public EventTypeImpl(final String eventName) {
         this.eventName = eventName;
-    }
-
-    @Override
-    public int getEventID() {
-        return this.eventID;
-    }
-
-    @Override
-    public void setEventID(final int eventID) {
-        this.eventID = eventID;
     }
 
     @Override

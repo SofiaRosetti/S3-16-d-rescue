@@ -117,12 +117,13 @@ public class DBConnectionImpl implements DBConnection {
             case EVENT_TYPE:
                 return new EventTypeDaoImpl(connection);
             case ALERT:
-                //TODO
-                //return new AlertDaoImpl(connection);
+                return new AlertDaoImpl(connection);
             case CIVIL_PROTECTION:
                 return new CivilProtectionDaoImpl(connection);
             case CP_AREA:
                 return new CpAreaDaoImpl(connection);
+            case UPVOTED_ALERT:
+                return new UpvotedAlertDaoImpl(connection);
             default:
                 throw new SQLException("Trying to link to an unexistant table.");
         }

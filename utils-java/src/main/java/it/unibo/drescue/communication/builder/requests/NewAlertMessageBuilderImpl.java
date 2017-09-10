@@ -21,7 +21,7 @@ public class NewAlertMessageBuilderImpl implements NewAlertMessageBuilder {
     }
 
     @Override
-    public NewAlertMessageBuilder setEventType(final int eventType) {
+    public NewAlertMessageBuilder setEventType(final String eventType) {
         this.message.setEventType(eventType);
         return this;
     }

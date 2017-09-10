@@ -42,7 +42,8 @@ public interface DBConnection {
         EVENT_TYPE,
         ALERT,
         CIVIL_PROTECTION,
-        CP_AREA
+        CP_AREA,
+        UPVOTED_ALERT
     }
 
 }
