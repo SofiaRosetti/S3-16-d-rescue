@@ -72,7 +72,7 @@ object TeamView extends JFXApp {
           padding = Insets(10)
         }
         val nameField = new TextField {
-          promptText = "Username"
+          promptText = "Name"
           font = defaultFont
         }
         val nameBox = new HBox {
@@ -87,7 +87,7 @@ object TeamView extends JFXApp {
           padding = Insets(10)
         }
         val districtField = new TextField {
-          promptText = "Username"
+          promptText = "District"
           font = defaultFont
         }
         val districtBox = new HBox {
@@ -102,7 +102,7 @@ object TeamView extends JFXApp {
           padding = Insets(10)
         }
         val IDField = new TextField {
-          promptText = "Username"
+          promptText = "ID"
           font = defaultFont
         }
         val IDBox = new HBox {

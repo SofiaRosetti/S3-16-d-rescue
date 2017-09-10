@@ -1,0 +1,438 @@
+[
+  {
+    "cpID": "AQTE001",
+    "districtID": "AQ"
+  },
+  {
+    "cpID": "AQTE001",
+    "districtID": "TE"
+  },
+  {
+    "cpID": "PECH002",
+    "districtID": "PE"
+  },
+  {
+    "cpID": "PECH002",
+    "districtID": "CH"
+  },
+  {
+    "cpID": "PZMT003",
+    "districtID": "PZ"
+  },
+  {
+    "cpID": "PZMT003",
+    "districtID": "MT"
+  },
+  {
+    "cpID": "CSKR004",
+    "districtID": "CS"
+  },
+  {
+    "cpID": "CSKR004",
+    "districtID": "KR"
+  },
+  {
+    "cpID": "CZVVRC005",
+    "districtID": "CZ"
+  },
+  {
+    "cpID": "CZVVRC005",
+    "districtID": "VV"
+  },
+  {
+    "cpID": "CZVVRC005",
+    "districtID": "RC"
+  },
+  {
+    "cpID": "CEBNNA006",
+    "districtID": "CE"
+  },
+  {
+    "cpID": "CEBNNA006",
+    "districtID": "BN"
+  },
+  {
+    "cpID": "CEBNNA006",
+    "districtID": "NA"
+  },
+  {
+    "cpID": "AVSA007",
+    "districtID": "AV"
+  },
+  {
+    "cpID": "AVSA007",
+    "districtID": "SA"
+  },
+  {
+    "cpID": "PCPRRE008",
+    "districtID": "PC"
+  },
+  {
+    "cpID": "PCPRRE008",
+    "districtID": "PR"
+  },
+  {
+    "cpID": "PCPRRE008",
+    "districtID": "RE"
+  },
+  {
+    "cpID": "MOBOFE009",
+    "districtID": "MO"
+  },
+  {
+    "cpID": "MOBOFE009",
+    "districtID": "BO"
+  },
+  {
+    "cpID": "MOBOFE009",
+    "districtID": "FE"
+  },
+  {
+    "cpID": "RAFCRN010",
+    "districtID": "RA"
+  },
+  {
+    "cpID": "RAFCRN010",
+    "districtID": "FC"
+  },
+  {
+    "cpID": "RAFCRN010",
+    "districtID": "RN"
+  },
+  {
+    "cpID": "PNUD011",
+    "districtID": "PN"
+  },
+  {
+    "cpID": "PNUD011",
+    "districtID": "UD"
+  },
+  {
+    "cpID": "GOTS012",
+    "districtID": "GO"
+  },
+  {
+    "cpID": "GOTS012",
+    "districtID": "TS"
+  },
+  {
+    "cpID": "VTRI013",
+    "districtID": "VT"
+  },
+  {
+    "cpID": "VTRI013",
+    "districtID": "RI"
+  },
+  {
+    "cpID": "RMFRLT014",
+    "districtID": "RM"
+  },
+  {
+    "cpID": "RMFRLT014",
+    "districtID": "FR"
+  },
+  {
+    "cpID": "RMFRLT014",
+    "districtID": "LT"
+  },
+  {
+    "cpID": "IMSV015",
+    "districtID": "IM"
+  },
+  {
+    "cpID": "IMSV015",
+    "districtID": "SV"
+  },
+  {
+    "cpID": "GESP016",
+    "districtID": "GE"
+  },
+  {
+    "cpID": "GESP016",
+    "districtID": "SP"
+  },
+  {
+    "cpID": "SOCOLC017",
+    "districtID": "SO"
+  },
+  {
+    "cpID": "SOCOLC017",
+    "districtID": "CO"
+  },
+  {
+    "cpID": "SOCOLC017",
+    "districtID": "LC"
+  },
+  {
+    "cpID": "BGBSMN018",
+    "districtID": "BG"
+  },
+  {
+    "cpID": "BGBSMN018",
+    "districtID": "BS"
+  },
+  {
+    "cpID": "BGBSMN018",
+    "districtID": "MN"
+  },
+  {
+    "cpID": "PVLOCR019",
+    "districtID": "PV"
+  },
+  {
+    "cpID": "PVLOCR019",
+    "districtID": "LO"
+  },
+  {
+    "cpID": "PVLOCR019",
+    "districtID": "CR"
+  },
+  {
+    "cpID": "VAMIMB020",
+    "districtID": "VA"
+  },
+  {
+    "cpID": "VAMIMB020",
+    "districtID": "MI"
+  },
+  {
+    "cpID": "VAMIMB020",
+    "districtID": "MB"
+  },
+  {
+    "cpID": "PUAN021",
+    "districtID": "PU"
+  },
+  {
+    "cpID": "PUAN021",
+    "districtID": "AN"
+  },
+  {
+    "cpID": "MCFMAP022",
+    "districtID": "MC"
+  },
+  {
+    "cpID": "MCFMAP022",
+    "districtID": "FM"
+  },
+  {
+    "cpID": "MCFMAP022",
+    "districtID": "AP"
+  },
+  {
+    "cpID": "ISCB023",
+    "districtID": "IS"
+  },
+  {
+    "cpID": "ISCB023",
+    "districtID": "CB"
+  },
+  {
+    "cpID": "VBNOVC024",
+    "districtID": "VB"
+  },
+  {
+    "cpID": "VBNOVC024",
+    "districtID": "NO"
+  },
+  {
+    "cpID": "VBNOVC024",
+    "districtID": "VC"
+  },
+  {
+    "cpID": "BITO025",
+    "districtID": "BI"
+  },
+  {
+    "cpID": "BITO025",
+    "districtID": "TO"
+  },
+  {
+    "cpID": "CNATAL026",
+    "districtID": "CN"
+  },
+  {
+    "cpID": "CNATAL026",
+    "districtID": "AT"
+  },
+  {
+    "cpID": "CNATAL026",
+    "districtID": "AL"
+  },
+  {
+    "cpID": "FGBTBA027",
+    "districtID": "FG"
+  },
+  {
+    "cpID": "FGBTBA027",
+    "districtID": "BT"
+  },
+  {
+    "cpID": "FGBTBA027",
+    "districtID": "BA"
+  },
+  {
+    "cpID": "TABRLE028",
+    "districtID": "TA"
+  },
+  {
+    "cpID": "TABRLE028",
+    "districtID": "BR"
+  },
+  {
+    "cpID": "TABRLE028",
+    "districtID": "LE"
+  },
+  {
+    "cpID": "SSNUOG029",
+    "districtID": "SS"
+  },
+  {
+    "cpID": "SSNUOG029",
+    "districtID": "NU"
+  },
+  {
+    "cpID": "SSNUOG029",
+    "districtID": "OG"
+  },
+  {
+    "cpID": "ORVSCICA030",
+    "districtID": "OR"
+  },
+  {
+    "cpID": "ORVSCICA030",
+    "districtID": "VS"
+  },
+  {
+    "cpID": "ORVSCICA030",
+    "districtID": "CI"
+  },
+  {
+    "cpID": "ORVSCICA030",
+    "districtID": "CA"
+  },
+  {
+    "cpID": "CTSRRG031",
+    "districtID": "CT"
+  },
+  {
+    "cpID": "CTSRRG031",
+    "districtID": "SR"
+  },
+  {
+    "cpID": "CTSRRG031",
+    "districtID": "RG"
+  },
+  {
+    "cpID": "MEENCL032",
+    "districtID": "ME"
+  },
+  {
+    "cpID": "MEENCL032",
+    "districtID": "EN"
+  },
+  {
+    "cpID": "MEENCL032",
+    "districtID": "CL"
+  },
+  {
+    "cpID": "PAAGTP033",
+    "districtID": "PA"
+  },
+  {
+    "cpID": "PAAGTP033",
+    "districtID": "AG"
+  },
+  {
+    "cpID": "PAAGTP033",
+    "districtID": "TP"
+  },
+  {
+    "cpID": "MSLU034",
+    "districtID": "MS"
+  },
+  {
+    "cpID": "MSLU034",
+    "districtID": "LU"
+  },
+  {
+    "cpID": "PTPO035",
+    "districtID": "PT"
+  },
+  {
+    "cpID": "PTPO035",
+    "districtID": "PO"
+  },
+  {
+    "cpID": "FIAR036",
+    "districtID": "FI"
+  },
+  {
+    "cpID": "FIAR036",
+    "districtID": "AR"
+  },
+  {
+    "cpID": "PILI037",
+    "districtID": "PI"
+  },
+  {
+    "cpID": "PILI037",
+    "districtID": "LI"
+  },
+  {
+    "cpID": "SIGR038",
+    "districtID": "SI"
+  },
+  {
+    "cpID": "SIGR038",
+    "districtID": "GR"
+  },
+  {
+    "cpID": "BZTN039",
+    "districtID": "BZ"
+  },
+  {
+    "cpID": "BZTN039",
+    "districtID": "TN"
+  },
+  {
+    "cpID": "PGTR040",
+    "districtID": "PG"
+  },
+  {
+    "cpID": "PGTR040",
+    "districtID": "TR"
+  },
+  {
+    "cpID": "AO041",
+    "districtID": "AO"
+  },
+  {
+    "cpID": "BLTV042",
+    "districtID": "BL"
+  },
+  {
+    "cpID": "BLTV042",
+    "districtID": "TV"
+  },
+  {
+    "cpID": "VRVI043",
+    "districtID": "VR"
+  },
+  {
+    "cpID": "VRVI043",
+    "districtID": "VI"
+  },
+  {
+    "cpID": "VEPDRO044",
+    "districtID": "VE"
+  },
+  {
+    "cpID": "VEPDRO044",
+    "districtID": "PD"
+  },
+  {
+    "cpID": "VEPDRO044",
+    "districtID": "RO"
+  }
+]
