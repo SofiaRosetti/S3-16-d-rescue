@@ -1,5 +1,6 @@
 package it.unibo.drescue.communication.messages.response;
 
+import it.unibo.drescue.communication.messages.MessageType;
 import it.unibo.drescue.model.AlertImpl;
 import it.unibo.drescue.model.AlertImplBuilder;
 import org.junit.Before;
@@ -48,7 +49,7 @@ public class AlertsMessageImplTest {
     @Test
     public void checkCorrectType() throws Exception {
         final String messageType = this.alertsMessage.getMessageType();
-        assertEquals(messageType, AlertsMessageImpl.ALERTS_MESSAGE);
+        assertEquals(messageType, MessageType.ALERTS_MESSAGE.getMessageType());
     }
 
     @Test

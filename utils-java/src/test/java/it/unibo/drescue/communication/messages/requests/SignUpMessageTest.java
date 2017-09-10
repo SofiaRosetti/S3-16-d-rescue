@@ -2,6 +2,7 @@ package it.unibo.drescue.communication.messages.requests;
 
 import it.unibo.drescue.communication.builder.requests.SignUpMessageBuilderImpl;
 import it.unibo.drescue.communication.messages.Message;
+import it.unibo.drescue.communication.messages.MessageType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,7 +23,7 @@ public class SignUpMessageTest {
                 .setSurname(SURNAME)
                 .build();
 
-        if (signUpMessage.getMessageType().equals(SignUpMessageImpl.SIGN_UP_MESSAGE)) {
+        if (signUpMessage.getMessageType().equals(MessageType.SIGN_UP_MESSAGE.getMessageType())) {
             this.signUpMessageImpl = (SignUpMessageImpl) signUpMessage;
         }
 

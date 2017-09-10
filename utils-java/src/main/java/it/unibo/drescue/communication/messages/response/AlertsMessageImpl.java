@@ -3,6 +3,7 @@ package it.unibo.drescue.communication.messages.response;
 import it.unibo.drescue.communication.builder.MessageBuilder;
 import it.unibo.drescue.communication.messages.AbstractMessage;
 import it.unibo.drescue.communication.messages.Message;
+import it.unibo.drescue.communication.messages.MessageType;
 import it.unibo.drescue.model.AlertImpl;
 
 import java.util.List;
@@ -12,8 +13,6 @@ import java.util.List;
  */
 public class AlertsMessageImpl extends AbstractMessage implements AlertsMessage, MessageBuilder {
 
-    public final static String ALERTS_MESSAGE = "alerts_message";
-
     private final List<AlertImpl> alertCollection;
 
     /**
@@ -22,7 +21,7 @@ public class AlertsMessageImpl extends AbstractMessage implements AlertsMessage,
      * @param alertCollection list of alert
      */
     public AlertsMessageImpl(final List<AlertImpl> alertCollection) {
-        super(ALERTS_MESSAGE);
+        super(MessageType.ALERTS_MESSAGE);
         this.alertCollection = alertCollection;
     }
 

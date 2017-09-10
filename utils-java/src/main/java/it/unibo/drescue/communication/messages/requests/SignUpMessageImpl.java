@@ -1,13 +1,12 @@
 package it.unibo.drescue.communication.messages.requests;
 
 import it.unibo.drescue.communication.messages.AbstractMessage;
+import it.unibo.drescue.communication.messages.MessageType;
 
 /**
  * Class that represents a message containing sign up data.
  */
 public class SignUpMessageImpl extends AbstractMessage implements SignUpMessage {
-
-    public final static String SIGN_UP_MESSAGE = "sign_up_message";
 
     private String name;
     private String surname;
@@ -16,7 +15,7 @@ public class SignUpMessageImpl extends AbstractMessage implements SignUpMessage 
     private String password;
 
     public SignUpMessageImpl() {
-        super(SIGN_UP_MESSAGE);
+        super(MessageType.SIGN_UP_MESSAGE);
     }
 
     @Override

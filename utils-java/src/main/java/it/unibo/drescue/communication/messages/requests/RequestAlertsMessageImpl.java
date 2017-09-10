@@ -3,14 +3,13 @@ package it.unibo.drescue.communication.messages.requests;
 import it.unibo.drescue.communication.builder.MessageBuilder;
 import it.unibo.drescue.communication.messages.AbstractMessage;
 import it.unibo.drescue.communication.messages.Message;
+import it.unibo.drescue.communication.messages.MessageType;
 
 /**
  * Class that represents a message containing a request of alerts of a
  * specific area.
  */
 public class RequestAlertsMessageImpl extends AbstractMessage implements RequestAlertsMessage, MessageBuilder {
-
-    public final static String REQUEST_ALERTS_MESSAGE = "request_alerts_message";
 
     private final double latitude;
     private final double longitude;
@@ -22,7 +21,7 @@ public class RequestAlertsMessageImpl extends AbstractMessage implements Request
      * @param longitude longitude of the area for which alerts are requested
      */
     public RequestAlertsMessageImpl(final double latitude, final double longitude) {
-        super(REQUEST_ALERTS_MESSAGE);
+        super(MessageType.REQUEST_ALERTS_MESSAGE);
         this.latitude = latitude;
         this.longitude = longitude;
     }

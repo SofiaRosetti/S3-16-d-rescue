@@ -5,19 +5,19 @@ package it.unibo.drescue.communication.messages;
  */
 public abstract class AbstractMessage implements Message {
 
-    private final String messageType;
+    private final MessageType messageType;
 
     /**
      * Creates a simple message of the given type
      *
      * @param messageType type of the message
      */
-    public AbstractMessage(final String messageType) {
+    public AbstractMessage(final MessageType messageType) {
         this.messageType = messageType;
     }
 
     @Override
     public String getMessageType() {
-        return this.messageType;
+        return this.messageType.getMessageType();
     }
 }

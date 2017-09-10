@@ -5,11 +5,13 @@ import it.unibo.drescue.StringUtils;
 import it.unibo.drescue.communication.GsonUtils;
 import it.unibo.drescue.communication.builder.requests.SignUpMessageBuilderImpl;
 import it.unibo.drescue.communication.messages.Message;
+import it.unibo.drescue.communication.messages.MessageType;
+import it.unibo.drescue.communication.messages.MessageUtils;
 import it.unibo.drescue.communication.messages.response.ErrorMessageImpl;
 import it.unibo.drescue.communication.messages.response.SuccessfulMessageImpl;
+import it.unibo.drescue.connection.QueueType;
 import it.unibo.drescue.connection.RabbitMQConnectionImpl;
 import it.unibo.drescue.connection.RabbitMQImpl;
-import it.unibo.drescue.connection.ServerUtils;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -45,7 +47,7 @@ public class ClientMain {
                     .setPhoneNumber("3214567890")
                     .build();
 
-            rabbitMQ.sendMessage("", ServerUtils.AUTHENTICATION_QUEUE_RPC, props, signUpMessageBuilder);
+            rabbitMQ.sendMessage("", QueueType.AUTHENTICATION_QUEUE.getQueueName(), props, signUpMessageBuilder);
 
             final BlockingQueue<String> response = new ArrayBlockingQueue<>(1);
             responseMessage = rabbitMQ.addRPCClientConsumer(response, replyQueue);
@@ -66,12 +68,13 @@ public class ClientMain {
 
         //handle reply to AbstractResponse
         final String messageType = StringUtils.getMessageType(responseMessage);
-        switch (messageType) {
-            case ErrorMessageImpl.ERROR_MESSAGE:
+        final MessageType nameMessage = MessageUtils.getMessageNameByType(messageType);
+        switch (nameMessage) {
+            case ERROR_MESSAGE:
                 final ErrorMessageImpl errorMessage = GsonUtils.fromGson(responseMessage, ErrorMessageImpl.class);
                 System.out.println("[ClientMain] error message " + errorMessage.getError());
                 break;
-            case SuccessfulMessageImpl.SUCCESSFUL_MESSAGE:
+            case SUCCESSFUL_MESSAGE:
                 final SuccessfulMessageImpl successfulMessage = GsonUtils.fromGson(responseMessage, SuccessfulMessageImpl.class);
                 System.out.println("[ClientMain] successful message");
                 break;
