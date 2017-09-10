@@ -14,20 +14,20 @@ public class NewAlertMessageTest {
 
 
     private static final int USER_ID = 10;
-    private static final int EVENT_TYPE = 10;
+    private static final String EVENT_TYPE = "test_eventType";
 
     private NewAlertMessageImpl newAlertMessageImpl;
 
     @Before
     public void build(){
 
-        final Message newAlerMessage = new NewAlertMessageBuilderImpl()
+        final Message newAlertMessage = new NewAlertMessageBuilderImpl()
                 .setUserID(USER_ID)
                 .setEventType(EVENT_TYPE)
                 .build();
 
-        if (newAlerMessage.getMessageType().equals(NewAlertMessageImpl.NEW_ALERT_MESSAGE)){
-          newAlertMessageImpl = (NewAlertMessageImpl) newAlerMessage;
+        if (newAlertMessage.getMessageType().equals(NewAlertMessageImpl.NEW_ALERT_MESSAGE)){
+            newAlertMessageImpl = (NewAlertMessageImpl) newAlertMessage;
         }
     }
 
@@ -41,9 +41,8 @@ public class NewAlertMessageTest {
     public void checkNotSetFields() {
         assertNotEquals(null, this.newAlertMessageImpl.getLatitude());
         assertNotEquals(null, this.newAlertMessageImpl.getLongitude());
-        //(0.0,this.newAlertMessageImpl.getLatitude(), 0);
+        assertEquals(0.0, this.newAlertMessageImpl.getLatitude(), 0.0);
+        assertEquals(0.0, this.newAlertMessageImpl.getLongitude(), 0.0);
     }
-
-
 
 }
