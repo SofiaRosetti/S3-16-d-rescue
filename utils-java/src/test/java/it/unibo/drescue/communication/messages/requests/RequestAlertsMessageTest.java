@@ -1,6 +1,7 @@
 package it.unibo.drescue.communication.messages.requests;
 
 import it.unibo.drescue.communication.messages.Message;
+import it.unibo.drescue.communication.messages.MessageType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,7 +20,7 @@ public class RequestAlertsMessageTest {
     public void build() {
         final Message requestAlertsMessage = new RequestAlertsMessageImpl(LATITUDE, LONGITUDE).build();
 
-        if (requestAlertsMessage.getMessageType().equals(RequestAlertsMessageImpl.REQUEST_ALERTS_MESSAGE)){
+        if (requestAlertsMessage.getMessageType().equals(MessageType.REQUEST_ALERTS_MESSAGE.getMessageType())){
             this.requestAlertsMessageImpl = (RequestAlertsMessageImpl) requestAlertsMessage;
         }
     }

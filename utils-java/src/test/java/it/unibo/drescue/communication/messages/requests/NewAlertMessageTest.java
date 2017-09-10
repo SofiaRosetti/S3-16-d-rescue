@@ -3,6 +3,7 @@ package it.unibo.drescue.communication.messages.requests;
 import it.unibo.drescue.communication.builder.requests.NewAlertMessageBuilder;
 import it.unibo.drescue.communication.builder.requests.NewAlertMessageBuilderImpl;
 import it.unibo.drescue.communication.messages.Message;
+import it.unibo.drescue.communication.messages.MessageType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,7 +28,7 @@ public class NewAlertMessageTest {
                 .setEventType(EVENT_TYPE)
                 .build();
 
-        if (newAlertMessage.getMessageType().equals(NewAlertMessageImpl.NEW_ALERT_MESSAGE)){
+        if (newAlertMessage.getMessageType().equals(MessageType.NEW_ALERT_MESSAGE.getMessageType())){
             newAlertMessageImpl = (NewAlertMessageImpl) newAlertMessage;
         }
     }
