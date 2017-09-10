@@ -76,7 +76,7 @@ public class SignUpActivity extends ToolbarActivity {
      */
     private void signUp(final Message message) {
 
-        new RabbitAsyncTask(QueueType.AUTHENTICATION_QUEUE_RPC.getQueueName(),
+        new RabbitAsyncTask(QueueType.AUTHENTICATION_QUEUE.getQueueName(),
                 message,
                 new AbstractResponse() {
 

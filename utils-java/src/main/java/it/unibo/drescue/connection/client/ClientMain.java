@@ -47,7 +47,7 @@ public class ClientMain {
                     .setPhoneNumber("3214567890")
                     .build();
 
-            rabbitMQ.sendMessage("", QueueType.AUTHENTICATION_QUEUE_RPC.getQueueName(), props, signUpMessageBuilder);
+            rabbitMQ.sendMessage("", QueueType.AUTHENTICATION_QUEUE.getQueueName(), props, signUpMessageBuilder);
 
             final BlockingQueue<String> response = new ArrayBlockingQueue<>(1);
             responseMessage = rabbitMQ.addRPCClientConsumer(response, replyQueue);

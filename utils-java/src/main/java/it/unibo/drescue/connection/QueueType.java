@@ -4,10 +4,9 @@ package it.unibo.drescue.connection;
  * Enum of types of queue which are useful for connection.
  */
 public enum QueueType {
-    ALERTS_QUEUE_RPC("alerts_channel_RPC"),
-    AUTHENTICATION_QUEUE_RPC("authentication_channel_RPC"),
-    NEW_ALERT_QUEUE_PS("new_alert_channel_PS"),
-    PROFILE_QUEUE_RPC("profile_channel_RPC");
+    ALERTS_QUEUE("alerts_channel"), //new alert, get alerts
+    AUTHENTICATION_QUEUE("authentication_channel"), // app authentication, user profile
+    CIVIL_PROTECTION_QUEUE("civil_protection_channel"); // cp authentication, request rescue team
 
     private final String queueName;
 
