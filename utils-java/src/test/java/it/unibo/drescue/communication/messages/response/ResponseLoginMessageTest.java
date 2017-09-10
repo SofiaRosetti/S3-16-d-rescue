@@ -38,8 +38,8 @@ public class ResponseLoginMessageTest {
                 .setPhoneNumber(USER_PHONE)
                 .createUserImpl();
         this.eventTypes = new ArrayList<>();
-        this.eventTypes.add(new EventTypeImpl(1, EVENT_TYPE_1));
-        this.eventTypes.add(new EventTypeImpl(2, EVENT_TYPE_2));
+        this.eventTypes.add(new EventTypeImpl(EVENT_TYPE_1));
+        this.eventTypes.add(new EventTypeImpl(EVENT_TYPE_2));
         this.responseLoginMessage = new ResponseLoginMessageImpl(this.user, this.eventTypes);
     }
 
