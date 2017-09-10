@@ -1,10 +1,15 @@
 package it.unibo.drescue.communication.messages.response;
 
 import it.unibo.drescue.communication.messages.MessageType;
+import it.unibo.drescue.model.EventType;
+import it.unibo.drescue.model.EventTypeImpl;
 import it.unibo.drescue.model.User;
 import it.unibo.drescue.model.UserImplBuilder;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -16,8 +21,11 @@ public class ResponseLoginMessageTest {
     private static final String USER_SURNAME = "Doe";
     private static final String USER_EMAIL = "john.doe@test.com";
     private static final String USER_PHONE = "3332244556";
+    private static final String EVENT_TYPE_1 = "Fire";
+    private static final String EVENT_TYPE_2 = "Earthquake";
 
     private User user;
+    private List<EventType> eventTypes;
     private ResponseLoginMessageImpl responseLoginMessage;
 
     @Before
@@ -29,7 +37,10 @@ public class ResponseLoginMessageTest {
                 .setEmail(USER_EMAIL)
                 .setPhoneNumber(USER_PHONE)
                 .createUserImpl();
-        this.responseLoginMessage = new ResponseLoginMessageImpl(this.user);
+        this.eventTypes = new ArrayList<>();
+        this.eventTypes.add(new EventTypeImpl(1, EVENT_TYPE_1));
+        this.eventTypes.add(new EventTypeImpl(2, EVENT_TYPE_2));
+        this.responseLoginMessage = new ResponseLoginMessageImpl(this.user, this.eventTypes);
     }
 
     @Test
@@ -50,6 +61,17 @@ public class ResponseLoginMessageTest {
     @Test
     public void checkPasswordNoPresent() {
         assertEquals(null, this.responseLoginMessage.getUser().getPassword());
+    }
+
+    @Test
+    public void checkCorrectListEventTypes() {
+        assertEquals(this.eventTypes, this.responseLoginMessage.getEventsType());
+    }
+
+    @Test
+    public void checkCorrectFirstEventType() {
+        assertEquals(this.eventTypes.get(0).getEventName(),
+                this.responseLoginMessage.getEventsType().get(0).getEventName());
     }
 
     @Test
