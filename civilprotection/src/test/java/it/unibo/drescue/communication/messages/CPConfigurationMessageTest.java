@@ -54,7 +54,7 @@ public class CPConfigurationMessageTest {
     }
 
     @Test
-    public void checkCorrectType() throws Exception {
+    public void checkCorrectMessageType() throws Exception {
         assertEquals(this.cpConfigurationMessage.getMessageType(), CPConfigurationMessage.CONFIGURATION_MESSAGE);
     }
 
