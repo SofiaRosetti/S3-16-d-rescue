@@ -15,6 +15,7 @@ public class NewAlertMessageTest {
 
     private static final int USER_ID = 10;
     private static final String EVENT_TYPE = "test_eventType";
+    private static final double DELTA = 0.00;
 
     private NewAlertMessageImpl newAlertMessageImpl;
 
@@ -41,8 +42,8 @@ public class NewAlertMessageTest {
     public void checkNotSetFields() {
         assertNotEquals(null, this.newAlertMessageImpl.getLatitude());
         assertNotEquals(null, this.newAlertMessageImpl.getLongitude());
-        assertEquals(0.0, this.newAlertMessageImpl.getLatitude(), 0.0);
-        assertEquals(0.0, this.newAlertMessageImpl.getLongitude(), 0.0);
+        assertEquals(0.0, this.newAlertMessageImpl.getLatitude(), DELTA);
+        assertEquals(0.0, this.newAlertMessageImpl.getLongitude(), DELTA);
     }
 
 }
