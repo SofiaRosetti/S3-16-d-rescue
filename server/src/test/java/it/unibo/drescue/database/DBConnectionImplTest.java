@@ -9,12 +9,12 @@ public class DBConnectionImplTest {
 
     private DBConnectionImpl dbConnection;
 
-    @Test
+    /*@Test
     public void isOpeningAndClosingLocalConnection() {
         this.testConnectionWithAddress(
                 DBConnectionImpl.getLocalConnection(),
                 DBConnectionImpl.LOCAL_ADDRESS);
-    }
+    }*/
 
     @Test
     public void isOpeningAndClosingRemoteConnection() {
