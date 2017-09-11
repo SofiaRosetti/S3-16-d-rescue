@@ -14,7 +14,7 @@ public interface Geocoding {
      * @param longitude the district longitude
      * @return the district short name
      */
-    String getDistrict(double latitude, double longitude);
+    String getDistrict(double latitude, double longitude) throws GeocodingException;
 
     /**
      * Gets latitude and longitude of a specified address
@@ -22,5 +22,5 @@ public interface Geocoding {
      * @param address the address
      * @return a JsonObject containing the address latitude and longitude
      */
-    JsonObject getLatLng(String address);
+    JsonObject getLatLng(String address) throws GeocodingException;
 }
