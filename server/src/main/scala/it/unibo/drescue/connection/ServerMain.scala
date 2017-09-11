@@ -10,7 +10,7 @@ object ServerMain extends App {
   val connection: RabbitMQConnection = new RabbitMQConnectionImpl("localhost")
   connection openConnection()
 
-  Service(connection, QueueType.MOBILEUSER_QUEUE.getQueueName, MobileuserServiceOperation())
+  Service(connection, QueueType.MOBILEUSER_QUEUE.getQueueName, MobileuserService())
 
   //TODO
   // AlertsService

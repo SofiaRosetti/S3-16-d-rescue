@@ -1,10 +1,10 @@
 package it.unibo.drescue.connection
 
 import com.rabbitmq.client.AMQP
-import it.unibo.drescue.communication.messages.{Message, MessageUtils}
+import it.unibo.drescue.communication.messages._
 
 /**
-  * Trait modelling operations to accessDB and handle the result.
+  * Trait modelling a general service to accessDB and handle the result.
   */
 sealed trait ServiceOperation {
 
@@ -17,49 +17,73 @@ sealed trait ServiceOperation {
   def accessDB(jsonMessage: String): Message
 
   /**
-    * Handles DB result and send response/forward requests basing on
-    * the given properties parameter containing properties of the request.
-    * If properties.getReplyTo is not null then the client needs a response
-    * otherwise the message has to be forwarded.
+    * Handles DB result.
     *
     * @param rabbitMQ   connection to rabbitMQ
     * @param properties properties of the request
     * @param message    message to send as a response or forward
     */
-  def handleDBresult(rabbitMQ: RabbitMQ, properties: AMQP.BasicProperties, message: Message): Unit = {
+  def handleDBresult(rabbitMQ: RabbitMQ, properties: AMQP.BasicProperties, message: Message): Unit
+
+}
+
+/**
+  * Trait modelling a service that send response to requests.
+  */
+trait ServiceResponse extends ServiceOperation {
+
+  override def handleDBresult(rabbitMQ: RabbitMQ, properties: AMQP.BasicProperties, message: Message): Unit = {
     val responseQueue: String = properties.getReplyTo
-    if (responseQueue != null) { //RPC
-      rabbitMQ sendMessage("", responseQueue, null, message)
-    } else { //forward message
-      //TODO
-    }
+    rabbitMQ sendMessage("", responseQueue, null, message)
+    println("[ServiceResponse] handleResult")
   }
 
 }
 
 /**
+  * Trait modelling a service that forward requests.
+  */
+trait ServiceForward extends ServiceOperation {
+
+  override def handleDBresult(rabbitMQ: RabbitMQ, properties: AMQP.BasicProperties, message: Message): Unit = {
+    //TODO forward
+    println("[ServiceForward] handleResult")
+  }
+
+}
+
+/**
+  * Trait modelling a service that send response or/and forward requests.
+  */
+trait ServiceResponseForward extends ServiceResponse with ServiceForward {
+
+  override def handleDBresult(rabbitMQ: RabbitMQ, properties: AMQP.BasicProperties, message: Message): Unit = {
+    super[ServiceResponse].handleDBresult(rabbitMQ, properties, message)
+    super[ServiceForward].handleDBresult(rabbitMQ, properties, message)
+    println("[ServiceResponseAndForward] handleResult")
+  }
+
+}
+
+import it.unibo.drescue.communication.messages.response._
+
+/**
   * Class that manage mobileuser messages related to authentication and
   * changes in profile.
   */
-case class MobileuserServiceOperation() extends ServiceOperation {
+case class MobileuserService() extends ServiceResponseForward {
 
   override def accessDB(jsonMessage: String): Message = {
 
-    import it.unibo.drescue.StringUtils
-    import it.unibo.drescue.communication.messages.MessageType
-    import it.unibo.drescue.communication.messages.response._
-
-    val messageType: String = StringUtils getMessageType jsonMessage
-    val messageName: MessageType = MessageUtils.getMessageNameByType(messageType)
+    val messageName: MessageType = MessageUtils.getMessageNameByJson(jsonMessage)
 
     messageName match {
       case MessageType.SIGN_UP_MESSAGE =>
-        //TODO getDAO
+        //TODO connect to DB and perform operations
         new SuccessfulMessageImpl
       case _ =>
-        new ErrorMessageImpl("test") //TODO check because isn't working
+        new ErrorMessageImpl("test")
     }
-
 
     //TODO add case for login, request profile (?), change password
 

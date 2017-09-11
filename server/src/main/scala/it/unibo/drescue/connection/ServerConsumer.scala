@@ -31,8 +31,8 @@ case class ServerConsumer(private val rabbitMQ: RabbitMQ,
     try {
       response = serviceOperation.accessDB(message)
     } catch {
-      //TODO handle different type of exception and respond to client or not
-      //catch exception from DB access and return an error
+      //TODO handle different type of exception and
+      //log error message or return an error
       case e: Exception => response = new ErrorMessageImpl("Error connecting database.")
     }
 
