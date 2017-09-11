@@ -1,6 +1,8 @@
 package it.unibo.drescue.database.dao;
 
 import it.unibo.drescue.database.DBConnection;
+import it.unibo.drescue.database.exceptions.DBDuplicatedRecordException;
+import it.unibo.drescue.database.exceptions.DBNotFoundRecordException;
 import it.unibo.drescue.model.ObjectModel;
 import it.unibo.drescue.model.User;
 import it.unibo.drescue.model.UserImplBuilder;
@@ -48,20 +50,20 @@ public class UserDaoImplTest extends GenericDaoAbstractTest {
 
     /**
      * TODO
-     *
-     * @throws Exception
      */
-    //TODO handle exception
     @Test
     public void isRejectingDuplicateEmail() throws Exception {
 
         assertNotNull(this.userDao.insertAndGet(this.userTest));
 
-        //assertNull(this.userDao.insertAndGet(this.userTest));
-        //TODO handle exception
+        try {
+            this.userDao.insert(this.userTest);
+        } catch (final DBDuplicatedRecordException e) {
+            assertNotNull(e);
+            //Deleting test user
+            this.userDao.delete(this.userTest);
+        }
 
-        //Deleting test user
-        this.userDao.delete(this.userTest);
     }
 
     /**
@@ -92,7 +94,11 @@ public class UserDaoImplTest extends GenericDaoAbstractTest {
     @Test
     public void isRejectingUnregisteredUser() throws Exception {
         this.userTest.setEmail("a@a.com");
-        assertNull(this.userDao.login(this.userTest));
+        try {
+            this.userDao.login(this.userTest);
+        } catch (DBNotFoundRecordException e) {
+            assertNotNull(e);
+        }
         this.userTest.setEmail(EMAIL_TEST);
     }
 

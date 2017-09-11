@@ -1,12 +1,14 @@
 package it.unibo.drescue.database.dao;
 
 import it.unibo.drescue.database.DBConnection;
+import it.unibo.drescue.database.exceptions.DBNotFoundRecordException;
 import it.unibo.drescue.model.CivilProtection;
 import it.unibo.drescue.model.CivilProtectionImpl;
 import it.unibo.drescue.model.ObjectModel;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class CivilProtectionDaoImplTest extends GenericDaoAbstractTest {
 
@@ -72,7 +74,11 @@ public class CivilProtectionDaoImplTest extends GenericDaoAbstractTest {
     public void isRejectingUnregisteredCp() throws Exception {
         final CivilProtection cpNotRegistered = CIVIL_PROTECTION_TEST;
         cpNotRegistered.setCpID("1");
-        assertNull(this.civilProtectionDao.login(cpNotRegistered));
+        try {
+            this.civilProtectionDao.login(cpNotRegistered);
+        } catch (final DBNotFoundRecordException e) {
+            assertNotNull(e);
+        }
     }
 
     /**

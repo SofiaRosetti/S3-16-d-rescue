@@ -1,6 +1,8 @@
 package it.unibo.drescue.database.dao;
 
 import it.unibo.drescue.database.DBConnection;
+import it.unibo.drescue.database.exceptions.DBNotFoundRecordException;
+import it.unibo.drescue.database.exceptions.DBQueryException;
 import it.unibo.drescue.model.*;
 import org.junit.Test;
 
@@ -63,7 +65,7 @@ public class AlertAndUpvotedAlertDaoTest extends GenericDaoAbstractTest {
     }
 
     @Override
-    protected void doOtherTearDown() {
+    protected void doOtherTearDown() throws DBQueryException, DBNotFoundRecordException {
         //delete test user
         this.userDao.delete(this.userTest);
         //delete test district
