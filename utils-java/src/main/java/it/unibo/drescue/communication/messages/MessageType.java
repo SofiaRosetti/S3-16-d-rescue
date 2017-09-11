@@ -6,6 +6,8 @@ package it.unibo.drescue.communication.messages;
 public enum MessageType {
     ALERTS_MESSAGE("alerts_message"),
     CHANGE_PASSWORD_MESSAGE("change_password_message"),
+    CONFIGURATION_MESSAGE("configuration_message"),
+    COORDINATION_MESSAGE("coordination_message"),
     ERROR_MESSAGE("error_message"),
     LOGIN_MESSAGE("login_message"),
     NEW_ALERT_MESSAGE("new_alert_message"),

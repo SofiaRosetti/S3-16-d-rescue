@@ -1,7 +1,6 @@
 package it.unibo.drescue.connection;
 
 import com.rabbitmq.client.Connection;
-import it.unibo.drescue.StringUtils;
 import it.unibo.drescue.communication.GsonUtils;
 import it.unibo.drescue.communication.messages.MessageType;
 import it.unibo.drescue.communication.messages.MessageUtils;
@@ -27,10 +26,7 @@ public class AuthenticationRPCReceiver extends AbstractRPCReceiver {
     @Override
     public String accessDB(final String jsonMessage) {
         String response = null;
-
-        final String messageType = StringUtils.getMessageType(jsonMessage);
-        final MessageType nameMessage = MessageUtils.getMessageNameByType(messageType);
-
+        final MessageType nameMessage = MessageUtils.getMessageNameByJson(jsonMessage);
         switch (nameMessage) {
             case SIGN_UP_MESSAGE:
                 System.out.println("Received SIGN UP message");

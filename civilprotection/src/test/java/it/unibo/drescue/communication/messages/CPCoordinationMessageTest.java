@@ -1,13 +1,10 @@
 package it.unibo.drescue.communication.messages;
 
-import it.unibo.drescue.communication.builder.CPConfigurationMessageBuilderImpl;
 import it.unibo.drescue.communication.builder.CPCoordinationMessageBuilderImpl;
 import it.unibo.drescue.model.RescueTeamImpl;
 import it.unibo.drescue.model.RescueTeamImplBuilder;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -24,7 +21,7 @@ public class CPCoordinationMessageTest {
     private CPCoordinationMessage cpCoordinationMessage;
 
     @Before
-    public void build(){
+    public void build() {
 
         final RescueTeamImpl rescueTeam = new RescueTeamImplBuilder()
                 .setRescueTeamID(RESCUE_TEAM_ID)
@@ -43,7 +40,7 @@ public class CPCoordinationMessageTest {
 
     @Test
     public void checkCorrectMessageType() throws Exception {
-        assertEquals(this.cpCoordinationMessage.getMessageType(), CPCoordinationMessage.COORDINATION_MESSAGE);
+        assertEquals(MessageType.COORDINATION_MESSAGE.getMessageType(), this.cpCoordinationMessage.getMessageType());
     }
 
     @Test

@@ -67,8 +67,8 @@ public class ClientMain {
         }
 
         //handle reply to AbstractResponse
-        final String messageType = StringUtils.getMessageType(responseMessage);
-        final MessageType nameMessage = MessageUtils.getMessageNameByType(messageType);
+        final MessageType nameMessage = MessageUtils.getMessageNameByJson(responseMessage);
+
         switch (nameMessage) {
             case ERROR_MESSAGE:
                 final ErrorMessageImpl errorMessage = GsonUtils.fromGson(responseMessage, ErrorMessageImpl.class);

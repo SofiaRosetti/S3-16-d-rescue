@@ -27,7 +27,7 @@ public class CPConfigurationMessageTest {
     private CPConfigurationMessage cpConfigurationMessage;
 
     @Before
-    public void build(){
+    public void build() {
 
         final RescueTeamImpl rescueTeam1 = new RescueTeamImplBuilder()
                 .setRescueTeamID(RESCUE_TEAM_ID_1)
@@ -43,19 +43,19 @@ public class CPConfigurationMessageTest {
                 .setPhoneNumber(RESCUE_TEAM_PHONE_NUMBER_2)
                 .createRescueTeamImpl();
 
-        rescueTeamList = new ArrayList<>();
-        rescueTeamList.add(rescueTeam1);
-        rescueTeamList.add(rescueTeam2);
+        this.rescueTeamList = new ArrayList<>();
+        this.rescueTeamList.add(rescueTeam1);
+        this.rescueTeamList.add(rescueTeam2);
 
         this.cpConfigurationMessage = (CPConfigurationMessage) new CPConfigurationMessageBuilderImpl()
-                .setRescueTeamCollection(rescueTeamList)
+                .setRescueTeamCollection(this.rescueTeamList)
                 .build();
 
     }
 
     @Test
     public void checkCorrectMessageType() throws Exception {
-        assertEquals(this.cpConfigurationMessage.getMessageType(), CPConfigurationMessage.CONFIGURATION_MESSAGE);
+        assertEquals(MessageType.CONFIGURATION_MESSAGE.getMessageType(), this.cpConfigurationMessage.getMessageType());
     }
 
     @Test
