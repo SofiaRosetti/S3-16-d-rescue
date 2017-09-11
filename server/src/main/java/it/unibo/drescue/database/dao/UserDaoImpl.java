@@ -19,7 +19,7 @@ public class UserDaoImpl extends LoggableDaoAbstract<User> implements UserDao {
     }
 
     @Override
-    public String getQuery(final QueryType queryType) {
+    protected String getQuery(final QueryType queryType) throws SQLException {
         switch (queryType) {
             case INSERT:
                 return "INSERT INTO " + TABLENAME + "(email,password,name,surname,phoneNumber)"
@@ -37,13 +37,12 @@ public class UserDaoImpl extends LoggableDaoAbstract<User> implements UserDao {
                 return "UPDATE " + TABLENAME + " SET password = ? "
                         + "WHERE userID = ?";
             default:
-                //TODO Manage exception
-                return null;
+                throw new SQLException(QUERY_NOT_FOUND_EXCEPTION);
         }
     }
 
     @Override
-    public PreparedStatement fillStatement(final ObjectModel objectModel, final PreparedStatement statement, final QueryType queryType) {
+    protected PreparedStatement fillStatement(final ObjectModel objectModel, final PreparedStatement statement, final QueryType queryType) throws SQLException {
         final User user = (UserImpl) objectModel;
         try {
             switch (queryType) {
@@ -68,34 +67,27 @@ public class UserDaoImpl extends LoggableDaoAbstract<User> implements UserDao {
                     statement.setInt(2, userIDToUpdate);
                     break;
                 default:
-                    //TODO Excepion
+                    throw new SQLException(QUERY_NOT_FOUND_EXCEPTION);
             }
 
-        } catch (final SQLException e) {
-            e.printStackTrace();
-            //TODO handle exception
-            return null;
+        } catch (final Exception e) {
+            throw new SQLException();
         }
         return statement;
 
     }
 
     @Override
-    protected ObjectModel mapRecordToModel(final ResultSet resultSet) {
+    protected ObjectModel mapRecordToModel(final ResultSet resultSet) throws SQLException {
         User user = null;
-        try {
-            user = new UserImplBuilder()
-                    .setUserID(resultSet.getInt("userID"))
-                    .setEmail(resultSet.getString("email"))
-                    .setPassword(resultSet.getString("password"))
-                    .setName(resultSet.getString("name"))
-                    .setSurname(resultSet.getString("surname"))
-                    .setPhoneNumber(resultSet.getString("phoneNumber"))
-                    .createUserImpl();
-        } catch (final SQLException e) {
-            e.printStackTrace();
-            //TODO handle exception
-        }
+        user = new UserImplBuilder()
+                .setUserID(resultSet.getInt("userID"))
+                .setEmail(resultSet.getString("email"))
+                .setPassword(resultSet.getString("password"))
+                .setName(resultSet.getString("name"))
+                .setSurname(resultSet.getString("surname"))
+                .setPhoneNumber(resultSet.getString("phoneNumber"))
+                .createUserImpl();
         return user;
     }
 

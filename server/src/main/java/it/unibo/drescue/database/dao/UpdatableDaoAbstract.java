@@ -1,5 +1,6 @@
 package it.unibo.drescue.database.dao;
 
+import it.unibo.drescue.database.exceptions.DBQueryException;
 import it.unibo.drescue.model.ObjectModel;
 
 import java.sql.Connection;
@@ -13,16 +14,15 @@ public abstract class UpdatableDaoAbstract<T> extends GenericDaoAbstract impleme
     }
 
     @Override
-    public void update(final ObjectModel objectModel) {
+    public void update(final ObjectModel objectModel) throws DBQueryException {
 
-        final String query = this.getQuery(QueryType.UPDATE);
         try {
+            final String query = this.getQuery(QueryType.UPDATE);
             final PreparedStatement preparedStatement = this.connection.prepareStatement(query);
             this.fillStatement(objectModel, preparedStatement, QueryType.UPDATE);
             preparedStatement.executeUpdate();
         } catch (final SQLException e) {
-            e.printStackTrace();
-            //TODO Exception
+            throw new DBQueryException(UPDATE_EXCEPTION);
         }
     }
 

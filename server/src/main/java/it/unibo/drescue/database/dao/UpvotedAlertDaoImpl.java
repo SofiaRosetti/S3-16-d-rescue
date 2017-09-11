@@ -18,7 +18,7 @@ public class UpvotedAlertDaoImpl extends GenericDaoAbstract<UpvotedAlert> implem
     }
 
     @Override
-    public String getQuery(final QueryType queryType) {
+    protected String getQuery(final QueryType queryType) throws SQLException {
         switch (queryType) {
             case INSERT:
                 return "INSERT INTO " + TABLENAME + "(userID,alertID)"
@@ -33,46 +33,32 @@ public class UpvotedAlertDaoImpl extends GenericDaoAbstract<UpvotedAlert> implem
                 return "SELECT userID,alertID "
                         + "FROM " + TABLENAME + " WHERE userID = ? AND alertID = ?";
             default:
-                //TODO Handle Exception
-                return null;
+                throw new SQLException(QUERY_NOT_FOUND_EXCEPTION);
         }
     }
 
     @Override
-    public PreparedStatement fillStatement(final ObjectModel objectModel, final PreparedStatement statement,
-                                           final QueryType queryType) {
+    protected PreparedStatement fillStatement(final ObjectModel objectModel, final PreparedStatement statement,
+                                              final QueryType queryType) throws SQLException {
         final UpvotedAlert upvotedAlert = ((UpvotedAlert) objectModel);
-        try {
-            switch (queryType) {
-                case INSERT:
-                case DELETE:
-                case FIND_ONE:
-                    statement.setInt(1, upvotedAlert.getUserID());
-                    statement.setInt(2, upvotedAlert.getAlertID());
-                    break;
-                default:
-                    //TODO Exception 'query not available for this object'
-            }
-
-        } catch (final SQLException e) {
-            e.printStackTrace();
-            //TODO handle exception
-            return null;
+        switch (queryType) {
+            case INSERT:
+            case DELETE:
+            case FIND_ONE:
+                statement.setInt(1, upvotedAlert.getUserID());
+                statement.setInt(2, upvotedAlert.getAlertID());
+                break;
+            default:
+                throw new SQLException(QUERY_NOT_FOUND_EXCEPTION);
         }
         return statement;
     }
 
     @Override
-    protected ObjectModel mapRecordToModel(final ResultSet resultSet) {
-        UpvotedAlert upvotedAlert = null;
-        try {
-            upvotedAlert = new UpvotedAlertImpl(
-                    resultSet.getInt("userID"),
-                    resultSet.getInt("alertID"));
-        } catch (final SQLException e) {
-            e.printStackTrace();
-            //TODO handle
-        }
+    protected ObjectModel mapRecordToModel(final ResultSet resultSet) throws SQLException {
+        final UpvotedAlert upvotedAlert = new UpvotedAlertImpl(
+                resultSet.getInt("userID"),
+                resultSet.getInt("alertID"));
         return upvotedAlert;
     }
 }

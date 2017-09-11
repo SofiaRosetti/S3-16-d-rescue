@@ -1,5 +1,6 @@
 package it.unibo.drescue.database.dao;
 
+import it.unibo.drescue.database.exceptions.DBNotFoundRecordException;
 import it.unibo.drescue.model.LoggableModel;
 
 import java.sql.Connection;
@@ -12,23 +13,21 @@ public abstract class LoggableDaoAbstract<T> extends UpdatableDaoAbstract implem
     }
 
     @Override
-    public LoggableModel login(final LoggableModel loggableInserted) {
-        //TODO comment
+    public LoggableModel login(final LoggableModel loggableInserted) throws DBNotFoundRecordException {
+
         final LoggableModel loggableInDb =
                 (LoggableModel) this.selectByIdentifier(loggableInserted);
         if (loggableInDb == null) {
-            //TODO Exception
             System.out.println("[DB]: LOGIN_FAIL: object not found");
-            return null;
+            throw new DBNotFoundRecordException();
         }
 
         final String passInDb = loggableInDb.getPassword();
         final String passInserted = loggableInserted.getPassword();
 
         if (!passInserted.equals(passInDb)) {
-            //TODO Exception
             System.out.println("[DB]: LOGIN_FAIL: wrong credentials");
-            return null;
+            throw new DBNotFoundRecordException();
         } else {
             System.out.println("[DB]: LOGIN_OK");
             /*Note: return the object without password*/

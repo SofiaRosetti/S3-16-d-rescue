@@ -1,5 +1,6 @@
 package it.unibo.drescue.database.dao;
 
+import it.unibo.drescue.database.exceptions.DBQueryException;
 import it.unibo.drescue.model.Alert;
 
 import java.sql.Timestamp;
@@ -13,8 +14,9 @@ public interface AlertDao extends UpdatableDao {
      * @param x
      * @param districtId
      * @return a list with last inserted x alerts
+     * @throws DBQueryException if something goes wrong executing the findLast query
      */
-    List<Alert> findLast(int x, String districtId);
+    List<Alert> findLast(int x, String districtId) throws DBQueryException;
 
     /**
      * Map current timestamp into a valid DB format

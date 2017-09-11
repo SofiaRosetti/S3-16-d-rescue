@@ -20,7 +20,7 @@ public class DBInitializationStart {
 
     public static void start() {
         final DBInitialization dbInitialization =
-                new DBInitializationImpl(DBConnectionImpl.getLocalConnection());
+                new DBInitializationImpl(DBConnectionImpl.getRemoteConnection());
 
         dbInitialization.insertAllDistrictsFrom(FILE_PATH + DISTRICTS_FILE);
 
