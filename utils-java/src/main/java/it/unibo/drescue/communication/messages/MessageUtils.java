@@ -1,5 +1,7 @@
 package it.unibo.drescue.communication.messages;
 
+import it.unibo.drescue.StringUtils;
+
 /**
  * Utility class for messages.
  */
@@ -18,6 +20,17 @@ public class MessageUtils {
             }
         }
         return MessageType.UNKNOWN_MESSAGE;
+    }
+
+    /**
+     * Gets the object MessageType of the give json message.
+     *
+     * @param jsonMessage json message
+     * @return the MessageType
+     */
+    public static MessageType getMessageNameByJson(final String jsonMessage) {
+        final String messageType = StringUtils.getMessageType(jsonMessage);
+        return getMessageNameByType(messageType);
     }
 
 }
