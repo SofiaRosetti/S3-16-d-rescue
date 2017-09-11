@@ -3,11 +3,8 @@ package it.unibo.drescue.utils;
 import com.google.gson.*;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
-import com.google.maps.errors.ApiException;
 import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.LatLng;
-
-import java.io.IOException;
 
 public class GeocodingImpl implements Geocoding {
 
@@ -22,9 +19,13 @@ public class GeocodingImpl implements Geocoding {
     }
 
     @Override
-    public String getDistrict(final double latitude, final double longitude) {
+    public String getDistrict(final double latitude, final double longitude) throws GeocodingException {
 
-        this.reverseGeocode(latitude, longitude);
+        try {
+            this.reverseGeocode(latitude, longitude);
+        } catch (final Exception e) {
+            throw new GeocodingException();
+        }
 
         final JsonParser parser = new JsonParser();
         final JsonElement jsonTree = parser.parse(this.response);
@@ -41,16 +42,20 @@ public class GeocodingImpl implements Geocoding {
     }
 
     @Override
-    public JsonObject getLatLng(final String address) {
+    public JsonObject getLatLng(final String address) throws GeocodingException {
 
-        this.geocode(address);
+        try {
+            this.geocode(address);
+        } catch (final Exception e) {
+            throw new GeocodingException();
+        }
 
         final JsonObject json = new JsonParser().parse(this.response).getAsJsonObject();
         return json;
 
     }
 
-    private void reverseGeocode(final double latitude, final double longitude) {
+    private void reverseGeocode(final double latitude, final double longitude) throws Exception {
         final GeoApiContext context = new GeoApiContext.Builder()
                 .apiKey(KEY)
                 .build();
@@ -60,16 +65,12 @@ public class GeocodingImpl implements Geocoding {
             results = GeocodingApi.reverseGeocode(context, latlng).await();
             final Gson gson = new GsonBuilder().setPrettyPrinting().create();
             this.response = gson.toJson(results[0].addressComponents);
-        } catch (final ApiException e) {    // TODO handle exceptions
-            e.printStackTrace();
-        } catch (final InterruptedException e) {
-            e.printStackTrace();
-        } catch (final IOException e) {
-            e.printStackTrace();
+        } catch (final Exception e) {
+            throw e;
         }
     }
 
-    private void geocode(final String address) {
+    private void geocode(final String address) throws Exception {
         final GeoApiContext context = new GeoApiContext.Builder()
                 .apiKey(KEY)
                 .build();
@@ -78,12 +79,8 @@ public class GeocodingImpl implements Geocoding {
             results = GeocodingApi.geocode(context, address).await();
             final Gson gson = new GsonBuilder().setPrettyPrinting().create();
             this.response = gson.toJson(results[0].geometry.location);
-        } catch (final ApiException e) {    // TODO handle exceptions
-            e.printStackTrace();
-        } catch (final InterruptedException e) {
-            e.printStackTrace();
-        } catch (final IOException e) {
-            e.printStackTrace();
+        } catch (final Exception e) {
+            throw e;
         }
 
     }

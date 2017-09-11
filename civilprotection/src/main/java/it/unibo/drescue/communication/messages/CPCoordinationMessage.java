@@ -5,12 +5,10 @@ import it.unibo.drescue.model.RescueTeamImpl;
 
 public class CPCoordinationMessage extends AbstractRoutingMessage {
 
-    public final static String COORDINATION_MESSAGE = "coordination_message";
-
     private RescueTeamImpl rescueTeam;
 
     public CPCoordinationMessage() {
-        super(COORDINATION_MESSAGE);
+        super(MessageType.COORDINATION_MESSAGE);
     }
 
     public RescueTeam getRescueTeam() {

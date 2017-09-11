@@ -9,7 +9,7 @@ public class GsonUtilsTest {
 
     private static final String ERROR_STRING = "{\"error\":\"test\"}";
 
-    private static final String ERROR_MESSAGE = "{\"error\":\"test\",\"messageType\":\"error_message\"}";
+    private static final String ERROR_MESSAGE = "{\"error\":\"test\",\"messageType\":\"ERROR_MESSAGE\"}";
 
     @Test
     public void fromStringToObject() {

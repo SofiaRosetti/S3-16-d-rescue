@@ -19,7 +19,7 @@ public abstract class GenericDaoAbstractTest {
     private DBConnection dbConnection;
 
     private void startConnection() {
-        this.dbConnection = DBConnectionImpl.getLocalConnection();
+        this.dbConnection = DBConnectionImpl.getRemoteConnection();
     }
 
     private void closeConnection() throws DBConnectionException {

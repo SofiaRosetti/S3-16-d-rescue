@@ -2,6 +2,8 @@ package it.unibo.mobileuser.connection;
 
 import it.unibo.drescue.StringUtils;
 import it.unibo.drescue.communication.GsonUtils;
+import it.unibo.drescue.communication.messages.MessageType;
+import it.unibo.drescue.communication.messages.MessageUtils;
 import it.unibo.drescue.communication.messages.response.ErrorMessageImpl;
 
 /**
@@ -13,8 +15,9 @@ public abstract class AbstractResponse implements RequestDelegate {
     public void onReceivingResponse(final String response) {
         if (StringUtils.isAValidString(response)) {
             final String messageType = StringUtils.getMessageType(response);
-            switch (messageType) {
-                case ErrorMessageImpl.ERROR_MESSAGE:
+            final MessageType messageName = MessageUtils.getMessageNameByType(messageType);
+            switch (messageName) {
+                case ERROR_MESSAGE:
                     final ErrorMessageImpl errorMessage = GsonUtils.fromGson(response, ErrorMessageImpl.class);
                     onErrorRequest(errorMessage.getError());
                     break;

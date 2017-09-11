@@ -3,13 +3,12 @@ package it.unibo.drescue.communication.messages.response;
 import it.unibo.drescue.communication.builder.MessageBuilder;
 import it.unibo.drescue.communication.messages.AbstractMessage;
 import it.unibo.drescue.communication.messages.Message;
+import it.unibo.drescue.communication.messages.MessageType;
 
 /**
  * Class that represents an error message.
  */
 public class ErrorMessageImpl extends AbstractMessage implements ErrorMessage, MessageBuilder {
-
-    public final static String ERROR_MESSAGE = "error_message";
 
     private final String error;
 
@@ -19,7 +18,7 @@ public class ErrorMessageImpl extends AbstractMessage implements ErrorMessage, M
      * @param error message of error
      */
     public ErrorMessageImpl(final String error) {
-        super(ERROR_MESSAGE);
+        super(MessageType.ERROR_MESSAGE);
         this.error = error;
     }
 

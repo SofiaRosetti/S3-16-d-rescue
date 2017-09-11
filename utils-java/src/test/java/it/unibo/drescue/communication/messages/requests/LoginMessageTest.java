@@ -1,6 +1,7 @@
 package it.unibo.drescue.communication.messages.requests;
 
 import it.unibo.drescue.communication.messages.Message;
+import it.unibo.drescue.communication.messages.MessageType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,7 +18,7 @@ public class LoginMessageTest {
     public void build() {
         final Message loginMessage = new LoginMessageImpl(EMAIL, PASSWORD);
 
-        if (loginMessage.getMessageType().equals(LoginMessageImpl.LOGIN_MESSAGE)) {
+        if (loginMessage.getMessageType().equals(MessageType.LOGIN_MESSAGE.getMessageType())) {
             this.loginMessageImpl = (LoginMessageImpl) loginMessage;
         }
     }

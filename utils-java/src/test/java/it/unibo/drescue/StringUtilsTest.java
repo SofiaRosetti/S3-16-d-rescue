@@ -1,5 +1,6 @@
 package it.unibo.drescue;
 
+import it.unibo.drescue.communication.messages.MessageType;
 import it.unibo.drescue.communication.messages.response.SuccessfulMessageImpl;
 import org.junit.Test;
 
@@ -36,7 +37,7 @@ public class StringUtilsTest {
     @Test
     public void isMessageTypeCorrect() {
         final SuccessfulMessageImpl message = new SuccessfulMessageImpl();
-        assertEquals(message.getMessageType(), SuccessfulMessageImpl.SUCCESSFUL_MESSAGE);
+        assertEquals(message.getMessageType(), MessageType.SUCCESSFUL_MESSAGE.getMessageType());
     }
-
+    
 }

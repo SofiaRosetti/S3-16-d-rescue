@@ -6,12 +6,10 @@ import java.util.List;
 
 public class CPConfigurationMessage extends AbstractRoutingMessage {
 
-    public final static String CONFIGURATION_MESSAGE = "configuration_message";
-
     private List<RescueTeamImpl> rescueTeamCollection;
 
     public CPConfigurationMessage() {
-        super(CONFIGURATION_MESSAGE);
+        super(MessageType.CONFIGURATION_MESSAGE);
     }
 
     public List<RescueTeamImpl> getRescueTeamCollection() {

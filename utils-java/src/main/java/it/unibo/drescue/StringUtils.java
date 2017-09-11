@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Utiliry class for strings.
+ * Utility class for strings.
  */
 public class StringUtils {
 
@@ -51,4 +51,5 @@ public class StringUtils {
         final JsonObject jo = je.getAsJsonObject();
         return jo.get(MESSAGE_TYPE).getAsString();
     }
+
 }
