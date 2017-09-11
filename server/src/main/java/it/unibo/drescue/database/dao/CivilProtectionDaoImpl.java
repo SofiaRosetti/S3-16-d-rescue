@@ -18,7 +18,7 @@ public class CivilProtectionDaoImpl extends LoggableDaoAbstract<CivilProtection>
     }
 
     @Override
-    public String getQuery(final QueryType queryType) {
+    protected String getQuery(final QueryType queryType) throws SQLException {
         switch (queryType) {
             /*
              * Note: the identifier in cp is cpID
@@ -36,53 +36,41 @@ public class CivilProtectionDaoImpl extends LoggableDaoAbstract<CivilProtection>
                 return "UPDATE " + TABLENAME + " SET password = ? "
                         + "WHERE cpID = ?";
             default:
-                //TODO handle exception
-                return null;
+                throw new SQLException(QUERY_NOT_FOUND_EXCEPTION);
         }
     }
 
     @Override
-    public PreparedStatement fillStatement(final ObjectModel objectModel, final PreparedStatement statement, final QueryType queryType) {
+    protected PreparedStatement fillStatement(final ObjectModel objectModel, final PreparedStatement statement, final QueryType queryType) throws SQLException {
         final CivilProtection cp = (CivilProtection) objectModel;
-        try {
-            switch (queryType) {
-                case FIND_ONE:
-                    statement.setString(1, cp.getCpID());
-                    break;
-                case INSERT:
-                    statement.setString(1, cp.getCpID());
-                    statement.setString(2, cp.getPassword());
-                    break;
-                case DELETE:
-                    statement.setString(1, cp.getCpID());
-                    break;
-                case UPDATE:
-                    final String newPassword = cp.getPassword();
-                    statement.setString(1, newPassword);
-                    statement.setString(2, cp.getCpID());
-                    break;
-                default:
-                    //TODO launch excception
-            }
-        } catch (final SQLException e) {
-            e.printStackTrace();
-            //TODO Handle
+        switch (queryType) {
+            case FIND_ONE:
+                statement.setString(1, cp.getCpID());
+                break;
+            case INSERT:
+                statement.setString(1, cp.getCpID());
+                statement.setString(2, cp.getPassword());
+                break;
+            case DELETE:
+                statement.setString(1, cp.getCpID());
+                break;
+            case UPDATE:
+                final String newPassword = cp.getPassword();
+                statement.setString(1, newPassword);
+                statement.setString(2, cp.getCpID());
+                break;
+            default:
+                throw new SQLException(QUERY_NOT_FOUND_EXCEPTION);
         }
 
         return statement;
     }
 
     @Override
-    protected ObjectModel mapRecordToModel(final ResultSet resultSet) {
-        CivilProtection cp = null;
-        try {
-            cp = new CivilProtectionImpl(
-                    resultSet.getString("cpID"),
-                    resultSet.getString("password"));
-        } catch (final Exception e) {
-            e.printStackTrace();
-            //TODO handle
-        }
+    protected ObjectModel mapRecordToModel(final ResultSet resultSet) throws SQLException {
+        final CivilProtection cp = new CivilProtectionImpl(
+                resultSet.getString("cpID"),
+                resultSet.getString("password"));
         return cp;
     }
 

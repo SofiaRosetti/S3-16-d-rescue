@@ -2,6 +2,9 @@ package it.unibo.drescue.database.dao;
 
 import it.unibo.drescue.database.DBConnection;
 import it.unibo.drescue.database.DBConnectionImpl;
+import it.unibo.drescue.database.exceptions.DBConnectionException;
+import it.unibo.drescue.database.exceptions.DBNotFoundRecordException;
+import it.unibo.drescue.database.exceptions.DBQueryException;
 import it.unibo.drescue.model.ObjectModel;
 import org.junit.After;
 import org.junit.Before;
@@ -19,7 +22,7 @@ public abstract class GenericDaoAbstractTest {
         this.dbConnection = DBConnectionImpl.getRemoteConnection();
     }
 
-    private void closeConnection() {
+    private void closeConnection() throws DBConnectionException {
         this.dbConnection.closeConnection();
     }
 
@@ -86,5 +89,5 @@ public abstract class GenericDaoAbstractTest {
      * Do other possible actions required in tearDown method for the class
      * (like deleting mock object used for test)
      */
-    protected abstract void doOtherTearDown();
+    protected abstract void doOtherTearDown() throws DBQueryException, DBNotFoundRecordException;
 }

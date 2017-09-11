@@ -4,7 +4,7 @@ package it.unibo.drescue.model;
  * An interface modelling a Civil Protection.
  */
 
-public interface CivilProtection extends ObjectModel {
+public interface CivilProtection extends LoggableModel {
 
     /**
      * @return the civil protection ID
@@ -18,16 +18,5 @@ public interface CivilProtection extends ObjectModel {
      */
     void setCpID(String cpID);
 
-    /**
-     * @return the civil protection password
-     */
-    String getPassword();
-
-    /**
-     * Sets the civil protection password
-     *
-     * @param password the civil protection password
-     */
-    void setPassword(String password);
 
 }

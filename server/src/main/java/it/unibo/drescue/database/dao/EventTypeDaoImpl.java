@@ -1,5 +1,6 @@
 package it.unibo.drescue.database.dao;
 
+import it.unibo.drescue.database.exceptions.DBQueryException;
 import it.unibo.drescue.model.EventType;
 import it.unibo.drescue.model.EventTypeImpl;
 import it.unibo.drescue.model.ObjectModel;
@@ -20,7 +21,7 @@ public class EventTypeDaoImpl extends GenericDaoAbstract implements EventTypeDao
     }
 
     @Override
-    public String getQuery(final QueryType queryType) {
+    protected String getQuery(final QueryType queryType) throws SQLException {
         switch (queryType) {
             case INSERT:
                 return "INSERT INTO " + TABLENAME + "(eventName)"
@@ -37,51 +38,37 @@ public class EventTypeDaoImpl extends GenericDaoAbstract implements EventTypeDao
             case FIND_ALL:
                 return "SELECT eventName FROM " + TABLENAME;
             default:
-                //TODO handle exception
-                return null;
+                throw new SQLException(QUERY_NOT_FOUND_EXCEPTION);
         }
     }
 
     @Override
-    public PreparedStatement fillStatement(final ObjectModel objectModel, final PreparedStatement statement, final QueryType queryType) {
+    protected PreparedStatement fillStatement(final ObjectModel objectModel, final PreparedStatement statement, final QueryType queryType) throws SQLException {
         final EventType eventType = (EventType) objectModel;
-        try {
-            switch (queryType) {
-                case INSERT:
-                case DELETE:
-                case FIND_ONE:
-                    statement.setString(1, eventType.getEventName());
-                    break;
-                default:
-                    //TODO Exception 'query not available for this object'
-            }
-
-        } catch (final SQLException e) {
-            e.printStackTrace();
-            //TODO handle exception
-            return null;
+        switch (queryType) {
+            case INSERT:
+            case DELETE:
+            case FIND_ONE:
+                statement.setString(1, eventType.getEventName());
+                break;
+            default:
+                throw new SQLException(QUERY_NOT_FOUND_EXCEPTION);
         }
         return statement;
     }
 
     @Override
-    protected ObjectModel mapRecordToModel(final ResultSet resultSet) {
-        EventType eventType = null;
-        try {
-            eventType = new EventTypeImpl(
-                    resultSet.getString("eventName"));
-        } catch (final SQLException e) {
-            e.printStackTrace();
-            //TODO handle
-        }
+    protected ObjectModel mapRecordToModel(final ResultSet resultSet) throws SQLException {
+        final EventType eventType = new EventTypeImpl(
+                resultSet.getString("eventName"));
         return eventType;
     }
 
     @Override
-    public List<EventType> findAll() {
+    public List<EventType> findAll() throws DBQueryException {
         final List<EventType> eventTypeList = new ArrayList<>();
-        final String query = this.getQuery(QueryType.FIND_ALL);
         try {
+            final String query = this.getQuery(QueryType.FIND_ALL);
             final PreparedStatement statement = this.connection.prepareStatement(query);
             final ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -91,7 +78,7 @@ public class EventTypeDaoImpl extends GenericDaoAbstract implements EventTypeDao
             resultSet.close();
             statement.close();
         } catch (final SQLException e) {
-            e.printStackTrace();
+            throw new DBQueryException(FIND_ALL_EXCEPTION);
         }
         return eventTypeList;
     }
