@@ -3,8 +3,17 @@ dist: trusty
 
 env:
   - ANDROID_HOME=$PWD/
+
+install:
+- wget --quiet --output-document=tools.zip https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
+- unzip -qq tools.zip
+- echo y | tools/bin/sdkmanager "platforms;android-25"
+- echo y | tools/bin/sdkmanager "platform-tools"
+- echo y | tools/bin/sdkmanager "build-tools;25.0.2"
+- echo y | tools/bin/sdkmanager "extras;android;m2repository"
+- echo y | tools/bin/sdkmanager "extras;google;m2repository"
   
-language: android
+language: java
 jdk: oraclejdk8
 android:
   components:
@@ -38,3 +47,6 @@ android:
 
 script:
 - chmod +x ./gradlew
+
+services:
+  - rabbitmq
