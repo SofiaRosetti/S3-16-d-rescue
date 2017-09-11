@@ -4,7 +4,6 @@ import it.unibo.drescue.database.DBConnection;
 import it.unibo.drescue.model.*;
 import org.junit.Test;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -44,7 +43,7 @@ public class AlertAndUpvotedAlertDaoTest extends GenericDaoAbstractTest {
         this.eventTypeTest = (EventType) this.eventTypeDao.insertAndGet(this.eventTypeTest);
 
         this.alertTest = new AlertImplBuilder()
-                .setTimestamp(this.getCurrentTimestampForDb())
+                .setTimestamp(this.alertDao.getCurrentTimestampForDb())
                 .setLatitude(LATITUDE_TEST)
                 .setLongitude(LONGITUDE_TEST)
                 .setUserID(this.userTest.getUserID())
@@ -107,17 +106,13 @@ public class AlertAndUpvotedAlertDaoTest extends GenericDaoAbstractTest {
     }
 
     @Test
-    public void isFindingLastXAlert() throws Exception {
+    public void isFindingLastXAlertInDistrict() throws Exception {
         this.alertDao.insert(this.alertTest);
-        final List<Alert> alertList = this.alertDao.findLast(LAST_X);
+        final List<Alert> alertList =
+                this.alertDao.findLast(LAST_X, this.districtTest.getDistrictID());
         assertNotEquals(alertList.size(), 0);
         //assertTrue(alertList.contains(this.alertTest)); //TODO
         this.alertDao.delete(this.alertTest);
     }
 
-    private Timestamp getCurrentTimestampForDb() {
-        final Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
-        currentTimestamp.setNanos(0);
-        return currentTimestamp;
-    }
 }

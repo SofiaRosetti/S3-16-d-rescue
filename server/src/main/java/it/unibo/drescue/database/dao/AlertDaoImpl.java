@@ -4,10 +4,7 @@ import it.unibo.drescue.model.Alert;
 import it.unibo.drescue.model.AlertImplBuilder;
 import it.unibo.drescue.model.ObjectModel;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,16 +103,18 @@ public class AlertDaoImpl extends UpdatableDaoAbstract<Alert> implements AlertDa
     }
 
     @Override
-    public List<Alert> findLast(final int x) {
+    public List<Alert> findLast(final int x, final String districtId) {
 
         final List<Alert> alertList = new ArrayList<>();
         final String query = "SELECT alertID,timestamp,latitude,longitude,userID,eventName,districtID,upvotes"
                 + " FROM " + TABLENAME
+                + " WHERE districtID = ?"
                 + " ORDER BY timestamp DESC"
                 + " LIMIT ?";
         try {
             final PreparedStatement statement = this.connection.prepareStatement(query);
-            statement.setInt(1, x);
+            statement.setString(1, districtId);
+            statement.setInt(2, x);
             final ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 final Alert alert = (Alert) mapRecordToModel(resultSet);
@@ -127,5 +126,12 @@ public class AlertDaoImpl extends UpdatableDaoAbstract<Alert> implements AlertDa
             e.printStackTrace();
         }
         return alertList;
+    }
+
+    @Override
+    public Timestamp getCurrentTimestampForDb() {
+        final Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+        currentTimestamp.setNanos(0);
+        return currentTimestamp;
     }
 }
