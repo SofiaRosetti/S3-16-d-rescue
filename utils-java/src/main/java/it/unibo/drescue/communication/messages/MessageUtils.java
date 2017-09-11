@@ -6,14 +6,14 @@ package it.unibo.drescue.communication.messages;
 public class MessageUtils {
 
     /**
-     * Gets an object MessageType of the given message value.
+     * Gets an object MessageType of the given message name.
      *
-     * @param messageType message value
-     * @return the message name, otherwise the message name of no message if it does not match .
+     * @param messageType message name
+     * @return the MessageType, otherwise the MessageType of no message if it does not match .
      */
     public static MessageType getMessageNameByType(final String messageType) {
         for (final MessageType name : MessageType.values()) {
-            if (messageType.equals(name.getMessageType())) {
+            if (messageType.equals(name.name())) {
                 return name;
             }
         }
