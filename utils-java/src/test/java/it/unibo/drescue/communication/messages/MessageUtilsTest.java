@@ -6,8 +6,8 @@ import static org.junit.Assert.assertEquals;
 
 public class MessageUtilsTest {
 
-    private static final String MESSAGE_CORRECT = "alerts_message";
-    private static final String MESSAGE_UNKNOWN = "message_test";
+    private static final String MESSAGE_CORRECT = "ALERTS_MESSAGE";
+    private static final String MESSAGE_UNKNOWN = "MESSAGE_TEST";
 
     @Test
     public void isACorrectMessageType() {
