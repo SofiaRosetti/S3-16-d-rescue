@@ -88,6 +88,7 @@ import it.unibo.drescue.model._
   */
 object MobileuserService {
   private val duplicatedEmailMessage = "Duplicated email."
+  private val wrongEmailOrPassword = "Wrong email and/or password."
 }
 
 /**
@@ -101,7 +102,7 @@ case class MobileuserService() extends ServiceResponse {
     val messageName: MessageType = MessageUtils.getMessageNameByJson(jsonMessage)
 
     messageName match {
-        
+
       case MessageType.SIGN_UP_MESSAGE =>
 
         val signUp = GsonUtils.fromGson(jsonMessage, classOf[SignUpMessageImpl])
@@ -126,10 +127,32 @@ case class MobileuserService() extends ServiceResponse {
 
         new SuccessfulMessageImpl
 
+      case MessageType.LOGIN_MESSAGE =>
+
+        val login = GsonUtils.fromGson(jsonMessage, classOf[LoginMessageImpl])
+
+        val user = new UserImplBuilder()
+          .setEmail(login.getEmail)
+          .setPassword(login.getPassword)
+          .createUserImpl()
+
+        try {
+          val userDao = (dbConnection getDAO DBConnection.Table.USER).asInstanceOf[UserDao]
+          val userSelected = (userDao login user).asInstanceOf[User]
+          val eventTypeDao = (dbConnection getDAO DBConnection.Table.EVENT_TYPE).asInstanceOf[EventTypeDao]
+          val eventTypeList = eventTypeDao.findAll
+          new ResponseLoginMessageImpl(userSelected, eventTypeList)
+        } catch {
+          case connection: DBConnectionException => throw connection
+          case query: DBQueryException => throw query
+          case notFound: DBNotFoundRecordException =>
+            new ErrorMessageImpl(MobileuserService.wrongEmailOrPassword)
+        }
+
       case _ => throw new Exception
     }
 
-    //TODO add case for login, request profile (?), change password
+    //TODO request profile (?), change password
 
   }
 
