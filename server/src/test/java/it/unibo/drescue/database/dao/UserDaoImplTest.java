@@ -1,6 +1,8 @@
 package it.unibo.drescue.database.dao;
 
 import it.unibo.drescue.database.DBConnection;
+import it.unibo.drescue.database.exceptions.DBDuplicatedRecordException;
+import it.unibo.drescue.database.exceptions.DBNotFoundRecordException;
 import it.unibo.drescue.model.ObjectModel;
 import it.unibo.drescue.model.User;
 import it.unibo.drescue.model.UserImplBuilder;
@@ -48,20 +50,20 @@ public class UserDaoImplTest extends GenericDaoAbstractTest {
 
     /**
      * TODO
-     *
-     * @throws Exception
      */
-    //TODO handle exception
     @Test
     public void isRejectingDuplicateEmail() throws Exception {
-        this.userDao.insert(this.userTest);
-        assertNotNull(this.userDao.selectByIdentifier(this.userTest));
 
-        //assertFalse(this.userDao.insert(this.userTest));
-        //TODO handle exception
+        assertNotNull(this.userDao.insertAndGet(this.userTest));
 
-        //Deleting test user
-        this.userDao.delete(this.userTest);
+        try {
+            this.userDao.insert(this.userTest);
+        } catch (final DBDuplicatedRecordException e) {
+            assertNotNull(e);
+            //Deleting test user
+            this.userDao.delete(this.userTest);
+        }
+
     }
 
     /**
@@ -71,8 +73,7 @@ public class UserDaoImplTest extends GenericDaoAbstractTest {
     @Test
     public void isUpdatingPassword() throws Exception {
         final String newPassword = "password2";
-        this.userDao.insert(this.userTest);
-        User userInDb = (User) this.userDao.selectByIdentifier(this.userTest);
+        User userInDb = (User) this.userDao.insertAndGet(this.userTest);
         assertEquals(userInDb.getPassword(), this.userTest.getPassword());
         final User userToUpdate = new UserImplBuilder()
                 .setUserID(userInDb.getUserID())
@@ -92,7 +93,13 @@ public class UserDaoImplTest extends GenericDaoAbstractTest {
      */
     @Test
     public void isRejectingUnregisteredUser() throws Exception {
-        assertFalse(this.userDao.login(EMAIL_TEST, PASSWORD_TEST));
+        this.userTest.setEmail("a@a.com");
+        try {
+            this.userDao.login(this.userTest);
+        } catch (DBNotFoundRecordException e) {
+            assertNotNull(e);
+        }
+        this.userTest.setEmail(EMAIL_TEST);
     }
 
     /**
@@ -102,7 +109,34 @@ public class UserDaoImplTest extends GenericDaoAbstractTest {
     @Test
     public void isLoggingInRegisteredUser() throws Exception {
         this.userDao.insert(this.userTest);
-        assertTrue(this.userDao.login(EMAIL_TEST, PASSWORD_TEST));
+        assertNotNull(this.userDao.login(this.userTest));
+        //Deleting test user
+        this.userDao.delete(this.userTest);
+    }
+
+    /**
+     * Test login functionality.
+     * Verify that return all user data
+     */
+    @Test
+    public void isLoginReturningAllData() throws Exception {
+        this.userDao.insert(this.userTest);
+
+        final User userWithoutData = new UserImplBuilder()
+                .setEmail(EMAIL_TEST)
+                .setPassword(PASSWORD_TEST)
+                .createUserImpl();
+
+        assertNull(userWithoutData.getName());
+        assertNull(userWithoutData.getSurname());
+        assertNull(userWithoutData.getPhoneNumber());
+
+        final User userWithData = (User) this.userDao.login(userWithoutData);
+
+        assertEquals(userWithData.getName(), NAME_TEST);
+        assertEquals(userWithData.getSurname(), SURNAME_TEST);
+        assertEquals(userWithData.getPhoneNumber(), PHONENUMBER_TEST);
+
         //Deleting test user
         this.userDao.delete(this.userTest);
     }

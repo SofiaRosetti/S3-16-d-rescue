@@ -6,9 +6,11 @@ import it.unibo.drescue.database.dao.CivilProtectionDao;
 import it.unibo.drescue.database.dao.CpAreaDao;
 import it.unibo.drescue.database.dao.DistrictDao;
 import it.unibo.drescue.database.dao.EventTypeDao;
+import it.unibo.drescue.database.exceptions.DBConnectionException;
+import it.unibo.drescue.database.exceptions.DBDuplicatedRecordException;
+import it.unibo.drescue.database.exceptions.DBQueryException;
 import it.unibo.drescue.model.*;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public class DBInitializationImpl implements DBInitialization {
@@ -28,22 +30,28 @@ public class DBInitializationImpl implements DBInitialization {
         final List<DistrictImpl> districts =
                 this.jsonFileUtils.getListFromJsonFile(pathFile, DistrictImpl[].class);
         if (districts == null) {
-            //TODO Exception
+            //TODO handle exception
             System.out.println("districts: null");
             return;
         }
         //Getting Dao
         try {
             districtDao = (DistrictDao) this.dbConnection.getDAO(DBConnection.Table.DISTRICT);
-        } catch (final SQLException e) {
-            //TODO Exception
+        } catch (final DBConnectionException e) {
+            //TODO handle exception
             e.printStackTrace();
-            return;
         }
         //Inserting districts
         for (final District district : districts) {
-            districtDao.insert(district);
-            //TODO handle exception
+            try {
+                districtDao.insert(district);
+            } catch (final DBDuplicatedRecordException e) {
+                //TODO handle exception
+                System.out.println("Duplicate " + district.getDistrictID());
+            } catch (final DBQueryException e) {
+                //TODO handle exception
+                e.printStackTrace();
+            }
         }
     }
 
@@ -56,20 +64,26 @@ public class DBInitializationImpl implements DBInitialization {
                 this.jsonFileUtils.getListFromJsonFile(pathFile, EventTypeImpl[].class);
         if (eventTypeList == null) {
             System.out.println("eventTypeList: null");
-            return; //TODO Exception
+            return; //TODO handle exception
         }
         //Getting Dao
         try {
             eventTypeDao = (EventTypeDao) this.dbConnection.getDAO(DBConnection.Table.EVENT_TYPE);
-        } catch (final SQLException e) {
-            //TODO Exception
+        } catch (final DBConnectionException e) {
+            //TODO handle exception
             e.printStackTrace();
-            return;
         }
         //Inserting events_type
         for (final EventType eventType : eventTypeList) {
-            eventTypeDao.insert(eventType);
-            //TODO Handle Exception
+            try {
+                eventTypeDao.insert(eventType);
+            } catch (final DBDuplicatedRecordException e) {
+                //TODO handle exception
+                System.out.println("Duplicate " + eventType.getEventName());
+            } catch (final DBQueryException e) {
+                //TODO handle exception
+                e.printStackTrace();
+            }
         }
 
     }
@@ -88,16 +102,23 @@ public class DBInitializationImpl implements DBInitialization {
         }
         //Getting Dao
         try {
-            civilProtectionDao = (CivilProtectionDao) this.dbConnection.getDAO(DBConnection.Table.CIVIL_PROTECTION);
-        } catch (final SQLException e) {
-            //TODO Exception
+            civilProtectionDao = (CivilProtectionDao)
+                    this.dbConnection.getDAO(DBConnection.Table.CIVIL_PROTECTION);
+        } catch (final DBConnectionException e) {
             e.printStackTrace();
-            return;
+            //TODO handle exception
         }
         //Inserting districts
         for (final CivilProtection civilProtection : civilProtectionList) {
-            civilProtectionDao.insert(civilProtection);
-            //TODO handle exception
+            try {
+                civilProtectionDao.insert(civilProtection);
+            } catch (final DBDuplicatedRecordException e) {
+                //TODO handle exception
+                System.out.println("Duplicate " + civilProtection.getCpID());
+            } catch (final DBQueryException e) {
+                //TODO handle exception
+                e.printStackTrace();
+            }
         }
     }
 
@@ -116,15 +137,20 @@ public class DBInitializationImpl implements DBInitialization {
         //Getting Dao
         try {
             cpAreaDao = (CpAreaDao) this.dbConnection.getDAO(DBConnection.Table.CP_AREA);
-        } catch (final SQLException e) {
-            //TODO Exception
+        } catch (final DBConnectionException e) {
             e.printStackTrace();
-            return;
         }
         //Inserting districts
         for (final CpArea cpArea : cpAreas) {
-            cpAreaDao.insert(cpArea);
-            //TODO handle exception
+            try {
+                cpAreaDao.insert(cpArea);
+            } catch (final DBDuplicatedRecordException e) {
+                //TODO handle exception
+                System.out.println("Duplicate " + cpArea.getCpID() + " + " + cpArea.getDistrictID());
+            } catch (final DBQueryException e) {
+                //TODO handle exception
+                e.printStackTrace();
+            }
         }
     }
 }

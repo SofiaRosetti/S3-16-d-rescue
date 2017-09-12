@@ -1,10 +1,11 @@
 package it.unibo.drescue.database.dao;
 
 import it.unibo.drescue.database.DBConnection;
+import it.unibo.drescue.database.exceptions.DBNotFoundRecordException;
+import it.unibo.drescue.database.exceptions.DBQueryException;
 import it.unibo.drescue.model.*;
 import org.junit.Test;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -36,18 +37,15 @@ public class AlertAndUpvotedAlertDaoTest extends GenericDaoAbstractTest {
         this.userDao = (UserDao) connectionForTest.getDAO(DBConnection.Table.USER);
         this.districtDao = (DistrictDao) connectionForTest.getDAO(DBConnection.Table.DISTRICT);
         this.eventTypeDao = (EventTypeDao) connectionForTest.getDAO(DBConnection.Table.EVENT_TYPE);
-        //insert a test user and
-        this.userDao.insert(this.userTest);
-        this.userTest = (User) this.userDao.selectByIdentifier(this.userTest);
+        //insert a test user
+        this.userTest = (User) this.userDao.insertAndGet(this.userTest);
         //insert a test district
-        this.districtDao.insert(this.districtTest);
-        this.districtTest = (District) this.districtDao.selectByIdentifier(this.districtTest);
+        this.districtTest = (District) this.districtDao.insertAndGet(this.districtTest);
         //insert a test event type
-        this.eventTypeDao.insert(this.eventTypeTest);
-        this.eventTypeTest = (EventType) this.eventTypeDao.selectByIdentifier(this.eventTypeTest);
+        this.eventTypeTest = (EventType) this.eventTypeDao.insertAndGet(this.eventTypeTest);
 
         this.alertTest = new AlertImplBuilder()
-                .setTimestamp(this.getCurrentTimestampForDb())
+                .setTimestamp(this.alertDao.getCurrentTimestampForDb())
                 .setLatitude(LATITUDE_TEST)
                 .setLongitude(LONGITUDE_TEST)
                 .setUserID(this.userTest.getUserID())
@@ -56,12 +54,9 @@ public class AlertAndUpvotedAlertDaoTest extends GenericDaoAbstractTest {
                 .setUpvotes(0)
                 .createAlertImpl();
 
-
         //Setup upvotedAlertDao
         this.upvotedAlertDao = (UpvotedAlertDao)
                 connectionForTest.getDAO(DBConnection.Table.UPVOTED_ALERT);
-
-
     }
 
     @Override
@@ -70,7 +65,7 @@ public class AlertAndUpvotedAlertDaoTest extends GenericDaoAbstractTest {
     }
 
     @Override
-    protected void doOtherTearDown() {
+    protected void doOtherTearDown() throws DBQueryException, DBNotFoundRecordException {
         //delete test user
         this.userDao.delete(this.userTest);
         //delete test district
@@ -87,10 +82,9 @@ public class AlertAndUpvotedAlertDaoTest extends GenericDaoAbstractTest {
     public void isUpvotingAnAlert() throws Exception {
 
         //Insert test alert
-        this.alertDao.insert(this.alertTest);
+        Alert alertInDb = (Alert) this.alertDao.insertAndGet(this.alertTest);
 
         //get upvotes before updating for testing
-        Alert alertInDb = (Alert) this.alertDao.selectByIdentifier(this.alertTest);
         final int upvotesBefore = alertInDb.getUpvotes();
 
         //Insert upvoted alert
@@ -114,17 +108,13 @@ public class AlertAndUpvotedAlertDaoTest extends GenericDaoAbstractTest {
     }
 
     @Test
-    public void isFindingLastXAlert() throws Exception {
+    public void isFindingLastXAlertInDistrict() throws Exception {
         this.alertDao.insert(this.alertTest);
-        final List<Alert> alertList = this.alertDao.findLast(LAST_X);
+        final List<Alert> alertList =
+                this.alertDao.findLast(LAST_X, this.districtTest.getDistrictID());
         assertNotEquals(alertList.size(), 0);
         //assertTrue(alertList.contains(this.alertTest)); //TODO
         this.alertDao.delete(this.alertTest);
     }
 
-    private Timestamp getCurrentTimestampForDb() {
-        final Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
-        currentTimestamp.setNanos(0);
-        return currentTimestamp;
-    }
 }

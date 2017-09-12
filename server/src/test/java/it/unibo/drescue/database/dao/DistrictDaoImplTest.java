@@ -57,9 +57,9 @@ public class DistrictDaoImplTest extends GenericDaoAbstractTest {
      */
     @Test
     public void isUpdatingPopulation() throws Exception {
-        this.districtDao.insert(DISTRICT_TEST);
 
-        District districtInDb = (District) this.districtDao.selectByIdentifier(DISTRICT_TEST);
+        District districtInDb = (District) this.districtDao.insertAndGet(DISTRICT_TEST);
+
         final int populationBefore = districtInDb.getPopulation();
         final int newPopulation = 500;
 

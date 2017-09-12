@@ -1,12 +1,14 @@
 package it.unibo.drescue.database.dao;
 
 import it.unibo.drescue.database.DBConnection;
+import it.unibo.drescue.database.exceptions.DBNotFoundRecordException;
 import it.unibo.drescue.model.CivilProtection;
 import it.unibo.drescue.model.CivilProtectionImpl;
 import it.unibo.drescue.model.ObjectModel;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class CivilProtectionDaoImplTest extends GenericDaoAbstractTest {
 
@@ -43,12 +45,13 @@ public class CivilProtectionDaoImplTest extends GenericDaoAbstractTest {
     @Test
     public void isUpdatingPassword() throws Exception {
 
-        this.civilProtectionDao.insert(CIVIL_PROTECTION_TEST);
+        CivilProtection cpInDb =
+                (CivilProtection) this.civilProtectionDao.insertAndGet(CIVIL_PROTECTION_TEST);
+
+        assertEquals(cpInDb.getPassword(), CIVIL_PROTECTION_TEST.getPassword());
 
         final String newPassword = "password2";
-        CivilProtection cpInDb = (CivilProtection)
-                this.civilProtectionDao.selectByIdentifier(CIVIL_PROTECTION_TEST);
-        assertEquals(cpInDb.getPassword(), CIVIL_PROTECTION_TEST.getPassword());
+
         final CivilProtection civilProtectionToUpdate = new CivilProtectionImpl(
                 cpInDb.getCpID(),
                 newPassword
@@ -63,15 +66,19 @@ public class CivilProtectionDaoImplTest extends GenericDaoAbstractTest {
         this.civilProtectionDao.delete(CIVIL_PROTECTION_TEST);
     }
 
-
     /**
      * Test login functionality.
      * Verify that an unregistered civil protection couldn't login
      */
     @Test
     public void isRejectingUnregisteredCp() throws Exception {
-        assertFalse(this.civilProtectionDao.login(
-                CIVIL_PROTECTION_TEST.getCpID(), CIVIL_PROTECTION_TEST.getPassword()));
+        final CivilProtection cpNotRegistered = CIVIL_PROTECTION_TEST;
+        cpNotRegistered.setCpID("1");
+        try {
+            this.civilProtectionDao.login(cpNotRegistered);
+        } catch (final DBNotFoundRecordException e) {
+            assertNotNull(e);
+        }
     }
 
     /**
@@ -81,8 +88,7 @@ public class CivilProtectionDaoImplTest extends GenericDaoAbstractTest {
     @Test
     public void isLoggingInRegisteredCp() throws Exception {
         this.civilProtectionDao.insert(CIVIL_PROTECTION_TEST);
-        assertTrue(this.civilProtectionDao.login(
-                CIVIL_PROTECTION_TEST.getCpID(), CIVIL_PROTECTION_TEST.getPassword()));
+        assertNotNull(this.civilProtectionDao.login(CIVIL_PROTECTION_TEST));
         //Deleting test civil protection
         this.civilProtectionDao.delete(CIVIL_PROTECTION_TEST);
     }

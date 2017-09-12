@@ -1,8 +1,7 @@
 package it.unibo.drescue.database;
 
 import it.unibo.drescue.database.dao.GenericDaoAbstract;
-
-import java.sql.SQLException;
+import it.unibo.drescue.database.exceptions.DBConnectionException;
 
 /**
  * A class that allows communication with database
@@ -12,13 +11,17 @@ public interface DBConnection {
 
     /**
      * Establish the connection with DB
+     *
+     * @throws DBConnectionException if something gone wrong establishing the connection
      */
-    void openConnection();
+    void openConnection() throws DBConnectionException;
 
     /**
      * Close the current open connection
+     *
+     * @throws DBConnectionException if something gone wrong closing the connection
      */
-    void closeConnection();
+    void closeConnection() throws DBConnectionException;
 
     /**
      * Check if connection is still valid
@@ -32,9 +35,9 @@ public interface DBConnection {
      *
      * @param table specify the db table to access
      * @return the DAO for the specified table
-     * @throws SQLException if connection is closed or null
+     * @throws DBConnectionException if something gone wrong
      */
-    GenericDaoAbstract getDAO(Table table) throws SQLException;
+    GenericDaoAbstract getDAO(Table table) throws DBConnectionException;
 
     enum Table {
         USER,

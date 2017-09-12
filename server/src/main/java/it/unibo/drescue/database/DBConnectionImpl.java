@@ -1,6 +1,7 @@
 package it.unibo.drescue.database;
 
 import it.unibo.drescue.database.dao.*;
+import it.unibo.drescue.database.exceptions.DBConnectionException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,6 +14,12 @@ public class DBConnectionImpl implements DBConnection {
             "jdbc:mysql://rds-mysql-drescue.cnwnbp8hx7vq.us-east-2.rds.amazonaws.com:3306/drescueDB";
     private static final String DRIVER_NAME =
             "com.mysql.jdbc.Driver";
+
+    private static final String OPEN_EXCEPTION = "Exception while trying to open connection";
+    private static final String CLOSE_EXCEPTION = "Exception while trying to close connection";
+    private static final String TABLE_EXCEPTION = "Exception while trying to link to a nonexistent table";
+
+
     private static Connection connection;
     private static String dbAddress;
     private static String dbUsername;
@@ -60,7 +67,7 @@ public class DBConnectionImpl implements DBConnection {
     }
 
     @Override
-    public void openConnection() {
+    public void openConnection() throws DBConnectionException {
         try {
             if (connection == null || connection.isClosed()) {
                 Class.forName(DRIVER_NAME);
@@ -68,19 +75,19 @@ public class DBConnectionImpl implements DBConnection {
                 System.out.println("[DB]: Connection established with db address: " + dbAddress);
             }
         } catch (final Exception e) {
-            e.printStackTrace();
+            throw new DBConnectionException(OPEN_EXCEPTION);
         }
     }
 
     @Override
-    public void closeConnection() {
+    public void closeConnection() throws DBConnectionException {
         try {
             if (connection != null && !connection.isClosed()) {
                 connection.close();
                 System.out.println("[DB]: Connection closed");
             }
-        } catch (final SQLException e) {
-            e.printStackTrace();
+        } catch (final Exception e) {
+            throw new DBConnectionException(CLOSE_EXCEPTION);
         }
     }
 
@@ -89,7 +96,6 @@ public class DBConnectionImpl implements DBConnection {
         try {
             return connection.isValid(5000);
         } catch (final SQLException e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -99,14 +105,14 @@ public class DBConnectionImpl implements DBConnection {
     }
 
     @Override
-    public GenericDaoAbstract getDAO(final Table table) throws SQLException {
+    public GenericDaoAbstract getDAO(final Table table) throws DBConnectionException {
 
         try {
             if (connection == null || connection.isClosed()) { //Ensure that connection is open
                 this.openConnection();
             }
-        } catch (final SQLException e) {
-            throw e;
+        } catch (final Exception e) {
+            throw new DBConnectionException(OPEN_EXCEPTION);
         }
 
         switch (table) {
@@ -125,7 +131,7 @@ public class DBConnectionImpl implements DBConnection {
             case UPVOTED_ALERT:
                 return new UpvotedAlertDaoImpl(connection);
             default:
-                throw new SQLException("Trying to link to an unexistant table.");
+                throw new DBConnectionException(TABLE_EXCEPTION);
         }
 
     }
