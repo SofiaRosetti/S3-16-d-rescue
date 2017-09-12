@@ -1,6 +1,7 @@
 package it.unibo.drescue.connection
 
 import com.rabbitmq.client.DefaultConsumer
+import it.unibo.drescue.database.DBConnectionImpl
 
 /**
   * Class that represents a general server side consumer.
@@ -12,6 +13,8 @@ import com.rabbitmq.client.DefaultConsumer
 case class ServerConsumer(private val rabbitMQ: RabbitMQ,
                           private val serviceOperation: ServiceOperation)
   extends DefaultConsumer(rabbitMQ.getChannel) {
+
+  val dbConnection: DBConnectionImpl = DBConnectionImpl.getLocalConnection
 
   import com.rabbitmq.client.{AMQP, Envelope}
 
@@ -29,7 +32,7 @@ case class ServerConsumer(private val rabbitMQ: RabbitMQ,
 
     var response: Message = null
     try {
-      response = serviceOperation.accessDB(message)
+      response = serviceOperation.accessDB(dbConnection, message)
     } catch {
       //TODO handle different type of exception and
       //log error message or return an error

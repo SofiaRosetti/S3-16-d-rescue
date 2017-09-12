@@ -2,6 +2,7 @@ package it.unibo.drescue.connection
 
 import com.rabbitmq.client.AMQP
 import it.unibo.drescue.communication.messages._
+import it.unibo.drescue.database.DBConnection
 
 /**
   * Trait modelling a general service to accessDB and handle the result.
@@ -14,7 +15,7 @@ sealed trait ServiceOperation {
     * @param jsonMessage string containing the message request
     * @return the result of the request as a Message
     */
-  def accessDB(jsonMessage: String): Message
+  def accessDB(dBConnection: DBConnection, jsonMessage: String): Message
 
   /**
     * Handles DB result.
@@ -73,7 +74,7 @@ import it.unibo.drescue.communication.messages.response._
   */
 case class MobileuserService() extends ServiceResponseForward {
 
-  override def accessDB(jsonMessage: String): Message = {
+  override def accessDB(dBConnection: DBConnection, jsonMessage: String): Message = {
 
     val messageName: MessageType = MessageUtils.getMessageNameByJson(jsonMessage)
 
