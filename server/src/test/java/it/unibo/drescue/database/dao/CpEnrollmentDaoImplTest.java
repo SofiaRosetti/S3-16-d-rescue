@@ -4,6 +4,12 @@ import it.unibo.drescue.database.DBConnection;
 import it.unibo.drescue.database.exceptions.DBNotFoundRecordException;
 import it.unibo.drescue.database.exceptions.DBQueryException;
 import it.unibo.drescue.model.*;
+import org.junit.Test;
+
+import java.util.List;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class CpEnrollmentDaoImplTest extends GenericDaoAbstractTest {
     private static final RescueTeam RESCUE_TEAM_TEST = new RescueTeamImplBuilder()
@@ -53,6 +59,25 @@ public class CpEnrollmentDaoImplTest extends GenericDaoAbstractTest {
         //Deleting all object used for test
         this.rescueTeamDao.delete(RESCUE_TEAM_TEST);
         this.civilProtectionDao.delete(CP_TEST);
+    }
+
+    @Test
+    public void isFindingCpEnrollmentGivenARescueTeam() throws Exception {
+        this.cpEnrollmentDao.insert(CP_ENROLLMENT_TEST);
+        final List<CpEnrollment> cpEnrollmentsOfRescueTeam =
+                this.cpEnrollmentDao.findAllCpEnrollmentRelatedToARescueTeam(RESCUE_TEAM_TEST.getRescueTeamID());
+        assertNotNull(cpEnrollmentsOfRescueTeam);
+        assertTrue(cpEnrollmentsOfRescueTeam.size() > 0);
+        this.cpEnrollmentDao.delete(CP_ENROLLMENT_TEST);
+    }
+
+    @Test
+    public void isFindingCpEnrollmentGivenACp() throws Exception {
+        this.cpEnrollmentDao.insert(CP_ENROLLMENT_TEST);
+        final List<CpEnrollment> cpEnrollmentsOfCp = this.cpEnrollmentDao.findAllCpEnrollmentRelatedToACp(CP_TEST.getCpID());
+        assertNotNull(cpEnrollmentsOfCp);
+        assertTrue(cpEnrollmentsOfCp.size() > 0);
+        this.cpEnrollmentDao.delete(CP_ENROLLMENT_TEST);
     }
 
 }
