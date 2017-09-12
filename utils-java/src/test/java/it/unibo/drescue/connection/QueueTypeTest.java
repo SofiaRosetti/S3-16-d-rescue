@@ -6,10 +6,10 @@ import static org.junit.Assert.assertEquals;
 
 public class QueueTypeTest {
 
-    private static final String QUEUE = "authentication_channel";
+    private static final String QUEUE = "mobileuser_channel";
 
     @Test
     public void checkCorrectQueue() {
-        assertEquals(QUEUE, QueueType.AUTHENTICATION_QUEUE.getQueueName());
+        assertEquals(QUEUE, QueueType.MOBILEUSER_QUEUE.getQueueName());
     }
 }
