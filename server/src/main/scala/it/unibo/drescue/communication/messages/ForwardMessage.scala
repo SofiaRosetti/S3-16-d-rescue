@@ -21,10 +21,10 @@ sealed trait ForwardMessage {
 }
 
 /**
-  * Class that
+  * Class modelling a message to forward.
   *
-  * @param cpID
-  * @param objectModel
+  * @param cpID        cpID to which forward the message
+  * @param objectModel objectModel to forward
   */
 case class ForwardObjectMessage(override val cpID: String, override val objectModel: ObjectModel)
   extends AbstractMessage(MessageType.FORWARD_MESSAGE) with ForwardMessage with MessageBuilder {
