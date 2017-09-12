@@ -46,7 +46,9 @@ public interface DBConnection {
         ALERT,
         CIVIL_PROTECTION,
         CP_AREA,
-        UPVOTED_ALERT
+        UPVOTED_ALERT,
+        RESCUE_TEAM,
+        CP_ENROLLMENT
     }
 
 }
