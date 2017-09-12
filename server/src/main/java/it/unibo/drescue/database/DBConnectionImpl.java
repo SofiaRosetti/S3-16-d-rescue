@@ -132,6 +132,8 @@ public class DBConnectionImpl implements DBConnection {
                 return new UpvotedAlertDaoImpl(connection);
             case RESCUE_TEAM:
                 return new RescueTeamDaoImpl(connection);
+            case CP_ENROLLMENT:
+                return new CpEnrollmentDaoImpl(connection);
             default:
                 throw new DBConnectionException(TABLE_EXCEPTION);
         }

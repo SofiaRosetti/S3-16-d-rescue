@@ -6,7 +6,9 @@ import it.unibo.drescue.database.exceptions.DBQueryException;
 import it.unibo.drescue.model.*;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class CpAreaDaoImplTest extends GenericDaoAbstractTest {
     private static final District DISTRICT_TEST =
@@ -66,6 +68,25 @@ public class CpAreaDaoImplTest extends GenericDaoAbstractTest {
         //Deleting test cp_area
         this.cpAreaDao.delete(cpAreaTest);
         assertEquals(this.cpAreaDao.findAll().size(), initialSize);
+    }
+
+    @Test
+    public void isFindingCpAreaGivenADistrict() throws Exception {
+        this.cpAreaDao.insert(cpAreaTest);
+        final List<CpArea> cpAreasOfDistrict =
+                this.cpAreaDao.findCpAreasByDistrict(DISTRICT_TEST.getDistrictID());
+        assertNotNull(cpAreasOfDistrict);
+        assertTrue(cpAreasOfDistrict.size() > 0);
+        this.cpAreaDao.delete(cpAreaTest);
+    }
+
+    @Test
+    public void isFindingCpAreaGivenACp() throws Exception {
+        this.cpAreaDao.insert(cpAreaTest);
+        final List<CpArea> cpAreasOfCp = this.cpAreaDao.findCpAreasByCp(CP_TEST.getCpID());
+        assertNotNull(cpAreasOfCp);
+        assertTrue(cpAreasOfCp.size() > 0);
+        this.cpAreaDao.delete(cpAreaTest);
     }
 
 }
