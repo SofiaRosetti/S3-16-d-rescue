@@ -18,6 +18,7 @@ public interface CpAreaDao extends GenericDao {
     /**
      * Get all cp_areas with given districtID
      *
+     * @param districtID the id of the district of which you want to find areas
      * @return a list with all cp_areas with given districtID
      * @throws DBQueryException if something goes wrong executing the query
      */
@@ -26,6 +27,7 @@ public interface CpAreaDao extends GenericDao {
     /**
      * Get all cp_areas with given cpID
      *
+     * @param cpID the id of the civil protection of which you want to find areas
      * @return a list with all cp_areas with given cpID
      * @throws DBQueryException if something goes wrong executing the query
      */
