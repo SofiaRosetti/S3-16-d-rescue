@@ -3,6 +3,8 @@ package it.unibo.drescue.connection
 import com.rabbitmq.client.AMQP
 import it.unibo.drescue.communication.messages._
 import it.unibo.drescue.database.DBConnection
+import it.unibo.drescue.database.exceptions._
+import it.unibo.drescue.utils.GeocodingException
 
 /**
   * Trait modelling a general service to accessDB and handle the result.
@@ -12,9 +14,18 @@ sealed trait ServiceOperation {
   /**
     * Access DB in order to perform the received request.
     *
-    * @param jsonMessage string containing the message request
-    * @return the result of the request as a Message
+    * @param dBConnection string containing the message request
+    * @param jsonMessage  the result of the request as a Message
+    * @throws it.unibo.drescue.database.exceptions.DBConnectionException     if an error occur in DB connection
+    * @throws it.unibo.drescue.database.exceptions.DBNotFoundRecordException if an error occur while searching an object
+    * @throws it.unibo.drescue.database.exceptions.DBQueryException          if an error occur while executing a query
+    * @throws it.unibo.drescue.utils.GeocodingException                      if an error occur while executing geocoding operations
+    * @return message to send as a response or forward
     */
+  @throws(classOf[DBConnectionException])
+  @throws(classOf[DBNotFoundRecordException])
+  @throws(classOf[DBQueryException])
+  @throws(classOf[GeocodingException])
   def accessDB(dBConnection: DBConnection, jsonMessage: String): Message
 
   /**
@@ -66,24 +77,56 @@ trait ServiceResponseForward extends ServiceResponse with ServiceForward {
 
 }
 
+import it.unibo.drescue.communication.GsonUtils
+import it.unibo.drescue.communication.messages.requests._
 import it.unibo.drescue.communication.messages.response._
+import it.unibo.drescue.database.dao._
+import it.unibo.drescue.model._
+
+/**
+  * Object companion of MobileuserService case class.
+  */
+object MobileuserService {
+  private val duplicatedEmailMessage = "Duplicated email."
+}
 
 /**
   * Class that manage mobileuser messages related to authentication and
   * changes in profile.
   */
-case class MobileuserService() extends ServiceResponseForward {
+case class MobileuserService() extends ServiceResponse {
 
-  override def accessDB(dBConnection: DBConnection, jsonMessage: String): Message = {
+  override def accessDB(dbConnection: DBConnection, jsonMessage: String): Message = {
 
     val messageName: MessageType = MessageUtils.getMessageNameByJson(jsonMessage)
 
     messageName match {
+        
       case MessageType.SIGN_UP_MESSAGE =>
-        //TODO connect to DB and perform operations
+
+        val signUp = GsonUtils.fromGson(jsonMessage, classOf[SignUpMessageImpl])
+
+        val user = new UserImplBuilder()
+          .setName(signUp.getName)
+          .setSurname(signUp.getSurname)
+          .setEmail(signUp.getEmail)
+          .setPhoneNumber(signUp.getPhoneNumber)
+          .setPassword(signUp.getPassword)
+          .createUserImpl()
+
+        try {
+          val userDao = (dbConnection getDAO DBConnection.Table.USER).asInstanceOf[UserDao]
+          userDao insert user
+        } catch {
+          case connection: DBConnectionException => throw connection
+          case query: DBQueryException => throw query
+          case duplicated: DBDuplicatedRecordException =>
+            return new ErrorMessageImpl(MobileuserService.duplicatedEmailMessage)
+        }
+
         new SuccessfulMessageImpl
-      case _ =>
-        new ErrorMessageImpl("test")
+
+      case _ => throw new Exception
     }
 
     //TODO add case for login, request profile (?), change password

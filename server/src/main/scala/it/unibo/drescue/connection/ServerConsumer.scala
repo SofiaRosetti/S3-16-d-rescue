@@ -28,15 +28,18 @@ case class ServerConsumer(private val rabbitMQ: RabbitMQ,
     println("[ServerConsumer] " + message)
 
     import it.unibo.drescue.communication.messages.Message
-    import it.unibo.drescue.communication.messages.response.ErrorMessageImpl
+    import it.unibo.drescue.database.exceptions._
+    import it.unibo.drescue.utils.GeocodingException
 
     var response: Message = null
     try {
       response = serviceOperation.accessDB(dbConnection, message)
     } catch {
-      //TODO handle different type of exception and
-      //log error message or return an error
-      case e: Exception => response = new ErrorMessageImpl("Error connecting database.")
+      case conn: DBConnectionException => println("[DBConnectionException] on " + message)
+      case notFound: DBNotFoundRecordException => println("[DBNotFoundRecordException] on " + message)
+      case query: DBQueryException => println("[DBQueryException] on " + message)
+      case geocoding: GeocodingException => println("[GeocodingException] on " + message)
+      case e: Exception => println("Unknown Exception")
     }
 
     if (response != null) {
