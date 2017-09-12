@@ -3,7 +3,7 @@ package it.unibo.drescue.model;
 /**
  * An interface modelling a Rescue Team.
  */
-public interface RescueTeam extends ObjectModel {
+public interface RescueTeam extends LoggableModel {
 
     /**
      * @return the rescue team ID
@@ -16,18 +16,6 @@ public interface RescueTeam extends ObjectModel {
      * @param rescueTeamID the team iD
      */
     void setRescueTeamID(String rescueTeamID);
-
-    /**
-     * @return the rescue team password
-     */
-    String getPassword();
-
-    /**
-     * Sets the rescue team password
-     *
-     * @param password the team password
-     */
-    void setPassword(String password);
 
     /**
      * @return the rescue team name
