@@ -6,4 +6,9 @@ public class DBConnectionException extends Exception {
     public DBConnectionException(final String message) {
         this.message = message;
     }
+
+    @Override
+    public String getMessage() {
+        return this.message;
+    }
 }

@@ -6,4 +6,9 @@ public class DBQueryException extends Exception {
     public DBQueryException(final String message) {
         this.message = message;
     }
+
+    @Override
+    public String getMessage() {
+        return this.message;
+    }
 }
