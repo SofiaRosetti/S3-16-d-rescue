@@ -180,10 +180,25 @@ case class MobileuserService() extends ServiceResponse {
           case query: DBQueryException => throw query
         }
 
+      case MessageType.REQUEST_PROFILE_MESSAGE =>
+
+        val profile = GsonUtils.fromGson(jsonMessage, classOf[RequestProfileMessageImpl])
+        val user = new UserImplBuilder()
+          .setEmail(profile.getUserEmail)
+          .createUserImpl()
+        try {
+          val userDao = (dbConnection getDAO DBConnection.Table.USER).asInstanceOf[UserDao]
+          val userSelected = (userDao selectByIdentifier user).asInstanceOf[User]
+          userSelected match {
+            case null => throw new DBQueryException(MobileuserService.findOneException)
+            case _ => new ProfileMessageImpl(userSelected)
+          }
+        } catch {
+          case connection: DBConnectionException => throw connection
+        }
+
       case _ => throw new Exception
     }
-
-    //TODO request profile (?)
 
   }
 

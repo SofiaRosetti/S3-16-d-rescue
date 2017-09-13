@@ -2,9 +2,10 @@ package it.unibo.drescue.connection
 
 import it.unibo.drescue.communication.GsonUtils
 import it.unibo.drescue.communication.builder.requests.{ChangePasswordMessageBuilderImpl, SignUpMessageBuilderImpl}
-import it.unibo.drescue.communication.messages.requests.LoginMessageImpl
+import it.unibo.drescue.communication.messages.requests.{LoginMessageImpl, RequestProfileMessageImpl}
 import it.unibo.drescue.communication.messages.{Message, MessageType}
 import it.unibo.drescue.database.dao.UserDao
+import it.unibo.drescue.database.exceptions.DBQueryException
 import it.unibo.drescue.database.{DBConnection, DBConnectionImpl}
 import it.unibo.drescue.model.{User, UserImplBuilder}
 import org.scalatest.FunSuite
@@ -65,6 +66,12 @@ class MobileuserServiceTest extends FunSuite {
     mobileuserCommunication(messageSignUp)
   }
 
+  def mobileuserCommunication(mobileuserMessage: Message): Message = {
+    val message: String = GsonUtils toGson mobileuserMessage
+    val service: ServiceOperation = new MobileuserService
+    service.accessDB(dBConnection, message)
+  }
+
   def loginCommunication(email: String, password: String): Message = {
     val messageLogin: Message = new LoginMessageImpl(email, password)
     mobileuserCommunication(messageLogin)
@@ -77,12 +84,6 @@ class MobileuserServiceTest extends FunSuite {
       .setNewPassword(newPassword)
       .build()
     mobileuserCommunication(changePasswordMessage)
-  }
-
-  def mobileuserCommunication(mobileuserMessage: Message): Message = {
-    val message: String = GsonUtils toGson mobileuserMessage
-    val service: ServiceOperation = new MobileuserService
-    service.accessDB(dBConnection, message)
   }
 
   test("User should do correct sign up") {
@@ -141,6 +142,23 @@ class MobileuserServiceTest extends FunSuite {
     val userDao: UserDao = startCommunicationAndInsertUser()
     val responseMessage: Message = changePasswordCommunication(correctPassword, correctPassword)
     assert(responseMessage.getMessageType == MessageType.ERROR_MESSAGE.getMessageType)
+    endCommunication(userDao)
+  }
+
+  test("User should get his profile") {
+    val userDao: UserDao = startCommunicationAndInsertUser()
+    val profileMessage: Message = new RequestProfileMessageImpl(correctEmail)
+    val responseMessage: Message = mobileuserCommunication(profileMessage)
+    assert(responseMessage.getMessageType == MessageType.PROFILE_MESSAGE.getMessageType)
+    endCommunication(userDao)
+  }
+
+  test("Profile request with wrong email should produce DBQueryException") {
+    val userDao: UserDao = startCommunicationAndInsertUser()
+    val profileMessage: Message = new RequestProfileMessageImpl(incorrectEmail)
+    assertThrows[DBQueryException] {
+      mobileuserCommunication(profileMessage)
+    }
     endCommunication(userDao)
   }
 
