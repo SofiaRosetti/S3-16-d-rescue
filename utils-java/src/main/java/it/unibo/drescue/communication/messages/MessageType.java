@@ -19,7 +19,6 @@ public enum MessageType {
     RESPONSE_LOGIN_MESSAGE("response_login_message"),
     SIGN_UP_MESSAGE("sign_up_message"),
     SUCCESSFUL_MESSAGE("successful_message"),
-    UPVOTE_MESSAGE("upvote_message"),
     FORWARD_MESSAGE("forward_message"),
     OBJECT_MODEL_MESSAGE("object_model_message");
 
