@@ -12,12 +12,12 @@ import static org.junit.Assert.assertNotNull;
 
 public class RescueTeamDaoImplTest extends GenericDaoAbstractTest {
 
-    private static final String ID_TEST = "TestRescue";
-    private static final String NAME_TEST = "Croce Gialla Test Ravenna";
-    private static final String PASSWORD_TEST = "password";
-    private static final double LATITUDE_RA = 44.420826;
-    private static final double LONGITUDE_RA = 11.912387;
-    private static final String PHONE_NUMBER_TEST = "345345345";
+    protected static final String ID_TEST = "TestRescue";
+    protected static final String NAME_TEST = "Croce Gialla Test Ravenna";
+    protected static final String PASSWORD_TEST = "password";
+    protected static final double LATITUDE_RA = 44.420826;
+    protected static final double LONGITUDE_RA = 11.912387;
+    protected static final String PHONE_NUMBER_TEST = "345345345";
 
 
     private static final RescueTeam RESCUE_TEAM_TEST = new RescueTeamImplBuilder()
