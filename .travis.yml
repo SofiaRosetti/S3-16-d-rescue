@@ -4,6 +4,9 @@ dist: trusty
 env:
   - ANDROID_HOME=$PWD/
 
+before_install:
+- mysql -u root --password="" < server/src/test/java/it/unibo/drescue/database/travis.sql
+
 install:
 - wget --quiet --output-document=tools.zip https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
 - unzip -qq tools.zip
@@ -51,3 +54,4 @@ script:
 
 services:
   - rabbitmq
+  - mysql
