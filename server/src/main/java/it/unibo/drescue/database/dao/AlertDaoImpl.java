@@ -36,7 +36,7 @@ public class AlertDaoImpl extends UpdatableDaoAbstract<Alert> implements AlertDa
                 return "DELETE FROM " + TABLENAME
                         + " WHERE timestamp = ? AND userID = ?";
             case UPDATE:
-                return "UPDATE " + TABLENAME + " SET upvotes = ?"
+                return "UPDATE " + TABLENAME + " SET upvotes = upvotes + 1"
                         + " WHERE alertID = ?";
             default:
                 throw new SQLException(QUERY_NOT_FOUND_EXCEPTION);
@@ -68,9 +68,8 @@ public class AlertDaoImpl extends UpdatableDaoAbstract<Alert> implements AlertDa
                 statement.setInt(2, alert.getUserID());
                 break;
             case UPDATE:
-                    /* NOTE: In this case it takes only the alert */
-                statement.setInt(1, alert.getUpvotes());
-                statement.setInt(2, alert.getAlertID());
+                    /* NOTE: In this case it takes only the alert, the upvotes increment is automatic*/
+                statement.setInt(1, alert.getAlertID());
                 break;
             default:
                 throw new SQLException(QUERY_NOT_FOUND_EXCEPTION);
@@ -125,4 +124,6 @@ public class AlertDaoImpl extends UpdatableDaoAbstract<Alert> implements AlertDa
         currentTimestamp.setNanos(0);
         return currentTimestamp;
     }
+
+
 }
