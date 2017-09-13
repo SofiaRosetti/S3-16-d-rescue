@@ -3,6 +3,7 @@ package it.unibo.drescue.view
 import javafx.scene.input.MouseEvent
 
 import it.unibo.drescue.controller.LoginControllerImpl
+import it.unibo.drescue.view.ViewConstants._
 
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.{Button, Label, PasswordField, TextField}
@@ -12,11 +13,11 @@ import scalafx.scene.text.Font
 class LoginGrid(private var loginController: LoginControllerImpl) {
 
   val _grid = new GridPane() {
-    hgap = 10
-    vgap = 10
-    padding = Insets(100, 100, 100, 100)
+    hgap = ViewConstants.gap
+    vgap = gap
+    padding = Insets(insets100)
 
-    val defaultFont = new Font(20)
+    val defaultFont = new Font(font20)
 
     val username = new TextField() {
       promptText = "Username"
@@ -31,15 +32,15 @@ class LoginGrid(private var loginController: LoginControllerImpl) {
       text = "Username:"
       font = defaultFont
     }
-    add(usernameLabel, 0, 0)
-    add(username, 1, 0)
+    add(usernameLabel, columnRow0, columnRow0)
+    add(username, columnRow1, columnRow0)
 
     val passwordLabel = new Label() {
       text = "Password:"
       font = defaultFont
     }
-    add(passwordLabel, 0, 1)
-    add(password, 1, 1)
+    add(passwordLabel, columnRow0, columnRow1)
+    add(password, columnRow1, columnRow1)
 
     val loginButton = new Button() {
       text = "Login"
@@ -52,8 +53,8 @@ class LoginGrid(private var loginController: LoginControllerImpl) {
       children = loginButton
       alignment = Pos.Center
     }
-    add(buttonBox, 0, 4)
-    GridPane.setConstraints(buttonBox, 0, 4, 2, 1)
+    add(buttonBox, columnRow0, columnRow4)
+    GridPane.setConstraints(buttonBox, columnRow0, columnRow4, columnRow2, columnRow1)
   }
 
   def grid = _grid

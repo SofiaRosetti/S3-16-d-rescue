@@ -103,4 +103,12 @@ public interface Alert extends ObjectModel {
      * @param upvotes the alert upvotes
      */
     void setUpvotes(int upvotes);
+
+    /**
+     * Creates a string representation of the alert
+     * useful to be included in civil protection views
+     *
+     * @return a string representing the alert
+     */
+    String toPrintableString();
 }
