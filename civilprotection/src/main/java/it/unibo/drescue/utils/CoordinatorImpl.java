@@ -24,8 +24,7 @@ public class CoordinatorImpl implements Coordinator {
         this.referRescueTeam = new HashSet<>();
     }
 
-    @Override
-    public Coordinator getIstance(){
+    public static Coordinator getIstance(){
         if (istance == null){
             istance = new CoordinatorImpl();
         }
@@ -34,6 +33,7 @@ public class CoordinatorImpl implements Coordinator {
 
     @Override
     public void setCondition(CoordinatorCondition condition) {
+        //TODO if the new condition = DETACHED send a replayCoordination messate on all deferRescueTeam queue
         this.condition = condition;
     }
 

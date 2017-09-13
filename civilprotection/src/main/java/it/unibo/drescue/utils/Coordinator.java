@@ -4,11 +4,6 @@ import java.sql.Timestamp;
 
 public interface Coordinator {
 
-    /**
-     *
-     * @return
-     */
-    Coordinator getIstance();
 
     /**
      *
@@ -24,7 +19,7 @@ public interface Coordinator {
 
     /**
      *
-     * @param timestamp
+     * @param reqTimestamp
      */
     void setReqTimestamp(Timestamp reqTimestamp);
 
