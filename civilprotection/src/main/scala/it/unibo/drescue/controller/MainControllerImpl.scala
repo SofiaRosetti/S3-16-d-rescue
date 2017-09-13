@@ -1,6 +1,5 @@
 package it.unibo.drescue.controller
 
-import com.rabbitmq.client.AMQP
 import it.unibo.drescue.connection.{RabbitMQConnectionImpl, RabbitMQImpl}
 import it.unibo.drescue.model.ObjectModel
 import it.unibo.drescue.view.MainView
@@ -8,7 +7,7 @@ import it.unibo.drescue.view.MainView
 class MainControllerImpl(private var model: List[ObjectModel]) {
 
   var connection: RabbitMQConnectionImpl = null
-  var rabbitMQ: RabbitMQImpl = null
+  var loginChannel: RabbitMQImpl = null
 
   var view = new MainView(null, null, null, null, null, null)
 
@@ -21,9 +20,8 @@ class MainControllerImpl(private var model: List[ObjectModel]) {
       connection = new RabbitMQConnectionImpl("localhost")
       connection.openConnection()
 
-      rabbitMQ = new RabbitMQImpl(connection)
-      val replyQueue: String = rabbitMQ.addReplyQueue()
-      val props: AMQP.BasicProperties = rabbitMQ.setReplyTo(replyQueue)
+      loginChannel = new RabbitMQImpl(connection)
+
     } catch {
       case e: Exception => // TODO handle exception
     } finally {
@@ -37,4 +35,6 @@ class MainControllerImpl(private var model: List[ObjectModel]) {
   def changeView(nextView: String) = {
     view.changeView(nextView)
   }
+
+  def _loginChannel: RabbitMQImpl = loginChannel
 }
