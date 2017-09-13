@@ -74,4 +74,22 @@ public class RescueTeamImpl implements RescueTeam {
     public void setPhoneNumber(final String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder result = new StringBuilder();
+        final String newLine = System.getProperty("line.separator");
+
+        result.append("Rescue team: {" + newLine);
+        result.append(" Rescue team ID: " + this.getRescueTeamID() + newLine);
+        result.append(" Password: " + this.getPassword() + newLine);
+        result.append(" Name: " + this.getName() + newLine);
+        result.append(" Latitude: " + this.getLatitude() + newLine);
+        result.append(" Longitude: " + this.getLongitude() + newLine);
+        result.append(" Phone number: " + this.getPhoneNumber() + newLine);
+
+        result.append("}");
+
+        return result.toString();
+    }
 }

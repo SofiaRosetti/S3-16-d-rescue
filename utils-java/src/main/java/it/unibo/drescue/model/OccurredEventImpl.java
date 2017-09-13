@@ -76,4 +76,22 @@ public class OccurredEventImpl implements OccurredEvent {
     public void setCpID(final String cpID) {
         this.cpID = cpID;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder result = new StringBuilder();
+        final String newLine = System.getProperty("line.separator");
+
+        result.append("Occurred event: {" + newLine);
+        result.append(" Timestamp: " + this.getCpID() + newLine);
+        result.append(" Latitude: " + this.getLatitude() + newLine);
+        result.append(" Longitude: " + this.getLongitude() + newLine);
+        result.append(" Description: " + this.getDescription() + newLine);
+        result.append(" Event ID: " + this.getEventID() + newLine);
+        result.append(" Cp ID: " + this.getCpID() + newLine);
+
+        result.append("}");
+
+        return result.toString();
+    }
 }
