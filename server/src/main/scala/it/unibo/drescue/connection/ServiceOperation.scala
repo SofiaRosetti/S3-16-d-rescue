@@ -7,8 +7,6 @@ import it.unibo.drescue.database.DBConnection
 import it.unibo.drescue.database.exceptions._
 import it.unibo.drescue.utils._
 
-import scala.collection.mutable.ListBuffer
-
 /**
   * Trait modelling a general service to accessDB and handle the result.
   */
@@ -149,12 +147,19 @@ case class MobileuserService() extends ServiceResponse {
 
 }
 
+import java.util
+
+import scala.collection.mutable.ListBuffer
+
 /**
   * Object companion of AlertsService case class.
   */
 object AlertsService {
 
+  val numberOfAlertsToGetFromApp = 50
+
   /**
+    * Gets the cpIDs of the given district.
     *
     * @param dbConnection connection to DB
     * @param district     district of which to find cp
@@ -173,6 +178,19 @@ object AlertsService {
       cpIDList.append(cpID)
     })
     cpIDList
+  }
+
+  /**
+    * Calculate the district using Geocoding classes.
+    *
+    * @param latitude
+    * @param longitude
+    * @throws it.unibo.drescue.utils.GeocodingException
+    * @return the string representing the district
+    */
+  @throws(classOf[GeocodingException])
+  def calculateDistrict(latitude: Double, longitude: Double): String = {
+    new GeocodingImpl getDistrict(latitude, longitude)
   }
 }
 
@@ -195,7 +213,7 @@ case class AlertsService() extends ServiceResponseOrForward {
         //calculate district
         var district: String = null
         try {
-          district = new GeocodingImpl getDistrict(newAlert.getLatitude, newAlert.getLongitude)
+          district = AlertsService.calculateDistrict(newAlert.getLatitude, newAlert.getLongitude)
         } catch {
           case geocoding: GeocodingException => throw geocoding
         }
@@ -226,11 +244,36 @@ case class AlertsService() extends ServiceResponseOrForward {
           case connection: DBConnectionException => throw connection
           case query: DBQueryException => throw query
           case duplicated: DBDuplicatedRecordException => throw duplicated
+          case notFound: DBNotFoundRecordException => throw notFound
         }
 
-      //TODO case MessageType.UPVOTE_MESSAGE =>
+      //TODO case MessageType.REQUEST_UPVOTE_MESSAGE =>
 
-      //TODO case MessageType.REQUEST_ALERTS_MESSAGE =>
+      case MessageType.REQUEST_ALERTS_MESSAGE =>
+
+        val mobileRequestAlerts = GsonUtils.fromGson(jsonMessage, classOf[RequestAlertsMessageImpl])
+
+        //calculate district
+        var district: String = null
+        try {
+          district = AlertsService.calculateDistrict(mobileRequestAlerts.getLatitude, mobileRequestAlerts.getLongitude)
+        } catch {
+          case geocoding: GeocodingException => throw geocoding
+        }
+
+        try {
+          //get alerts from district
+          val alertDao = (dbConnection getDAO DBConnection.Table.ALERT).asInstanceOf[AlertDao]
+          val alertList: util.List[Alert] = alertDao findLast(AlertsService.numberOfAlertsToGetFromApp, district)
+
+          Option(new AlertsMessageImpl(alertList.asInstanceOf[util.List[AlertImpl]]))
+
+        } catch {
+          case connection: DBConnectionException => throw connection
+          case query: DBQueryException => throw query
+        }
+
+      //TODO case alerts request from CP
 
       case _ => throw new Exception
     }
