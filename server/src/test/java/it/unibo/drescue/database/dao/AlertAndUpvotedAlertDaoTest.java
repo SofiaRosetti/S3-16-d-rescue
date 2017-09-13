@@ -8,8 +8,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
 
 public class AlertAndUpvotedAlertDaoTest extends GenericDaoAbstractTest {
 
@@ -95,7 +94,13 @@ public class AlertAndUpvotedAlertDaoTest extends GenericDaoAbstractTest {
         //If this ended up without exception the record is added into DB
         //Now we have to update redundant field "upvotes" in alert table
         alertInDb.setUpvotes(alertInDb.getUpvotes() + 1);
-        this.alertDao.update(alertInDb);
+        try {
+            this.alertDao.update(alertInDb);
+        } catch (final DBQueryException e) {
+            //Error recovery for two-phase update (for redundant upvotes count in alert)
+            this.upvotedAlertDao.delete(upvotedAlert);
+            fail();
+        }
 
         //check if the field in db was updated
         alertInDb = (Alert) this.alertDao.selectByIdentifier(alertInDb);
