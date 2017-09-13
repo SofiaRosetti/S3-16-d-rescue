@@ -7,6 +7,8 @@ import it.unibo.drescue.database.DBConnection
 import it.unibo.drescue.database.exceptions._
 import it.unibo.drescue.utils._
 
+import scala.collection.mutable.ListBuffer
+
 /**
   * Trait modelling a general service to accessDB and handle the result.
   */
@@ -62,9 +64,10 @@ trait ServiceForward extends ServiceOperation {
 
   override def handleDBresult(rabbitMQ: RabbitMQ, properties: AMQP.BasicProperties, message: Message): Unit = {
     val forwardObjectMessage = message.asInstanceOf[ForwardObjectMessage]
-    val forwardQueue: String = forwardObjectMessage.cpID
     val objectModelMessage = new ObjectModelMessageImpl(forwardObjectMessage.objectModel)
-    rabbitMQ sendMessage("", forwardQueue, null, objectModelMessage)
+    forwardObjectMessage.cpIDList foreach (cpID => {
+      rabbitMQ sendMessage("", cpID, null, objectModelMessage)
+    })
     println("[ServiceForward] handleResult")
   }
 
@@ -191,8 +194,13 @@ case class AlertsService() extends ServiceResponseOrForward {
           //get cp of district
           val cpAreaDao: CpAreaDao = (dbConnection getDAO DBConnection.Table.CP_AREA).asInstanceOf[CpAreaDao]
           val cpAreaList = cpAreaDao findCpAreasByDistrict district
+          var cpIDList = new ListBuffer[String]
+          cpAreaList forEach (cpArea => {
+            val cpID = cpArea.getCpID
+            cpIDList.append(cpID)
+          })
 
-          Option(ForwardObjectMessage(cpAreaList.get(0).getCpID, inseredAlert))
+          Option(ForwardObjectMessage(cpIDList, inseredAlert))
 
         } catch {
           case connection: DBConnectionException => throw connection
