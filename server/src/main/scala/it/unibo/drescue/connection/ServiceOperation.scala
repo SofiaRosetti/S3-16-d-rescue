@@ -247,7 +247,34 @@ case class AlertsService() extends ServiceResponseOrForward {
           case notFound: DBNotFoundRecordException => throw notFound
         }
 
-      //TODO case MessageType.REQUEST_UPVOTE_MESSAGE =>
+      case MessageType.REQUEST_UPVOTE_MESSAGE =>
+
+        val upvotedAlert = GsonUtils.fromGson(jsonMessage, classOf[RequestUpvoteAlertMessageImpl])
+
+        val upvote = new UpvotedAlertImpl(upvotedAlert.getUserID, upvotedAlert.getAlertID)
+
+        try {
+          //insert record into upvoted alert table
+          val upvotedAlertDao = (dbConnection getDAO DBConnection.Table.UPVOTED_ALERT).asInstanceOf[UpvotedAlertDao]
+          upvotedAlertDao insert upvote
+
+          val alert = new AlertImplBuilder()
+            .setAlertID(upvotedAlert.getAlertID)
+            .createAlertImpl()
+
+          //update number of upvotes in alert table
+          val alertDao = (dbConnection getDAO DBConnection.Table.ALERT).asInstanceOf[AlertDao]
+          alertDao update alert
+
+          val cpIDList = AlertsService.getCPofDistrict(dbConnection, upvotedAlert.getDistrictID)
+
+          Option(ForwardObjectMessage(cpIDList, upvote))
+
+        } catch {
+          case connection: DBConnectionException => throw connection
+          case query: DBQueryException => throw query
+          case duplicated: DBDuplicatedRecordException => throw duplicated
+        }
 
       case MessageType.REQUEST_ALERTS_MESSAGE =>
 
