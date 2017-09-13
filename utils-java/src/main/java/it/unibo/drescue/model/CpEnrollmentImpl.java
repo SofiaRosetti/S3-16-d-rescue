@@ -33,4 +33,17 @@ public class CpEnrollmentImpl implements CpEnrollment {
     public void setRescueTeamID(final String rescueTeamID) {
         this.rescueTeamID = rescueTeamID;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder result = new StringBuilder();
+        final String newLine = System.getProperty("line.separator");
+
+        result.append("Civil protection enrollment: {" + newLine);
+        result.append(" Cp ID: " + this.getCpID() + newLine);
+        result.append(" Rescue team ID: " + this.getRescueTeamID() + newLine);
+        result.append("}");
+
+        return result.toString();
+    }
 }

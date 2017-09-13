@@ -32,4 +32,18 @@ public class UpvotedAlertImpl implements UpvotedAlert {
     public void setAlertID(final int alertID) {
         this.alertID = alertID;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder result = new StringBuilder();
+        final String newLine = System.getProperty("line.separator");
+
+        result.append("Upvoted alert: {" + newLine);
+        result.append(" User ID: " + this.getUserID() + newLine);
+        result.append(" Alert ID: " + this.getAlertID() + newLine);
+
+        result.append("}");
+
+        return result.toString();
+    }
 }

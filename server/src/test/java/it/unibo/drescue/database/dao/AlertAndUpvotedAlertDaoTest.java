@@ -93,7 +93,6 @@ public class AlertAndUpvotedAlertDaoTest extends GenericDaoAbstractTest {
 
         //If this ended up without exception the record is added into DB
         //Now we have to update redundant field "upvotes" in alert table
-        alertInDb.setUpvotes(alertInDb.getUpvotes() + 1);
         try {
             this.alertDao.update(alertInDb);
         } catch (final DBQueryException e) {

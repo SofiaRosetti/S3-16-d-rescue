@@ -99,4 +99,38 @@ public class AlertImpl implements Alert {
     public void setUpvotes(final int upvotes) {
         this.upvotes = upvotes;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder result = new StringBuilder();
+        final String newLine = System.getProperty("line.separator");
+
+        result.append("Alert: {" + newLine);
+        result.append(" Alert ID: " + this.getAlertID() + newLine);
+        result.append(" Timestamp: " + this.getTimestamp() + newLine);
+        result.append(" Latitude: " + this.getLatitude() + newLine);
+        result.append(" Longitude: " + this.getLongitude() + newLine);
+        result.append(" User ID: " + this.getUserID() + newLine);
+        result.append(" Event name: " + this.getEventName() + newLine);
+        result.append(" District ID: " + this.getDistrictID() + newLine);
+        result.append(" Upvotes: " + this.getUpvotes() + newLine);
+        result.append("}");
+
+        return result.toString();
+    }
+
+    @Override
+    public String toPrintableString() {
+        final StringBuilder result = new StringBuilder();
+        final String space = " ";
+
+        result.append("Alert:" + space);
+        result.append(this.getTimestamp() + space);
+        result.append(this.getEventName() + space);
+        result.append(this.getLatitude() + space);
+        result.append(this.getLongitude() + space);
+        result.append(this.getUpvotes() + space);
+
+        return result.toString();
+    }
 }

@@ -3,6 +3,7 @@ package it.unibo.drescue.view
 import javafx.scene.input.MouseEvent
 
 import it.unibo.drescue.controller.OccupiedTeamsControllerImpl
+import it.unibo.drescue.view.ViewConstants._
 
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.{Insets, Pos}
@@ -13,38 +14,37 @@ import scalafx.scene.text.Font
 class OccupiedTeamsGrid(private var occupiedTeamsController: OccupiedTeamsControllerImpl) {
 
   val grid = new GridPane {
-    hgap = 10
-    vgap = 10
-    padding = Insets(100)
+    hgap = gap
+    vgap = gap
+    padding = Insets(insets100)
 
-    val defaultFont = new Font(25)
-    val titleFont = new Font(30)
+    val defaultFont = new Font(font25)
+    val titleFont = new Font(font30)
 
     val titleLabel = new Label {
       text = "Occupied teams:"
       font = titleFont
-      padding = Insets(20)
+      padding = Insets(insets20)
     }
-    add(titleLabel, 0, 0)
     val titleBox = new HBox {
       children = titleLabel
       alignment = Pos.Center
     }
-    add(titleBox, 0, 0)
+    add(titleBox, columnRow0, columnRow0)
 
     val teamsList = new ListView[String] {
       items = ObservableBuffer("Rescue team 1", "Rescue team 2", "Rescue team 3")
-      prefHeight = 100
+      prefHeight = widthHeight100
     }
     teamsList.selectionModel().setSelectionMode(SelectionMode.Multiple)
-    add(teamsList, 0, 1)
+    add(teamsList, columnRow0, columnRow1)
 
     val stopButton = new Button {
       text = "Stop rescue"
       font = defaultFont
-      padding = Insets(5)
-      margin = Insets(30)
-      prefWidth = 150
+      padding = Insets(insets5)
+      margin = Insets(insets30)
+      prefWidth = widthHeight150
 
       onMouseClicked = (event: MouseEvent) => {
         occupiedTeamsController.stopRescuePress()
@@ -54,9 +54,9 @@ class OccupiedTeamsGrid(private var occupiedTeamsController: OccupiedTeamsContro
     val cancelButton = new Button {
       text = "Cancel"
       font = defaultFont
-      padding = Insets(5)
-      margin = Insets(30)
-      prefWidth = 150
+      padding = Insets(insets5)
+      margin = Insets(insets30)
+      prefWidth = widthHeight150
 
       onMouseClicked = (event: MouseEvent) => {
         occupiedTeamsController.cancelPress()
@@ -64,10 +64,10 @@ class OccupiedTeamsGrid(private var occupiedTeamsController: OccupiedTeamsContro
     }
     val buttonBox = new HBox {
       alignment = Pos.Center
-      padding = Insets(30)
+      padding = Insets(insets30)
       children.addAll(stopButton, cancelButton)
     }
-    add(buttonBox, 0, 3)
+    add(buttonBox, columnRow0, columnRow3)
   }
 
 }

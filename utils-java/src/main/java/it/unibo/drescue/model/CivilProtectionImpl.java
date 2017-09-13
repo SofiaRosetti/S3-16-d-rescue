@@ -32,4 +32,17 @@ public class CivilProtectionImpl implements CivilProtection {
     public void setPassword(final String password) {
         this.password = password;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder result = new StringBuilder();
+        final String newLine = System.getProperty("line.separator");
+
+        result.append("Civil protection: {" + newLine);
+        result.append(" Cp ID: " + this.getCpID() + newLine);
+        result.append(" Password: " + this.getPassword() + newLine);
+        result.append("}");
+
+        return result.toString();
+    }
 }

@@ -32,4 +32,17 @@ public class CpAreaImpl implements CpArea {
     public void setDistrictID(final String districtID) {
         this.districtID = districtID;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder result = new StringBuilder();
+        final String newLine = System.getProperty("line.separator");
+
+        result.append("Civil protection area: {" + newLine);
+        result.append(" Cp ID: " + this.getCpID() + newLine);
+        result.append(" District ID: " + this.getDistrictID() + newLine);
+        result.append("}");
+
+        return result.toString();
+    }
 }
