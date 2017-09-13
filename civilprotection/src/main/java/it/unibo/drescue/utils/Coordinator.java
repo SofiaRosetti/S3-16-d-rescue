@@ -26,7 +26,7 @@ public interface Coordinator {
      *
      * @param timestamp
      */
-    void setReqTimestamp(Timestamp timestamp);
+    void setReqTimestamp(Timestamp reqTimestamp);
 
     /**
      *
