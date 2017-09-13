@@ -65,4 +65,12 @@ public interface RescueTeam extends LoggableModel {
      */
     void setPhoneNumber(String phoneNumber);
 
+    /**
+     * Creates a string representation of the rescue team
+     * useful to be included in civil protection views
+     *
+     * @return a string representing the rescue team
+     */
+    String toPrintableString();
+
 }

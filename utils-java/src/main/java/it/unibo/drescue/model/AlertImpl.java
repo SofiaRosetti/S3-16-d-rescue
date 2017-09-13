@@ -118,4 +118,19 @@ public class AlertImpl implements Alert {
 
         return result.toString();
     }
+
+    @Override
+    public String toPrintableString() {
+        final StringBuilder result = new StringBuilder();
+        final String space = " ";
+
+        result.append("Alert:" + space);
+        result.append(this.getTimestamp() + space);
+        result.append(this.getEventName() + space);
+        result.append(this.getLatitude() + space);
+        result.append(this.getLongitude() + space);
+        result.append(this.getUpvotes() + space);
+
+        return result.toString();
+    }
 }

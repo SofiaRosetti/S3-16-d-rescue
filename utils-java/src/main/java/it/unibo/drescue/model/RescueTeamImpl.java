@@ -92,4 +92,17 @@ public class RescueTeamImpl implements RescueTeam {
 
         return result.toString();
     }
+
+    @Override
+    public String toPrintableString() {
+        final StringBuilder result = new StringBuilder();
+        final String space = " ";
+
+        result.append(this.getName() + space);
+        result.append(this.getLatitude() + space);
+        result.append(this.getLongitude() + space);
+        result.append(this.getPhoneNumber() + space);
+
+        return result.toString();
+    }
 }
