@@ -38,7 +38,7 @@ public interface Coordinator {
      *
      * @param civilProtectionIDs
      */
-    void createPendingCivilPretectionReplayStructure(String[] civilProtectionIDs);
+    void createPendingCivilProtectionReplayStructure(String[] civilProtectionIDs);
 
     /**
      *

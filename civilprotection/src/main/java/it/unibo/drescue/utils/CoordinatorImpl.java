@@ -1,8 +1,17 @@
 package it.unibo.drescue.utils;
 
 import java.sql.Timestamp;
+import java.util.Map;
+import java.util.Set;
 
 public class CoordinatorImpl implements Coordinator {
+
+    private CoordinatorCondition condition;
+    private Timestamp reqTimestamp;
+    private String ID;
+    private Map<String, Boolean> pendingCPReplay;
+    private Set<String> referRescueTeam;
+
     @Override
     public Coordinator getIstance() {
         return null;
@@ -29,7 +38,7 @@ public class CoordinatorImpl implements Coordinator {
     }
 
     @Override
-    public void createPendingCivilPretectionReplayStructure(String[] civilProtectionIDs) {
+    public void createPendingCivilProtectionReplayStructure(String[] civilProtectionIDs) {
 
     }
 
