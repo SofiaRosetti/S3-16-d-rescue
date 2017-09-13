@@ -8,10 +8,10 @@ import it.unibo.drescue.communication.builder.MessageBuilder;
 public interface ChangePasswordMessageBuilder extends MessageBuilder {
 
     /**
-     * @param userID user identifier
-     * @return the builder with the given user identifier
+     * @param userEmail user email
+     * @return the builder with the given user email
      */
-    ChangePasswordMessageBuilder setUserID(int userID);
+    ChangePasswordMessageBuilder setUserEmail(String userEmail);
 
     /**
      * @param oldPassword user's old password
