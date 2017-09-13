@@ -2,6 +2,7 @@ package it.unibo.drescue.connection
 
 import com.rabbitmq.client.AMQP
 import it.unibo.drescue.communication.messages._
+import it.unibo.drescue.communication.messages.response.ObjectModelMessageImpl
 import it.unibo.drescue.database.DBConnection
 import it.unibo.drescue.database.exceptions._
 import it.unibo.drescue.utils._
@@ -60,7 +61,10 @@ trait ServiceResponse extends ServiceOperation {
 trait ServiceForward extends ServiceOperation {
 
   override def handleDBresult(rabbitMQ: RabbitMQ, properties: AMQP.BasicProperties, message: Message): Unit = {
-    //TODO forward
+    val forwardObjectMessage = message.asInstanceOf[ForwardObjectMessage]
+    val forwardQueue: String = forwardObjectMessage.cpID
+    val objectModelMessage = new ObjectModelMessageImpl(forwardObjectMessage.objectModel)
+    rabbitMQ sendMessage("", forwardQueue, null, objectModelMessage)
     println("[ServiceForward] handleResult")
   }
 
@@ -158,7 +162,43 @@ case class AlertsService() extends ServiceResponseOrForward {
 
         val newAlert = GsonUtils.fromGson(jsonMessage, classOf[NewAlertMessageImpl])
 
-        Option(new ErrorMessageImpl("test"))
+        //calculate district
+        var district: String = null
+        try {
+          district = new GeocodingImpl getDistrict(newAlert.getLatitude, newAlert.getLongitude)
+        } catch {
+          case geocoding: GeocodingException => throw geocoding
+        }
+
+        try {
+          //calculate timestamp
+          val alertDao = (dbConnection getDAO DBConnection.Table.ALERT).asInstanceOf[AlertDao]
+          val timestamp = alertDao.getCurrentTimestampForDb
+
+          val alert = new AlertImplBuilder()
+            .setTimestamp(timestamp)
+            .setLatitude(newAlert.getLatitude)
+            .setLongitude(newAlert.getLongitude)
+            .setUserID(newAlert.getUserID)
+            .setEventName(newAlert.getEventType)
+            .setDistrictID(district)
+            .setUpvotes(0)
+            .createAlertImpl()
+
+          //insert and return alert with all fields filled
+          val inseredAlert = (alertDao insertAndGet alert).asInstanceOf[Alert]
+
+          //get cp of district
+          val cpAreaDao: CpAreaDao = (dbConnection getDAO DBConnection.Table.CP_AREA).asInstanceOf[CpAreaDao]
+          val cpAreaList = cpAreaDao findCpAreasByDistrict district
+
+          Option(ForwardObjectMessage(cpAreaList.get(0).getCpID, inseredAlert))
+
+        } catch {
+          case connection: DBConnectionException => throw connection
+          case query: DBQueryException => throw query
+          case duplicated: DBDuplicatedRecordException => throw duplicated
+        }
 
       //TODO case MessageType.UPVOTE_MESSAGE =>
 

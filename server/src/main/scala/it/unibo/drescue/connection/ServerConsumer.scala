@@ -38,6 +38,7 @@ case class ServerConsumer(private val rabbitMQ: RabbitMQ,
       case conn: DBConnectionException => println("[DBConnectionException] on " + message)
       case notFound: DBNotFoundRecordException => println("[DBNotFoundRecordException] on " + message)
       case query: DBQueryException => println("[DBQueryException] on " + message)
+      case duplicated: DBDuplicatedRecordException => println("[DBDuplicatedRecordException] on " + message)
       case geocoding: GeocodingException => println("[GeocodingException] on " + message)
       case e: Exception => println("Unknown Exception")
     }
