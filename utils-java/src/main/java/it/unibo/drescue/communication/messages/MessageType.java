@@ -8,6 +8,8 @@ public enum MessageType {
     CHANGE_PASSWORD_MESSAGE("change_password_message"),
     CONFIGURATION_MESSAGE("configuration_message"),
     COORDINATION_MESSAGE("coordination_message"),
+    REQ_COORDINATION_MESSAGE("req_coordination_message"),
+    REPLAY_COORDINATION_MESSAGE("replay_coordination_message"),
     ERROR_MESSAGE("error_message"),
     LOGIN_MESSAGE("login_message"),
     NEW_ALERT_MESSAGE("new_alert_message"),
