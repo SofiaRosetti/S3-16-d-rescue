@@ -88,6 +88,8 @@ import it.unibo.drescue.model._
   */
 object MobileuserService {
   private val duplicatedEmailMessage = "Duplicated email."
+  private val findOneException = "Exception while trying to find user"
+  private val inputError = "Incorrect input"
   private val wrongEmailOrPassword = "Wrong email and/or password."
 }
 
@@ -130,12 +132,10 @@ case class MobileuserService() extends ServiceResponse {
       case MessageType.LOGIN_MESSAGE =>
 
         val login = GsonUtils.fromGson(jsonMessage, classOf[LoginMessageImpl])
-
         val user = new UserImplBuilder()
           .setEmail(login.getEmail)
           .setPassword(login.getPassword)
           .createUserImpl()
-
         try {
           val userDao = (dbConnection getDAO DBConnection.Table.USER).asInstanceOf[UserDao]
           val userSelected = (userDao login user).asInstanceOf[User]
@@ -149,10 +149,41 @@ case class MobileuserService() extends ServiceResponse {
             new ErrorMessageImpl(MobileuserService.wrongEmailOrPassword)
         }
 
+      case MessageType.CHANGE_PASSWORD_MESSAGE =>
+
+        val changePassword = GsonUtils.fromGson(jsonMessage, classOf[ChangePasswordMessageImpl])
+        val user = new UserImplBuilder()
+          .setEmail(changePassword.getUserEmail)
+          .setPassword(changePassword.getNewPassword)
+          .createUserImpl()
+        try {
+          val userDao = (dbConnection getDAO DBConnection.Table.USER).asInstanceOf[UserDao]
+          val userSelected = (userDao selectByIdentifier user).asInstanceOf[User]
+          userSelected match {
+            case null => throw new DBQueryException(MobileuserService.findOneException)
+            case _ =>
+              userSelected.getPassword match {
+                case pass if pass == changePassword.getOldPassword =>
+                  changePassword.getOldPassword match {
+                    case password if password == changePassword.getNewPassword =>
+                      new ErrorMessageImpl(MobileuserService.inputError)
+                    case _ =>
+                      userDao update user
+                      new SuccessfulMessageImpl
+                  }
+                case _ =>
+                  new ErrorMessageImpl(MobileuserService.inputError)
+              }
+          }
+        } catch {
+          case connection: DBConnectionException => throw connection
+          case query: DBQueryException => throw query
+        }
+
       case _ => throw new Exception
     }
 
-    //TODO request profile (?), change password
+    //TODO request profile (?)
 
   }
 
