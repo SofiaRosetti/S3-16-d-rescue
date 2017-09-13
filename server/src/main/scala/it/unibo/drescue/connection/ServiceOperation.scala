@@ -4,7 +4,7 @@ import com.rabbitmq.client.AMQP
 import it.unibo.drescue.communication.messages._
 import it.unibo.drescue.database.DBConnection
 import it.unibo.drescue.database.exceptions._
-import it.unibo.drescue.utils.GeocodingException
+import it.unibo.drescue.utils._
 
 /**
   * Trait modelling a general service to accessDB and handle the result.
@@ -14,19 +14,21 @@ sealed trait ServiceOperation {
   /**
     * Access DB in order to perform the received request.
     *
-    * @param dBConnection string containing the message request
+    * @param dbConnection string containing the message request
     * @param jsonMessage  the result of the request as a Message
     * @throws it.unibo.drescue.database.exceptions.DBConnectionException     if an error occur in DB connection
     * @throws it.unibo.drescue.database.exceptions.DBNotFoundRecordException if an error occur while searching an object
     * @throws it.unibo.drescue.database.exceptions.DBQueryException          if an error occur while executing a query
     * @throws it.unibo.drescue.utils.GeocodingException                      if an error occur while executing geocoding operations
+    * @throws java.lang.Exception                                            if an unknown error occur
     * @return message to send as a response or forward
     */
   @throws(classOf[DBConnectionException])
   @throws(classOf[DBNotFoundRecordException])
   @throws(classOf[DBQueryException])
   @throws(classOf[GeocodingException])
-  def accessDB(dBConnection: DBConnection, jsonMessage: String): Message
+  @throws(classOf[Exception])
+  def accessDB(dbConnection: DBConnection, jsonMessage: String): Option[Message]
 
   /**
     * Handles DB result.
@@ -65,14 +67,19 @@ trait ServiceForward extends ServiceOperation {
 }
 
 /**
-  * Trait modelling a service that send response or/and forward requests.
+  * Trait modelling a service that send response or forward requests.
   */
-trait ServiceResponseForward extends ServiceResponse with ServiceForward {
+trait ServiceResponseOrForward extends ServiceResponse with ServiceForward {
 
   override def handleDBresult(rabbitMQ: RabbitMQ, properties: AMQP.BasicProperties, message: Message): Unit = {
-    super[ServiceResponse].handleDBresult(rabbitMQ, properties, message)
-    super[ServiceForward].handleDBresult(rabbitMQ, properties, message)
-    println("[ServiceResponseAndForward] handleResult")
+    val responseQueue: String = properties.getReplyTo
+    if (responseQueue != null) {
+      println("[ServiceResponseOrForward] RPC")
+      super[ServiceResponse].handleDBresult(rabbitMQ, properties, message)
+    } else {
+      println("[ServiceResponseOrForward] publish/subscribe")
+      super[ServiceForward].handleDBresult(rabbitMQ, properties, message)
+    }
   }
 
 }
@@ -96,12 +103,12 @@ object MobileuserService {
   */
 case class MobileuserService() extends ServiceResponse {
 
-  override def accessDB(dbConnection: DBConnection, jsonMessage: String): Message = {
+  override def accessDB(dbConnection: DBConnection, jsonMessage: String): Option[Message] = {
 
     val messageName: MessageType = MessageUtils.getMessageNameByJson(jsonMessage)
 
     messageName match {
-        
+
       case MessageType.SIGN_UP_MESSAGE =>
 
         val signUp = GsonUtils.fromGson(jsonMessage, classOf[SignUpMessageImpl])
@@ -121,16 +128,44 @@ case class MobileuserService() extends ServiceResponse {
           case connection: DBConnectionException => throw connection
           case query: DBQueryException => throw query
           case duplicated: DBDuplicatedRecordException =>
-            return new ErrorMessageImpl(MobileuserService.duplicatedEmailMessage)
+            return Option(new ErrorMessageImpl(MobileuserService.duplicatedEmailMessage))
         }
 
-        new SuccessfulMessageImpl
+        Option(new SuccessfulMessageImpl)
 
       case _ => throw new Exception
     }
 
     //TODO add case for login, request profile (?), change password
 
+  }
+
+}
+
+/**
+  * Class that manage messages requests related to alerts both from
+  * mobileuser and civil protection.
+  */
+case class AlertsService() extends ServiceResponseOrForward {
+
+  override def accessDB(dbConnection: DBConnection, jsonMessage: String): Option[Message] = {
+
+    val messageName: MessageType = MessageUtils.getMessageNameByJson(jsonMessage)
+
+    messageName match {
+
+      case MessageType.NEW_ALERT_MESSAGE =>
+
+        val newAlert = GsonUtils.fromGson(jsonMessage, classOf[NewAlertMessageImpl])
+
+        Option(new ErrorMessageImpl("test"))
+
+      //TODO case MessageType.UPVOTE_MESSAGE =>
+
+      //TODO case MessageType.REQUEST_ALERTS_MESSAGE =>
+
+      case _ => throw new Exception
+    }
   }
 
 }
