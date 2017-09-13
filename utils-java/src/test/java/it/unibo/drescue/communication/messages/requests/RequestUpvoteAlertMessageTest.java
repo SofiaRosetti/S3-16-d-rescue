@@ -1,5 +1,7 @@
 package it.unibo.drescue.communication.messages.requests;
 
+import it.unibo.drescue.communication.builder.requests.RequestUpvoteAlertMessageBuilderImpl;
+import it.unibo.drescue.communication.messages.Message;
 import it.unibo.drescue.communication.messages.MessageType;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,12 +13,21 @@ public class RequestUpvoteAlertMessageTest {
 
     private static final int USER_ID = 12345;
     private static final int ALERT_ID = 67890;
+    private static final String DISTRICT_ID = "RA";
 
     private RequestUpvoteAlertMessageImpl requestUpvoteAlertMessage;
 
     @Before
     public void init() {
-        this.requestUpvoteAlertMessage = new RequestUpvoteAlertMessageImpl(USER_ID, ALERT_ID);
+
+        final Message upvoteAlertMessage = new RequestUpvoteAlertMessageBuilderImpl()
+                .setAlertID(ALERT_ID)
+                .setDistrictID(DISTRICT_ID)
+                .setUserID(USER_ID)
+                .build();
+
+        this.requestUpvoteAlertMessage = (RequestUpvoteAlertMessageImpl) upvoteAlertMessage;
+
     }
 
     @Test
