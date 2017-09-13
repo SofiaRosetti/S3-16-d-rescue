@@ -17,8 +17,8 @@ sealed trait ServiceOperation {
   /**
     * Access DB in order to perform the received request.
     *
-    * @param dbConnection string containing the message request
-    * @param jsonMessage  the result of the request as a Message
+    * @param dbConnection connection to DB
+    * @param jsonMessage  string containing the message request
     * @throws it.unibo.drescue.database.exceptions.DBConnectionException     if an error occur in DB connection
     * @throws it.unibo.drescue.database.exceptions.DBNotFoundRecordException if an error occur while searching an object
     * @throws it.unibo.drescue.database.exceptions.DBQueryException          if an error occur while executing a query
@@ -150,6 +150,33 @@ case class MobileuserService() extends ServiceResponse {
 }
 
 /**
+  * Object companion of AlertsService case class.
+  */
+object AlertsService {
+
+  /**
+    *
+    * @param dbConnection connection to DB
+    * @param district     district of which to find cp
+    * @throws it.unibo.drescue.database.exceptions.DBConnectionException if an error occur in DB connection
+    * @throws it.unibo.drescue.database.exceptions.DBQueryException      if an error occur while executing a query
+    * @return a list containing all the cp that covers the given district
+    */
+  @throws(classOf[DBConnectionException])
+  @throws(classOf[DBQueryException])
+  def getCPofDistrict(dbConnection: DBConnection, district: String): ListBuffer[String] = {
+    val cpAreaDao: CpAreaDao = (dbConnection getDAO DBConnection.Table.CP_AREA).asInstanceOf[CpAreaDao]
+    val cpAreaList = cpAreaDao findCpAreasByDistrict district
+    var cpIDList = new ListBuffer[String]
+    cpAreaList forEach (cpArea => {
+      val cpID = cpArea.getCpID
+      cpIDList.append(cpID)
+    })
+    cpIDList
+  }
+}
+
+/**
   * Class that manage messages requests related to alerts both from
   * mobileuser and civil protection.
   */
@@ -191,14 +218,7 @@ case class AlertsService() extends ServiceResponseOrForward {
           //insert and return alert with all fields filled
           val inseredAlert = (alertDao insertAndGet alert).asInstanceOf[Alert]
 
-          //get cp of district
-          val cpAreaDao: CpAreaDao = (dbConnection getDAO DBConnection.Table.CP_AREA).asInstanceOf[CpAreaDao]
-          val cpAreaList = cpAreaDao findCpAreasByDistrict district
-          var cpIDList = new ListBuffer[String]
-          cpAreaList forEach (cpArea => {
-            val cpID = cpArea.getCpID
-            cpIDList.append(cpID)
-          })
+          val cpIDList = AlertsService.getCPofDistrict(dbConnection, district)
 
           Option(ForwardObjectMessage(cpIDList, inseredAlert))
 
