@@ -1,6 +1,5 @@
 package it.unibo.drescue.communication.messages;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 
 public class CoordinationMessage extends AbstractRoutingMessage {
