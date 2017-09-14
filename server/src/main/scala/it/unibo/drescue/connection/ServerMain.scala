@@ -14,7 +14,6 @@ object ServerMain extends App {
   Service(connection, QueueType.ALERTS_QUEUE.getQueueName, AlertsService())
 
   //TODO
-  // AlertsService
   // CivilProtectionService
 
 }
