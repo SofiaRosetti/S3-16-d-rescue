@@ -48,6 +48,7 @@
     <string name="phone">Phone</string>
     <string name="phone_label">Phone:</string>
     <string name="profile">Profile</string>
+    <string name="progress_bar_text">Please wait&#8230; Request in progress</string>
     <string name="save">Save</string>
     <string name="send">Send</string>
     <string name="sign_up">Sign up</string>
