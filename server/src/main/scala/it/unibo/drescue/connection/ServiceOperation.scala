@@ -87,10 +87,10 @@ import it.unibo.drescue.model._
   * Object companion of MobileuserService case class.
   */
 object MobileuserService {
-  private val duplicatedEmailMessage = "Duplicated email."
-  private val findOneException = "Exception while trying to find user"
-  private val inputError = "Incorrect input"
-  private val wrongEmailOrPassword = "Wrong email and/or password."
+  private val DuplicatedEmailMessage: String = "Duplicated email."
+  private val FindOneException: String = "Exception while trying to find user"
+  private val InputError: String = "Incorrect input"
+  private val WrongEmailOrPassword: String = "Wrong email and/or password."
 }
 
 /**
@@ -124,7 +124,7 @@ case class MobileuserService() extends ServiceResponse {
           case connection: DBConnectionException => throw connection
           case query: DBQueryException => throw query
           case duplicated: DBDuplicatedRecordException =>
-            return new ErrorMessageImpl(MobileuserService.duplicatedEmailMessage)
+            return new ErrorMessageImpl(MobileuserService.DuplicatedEmailMessage)
         }
 
         new SuccessfulMessageImpl
@@ -146,7 +146,7 @@ case class MobileuserService() extends ServiceResponse {
           case connection: DBConnectionException => throw connection
           case query: DBQueryException => throw query
           case notFound: DBNotFoundRecordException =>
-            new ErrorMessageImpl(MobileuserService.wrongEmailOrPassword)
+            new ErrorMessageImpl(MobileuserService.WrongEmailOrPassword)
         }
 
       case MessageType.CHANGE_PASSWORD_MESSAGE =>
@@ -160,19 +160,19 @@ case class MobileuserService() extends ServiceResponse {
           val userDao = (dbConnection getDAO DBConnection.Table.USER).asInstanceOf[UserDao]
           val userSelected = (userDao selectByIdentifier user).asInstanceOf[User]
           userSelected match {
-            case null => throw new DBQueryException(MobileuserService.findOneException)
+            case null => throw new DBQueryException(MobileuserService.FindOneException)
             case _ =>
               userSelected.getPassword match {
                 case pass if pass == changePassword.getOldPassword =>
                   changePassword.getOldPassword match {
                     case password if password == changePassword.getNewPassword =>
-                      new ErrorMessageImpl(MobileuserService.inputError)
+                      new ErrorMessageImpl(MobileuserService.InputError)
                     case _ =>
                       userDao update user
                       new SuccessfulMessageImpl
                   }
                 case _ =>
-                  new ErrorMessageImpl(MobileuserService.inputError)
+                  new ErrorMessageImpl(MobileuserService.InputError)
               }
           }
         } catch {
@@ -190,7 +190,7 @@ case class MobileuserService() extends ServiceResponse {
           val userDao = (dbConnection getDAO DBConnection.Table.USER).asInstanceOf[UserDao]
           val userSelected = (userDao selectByIdentifier user).asInstanceOf[User]
           userSelected match {
-            case null => throw new DBQueryException(MobileuserService.findOneException)
+            case null => throw new DBQueryException(MobileuserService.FindOneException)
             case _ => new ProfileMessageImpl(userSelected)
           }
         } catch {
