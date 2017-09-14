@@ -13,11 +13,11 @@ import scalafx.scene.text.Font
 class LoginGrid(private var loginController: LoginControllerImpl) {
 
   val _grid = new GridPane() {
-    hgap = ViewConstants.gap
-    vgap = gap
-    padding = Insets(insets100)
+    hgap = ViewConstants.Gap
+    vgap = Gap
+    padding = Insets(Insets100)
 
-    val defaultFont = new Font(font20)
+    val defaultFont = new Font(Font20)
 
     val username = new TextField() {
       promptText = "Username"
@@ -32,15 +32,15 @@ class LoginGrid(private var loginController: LoginControllerImpl) {
       text = "Username:"
       font = defaultFont
     }
-    add(usernameLabel, columnRow0, columnRow0)
-    add(username, columnRow1, columnRow0)
+    add(usernameLabel, ColumnRow0, ColumnRow0)
+    add(username, ColumnRow1, ColumnRow0)
 
     val passwordLabel = new Label() {
       text = "Password:"
       font = defaultFont
     }
-    add(passwordLabel, columnRow0, columnRow1)
-    add(password, columnRow1, columnRow1)
+    add(passwordLabel, ColumnRow0, ColumnRow1)
+    add(password, ColumnRow1, ColumnRow1)
 
     val loginButton = new Button() {
       text = "Login"
@@ -53,8 +53,8 @@ class LoginGrid(private var loginController: LoginControllerImpl) {
       children = loginButton
       alignment = Pos.Center
     }
-    add(buttonBox, columnRow0, columnRow4)
-    GridPane.setConstraints(buttonBox, columnRow0, columnRow4, columnRow2, columnRow1)
+    add(buttonBox, ColumnRow0, ColumnRow4)
+    GridPane.setConstraints(buttonBox, ColumnRow0, ColumnRow4, ColumnRow2, ColumnRow1)
   }
 
   def grid = _grid
