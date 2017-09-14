@@ -55,7 +55,7 @@ class MobileuserServiceTest extends FunSuite {
     dBConnection closeConnection()
   }
 
-  def signUpCommunication(): Message = {
+  def signUpCommunication(): Option[Message] = {
     val messageSignUp: Message = new SignUpMessageBuilderImpl()
       .setName(userName)
       .setSurname(userSurname)
@@ -66,18 +66,18 @@ class MobileuserServiceTest extends FunSuite {
     mobileuserCommunication(messageSignUp)
   }
 
-  def mobileuserCommunication(mobileuserMessage: Message): Message = {
+  def mobileuserCommunication(mobileuserMessage: Message): Option[Message] = {
     val message: String = GsonUtils toGson mobileuserMessage
     val service: ServiceOperation = new MobileuserService
     service.accessDB(dBConnection, message)
   }
 
-  def loginCommunication(email: String, password: String): Message = {
+  def loginCommunication(email: String, password: String): Option[Message] = {
     val messageLogin: Message = new LoginMessageImpl(email, password)
     mobileuserCommunication(messageLogin)
   }
 
-  def changePasswordCommunication(oldPassword: String, newPassword: String): Message = {
+  def changePasswordCommunication(oldPassword: String, newPassword: String): Option[Message] = {
     val changePasswordMessage: Message = new ChangePasswordMessageBuilderImpl()
       .setUserEmail(correctEmail)
       .setOldPassword(oldPassword)
@@ -88,68 +88,104 @@ class MobileuserServiceTest extends FunSuite {
 
   test("User should do correct sign up") {
     startCommunication()
-    val responseMessage: Message = signUpCommunication()
-    assert(responseMessage.getMessageType == MessageType.SUCCESSFUL_MESSAGE.getMessageType)
+    val responseMessage: Option[Message] = signUpCommunication()
+    responseMessage match {
+      case Some(responseMessage) =>
+        assert(responseMessage.getMessageType == MessageType.SUCCESSFUL_MESSAGE.getMessageType)
+      case None => fail()
+    }
     endSignUpCommunication()
   }
 
   test("User should not do correct sign up for duplicate email") {
     val userDao: UserDao = startCommunicationAndInsertUser()
-    val responseMessage: Message = signUpCommunication()
-    assert(responseMessage.getMessageType == MessageType.ERROR_MESSAGE.getMessageType)
+    val responseMessage: Option[Message] = signUpCommunication()
+    responseMessage match {
+      case Some(responseMessage) =>
+        assert(responseMessage.getMessageType == MessageType.ERROR_MESSAGE.getMessageType)
+      case None => fail()
+    }
     endCommunication(userDao)
   }
 
   test("User with email '" + correctEmail + "' and password '"
     + correctPassword + "' should enter correct data for login") {
     val userDao: UserDao = startCommunicationAndInsertUser()
-    val responseMessage: Message = loginCommunication(correctEmail, correctPassword)
-    assert(responseMessage.getMessageType == MessageType.RESPONSE_LOGIN_MESSAGE.getMessageType)
+    val responseMessage: Option[Message] = loginCommunication(correctEmail, correctPassword)
+    responseMessage match {
+      case Some(responseMessage) =>
+        assert(responseMessage.getMessageType == MessageType.RESPONSE_LOGIN_MESSAGE.getMessageType)
+      case None => fail()
+    }
     endCommunication(userDao)
   }
 
   test("User with email '" + correctEmail + "' and password '"
     + incorrectPassword + "' should not enter correct password for login") {
     val userDao: UserDao = startCommunicationAndInsertUser()
-    val responseMessage: Message = loginCommunication(correctEmail, incorrectPassword)
-    assert(responseMessage.getMessageType == MessageType.ERROR_MESSAGE.getMessageType)
+    val responseMessage: Option[Message] = loginCommunication(correctEmail, incorrectPassword)
+    responseMessage match {
+      case Some(responseMessage) =>
+        assert(responseMessage.getMessageType == MessageType.ERROR_MESSAGE.getMessageType)
+      case None => fail()
+    }
     endCommunication(userDao)
   }
 
   test("User with email '" + incorrectEmail + "' and password '"
     + correctPassword + "' should not enter correct email for login") {
     val userDao: UserDao = startCommunicationAndInsertUser()
-    val responseMessage: Message = loginCommunication(incorrectEmail, correctPassword)
-    assert(responseMessage.getMessageType == MessageType.ERROR_MESSAGE.getMessageType)
+    val responseMessage: Option[Message] = loginCommunication(incorrectEmail, correctPassword)
+    responseMessage match {
+      case Some(responseMessage) =>
+        assert(responseMessage.getMessageType == MessageType.ERROR_MESSAGE.getMessageType)
+      case None => fail()
+    }
     endCommunication(userDao)
   }
 
   test("User should be able to change password") {
     val userDao: UserDao = startCommunicationAndInsertUser()
-    val responseMessage: Message = changePasswordCommunication(correctPassword, incorrectPassword)
-    assert(responseMessage.getMessageType == MessageType.SUCCESSFUL_MESSAGE.getMessageType)
+    val responseMessage: Option[Message] = changePasswordCommunication(correctPassword, incorrectPassword)
+    responseMessage match {
+      case Some(responseMessage) =>
+        assert(responseMessage.getMessageType == MessageType.SUCCESSFUL_MESSAGE.getMessageType)
+      case None => fail()
+    }
     endCommunication(userDao)
   }
 
   test("User should not be able to change password for incorrect old password") {
     val userDao: UserDao = startCommunicationAndInsertUser()
-    val responseMessage: Message = changePasswordCommunication(incorrectPassword, correctPassword)
-    assert(responseMessage.getMessageType == MessageType.ERROR_MESSAGE.getMessageType)
+    val responseMessage: Option[Message] = changePasswordCommunication(incorrectPassword, correctPassword)
+    responseMessage match {
+      case Some(responseMessage) =>
+        assert(responseMessage.getMessageType == MessageType.ERROR_MESSAGE.getMessageType)
+      case None => fail()
+    }
     endCommunication(userDao)
   }
 
   test("User should not be able to change password for incorrect new password") {
     val userDao: UserDao = startCommunicationAndInsertUser()
-    val responseMessage: Message = changePasswordCommunication(correctPassword, correctPassword)
-    assert(responseMessage.getMessageType == MessageType.ERROR_MESSAGE.getMessageType)
+    val responseMessage: Option[Message] = changePasswordCommunication(correctPassword, correctPassword)
+    responseMessage match {
+      case Some(responseMessage) =>
+        assert(responseMessage.getMessageType == MessageType.ERROR_MESSAGE.getMessageType)
+      case None => fail()
+    }
     endCommunication(userDao)
   }
 
   test("User should get his profile") {
     val userDao: UserDao = startCommunicationAndInsertUser()
     val profileMessage: Message = new RequestProfileMessageImpl(correctEmail)
-    val responseMessage: Message = mobileuserCommunication(profileMessage)
-    assert(responseMessage.getMessageType == MessageType.PROFILE_MESSAGE.getMessageType)
+    val responseMessage: Option[Message] = mobileuserCommunication(profileMessage)
+    responseMessage match {
+      case Some(responseMessage) =>
+        assert(responseMessage.getMessageType == MessageType.PROFILE_MESSAGE.getMessageType)
+      case None => fail()
+    }
     endCommunication(userDao)
   }
 

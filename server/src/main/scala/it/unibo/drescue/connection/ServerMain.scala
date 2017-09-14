@@ -11,9 +11,9 @@ object ServerMain extends App {
   connection openConnection()
 
   Service(connection, QueueType.MOBILEUSER_QUEUE.getQueueName, MobileuserService())
+  Service(connection, QueueType.ALERTS_QUEUE.getQueueName, AlertsService())
 
   //TODO
-  // AlertsService
   // CivilProtectionService
 
 }
