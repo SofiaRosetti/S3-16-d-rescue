@@ -8,7 +8,7 @@ import it.unibo.drescue.communication.messages.MessageType;
  */
 public class ChangePasswordMessageImpl extends AbstractMessage implements ChangePasswordMessage {
 
-    private int userID;
+    private String email;
     private String oldPassword;
     private String newPassword;
 
@@ -17,13 +17,13 @@ public class ChangePasswordMessageImpl extends AbstractMessage implements Change
     }
 
     @Override
-    public int getUserID() {
-        return this.userID;
+    public String getUserEmail() {
+        return this.email;
     }
 
     @Override
-    public void setUserID(final int userID) {
-        this.userID = userID;
+    public void setUserEmail(final String userEmail) {
+        this.email = userEmail;
     }
 
     @Override

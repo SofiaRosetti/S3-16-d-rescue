@@ -7,11 +7,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class ChangePasswordMessageTest {
 
-    private static final int USER_ID = 12345;
+    private static final String USER_EMAIL = "j.doe@test.com";
     private static final String USER_OLD_PASSWORD = "test";
     private static final String USER_NEW_PASSWORD = "0000";
 
@@ -23,7 +22,7 @@ public class ChangePasswordMessageTest {
     @Before
     public void init() {
         final Message message = new ChangePasswordMessageBuilderImpl()
-                .setUserID(USER_ID)
+                .setUserEmail(USER_EMAIL)
                 .setOldPassword(USER_OLD_PASSWORD)
                 .build();
 
@@ -34,7 +33,7 @@ public class ChangePasswordMessageTest {
 
     @Test
     public void isUserIDSet() {
-        assertTrue(this.changePasswordMessage.getUserID() == USER_ID);
+        assertEquals(USER_EMAIL, this.changePasswordMessage.getUserEmail());
     }
 
     @Test

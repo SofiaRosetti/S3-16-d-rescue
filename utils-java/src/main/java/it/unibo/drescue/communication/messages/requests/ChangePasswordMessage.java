@@ -6,16 +6,16 @@ package it.unibo.drescue.communication.messages.requests;
 public interface ChangePasswordMessage {
 
     /**
-     * @return the user identifier
+     * @return the user email
      */
-    int getUserID();
+    String getUserEmail();
 
     /**
-     * Sets the user identifier.
+     * Sets the user email.
      *
-     * @param userID user identifier
+     * @param userEmail user email
      */
-    void setUserID(int userID);
+    void setUserEmail(String userEmail);
 
     /**
      * @return the old password
