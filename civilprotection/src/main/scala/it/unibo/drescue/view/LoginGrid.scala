@@ -2,11 +2,12 @@ package it.unibo.drescue.view
 
 import javafx.scene.input.MouseEvent
 
+import it.unibo.drescue.StringUtils
 import it.unibo.drescue.controller.LoginControllerImpl
 import it.unibo.drescue.view.ViewConstants._
 
 import scalafx.geometry.{Insets, Pos}
-import scalafx.scene.control.{Button, Label, PasswordField, TextField}
+import scalafx.scene.control._
 import scalafx.scene.layout.{GridPane, HBox}
 import scalafx.scene.text.Font
 
@@ -46,7 +47,10 @@ class LoginGrid(private var loginController: LoginControllerImpl) {
       text = "Login"
       font = defaultFont
       onMouseClicked = (event: MouseEvent) => {
-        loginController.loginPress(username.getText, password.getText)
+        checkInputs(username.getText, password.getText) match {
+          case true => loginController.loginPress(username.getText, password.getText)
+          case false => loginController.emptyLogin()
+        }
       }
     }
     val buttonBox = new HBox() {
@@ -58,5 +62,9 @@ class LoginGrid(private var loginController: LoginControllerImpl) {
   }
 
   def grid = _grid
+
+  def checkInputs(username: String, password: String): Boolean = {
+    StringUtils.isAValidString(username) && StringUtils.isAValidString(password)
+  }
 
 }

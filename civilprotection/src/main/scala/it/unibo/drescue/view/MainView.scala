@@ -58,11 +58,11 @@ class MainView(login: LoginGrid,
       }
     }
 
-    stage_.hide()
-    stage_.scene_=(newScene)
-    stage_.centerOnScreen()
-    stage_.show()
+    _stage.hide()
+    _stage.scene_=(newScene)
+    _stage.centerOnScreen()
+    _stage.show()
   }
 
-  def stage_ = stage
+  def _stage = stage
 }
