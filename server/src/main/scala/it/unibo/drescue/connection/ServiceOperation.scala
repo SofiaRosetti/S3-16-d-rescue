@@ -221,7 +221,7 @@ import scala.collection.mutable.ListBuffer
   */
 object AlertsService {
 
-  private val NumberOfAlertsToGetFromApp: Int = 50
+  private val NumberOfAlertsToGet: Int = 50
 
   /**
     * Gets the cpIDs of the given district.
@@ -256,6 +256,19 @@ object AlertsService {
   @throws(classOf[GeocodingException])
   def calculateDistrict(latitude: Double, longitude: Double): String = {
     new GeocodingImpl getDistrict(latitude, longitude)
+  }
+
+  /**
+    * Gets alerts of the given district.
+    *
+    * @param alertDao
+    * @param district district of which to find the alerts
+    * @throws it.unibo.drescue.database.exceptions.DBQueryException
+    * @return a java.util.List containing the alerts
+    */
+  @throws(classOf[DBQueryException])
+  def findAlertsOfDistrict(alertDao: AlertDao, district: String): util.List[Alert] = {
+    alertDao findLast(AlertsService.NumberOfAlertsToGet, district)
   }
 }
 
@@ -351,7 +364,7 @@ case class AlertsService() extends ServiceResponseOrForward {
 
         try {
           val alertDao = (dbConnection getDAO DBConnection.Table.ALERT).asInstanceOf[AlertDao]
-          val alertList: util.List[Alert] = alertDao findLast(AlertsService.NumberOfAlertsToGetFromApp, district)
+          val alertList: util.List[Alert] = AlertsService.findAlertsOfDistrict(alertDao, district)
 
           Option(new AlertsMessageImpl(alertList.asInstanceOf[util.List[AlertImpl]]))
 
@@ -360,7 +373,33 @@ case class AlertsService() extends ServiceResponseOrForward {
           case query: DBQueryException => throw query
         }
 
-      //TODO case alerts request from CP
+      case MessageType.REQUEST_CP_ALERTS_MESSAGE =>
+
+        val cpRequestAlerts = GsonUtils.fromGson(jsonMessage, classOf[RequestCpAlertsMessageImpl])
+
+        try {
+          val cpAreaDao = (dbConnection getDAO DBConnection.Table.CP_AREA).asInstanceOf[CpAreaDao]
+          val cpAreaList = cpAreaDao findCpAreasByCp cpRequestAlerts.cpID
+          var cpDistrictList = new ListBuffer[String]
+          cpAreaList forEach (cpArea => {
+            val districtID = cpArea.getDistrictID
+            cpDistrictList.append(districtID)
+          })
+
+          val alertDao = (dbConnection getDAO DBConnection.Table.ALERT).asInstanceOf[AlertDao]
+          var alertList: util.List[Alert] = new util.ArrayList[Alert]
+          cpDistrictList.foreach(districtID => {
+            alertList addAll AlertsService.findAlertsOfDistrict(alertDao, districtID)
+          })
+
+          Option(new AlertsMessageImpl(alertList.asInstanceOf[util.List[AlertImpl]]))
+
+        } catch {
+          case connection: DBConnectionException => throw connection
+          case query: DBQueryException => throw query
+        }
+
+        throw new Exception
 
       case _ => throw new Exception
     }
