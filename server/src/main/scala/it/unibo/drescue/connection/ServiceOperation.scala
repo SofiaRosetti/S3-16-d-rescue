@@ -50,7 +50,6 @@ trait ServiceResponse extends ServiceOperation {
   override def handleDBresult(rabbitMQ: RabbitMQ, properties: AMQP.BasicProperties, message: Message): Unit = {
     val responseQueue: String = properties.getReplyTo
     rabbitMQ sendMessage("", responseQueue, null, message)
-    println("[ServiceResponse] handleResult")
   }
 
 }
@@ -66,7 +65,6 @@ trait ServiceForward extends ServiceOperation {
     forwardObjectMessage.cpIDList foreach (cpID => {
       rabbitMQ sendMessage("", cpID, null, objectModelMessage)
     })
-    println("[ServiceForward] handleResult")
   }
 
 }
@@ -79,10 +77,8 @@ trait ServiceResponseOrForward extends ServiceResponse with ServiceForward {
   override def handleDBresult(rabbitMQ: RabbitMQ, properties: AMQP.BasicProperties, message: Message): Unit = {
     val responseQueue: String = properties.getReplyTo
     if (responseQueue != null) {
-      println("[ServiceResponseOrForward] RPC")
       super[ServiceResponse].handleDBresult(rabbitMQ, properties, message)
     } else {
-      println("[ServiceResponseOrForward] publish/subscribe")
       super[ServiceForward].handleDBresult(rabbitMQ, properties, message)
     }
   }
@@ -153,12 +149,12 @@ case class MobileuserService() extends ServiceResponse {
           val userSelected = (userDao login user).asInstanceOf[User]
           val eventTypeDao = (dbConnection getDAO DBConnection.Table.EVENT_TYPE).asInstanceOf[EventTypeDao]
           val eventTypeList = eventTypeDao.findAll
-          new ResponseLoginMessageImpl(userSelected, eventTypeList)
+          Option(new ResponseLoginMessageImpl(userSelected, eventTypeList))
         } catch {
           case connection: DBConnectionException => throw connection
           case query: DBQueryException => throw query
           case notFound: DBNotFoundRecordException =>
-            new ErrorMessageImpl(MobileuserService.wrongEmailOrPassword)
+            Option(new ErrorMessageImpl(MobileuserService.wrongEmailOrPassword))
         }
 
       case MessageType.CHANGE_PASSWORD_MESSAGE =>
@@ -178,13 +174,13 @@ case class MobileuserService() extends ServiceResponse {
                 case pass if pass == changePassword.getOldPassword =>
                   changePassword.getOldPassword match {
                     case password if password == changePassword.getNewPassword =>
-                      new ErrorMessageImpl(MobileuserService.inputError)
+                      Option(new ErrorMessageImpl(MobileuserService.inputError))
                     case _ =>
                       userDao update user
-                      new SuccessfulMessageImpl
+                      Option(new SuccessfulMessageImpl)
                   }
                 case _ =>
-                  new ErrorMessageImpl(MobileuserService.inputError)
+                  Option(new ErrorMessageImpl(MobileuserService.inputError))
               }
           }
         } catch {
@@ -203,7 +199,7 @@ case class MobileuserService() extends ServiceResponse {
           val userSelected = (userDao selectByIdentifier user).asInstanceOf[User]
           userSelected match {
             case null => throw new DBQueryException(MobileuserService.findOneException)
-            case _ => new ProfileMessageImpl(userSelected)
+            case _ => Option(new ProfileMessageImpl(userSelected))
           }
         } catch {
           case connection: DBConnectionException => throw connection
@@ -225,7 +221,7 @@ import scala.collection.mutable.ListBuffer
   */
 object AlertsService {
 
-  val numberOfAlertsToGetFromApp = 50
+  private val NumberOfAlertsToGetFromApp: Int = 50
 
   /**
     * Gets the cpIDs of the given district.
@@ -239,7 +235,7 @@ object AlertsService {
   @throws(classOf[DBConnectionException])
   @throws(classOf[DBQueryException])
   def getCPofDistrict(dbConnection: DBConnection, district: String): ListBuffer[String] = {
-    val cpAreaDao: CpAreaDao = (dbConnection getDAO DBConnection.Table.CP_AREA).asInstanceOf[CpAreaDao]
+    val cpAreaDao = (dbConnection getDAO DBConnection.Table.CP_AREA).asInstanceOf[CpAreaDao]
     val cpAreaList = cpAreaDao findCpAreasByDistrict district
     var cpIDList = new ListBuffer[String]
     cpAreaList forEach (cpArea => {
@@ -271,7 +267,7 @@ case class AlertsService() extends ServiceResponseOrForward {
 
   override def accessDB(dbConnection: DBConnection, jsonMessage: String): Option[Message] = {
 
-    val messageName: MessageType = MessageUtils.getMessageNameByJson(jsonMessage)
+    val messageName = MessageUtils.getMessageNameByJson(jsonMessage)
 
     messageName match {
 
@@ -279,7 +275,6 @@ case class AlertsService() extends ServiceResponseOrForward {
 
         val newAlert = GsonUtils.fromGson(jsonMessage, classOf[NewAlertMessageImpl])
 
-        //calculate district
         var district: String = null
         try {
           district = AlertsService.calculateDistrict(newAlert.getLatitude, newAlert.getLongitude)
@@ -288,7 +283,6 @@ case class AlertsService() extends ServiceResponseOrForward {
         }
 
         try {
-          //calculate timestamp
           val alertDao = (dbConnection getDAO DBConnection.Table.ALERT).asInstanceOf[AlertDao]
           val timestamp = alertDao.getCurrentTimestampForDb
 
@@ -302,7 +296,6 @@ case class AlertsService() extends ServiceResponseOrForward {
             .setUpvotes(0)
             .createAlertImpl()
 
-          //insert and return alert with all fields filled
           val inseredAlert = (alertDao insertAndGet alert).asInstanceOf[Alert]
 
           val cpIDList = AlertsService.getCPofDistrict(dbConnection, district)
@@ -349,7 +342,6 @@ case class AlertsService() extends ServiceResponseOrForward {
 
         val mobileRequestAlerts = GsonUtils.fromGson(jsonMessage, classOf[RequestAlertsMessageImpl])
 
-        //calculate district
         var district: String = null
         try {
           district = AlertsService.calculateDistrict(mobileRequestAlerts.getLatitude, mobileRequestAlerts.getLongitude)
@@ -358,9 +350,8 @@ case class AlertsService() extends ServiceResponseOrForward {
         }
 
         try {
-          //get alerts from district
           val alertDao = (dbConnection getDAO DBConnection.Table.ALERT).asInstanceOf[AlertDao]
-          val alertList: util.List[Alert] = alertDao findLast(AlertsService.numberOfAlertsToGetFromApp, district)
+          val alertList: util.List[Alert] = alertDao findLast(AlertsService.NumberOfAlertsToGetFromApp, district)
 
           Option(new AlertsMessageImpl(alertList.asInstanceOf[util.List[AlertImpl]]))
 

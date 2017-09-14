@@ -6,8 +6,8 @@ import org.scalatest.FunSuite
 import scala.collection.mutable.ListBuffer
 
 object ForwardMessageTest {
-  val cpID1 = "RA01"
-  val cpID2 = "RA02"
+  private val cpID1 = "RA01"
+  private val cpID2 = "RA02"
 }
 
 class ForwardMessageTest extends FunSuite {
