@@ -7,7 +7,7 @@ import it.unibo.drescue.communication.messages.MessageType;
 
 /**
  * Class that represents a message containing a request of alerts of a
- * specific area.
+ * specific area from mobileuser app.
  */
 public class RequestAlertsMessageImpl extends AbstractMessage implements RequestAlertsMessage, MessageBuilder {
 
@@ -21,7 +21,7 @@ public class RequestAlertsMessageImpl extends AbstractMessage implements Request
      * @param longitude longitude of the area for which alerts are requested
      */
     public RequestAlertsMessageImpl(final double latitude, final double longitude) {
-        super(MessageType.REQUEST_ALERTS_MESSAGE);
+        super(MessageType.REQUEST_MOBILE_ALERTS_MESSAGE);
         this.latitude = latitude;
         this.longitude = longitude;
     }

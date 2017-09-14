@@ -1,7 +1,8 @@
 package it.unibo.drescue.communication.messages.requests;
 
 /**
- * Interface modelling a message for performing an alert request.
+ * Interface modelling a message for performing an alert request
+ * from mobileuser app.
  */
 public interface RequestAlertsMessage {
 
