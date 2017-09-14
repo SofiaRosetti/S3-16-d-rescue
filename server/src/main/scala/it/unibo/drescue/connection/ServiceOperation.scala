@@ -338,7 +338,7 @@ case class AlertsService() extends ServiceResponseOrForward {
           case duplicated: DBDuplicatedRecordException => throw duplicated
         }
 
-      case MessageType.REQUEST_ALERTS_MESSAGE =>
+      case MessageType.REQUEST_MOBILE_ALERTS_MESSAGE =>
 
         val mobileRequestAlerts = GsonUtils.fromGson(jsonMessage, classOf[RequestAlertsMessageImpl])
 
