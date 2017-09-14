@@ -98,7 +98,9 @@ class HomeGrid(private var homeController: HomeControllerImpl) {
     add(checkBoxList, ColumnRow1, ColumnRow2)
 
     val alarmsList = new ListView[String]() {
-      items = ObservableBuffer("Alarm 1", "Alarm 2", "Alarm 3", "Alarm 4", "Alarm 5", "Alarm 6", "Alarm 7")
+      var buffer = homeController._obsBuffer
+      buffer += "first alert"
+      items = buffer
       prefHeight = WidthHeight100
       prefWidth = WidthHeight400
     }
@@ -133,6 +135,7 @@ class HomeGrid(private var homeController: HomeControllerImpl) {
       prefWidth = WidthHeight250
       onMouseClicked = (event: MouseEvent) => {
         homeController.newRescuePress()
+        //homeController.refreshAlertsList()
       }
     }
     val newTeamButton = new Button() {
