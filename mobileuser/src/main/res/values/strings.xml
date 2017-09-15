@@ -5,6 +5,7 @@
     <string name="alert_sent">Alert sent!</string>
     <string name="alert_sent_error">Error while sending the alert. Retry later.</string>
     <string name="alerts_error">Error in loading alerts.</string>
+    <string name="alerts_missing">No alerts in your district.</string>
     <string name="attention">Attention!</string>
     <string name="change_password">Change password</string>
     <string name="confirm_password">Confirm password</string>

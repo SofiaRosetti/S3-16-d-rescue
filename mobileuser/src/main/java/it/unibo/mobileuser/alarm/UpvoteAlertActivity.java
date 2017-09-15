@@ -5,12 +5,19 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.widget.ListView;
 import android.widget.Toast;
+import it.unibo.drescue.communication.GsonUtils;
 import it.unibo.drescue.communication.builder.requests.RequestUpvoteAlertMessageBuilderImpl;
 import it.unibo.drescue.communication.messages.Message;
+import it.unibo.drescue.communication.messages.MessageType;
+import it.unibo.drescue.communication.messages.MessageUtils;
+import it.unibo.drescue.communication.messages.requests.RequestAlertsMessageImpl;
+import it.unibo.drescue.communication.messages.response.AlertsMessageImpl;
 import it.unibo.drescue.connection.QueueType;
 import it.unibo.drescue.model.Alert;
-import it.unibo.drescue.model.AlertImplBuilder;
+import it.unibo.drescue.model.AlertImpl;
 import it.unibo.mobileuser.R;
+import it.unibo.mobileuser.connection.AbstractResponse;
+import it.unibo.mobileuser.connection.RabbitAsyncTask;
 import it.unibo.mobileuser.connection.RabbitPublishAsyncTask;
 import it.unibo.mobileuser.gps.GpsActivityImpl;
 import it.unibo.mobileuser.utils.PreferencesKey;
@@ -40,12 +47,6 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
         final String userID = Utils.getUserDataFromSharedPreferences(getApplicationContext(), PreferencesKey.USER_ID);
 
         this.alertList = new ArrayList<>();
-
-        //TODO delete (example elements)
-        for (int i = 0; i < 10; i++) {
-            this.alertList.add(new AlertImplBuilder().createAlertImpl());
-        }
-
         this.alertAdapter = new AlertAdapter(this, this.alertList);
 
         final ListView listView = (ListView) findViewById(R.id.listView);
@@ -77,7 +78,7 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
         this.swipeRefreshLayout.setOnRefreshListener(this::onRequestAlerts);
 
         //TODO
-        //onRequestAlerts();
+        onRequestAlerts();
 
     }
 
@@ -95,7 +96,7 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
                         showDialog(R.string.upvote_sent, R.string.upvote_sent_successful);
                     else
                         Toast.makeText(UpvoteAlertActivity.this, R.string.alert_sent_error, Toast.LENGTH_LONG).show();
-                    
+
                 }).execute();
     }
 
@@ -104,9 +105,50 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
      */
     private void onRequestAlerts() {
 
-        System.out.println("[UpvoteAlertActivity] onRequestAlerts");
+        final String latitudeString = getLatitude();
+        //TODO final double latitude = convertCoordinate(latitudeString);
+        final double latitude = 44.420826;
+        if (latitude != ERROR_VALUE) {
+            final String longitudeString = getLongitude();
+            //TODO final double longitude = convertCoordinate(longitudeString);
+            final double longitude = 11.912387;
+            if (longitude != ERROR_VALUE) {
 
+                final Message message = new RequestAlertsMessageImpl(latitude, longitude).build();
+
+                setDoingRequest();
+                showProgressDialog();
+
+                new RabbitAsyncTask(QueueType.ALERTS_QUEUE.getQueueName(),
+                        message,
+                        new AbstractResponse() {
+
+                            @Override
+                            public void onSuccessfulRequest(final String response) {
+                                UpvoteAlertActivity.this.swipeRefreshLayout.setRefreshing(false);
+                                dismissProgressDialog();
+                                setDoingRequest();
+                                if (MessageUtils.getMessageNameByJson(response) == MessageType.ALERTS_MESSAGE) {
+                                    final AlertsMessageImpl alertsMessage = GsonUtils.fromGson(response, AlertsMessageImpl.class);
+                                    final List<AlertImpl> list = alertsMessage.getAlerts();
+                                    if (list.size() == 0)
+                                        Toast.makeText(UpvoteAlertActivity.this, R.string.alerts_missing, Toast.LENGTH_LONG).show();
+                                    UpvoteAlertActivity.this.alertAdapter.clear();
+                                    UpvoteAlertActivity.this.alertAdapter.addAll(list);
+                                    UpvoteAlertActivity.this.alertAdapter.notifyDataSetChanged();
+                                }
+                            }
+
+                            @Override
+                            public void onErrorRequest(final String errorMessage) {
+                                dismissProgressDialog();
+                                setDoingRequest();
+                                showDialog(R.string.last_alerts, R.string.alerts_error);
+                            }
+
+                        }).execute();
+            }
+        }
 
     }
-
 }
