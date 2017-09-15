@@ -2,8 +2,7 @@ package it.unibo.drescue.controller
 
 import java.util.concurrent.{ExecutorService, Executors, Future}
 
-import it.unibo.drescue.communication.messages.Message
-import it.unibo.drescue.communication.messages.requests.LoginMessageImpl
+import it.unibo.drescue.communication.messages._
 import it.unibo.drescue.connection.{RabbitMQImpl, RequestHandler}
 import it.unibo.drescue.model.ObjectModel
 
@@ -18,7 +17,6 @@ object LoginControllerImpl {
 
 class LoginControllerImpl(private var model: List[ObjectModel],
                           private var mainController: MainControllerImpl,
-                          //TODO channel
                           val channel: RabbitMQImpl
                          ) {
 
@@ -27,21 +25,24 @@ class LoginControllerImpl(private var model: List[ObjectModel],
   def loginPress(username: String, password: String) = {
     println(username)
     println(password)
-    //TODO start info dialog without buttons
-    //TODO do request with thread and wait future
-    val message: Message = new LoginMessageImpl("", "") //TODO
+    //TODO start info dialog (LOADING) without buttons
+    val message: Message = CpLoginMessageImpl(username, password)
     val task: Future[String] = pool.submit(new RequestHandler(channel, message))
     val response: String = task.get()
-    println(response)
-    //TODO when future returns
-    // OK -> stop dialog and change view
-    //ERROR -> change dialog
+    println("Login controller: " + response)
+    val messageName: MessageType = MessageUtils.getMessageNameByJson(response)
+
+    messageName match {
+
+      case MessageType.RESCUE_TEAMS_MESSAGE => //TODO success
+        //TODO stop dialog and change view
+        //TODO set rescue teams list in main controller (with getter and setter)
+        //TODO set cpID in main controller
+        mainController.changeView("Home")
+      case MessageType.ERROR_MESSAGE => //TODO show ERROR -> change dialog
+    }
 
     pool.shutdown() //TODO verify
-  }
-
-  def onResponse() = {
-    mainController.changeView("Home")
   }
 
   def emptyLogin() = {
