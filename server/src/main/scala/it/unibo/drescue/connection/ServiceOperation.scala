@@ -145,7 +145,7 @@ case class MobileuserService() extends ServiceResponse {
           .createUserImpl()
         try {
           val userDao = (dbConnection getDAO DBConnection.Table.USER).asInstanceOf[UserDao]
-          val userSelected = (userDao login user).asInstanceOf[User]
+          val userSelected = (userDao login user).asInstanceOf[UserImpl]
           val eventTypeDao = (dbConnection getDAO DBConnection.Table.EVENT_TYPE).asInstanceOf[EventTypeDao]
           val eventTypeList = eventTypeDao.findAll
           Option(new ResponseLoginMessageImpl(userSelected, eventTypeList))

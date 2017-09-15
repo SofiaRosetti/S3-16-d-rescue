@@ -1,8 +1,8 @@
 package it.unibo.drescue.communication.messages.response;
 
 import it.unibo.drescue.communication.builder.MessageBuilder;
-import it.unibo.drescue.model.EventType;
-import it.unibo.drescue.model.User;
+import it.unibo.drescue.model.EventTypeImpl;
+import it.unibo.drescue.model.UserImpl;
 
 import java.util.List;
 
@@ -14,11 +14,11 @@ public interface ResponseLoginMessage extends MessageBuilder {
     /**
      * @return user data
      */
-    User getUser();
+    UserImpl getUser();
 
     /**
      * @return list of events type
      */
-    List<EventType> getEventsType();
+    List<EventTypeImpl> getEventsType();
 
 }

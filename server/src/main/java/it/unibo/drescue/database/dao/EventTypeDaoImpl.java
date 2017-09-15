@@ -65,14 +65,14 @@ public class EventTypeDaoImpl extends GenericDaoAbstract implements EventTypeDao
     }
 
     @Override
-    public List<EventType> findAll() throws DBQueryException {
-        final List<EventType> eventTypeList = new ArrayList<>();
+    public List<EventTypeImpl> findAll() throws DBQueryException {
+        final List<EventTypeImpl> eventTypeList = new ArrayList<>();
         try {
             final String query = this.getQuery(QueryType.FIND_ALL);
             final PreparedStatement statement = this.connection.prepareStatement(query);
             final ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                final EventType eventType = (EventType) mapRecordToModel(resultSet);
+                final EventTypeImpl eventType = (EventTypeImpl) mapRecordToModel(resultSet);
                 eventTypeList.add(eventType);
             }
             resultSet.close();
