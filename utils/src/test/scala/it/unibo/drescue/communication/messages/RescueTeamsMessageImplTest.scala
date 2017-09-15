@@ -1,6 +1,8 @@
 package it.unibo.drescue.communication.messages
 
-import it.unibo.drescue.model.RescueTeamImplBuilder
+import java.util
+
+import it.unibo.drescue.model.{RescueTeam, RescueTeamImplBuilder}
 import org.scalatest.FunSuite
 
 object RescueTeamsMessageImplTest {
@@ -12,20 +14,21 @@ object RescueTeamsMessageImplTest {
     .setPhoneNumber("3657778845")
     .setRescueTeamID("RTID")
     .createRescueTeamImpl()
-
-  private val RTList = RT :: Nil
 }
 
 class RescueTeamsMessageImplTest extends FunSuite {
 
-  val RescueTeamsMessage = RescueTeamsMessageImpl(RescueTeamsMessageImplTest.RTList)
+  var RTList: java.util.List[RescueTeam] = new util.ArrayList[RescueTeam]() //TODO refactor
+  RTList add RescueTeamsMessageImplTest.RT
+
+  var RescueTeamsMessage = RescueTeamsMessageImpl(RTList)
 
   test("Check MessageType") {
     assert(RescueTeamsMessage.getMessageType == MessageType.RESCUE_TEAMS_MESSAGE.getMessageType)
   }
 
   test("Check Message Fields") {
-    assert(RescueTeamsMessage.rescueTeamsList == RescueTeamsMessageImplTest.RTList)
+    assert(RescueTeamsMessage.rescueTeamsList == RTList)
   }
 
 }
