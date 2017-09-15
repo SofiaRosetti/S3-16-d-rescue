@@ -14,8 +14,7 @@ public abstract class AbstractResponse implements RequestDelegate {
     @Override
     public void onReceivingResponse(final String response) {
         if (StringUtils.isAValidString(response)) {
-            final String messageType = StringUtils.getMessageType(response);
-            final MessageType messageName = MessageUtils.getMessageNameByType(messageType);
+            final MessageType messageName = MessageUtils.getMessageNameByJson(response);
             switch (messageName) {
                 case ERROR_MESSAGE:
                     final ErrorMessageImpl errorMessage = GsonUtils.fromGson(response, ErrorMessageImpl.class);
