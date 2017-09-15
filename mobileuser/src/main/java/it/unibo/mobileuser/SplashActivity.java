@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import it.unibo.mobileuser.authentication.LoginActivity;
 import it.unibo.mobileuser.authentication.SignUpActivity;
+import it.unibo.mobileuser.utils.PreferencesKey;
 import it.unibo.mobileuser.utils.Utils;
 
 /**
@@ -68,7 +69,7 @@ public class SplashActivity extends ToolbarActivity {
      * Checks if a user is already logged when opening the app.
      */
     private void checkIfUserIsLogged() {
-        final String userID = Utils.getUserIDfromSharedPreferences(getApplicationContext());
+        final String userID = Utils.getUserDataFromSharedPreferences(getApplicationContext(), PreferencesKey.USER_ID);
         if (userID.length() != 0) {
             goToMainActivity();
             finish();

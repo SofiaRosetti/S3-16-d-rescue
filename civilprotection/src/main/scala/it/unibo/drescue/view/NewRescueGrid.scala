@@ -14,59 +14,59 @@ import scalafx.scene.text.Font
 class NewRescueGrid(private var newRescueController: NewRescueControllerImpl) {
 
   val _grid = new GridPane() {
-    hgap = gap
-    vgap = gap
-    padding = Insets(insets100)
+    hgap = Gap
+    vgap = Gap
+    padding = Insets(Insets100)
 
-    val defaultFont = new Font(font25)
-    val titleFont = new Font(font30)
+    val defaultFont = new Font(Font25)
+    val titleFont = new Font(Font30)
 
     val titleLabel = new Label() {
       text = "New rescue:"
       font = titleFont
-      padding = Insets(font20)
+      padding = Insets(Font20)
     }
     val titleBox = new HBox() {
       children = titleLabel
       alignment = Pos.Center
     }
-    add(titleBox, columnRow0, columnRow0)
-    GridPane.setConstraints(titleBox, columnRow0, columnRow0, columnRow3, columnRow1)
+    add(titleBox, ColumnRow0, ColumnRow0)
+    GridPane.setConstraints(titleBox, ColumnRow0, ColumnRow0, ColumnRow3, ColumnRow1)
 
     val recTeamLabel = new Label() {
       text = "Recommended team:"
       font = defaultFont
-      padding = Insets(insets10)
+      padding = Insets(Insets10)
     }
-    add(recTeamLabel, columnRow0, columnRow1)
+    add(recTeamLabel, ColumnRow0, ColumnRow1)
 
     val recTeam = new Label() {
       text = "Team X"
       font = defaultFont
     }
-    add(recTeam, columnRow2, columnRow1)
+    add(recTeam, ColumnRow2, ColumnRow1)
 
     val otherTeamLabel = new Label() {
       text = "Choose another team:"
       font = defaultFont
     }
-    add(otherTeamLabel, columnRow0, columnRow2)
+    add(otherTeamLabel, ColumnRow0, ColumnRow2)
 
     val choices = ObservableBuffer("Team X", "Team Y", "Team Z")
     val teamChoice = new ComboBox[String] {
-      maxWidth = widthHeight200
+      maxWidth = WidthHeight200
       editable = true
       items = choices
     }
     teamChoice.setStyle("-fx-font-size:25")
-    add(teamChoice, columnRow2, columnRow2)
+    add(teamChoice, ColumnRow2, ColumnRow2)
 
     val sendButton = new Button() {
       text = "Send"
       font = defaultFont
-      padding = Insets(insets5)
-      margin = Insets(insets30)
-      prefWidth = widthHeight150
+      padding = Insets(Insets5)
+      margin = Insets(Insets30)
+      prefWidth = WidthHeight150
       onMouseClicked = (event: MouseEvent) => {
         newRescueController.sendPress()
       }
@@ -74,20 +74,20 @@ class NewRescueGrid(private var newRescueController: NewRescueControllerImpl) {
     val cancelButton = new Button() {
       text = "Cancel"
       font = defaultFont
-      padding = Insets(insets5)
-      margin = Insets(insets30)
-      prefWidth = widthHeight150
+      padding = Insets(Insets5)
+      margin = Insets(Insets30)
+      prefWidth = WidthHeight150
       onMouseClicked = (event: MouseEvent) => {
         newRescueController.cancelPress()
       }
     }
     val buttonBox = new HBox() {
       alignment = Pos.Center
-      padding = Insets(insets30)
+      padding = Insets(Insets30)
       children.addAll(sendButton, cancelButton)
     }
-    add(buttonBox, columnRow0, columnRow3)
-    GridPane.setConstraints(buttonBox, columnRow0, columnRow3, columnRow3, columnRow1)
+    add(buttonBox, ColumnRow0, ColumnRow3)
+    GridPane.setConstraints(buttonBox, ColumnRow0, ColumnRow3, ColumnRow3, ColumnRow1)
   }
 
   def grid = _grid

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import static it.unibo.mobileuser.utils.Utils.getDrawableArrayByResources;
 import static it.unibo.mobileuser.utils.Utils.getStringArrayByResources;
 
-public class MainActivity extends /*ToolbarActivity*/GpsActivityImpl {
+public class MainActivity extends GpsActivityImpl {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {

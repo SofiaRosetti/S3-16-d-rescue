@@ -29,6 +29,7 @@
                         android:id="@+id/email_login"
                         android:hint="@string/email"
                         android:inputType="textEmailAddress"
+                        android:maxLength="30"
                         app:met_floatingLabel="highlight"
                         app:met_iconLeft="@drawable/ic_account_circle_white_48dp"/>
 
@@ -42,6 +43,7 @@
                         android:id="@+id/password_login"
                         android:hint="@string/password"
                         android:inputType="textPassword"
+                        android:maxLength="15"
                         app:met_floatingLabel="highlight"
                         app:met_iconLeft="@drawable/ic_vpn_key_white_48dp"/>
 

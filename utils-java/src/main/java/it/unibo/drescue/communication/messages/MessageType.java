@@ -15,13 +15,17 @@ public enum MessageType {
     NEW_ALERT_MESSAGE("new_alert_message"),
     UNKNOWN_MESSAGE(""),
     PROFILE_MESSAGE("profile_message"),
-    REQUEST_ALERTS_MESSAGE("request_alerts_message"),
+    REQUEST_MOBILE_ALERTS_MESSAGE("request_mobile_alerts_message"),
+    REQUEST_CP_ALERTS_MESSAGE("request_cp_alerts_message"),
     REQUEST_PROFILE_MESSAGE("request_profile_message"),
     REQUEST_UPVOTE_MESSAGE("request_upvote_message"),
     RESPONSE_LOGIN_MESSAGE("response_login_message"),
     SIGN_UP_MESSAGE("sign_up_message"),
     SUCCESSFUL_MESSAGE("successful_message"),
-    UPVOTE_MESSAGE("upvote_message");
+    FORWARD_MESSAGE("forward_message"),
+    OBJECT_MODEL_MESSAGE("object_model_message"),
+    CP_LOGIN_MESSAGE("cp_login_message"),
+    RESCUE_TEAMS_MESSAGE("rescue_teams_message");
 
     private final String messageType;
 

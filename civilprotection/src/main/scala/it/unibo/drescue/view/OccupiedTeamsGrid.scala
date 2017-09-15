@@ -14,37 +14,37 @@ import scalafx.scene.text.Font
 class OccupiedTeamsGrid(private var occupiedTeamsController: OccupiedTeamsControllerImpl) {
 
   val grid = new GridPane {
-    hgap = gap
-    vgap = gap
-    padding = Insets(insets100)
+    hgap = Gap
+    vgap = Gap
+    padding = Insets(Insets100)
 
-    val defaultFont = new Font(font25)
-    val titleFont = new Font(font30)
+    val defaultFont = new Font(Font25)
+    val titleFont = new Font(Font30)
 
     val titleLabel = new Label {
       text = "Occupied teams:"
       font = titleFont
-      padding = Insets(insets20)
+      padding = Insets(Insets20)
     }
     val titleBox = new HBox {
       children = titleLabel
       alignment = Pos.Center
     }
-    add(titleBox, columnRow0, columnRow0)
+    add(titleBox, ColumnRow0, ColumnRow0)
 
     val teamsList = new ListView[String] {
       items = ObservableBuffer("Rescue team 1", "Rescue team 2", "Rescue team 3")
-      prefHeight = widthHeight100
+      prefHeight = WidthHeight100
     }
     teamsList.selectionModel().setSelectionMode(SelectionMode.Multiple)
-    add(teamsList, columnRow0, columnRow1)
+    add(teamsList, ColumnRow0, ColumnRow1)
 
     val stopButton = new Button {
       text = "Stop rescue"
       font = defaultFont
-      padding = Insets(insets5)
-      margin = Insets(insets30)
-      prefWidth = widthHeight150
+      padding = Insets(Insets5)
+      margin = Insets(Insets30)
+      prefWidth = WidthHeight150
 
       onMouseClicked = (event: MouseEvent) => {
         occupiedTeamsController.stopRescuePress()
@@ -54,9 +54,9 @@ class OccupiedTeamsGrid(private var occupiedTeamsController: OccupiedTeamsContro
     val cancelButton = new Button {
       text = "Cancel"
       font = defaultFont
-      padding = Insets(insets5)
-      margin = Insets(insets30)
-      prefWidth = widthHeight150
+      padding = Insets(Insets5)
+      margin = Insets(Insets30)
+      prefWidth = WidthHeight150
 
       onMouseClicked = (event: MouseEvent) => {
         occupiedTeamsController.cancelPress()
@@ -64,10 +64,10 @@ class OccupiedTeamsGrid(private var occupiedTeamsController: OccupiedTeamsContro
     }
     val buttonBox = new HBox {
       alignment = Pos.Center
-      padding = Insets(insets30)
+      padding = Insets(Insets30)
       children.addAll(stopButton, cancelButton)
     }
-    add(buttonBox, columnRow0, columnRow3)
+    add(buttonBox, ColumnRow0, ColumnRow3)
   }
 
 }

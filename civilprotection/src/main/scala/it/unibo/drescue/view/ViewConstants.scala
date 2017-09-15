@@ -2,33 +2,34 @@ package it.unibo.drescue.view
 
 object ViewConstants {
 
-  val gap = 10
+  val Gap = 10
 
-  val insets5 = 5
-  val insets10 = 10
-  val insets20 = 20
-  val insets30 = 30
-  val insets50 = 50
-  val insets100 = 100
+  val Insets5 = 5
+  val Insets10 = 10
+  val Insets20 = 20
+  val Insets30 = 30
+  val Insets50 = 50
+  val Insets100 = 100
 
-  val font18 = 18
-  val font20 = 20
-  val font25 = 25
-  val font30 = 30
+  val Font18 = 18
+  val Font20 = 20
+  val Font25 = 25
+  val Font30 = 30
 
-  val columnRow0 = 0
-  val columnRow1 = 1
-  val columnRow2 = 2
-  val columnRow3 = 3
-  val columnRow4 = 4
-  val columnRow5 = 5
-  val columnRow6 = 6
+  val ColumnRow0 = 0
+  val ColumnRow1 = 1
+  val ColumnRow2 = 2
+  val ColumnRow3 = 3
+  val ColumnRow4 = 4
+  val ColumnRow5 = 5
+  val ColumnRow6 = 6
+  val ColumnRow7 = 7
 
-  val widthHeight60 = 60
-  val widthHeight100 = 100
-  val widthHeight150 = 150
-  val widthHeight200 = 200
-  val widthHeight250 = 250
-  val widthHeight300 = 300
-  val widthHeight400 = 400
+  val WidthHeight60 = 60
+  val WidthHeight100 = 100
+  val WidthHeight150 = 150
+  val WidthHeight200 = 200
+  val WidthHeight250 = 250
+  val WidthHeight300 = 300
+  val WidthHeight400 = 400
 }

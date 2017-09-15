@@ -15,7 +15,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
-                android:name=".MainActivity"
+                android:name=".SplashActivity"
                 android:configChanges="orientation"
                 android:screenOrientation="portrait">
             <intent-filter>
@@ -64,7 +64,7 @@
                 android:configChanges="orientation"
                 android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".SplashActivity"
+        <activity android:name=".MainActivity"
                   android:configChanges="orientation"
                   android:screenOrientation="portrait">
 

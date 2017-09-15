@@ -15,26 +15,11 @@ class MainControllerImpl(private var model: List[ObjectModel]) {
     view = viewValue
   }
 
-  def setupRabbitConnection(): Boolean = {
-    try {
-      connection = new RabbitMQConnectionImpl("localhost")
-      connection.openConnection()
-
-      loginChannel = new RabbitMQImpl(connection)
-
-    } catch {
-      case e: Exception => // TODO handle exception
-    } finally {
-      if (connection != null) {
-        connection.closeConnection()
-      }
-    }
-    true
-  }
-
   def changeView(nextView: String) = {
     view.changeView(nextView)
   }
 
   def _loginChannel: RabbitMQImpl = loginChannel
+
+  def _view: MainView = view
 }

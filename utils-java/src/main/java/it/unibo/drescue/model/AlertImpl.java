@@ -127,9 +127,11 @@ public class AlertImpl implements Alert {
         result.append("Alert:" + space);
         result.append(this.getTimestamp() + space);
         result.append(this.getEventName() + space);
-        result.append(this.getLatitude() + space);
-        result.append(this.getLongitude() + space);
-        result.append(this.getUpvotes() + space);
+        result.append("lat: " + this.getLatitude() + space);
+        result.append("long: " + this.getLongitude() + space);
+        result.append(this.getDistrictID() + space);
+        result.append("user: " + this.getUserID() + space);
+        result.append("upvotes: " + this.getUpvotes() + space);
 
         return result.toString();
     }

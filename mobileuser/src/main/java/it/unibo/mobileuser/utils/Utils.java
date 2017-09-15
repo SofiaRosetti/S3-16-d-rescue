@@ -6,12 +6,13 @@ import android.content.res.TypedArray;
 import android.preference.PreferenceManager;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
+import java.util.Collections;
+import java.util.Set;
+
 /**
  * Class with specific utils for mobileuser module.
  */
 public class Utils {
-
-    private static final String USER_ID = "userID";
 
     /**
      * Get MaterialEditText typed text.
@@ -46,25 +47,55 @@ public class Utils {
     }
 
     /**
-     * Gets logged user from shared preferences.
+     * Gets user data of the logged user from shared preferences.
      *
-     * @param context
-     * @return the userID of the user
+     * @param context the context of activity
+     * @param key     the name of preference to retrieve
+     * @return the preference value if it exists, otherwise empty string.
      */
-    public static String getUserIDfromSharedPreferences(final Context context) {
+    public static String getUserDataFromSharedPreferences(final Context context, final PreferencesKey key) {
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getString(USER_ID, "");
+        return sharedPreferences.getString(key.getKeyName(), "");
     }
 
     /**
-     * Sets the user who performed login into shared preferences.
+     * Gets data set of the logged user from shared preferences.
      *
-     * @param context
-     * @param userID
+     * @param context the context of activity
+     * @return the preferences value if they exist, otherwise empty set.
      */
-    public static void setUserIDinSharedPreferences(final Context context, final String userID) {
+    public static Set<String> getDataSetFromSharedPreferences(final Context context) {
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        sharedPreferences.edit().putString(USER_ID, userID).apply();
+        return sharedPreferences.getStringSet(PreferencesKey.EVENT_TYPE.getKeyName(), Collections.emptySet());
+    }
+
+    /**
+     * Sets the data who performed login into shared preferences.
+     *
+     * @param context  the context of activity
+     * @param key      the name of preference to insert
+     * @param valueSet the set of values for the preferences
+     */
+    public static void setDataInSharedPreferences(final Context context, final PreferencesKey key, final Set<String> valueSet) {
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        if (!valueSet.isEmpty()) {
+            if (key == PreferencesKey.EVENT_TYPE) {
+                sharedPreferences.edit().putStringSet(key.getKeyName(), valueSet).apply();
+            } else {
+                final String value = valueSet.iterator().next();
+                sharedPreferences.edit().putString(key.getKeyName(), value).apply();
+            }
+        }
+    }
+
+    /**
+     * Removes all value from the preferences.
+     *
+     * @param context the context of activity
+     */
+    public static void deleteSharedPreferences(final Context context) {
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPreferences.edit().clear().apply();
     }
 
 }
