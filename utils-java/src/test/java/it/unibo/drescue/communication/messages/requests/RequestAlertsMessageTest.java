@@ -5,7 +5,6 @@ import it.unibo.drescue.communication.messages.MessageType;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 public class RequestAlertsMessageTest {
@@ -20,7 +19,7 @@ public class RequestAlertsMessageTest {
     public void build() {
         final Message requestAlertsMessage = new RequestAlertsMessageImpl(LATITUDE, LONGITUDE).build();
 
-        if (requestAlertsMessage.getMessageType().equals(MessageType.REQUEST_ALERTS_MESSAGE.getMessageType())){
+        if (requestAlertsMessage.getMessageType().equals(MessageType.REQUEST_MOBILE_ALERTS_MESSAGE.getMessageType())) {
             this.requestAlertsMessageImpl = (RequestAlertsMessageImpl) requestAlertsMessage;
         }
     }

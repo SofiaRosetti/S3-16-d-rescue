@@ -33,5 +33,5 @@ object Main extends JFXApp {
 
   controller.addView(view)
   view setStage()
-  stage = view.stage_
+  stage = view._stage
 }

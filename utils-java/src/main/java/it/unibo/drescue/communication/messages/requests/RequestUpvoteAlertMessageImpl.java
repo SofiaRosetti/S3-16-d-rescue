@@ -1,7 +1,6 @@
 package it.unibo.drescue.communication.messages.requests;
 
 import it.unibo.drescue.communication.messages.AbstractMessage;
-import it.unibo.drescue.communication.messages.Message;
 import it.unibo.drescue.communication.messages.MessageType;
 
 /**
@@ -9,19 +8,12 @@ import it.unibo.drescue.communication.messages.MessageType;
  */
 public class RequestUpvoteAlertMessageImpl extends AbstractMessage implements RequestUpvoteAlertMessage {
 
-    private final int userID;
-    private final int alertID;
+    private int userID;
+    private int alertID;
+    private String districtID;
 
-    /**
-     * Creates a message containing the user and alert identifier for which upvote is requested.
-     *
-     * @param userID  user identifier
-     * @param alertID alert identifier
-     */
-    public RequestUpvoteAlertMessageImpl(final int userID, final int alertID) {
+    public RequestUpvoteAlertMessageImpl() {
         super(MessageType.REQUEST_UPVOTE_MESSAGE);
-        this.userID = userID;
-        this.alertID = alertID;
     }
 
     @Override
@@ -30,12 +22,27 @@ public class RequestUpvoteAlertMessageImpl extends AbstractMessage implements Re
     }
 
     @Override
+    public void setUserID(final int userID) {
+        this.userID = userID;
+    }
+
+    @Override
     public int getAlertID() {
         return this.alertID;
     }
 
     @Override
-    public Message build() {
-        return this;
+    public void setAlertID(final int alertID) {
+        this.alertID = alertID;
+    }
+
+    @Override
+    public String getDistrictID() {
+        return this.districtID;
+    }
+
+    @Override
+    public void setDistrictID(final String districtID) {
+        this.districtID = districtID;
     }
 }

@@ -41,4 +41,18 @@ public class DistrictImpl implements District {
     public void setPopulation(final int population) {
         this.population = population;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder result = new StringBuilder();
+        final String newLine = System.getProperty("line.separator");
+
+        result.append("District: {" + newLine);
+        result.append(" District ID: " + this.getDistrictID() + newLine);
+        result.append(" District long name: " + this.getDistrictLongName() + newLine);
+        result.append(" Population: " + this.getPopulation() + newLine);
+        result.append("}");
+
+        return result.toString();
+    }
 }

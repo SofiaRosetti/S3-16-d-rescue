@@ -15,8 +15,8 @@ public class ChangePasswordMessageBuilderImpl implements ChangePasswordMessageBu
     }
 
     @Override
-    public ChangePasswordMessageBuilder setUserID(final int userID) {
-        this.message.setUserID(userID);
+    public ChangePasswordMessageBuilder setUserEmail(final String userEmail) {
+        this.message.setUserEmail(userEmail);
         return this;
     }
 
