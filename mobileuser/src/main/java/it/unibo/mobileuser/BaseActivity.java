@@ -45,6 +45,7 @@ public class BaseActivity extends AppCompatActivity {
         final View dialogView = inflater.inflate(R.layout.progress_bar, null);
         this.dialog = new AlertDialog.Builder(this)
                 .setView(dialogView)
+                .setCancelable(false)
                 .create();
         this.dialog.show();
     }
