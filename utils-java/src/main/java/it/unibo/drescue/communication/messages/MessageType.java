@@ -21,7 +21,9 @@ public enum MessageType {
     SIGN_UP_MESSAGE("sign_up_message"),
     SUCCESSFUL_MESSAGE("successful_message"),
     FORWARD_MESSAGE("forward_message"),
-    OBJECT_MODEL_MESSAGE("object_model_message");
+    OBJECT_MODEL_MESSAGE("object_model_message"),
+    FAKE_RPC_MESSAGE("fake_rpc_message"),
+    FAKE_FORWARD_MESSAGE("fake_forward_message");
 
     private final String messageType;
 
