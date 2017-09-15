@@ -29,6 +29,7 @@
                         android:id="@+id/name_sign_up"
                         android:hint="@string/name"
                         android:inputType="text"
+                        android:maxLength="30"
                         app:met_floatingLabel="highlight"
                         app:met_iconLeft="@drawable/ic_account_circle_white_48dp"/>
 
@@ -42,6 +43,7 @@
                         android:id="@+id/surname_sign_up"
                         android:hint="@string/surname"
                         android:inputType="text"
+                        android:maxLength="30"
                         app:met_floatingLabel="highlight"
                         app:met_iconLeft="@drawable/ic_account_circle_white_48dp"/>
 
@@ -55,6 +57,7 @@
                         android:id="@+id/email_sign_up"
                         android:hint="@string/email"
                         android:inputType="textEmailAddress"
+                        android:maxLength="30"
                         app:met_floatingLabel="highlight"
                         app:met_iconLeft="@drawable/ic_mail_outline_white_48dp"/>
 
@@ -68,6 +71,7 @@
                         android:id="@+id/phone_sign_up"
                         android:hint="@string/phone"
                         android:inputType="phone"
+                        android:maxLength="20"
                         app:met_floatingLabel="highlight"
                         app:met_iconLeft="@drawable/ic_phone_white_48dp"/>
 
@@ -81,6 +85,7 @@
                         android:id="@+id/password_sign_up"
                         android:hint="@string/password"
                         android:inputType="textPassword"
+                        android:maxLength="15"
                         app:met_floatingLabel="highlight"
                         app:met_iconLeft="@drawable/ic_vpn_key_white_48dp"/>
 
@@ -94,6 +99,7 @@
                         android:id="@+id/confirm_password_sign_up"
                         android:hint="@string/confirm_password"
                         android:inputType="textPassword"
+                        android:maxLength="15"
                         app:met_floatingLabel="highlight"
                         app:met_iconLeft="@drawable/ic_vpn_key_white_48dp"/>
 

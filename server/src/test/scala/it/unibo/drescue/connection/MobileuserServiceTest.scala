@@ -12,23 +12,23 @@ import org.scalatest.FunSuite
 
 class MobileuserServiceTest extends FunSuite {
 
-  private val correctEmail: String = "j.doe@test.com"
-  private val correctPassword: String = "test"
-  private val incorrectEmail: String = "john.doe@test.com"
-  private val incorrectPassword: String = "admin"
-  private val userName: String = "John"
-  private val userPhoneNumber: String = "3333333333"
-  private val userSurname: String = "Doe"
-  private val userTest: User = new UserImplBuilder()
-    .setName(userName)
-    .setSurname(userSurname)
-    .setEmail(correctEmail)
-    .setPassword(correctPassword)
-    .setPhoneNumber(userPhoneNumber)
+  private val CorrectEmail: String = "j.doe@test.com"
+  private val CorrectPassword: String = "test"
+  private val IncorrectEmail: String = "john.doe@test.com"
+  private val IncorrectPassword: String = "admin"
+  private val UserName: String = "John"
+  private val UserPhoneNumber: String = "3333333333"
+  private val UserSurname: String = "Doe"
+  private val UserTest: User = new UserImplBuilder()
+    .setName(UserName)
+    .setSurname(UserSurname)
+    .setEmail(CorrectEmail)
+    .setPassword(CorrectPassword)
+    .setPhoneNumber(UserPhoneNumber)
     .createUserImpl()
 
 
-  var dBConnection: DBConnectionImpl = _
+  private var dBConnection: DBConnectionImpl = _
 
   def startCommunicationAndInsertUser(): UserDao = {
     startCommunication()
@@ -41,7 +41,7 @@ class MobileuserServiceTest extends FunSuite {
 
   def insertUserIntoDb(): UserDao = {
     val userDao = (dBConnection getDAO DBConnection.Table.USER).asInstanceOf[UserDao]
-    userDao insert userTest
+    userDao insert UserTest
     userDao
   }
 
@@ -51,17 +51,17 @@ class MobileuserServiceTest extends FunSuite {
   }
 
   def endCommunication(userDao: UserDao): Unit = {
-    userDao delete userTest
+    userDao delete UserTest
     dBConnection closeConnection()
   }
 
   def signUpCommunication(): Option[Message] = {
     val messageSignUp: Message = new SignUpMessageBuilderImpl()
-      .setName(userName)
-      .setSurname(userSurname)
-      .setEmail(correctEmail)
-      .setPassword(correctPassword)
-      .setPhoneNumber(userPhoneNumber)
+      .setName(UserName)
+      .setSurname(UserSurname)
+      .setEmail(CorrectEmail)
+      .setPassword(CorrectPassword)
+      .setPhoneNumber(UserPhoneNumber)
       .build()
     mobileuserCommunication(messageSignUp)
   }
@@ -79,7 +79,7 @@ class MobileuserServiceTest extends FunSuite {
 
   def changePasswordCommunication(oldPassword: String, newPassword: String): Option[Message] = {
     val changePasswordMessage: Message = new ChangePasswordMessageBuilderImpl()
-      .setUserEmail(correctEmail)
+      .setUserEmail(CorrectEmail)
       .setOldPassword(oldPassword)
       .setNewPassword(newPassword)
       .build()
@@ -108,10 +108,10 @@ class MobileuserServiceTest extends FunSuite {
     endCommunication(userDao)
   }
 
-  test("User with email '" + correctEmail + "' and password '"
-    + correctPassword + "' should enter correct data for login") {
+  test("User with email '" + CorrectEmail + "' and password '"
+    + CorrectPassword + "' should enter correct data for login") {
     val userDao: UserDao = startCommunicationAndInsertUser()
-    val responseMessage: Option[Message] = loginCommunication(correctEmail, correctPassword)
+    val responseMessage: Option[Message] = loginCommunication(CorrectEmail, CorrectPassword)
     responseMessage match {
       case Some(responseMessage) =>
         assert(responseMessage.getMessageType == MessageType.RESPONSE_LOGIN_MESSAGE.getMessageType)
@@ -120,10 +120,10 @@ class MobileuserServiceTest extends FunSuite {
     endCommunication(userDao)
   }
 
-  test("User with email '" + correctEmail + "' and password '"
-    + incorrectPassword + "' should not enter correct password for login") {
+  test("User with email '" + CorrectEmail + "' and password '"
+    + IncorrectPassword + "' should not enter correct password for login") {
     val userDao: UserDao = startCommunicationAndInsertUser()
-    val responseMessage: Option[Message] = loginCommunication(correctEmail, incorrectPassword)
+    val responseMessage: Option[Message] = loginCommunication(CorrectEmail, IncorrectPassword)
     responseMessage match {
       case Some(responseMessage) =>
         assert(responseMessage.getMessageType == MessageType.ERROR_MESSAGE.getMessageType)
@@ -132,10 +132,10 @@ class MobileuserServiceTest extends FunSuite {
     endCommunication(userDao)
   }
 
-  test("User with email '" + incorrectEmail + "' and password '"
-    + correctPassword + "' should not enter correct email for login") {
+  test("User with email '" + IncorrectEmail + "' and password '"
+    + CorrectPassword + "' should not enter correct email for login") {
     val userDao: UserDao = startCommunicationAndInsertUser()
-    val responseMessage: Option[Message] = loginCommunication(incorrectEmail, correctPassword)
+    val responseMessage: Option[Message] = loginCommunication(IncorrectEmail, CorrectPassword)
     responseMessage match {
       case Some(responseMessage) =>
         assert(responseMessage.getMessageType == MessageType.ERROR_MESSAGE.getMessageType)
@@ -146,7 +146,7 @@ class MobileuserServiceTest extends FunSuite {
 
   test("User should be able to change password") {
     val userDao: UserDao = startCommunicationAndInsertUser()
-    val responseMessage: Option[Message] = changePasswordCommunication(correctPassword, incorrectPassword)
+    val responseMessage: Option[Message] = changePasswordCommunication(CorrectPassword, IncorrectPassword)
     responseMessage match {
       case Some(responseMessage) =>
         assert(responseMessage.getMessageType == MessageType.SUCCESSFUL_MESSAGE.getMessageType)
@@ -157,7 +157,7 @@ class MobileuserServiceTest extends FunSuite {
 
   test("User should not be able to change password for incorrect old password") {
     val userDao: UserDao = startCommunicationAndInsertUser()
-    val responseMessage: Option[Message] = changePasswordCommunication(incorrectPassword, correctPassword)
+    val responseMessage: Option[Message] = changePasswordCommunication(IncorrectPassword, CorrectPassword)
     responseMessage match {
       case Some(responseMessage) =>
         assert(responseMessage.getMessageType == MessageType.ERROR_MESSAGE.getMessageType)
@@ -168,7 +168,7 @@ class MobileuserServiceTest extends FunSuite {
 
   test("User should not be able to change password for incorrect new password") {
     val userDao: UserDao = startCommunicationAndInsertUser()
-    val responseMessage: Option[Message] = changePasswordCommunication(correctPassword, correctPassword)
+    val responseMessage: Option[Message] = changePasswordCommunication(CorrectPassword, CorrectPassword)
     responseMessage match {
       case Some(responseMessage) =>
         assert(responseMessage.getMessageType == MessageType.ERROR_MESSAGE.getMessageType)
@@ -179,7 +179,7 @@ class MobileuserServiceTest extends FunSuite {
 
   test("User should get his profile") {
     val userDao: UserDao = startCommunicationAndInsertUser()
-    val profileMessage: Message = new RequestProfileMessageImpl(correctEmail)
+    val profileMessage: Message = new RequestProfileMessageImpl(CorrectEmail)
     val responseMessage: Option[Message] = mobileuserCommunication(profileMessage)
     responseMessage match {
       case Some(responseMessage) =>
@@ -191,7 +191,7 @@ class MobileuserServiceTest extends FunSuite {
 
   test("Profile request with wrong email should produce DBQueryException") {
     val userDao: UserDao = startCommunicationAndInsertUser()
-    val profileMessage: Message = new RequestProfileMessageImpl(incorrectEmail)
+    val profileMessage: Message = new RequestProfileMessageImpl(IncorrectEmail)
     assertThrows[DBQueryException] {
       mobileuserCommunication(profileMessage)
     }
