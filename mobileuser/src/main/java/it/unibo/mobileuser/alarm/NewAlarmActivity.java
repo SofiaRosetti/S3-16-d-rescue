@@ -21,8 +21,6 @@ import java.util.Set;
  */
 public class NewAlarmActivity extends GpsActivityImpl {
 
-    private static final double ERROR_VALUE = -2000;
-
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,23 +73,6 @@ public class NewAlarmActivity extends GpsActivityImpl {
                 }
             }
         });
-    }
-
-    /**
-     * Converts the coordinate from string to double. If the coordinate is not
-     * a double value, it shows a message.
-     *
-     * @param value the coordinate to convert
-     * @return the converted coordinate
-     */
-    private double convertCoordinate(final String value) {
-        double convertedValue = ERROR_VALUE;
-        try {
-            convertedValue = Double.parseDouble(value);
-        } catch (final NumberFormatException ex) {
-            showDialog(R.string.attention, R.string.gps_unavailable);
-        }
-        return convertedValue;
     }
 
     /**
