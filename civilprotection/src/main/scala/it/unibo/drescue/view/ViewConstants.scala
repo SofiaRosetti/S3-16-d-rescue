@@ -23,6 +23,7 @@ object ViewConstants {
   val ColumnRow4 = 4
   val ColumnRow5 = 5
   val ColumnRow6 = 6
+  val ColumnRow7 = 7
 
   val WidthHeight60 = 60
   val WidthHeight100 = 100
