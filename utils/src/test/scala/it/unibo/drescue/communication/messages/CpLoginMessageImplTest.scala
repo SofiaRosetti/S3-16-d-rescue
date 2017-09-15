@@ -9,15 +9,15 @@ object CpLoginMessageImplTest {
 
 class CpLoginMessageImplTest extends FunSuite {
 
-  val cpLoginMessage = CpLoginMessageImpl(CpLoginMessageImplTest.CpID, CpLoginMessageImplTest.CpPassword)
+  val CpLoginMessage = CpLoginMessageImpl(CpLoginMessageImplTest.CpID, CpLoginMessageImplTest.CpPassword)
 
   test("Check MessageType") {
-    assert(cpLoginMessage.getMessageType == MessageType.CP_LOGIN_MESSAGE.getMessageType)
+    assert(CpLoginMessage.getMessageType == MessageType.CP_LOGIN_MESSAGE.getMessageType)
   }
 
   test("Check Message Fields") {
-    assert(cpLoginMessage.cpID == CpLoginMessageImplTest.CpID
-      && cpLoginMessage.password == CpLoginMessageImplTest.CpPassword)
+    assert(CpLoginMessage.cpID == CpLoginMessageImplTest.CpID
+      && CpLoginMessage.password == CpLoginMessageImplTest.CpPassword)
   }
 
 }
