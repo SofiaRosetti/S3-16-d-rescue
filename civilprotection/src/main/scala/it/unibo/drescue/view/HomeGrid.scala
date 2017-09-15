@@ -15,131 +15,134 @@ class HomeGrid(private var homeController: HomeControllerImpl) {
 
   val _grid = new GridPane() {
 
-    hgap = gap
-    vgap = gap
-    padding = Insets(insets50)
+    hgap = Gap
+    vgap = Gap
+    padding = Insets(Insets50)
 
-    val defaultFont = new Font(font20)
-    val titleFont = new Font(font30)
-    val checkBoxFont = new Font(font18)
-    val buttonFont = new Font(font25)
+    val defaultFont = new Font(Font20)
+    val titleFont = new Font(Font30)
+    val checkBoxFont = new Font(Font18)
+    val buttonFont = new Font(Font25)
 
     val lastAlarmsLabel = new Label() {
       text = "LAST ALARMS:"
       font = titleFont
-      padding = Insets(insets20)
+      padding = Insets(Insets20)
     }
     val titleBox = new HBox() {
       children = lastAlarmsLabel
       alignment = Pos.Center
     }
-    add(titleBox, columnRow0, columnRow0)
-    GridPane.setConstraints(titleBox, columnRow0, columnRow0, columnRow2, columnRow1)
+    add(titleBox, ColumnRow0, ColumnRow0)
+    GridPane.setConstraints(titleBox, ColumnRow0, ColumnRow0, ColumnRow2, ColumnRow1)
 
     val map = new Label {
       text = "MAP"
-      prefWidth = widthHeight300
-      prefHeight = widthHeight300
+      prefWidth = WidthHeight300
+      prefHeight = WidthHeight300
     }
-    add(map, columnRow0, columnRow1)
-    GridPane.setConstraints(map, columnRow0, columnRow1, columnRow1, columnRow3)
+    add(map, ColumnRow0, ColumnRow1)
+    GridPane.setConstraints(map, ColumnRow0, ColumnRow1, ColumnRow1, ColumnRow3)
 
     val filterLabel = new Label() {
       text = "Filter by type:"
       font = defaultFont
-      padding = Insets(insets20)
+      padding = Insets(Insets20)
     }
     val filterBox = new HBox() {
       children = filterLabel
       alignment = Pos.Center
     }
-    add(filterBox, columnRow1, columnRow1)
+    add(filterBox, ColumnRow1, ColumnRow1)
 
     val fireCheckBox = new CheckBox() {
       text = "Fire"
       font = checkBoxFont
-      padding = Insets(insets20)
+      padding = Insets(Insets20)
     }
     val earthquakeCheckBox = new CheckBox() {
       text = "Earthquake"
       font = checkBoxFont
-      padding = Insets(insets20)
+      padding = Insets(Insets20)
     }
     val landslideCheckBox = new CheckBox() {
       text = "Landslide"
       font = checkBoxFont
-      padding = Insets(insets20)
+      padding = Insets(Insets20)
     }
     val avalancheCheckBox = new CheckBox() {
       text = "Avalanche"
       font = checkBoxFont
-      padding = Insets(insets20)
+      padding = Insets(Insets20)
     }
     val floodingCheckBox = new CheckBox() {
       text = "Flooding"
       font = checkBoxFont
-      padding = Insets(insets20)
+      padding = Insets(Insets20)
     }
     val otherCheckBox = new CheckBox() {
       text = "Other"
       font = checkBoxFont
-      padding = Insets(insets20)
+      padding = Insets(Insets20)
     }
     val filterButton = new Button() {
       text = "OK"
-      font = Font.font(defaultFont.getFamily, FontWeight.Bold, font20)
-      margin = Insets(insets10)
-      prefWidth = widthHeight60
+      font = Font.font(defaultFont.getFamily, FontWeight.Bold, Font20)
+      margin = Insets(Insets10)
+      prefWidth = WidthHeight60
     }
     val checkBoxList = new HBox() {
       children.addAll(fireCheckBox, earthquakeCheckBox, landslideCheckBox, avalancheCheckBox, floodingCheckBox, otherCheckBox, filterButton)
       alignment = Pos.Center
     }
-    add(checkBoxList, columnRow1, columnRow2)
+    add(checkBoxList, ColumnRow1, ColumnRow2)
 
     val alarmsList = new ListView[String]() {
-      items = ObservableBuffer("Alarm 1", "Alarm 2", "Alarm 3", "Alarm 4", "Alarm 5", "Alarm 6", "Alarm 7")
-      prefHeight = widthHeight100
-      prefWidth = widthHeight400
+      var buffer = homeController._obsBuffer
+      buffer += "first alert"
+      items = buffer
+      prefHeight = WidthHeight100
+      prefWidth = WidthHeight400
     }
     val alarmsBox = new HBox() {
       children = alarmsList
       alignment = Pos.Center
     }
-    add(alarmsBox, columnRow1, columnRow3)
+    add(alarmsBox, ColumnRow1, ColumnRow3)
 
     val liveRescuesLabel = new Label() {
       text = "Live rescues:"
       font = titleFont
-      padding = Insets(insets20)
+      padding = Insets(Insets20)
     }
     val rescuesBox = new HBox() {
       children = liveRescuesLabel
       alignment = Pos.Center
     }
-    add(rescuesBox, columnRow0, columnRow4)
+    add(rescuesBox, ColumnRow0, ColumnRow4)
 
     val rescuesList = new ListView[String] {
       items = ObservableBuffer("Rescue 1", "Rescue 2", "Rescue 3", "Rescue 4", "Rescue 5")
-      prefHeight = widthHeight100
-      prefWidth = widthHeight400
+      prefHeight = WidthHeight100
+      prefWidth = WidthHeight400
     }
-    add(rescuesList, columnRow0, columnRow5)
+    add(rescuesList, ColumnRow0, ColumnRow5)
 
     val newRescueButton = new Button() {
       text = "New rescue"
       font = buttonFont
-      margin = Insets(insets30)
-      prefWidth = widthHeight250
+      margin = Insets(Insets30)
+      prefWidth = WidthHeight250
       onMouseClicked = (event: MouseEvent) => {
         homeController.newRescuePress()
+        //homeController.refreshAlertsList()
       }
     }
     val newTeamButton = new Button() {
       text = "New team"
       font = buttonFont
-      margin = Insets(insets30)
-      prefWidth = widthHeight250
+      margin = Insets(Insets30)
+      prefWidth = WidthHeight250
       onMouseClicked = (event: MouseEvent) => {
         homeController.newTeamPress()
       }
@@ -147,18 +150,18 @@ class HomeGrid(private var homeController: HomeControllerImpl) {
     val occupiedTeamsButton = new Button() {
       text = "Occupied teams"
       font = buttonFont
-      margin = Insets(insets30)
-      prefWidth = widthHeight250
+      margin = Insets(Insets30)
+      prefWidth = WidthHeight250
       onMouseClicked = (event: MouseEvent) => {
         homeController.occupiedTeamsPress()
       }
     }
     val buttonBox = new HBox {
       alignment = Pos.Center
-      padding = Insets(insets30)
+      padding = Insets(Insets30)
       children.addAll(newRescueButton, newTeamButton, occupiedTeamsButton)
     }
-    add(buttonBox, columnRow1, columnRow5)
+    add(buttonBox, ColumnRow1, ColumnRow5)
   }
 
   def grid = _grid

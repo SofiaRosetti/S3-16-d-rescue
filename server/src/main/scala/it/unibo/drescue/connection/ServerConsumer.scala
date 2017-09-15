@@ -31,19 +31,23 @@ case class ServerConsumer(private val rabbitMQ: RabbitMQ,
     import it.unibo.drescue.database.exceptions._
     import it.unibo.drescue.utils.GeocodingException
 
-    var response: Message = null
+    var response: Option[Message] = None
     try {
       response = serviceOperation.accessDB(dbConnection, message)
     } catch {
       case conn: DBConnectionException => println("[DBConnectionException] on " + message)
       case notFound: DBNotFoundRecordException => println("[DBNotFoundRecordException] on " + message)
       case query: DBQueryException => println("[DBQueryException] on " + message)
+      case duplicated: DBDuplicatedRecordException => println("[DBDuplicatedRecordException] on " + message)
       case geocoding: GeocodingException => println("[GeocodingException] on " + message)
       case e: Exception => println("Unknown Exception")
     }
 
-    if (response != null) {
-      serviceOperation.handleDBresult(rabbitMQ, properties, response)
+    println("[ServerConsumer] response " + response)
+
+    response match {
+      case Some(response) => serviceOperation.handleDBresult(rabbitMQ, properties, response)
+      case None => //do nothing
     }
 
   }

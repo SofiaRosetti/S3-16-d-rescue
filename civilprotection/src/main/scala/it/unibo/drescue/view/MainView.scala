@@ -15,7 +15,7 @@ class MainView(login: LoginGrid,
 
   var home = new HomeGrid(homeController)
   var rescue = new NewRescueGrid(newRescueController)
-  var team = new NewTeamGrid(newTeamController)
+  var team = new EnrollTeamGrid(newTeamController)
   var occTeams = new OccupiedTeamsGrid(occupiedTeamsController)
 
   def setStage(): Unit = {
@@ -47,7 +47,7 @@ class MainView(login: LoginGrid,
           content = rescue.grid
         }
         case TeamCase => {
-          team = new NewTeamGrid(newTeamController)
+          team = new EnrollTeamGrid(newTeamController)
           content = team.grid
         }
         case OccTeamsCase => {
@@ -58,11 +58,11 @@ class MainView(login: LoginGrid,
       }
     }
 
-    stage_.hide()
-    stage_.scene_=(newScene)
-    stage_.centerOnScreen()
-    stage_.show()
+    _stage.hide()
+    _stage.scene_=(newScene)
+    _stage.centerOnScreen()
+    _stage.show()
   }
 
-  def stage_ = stage
+  def _stage = stage
 }
