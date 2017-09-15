@@ -95,10 +95,10 @@ import it.unibo.drescue.model._
   * Object companion of MobileuserService case class.
   */
 object MobileuserService {
-  private val duplicatedEmailMessage = "Duplicated email."
-  private val findOneException = "Exception while trying to find user"
-  private val inputError = "Incorrect input"
-  private val wrongEmailOrPassword = "Wrong email and/or password."
+  private val DuplicatedEmailMessage: String = "Duplicated email."
+  private val FindOneException: String = "Exception while trying to find user"
+  private val InputError: String = "Incorrect input"
+  private val WrongEmailOrPassword: String = "Wrong email and/or password."
 }
 
 /**
@@ -128,14 +128,13 @@ case class MobileuserService() extends ServiceResponse {
         try {
           val userDao = (dbConnection getDAO DBConnection.Table.USER).asInstanceOf[UserDao]
           userDao insert user
+          Option(new SuccessfulMessageImpl)
         } catch {
           case connection: DBConnectionException => throw connection
           case query: DBQueryException => throw query
           case duplicated: DBDuplicatedRecordException =>
-            return Option(new ErrorMessageImpl(MobileuserService.duplicatedEmailMessage))
+            Option(new ErrorMessageImpl(MobileuserService.DuplicatedEmailMessage))
         }
-
-        Option(new SuccessfulMessageImpl)
 
       case MessageType.LOGIN_MESSAGE =>
 
@@ -154,7 +153,7 @@ case class MobileuserService() extends ServiceResponse {
           case connection: DBConnectionException => throw connection
           case query: DBQueryException => throw query
           case notFound: DBNotFoundRecordException =>
-            Option(new ErrorMessageImpl(MobileuserService.wrongEmailOrPassword))
+            Option(new ErrorMessageImpl(MobileuserService.WrongEmailOrPassword))
         }
 
       case MessageType.CHANGE_PASSWORD_MESSAGE =>
@@ -168,19 +167,19 @@ case class MobileuserService() extends ServiceResponse {
           val userDao = (dbConnection getDAO DBConnection.Table.USER).asInstanceOf[UserDao]
           val userSelected = (userDao selectByIdentifier user).asInstanceOf[User]
           userSelected match {
-            case null => throw new DBQueryException(MobileuserService.findOneException)
+            case null => throw new DBQueryException(MobileuserService.FindOneException)
             case _ =>
               userSelected.getPassword match {
                 case pass if pass == changePassword.getOldPassword =>
                   changePassword.getOldPassword match {
                     case password if password == changePassword.getNewPassword =>
-                      Option(new ErrorMessageImpl(MobileuserService.inputError))
+                      Option(new ErrorMessageImpl(MobileuserService.InputError))
                     case _ =>
                       userDao update user
                       Option(new SuccessfulMessageImpl)
                   }
                 case _ =>
-                  Option(new ErrorMessageImpl(MobileuserService.inputError))
+                  Option(new ErrorMessageImpl(MobileuserService.InputError))
               }
           }
         } catch {
@@ -198,7 +197,7 @@ case class MobileuserService() extends ServiceResponse {
           val userDao = (dbConnection getDAO DBConnection.Table.USER).asInstanceOf[UserDao]
           val userSelected = (userDao selectByIdentifier user).asInstanceOf[User]
           userSelected match {
-            case null => throw new DBQueryException(MobileuserService.findOneException)
+            case null => throw new DBQueryException(MobileuserService.FindOneException)
             case _ => Option(new ProfileMessageImpl(userSelected))
           }
         } catch {

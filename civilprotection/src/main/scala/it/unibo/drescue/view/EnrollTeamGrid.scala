@@ -11,7 +11,7 @@ import scalafx.scene.control.{Button, ComboBox, Label, TextField}
 import scalafx.scene.layout.{GridPane, HBox}
 import scalafx.scene.text.Font
 
-class NewTeamGrid(private var newTeamController: NewTeamControllerImpl) {
+class EnrollTeamGrid(private var newTeamController: NewTeamControllerImpl) {
 
   val _grid = new GridPane() {
     hgap = Gap
@@ -23,7 +23,7 @@ class NewTeamGrid(private var newTeamController: NewTeamControllerImpl) {
     val smallFont = new Font(Font20)
 
     val titleLabel = new Label() {
-      text = "New team:"
+      text = "Enroll team:"
       font = titleFont
       padding = Insets(Insets10)
     }
@@ -65,50 +65,66 @@ class NewTeamGrid(private var newTeamController: NewTeamControllerImpl) {
     teamChoice.setStyle("-fx-font-size:25")
     add(teamChoice, ColumnRow0, ColumnRow2)
 
-    val nameLabel = new Label() {
-      text = "Name:"
-      font = defaultFont
-      padding = Insets(Insets10)
-    }
-    val nameField = new TextField() {
-      promptText = "Username"
-      font = defaultFont
-    }
-    val nameBox = new HBox() {
-      children.addAll(nameLabel, nameField)
-      alignment = Pos.CenterRight
-    }
-    add(nameBox, ColumnRow1, ColumnRow2)
-
-    val districtLabel = new Label() {
-      text = "District:"
-      font = defaultFont
-      padding = Insets(Insets10)
-    }
-    val districtField = new TextField() {
-      promptText = "Username"
-      font = defaultFont
-    }
-    val districtBox = new HBox() {
-      children.addAll(districtLabel, districtField)
-      alignment = Pos.CenterRight
-    }
-    add(districtBox, ColumnRow1, ColumnRow3)
-
     val IDLabel = new Label() {
       text = "ID:"
       font = defaultFont
       padding = Insets(Insets10)
     }
     val IDField = new TextField() {
-      promptText = "Username"
+      promptText = "ID"
       font = defaultFont
     }
     val IDBox = new HBox() {
       children.addAll(IDLabel, IDField)
       alignment = Pos.CenterRight
     }
-    add(IDBox, ColumnRow1, ColumnRow4)
+    add(IDBox, ColumnRow1, ColumnRow2)
+
+    val nameLabel = new Label() {
+      text = "Name:"
+      font = defaultFont
+      padding = Insets(Insets10)
+    }
+    val nameField = new TextField() {
+      promptText = "Name"
+      font = defaultFont
+    }
+    val nameBox = new HBox() {
+      children.addAll(nameLabel, nameField)
+      alignment = Pos.CenterRight
+    }
+    add(nameBox, ColumnRow1, ColumnRow3)
+
+    val AddressLabel = new Label() {
+      text = "Address:"
+      font = defaultFont
+      padding = Insets(Insets10)
+    }
+    val AddressField = new TextField() {
+      promptText = "Address"
+      font = defaultFont
+    }
+    val AddressBox = new HBox() {
+      children.addAll(AddressLabel, AddressField)
+      alignment = Pos.CenterRight
+    }
+    add(AddressBox, ColumnRow1, ColumnRow4)
+
+    val PhoneLabel = new Label() {
+      text = "Phone number:"
+      font = defaultFont
+      padding = Insets(Insets10)
+    }
+    val PhoneField = new TextField() {
+      promptText = "Phone number"
+      font = defaultFont
+    }
+    val PhoneBox = new HBox() {
+      children.addAll(PhoneLabel, PhoneField)
+      alignment = Pos.CenterRight
+    }
+    add(PhoneBox, ColumnRow1, ColumnRow5)
+
 
     val addButton = new Button {
       text = "Add"
@@ -120,7 +136,7 @@ class NewTeamGrid(private var newTeamController: NewTeamControllerImpl) {
       children = addButton
       alignment = Pos.CenterRight
     }
-    add(addBox, ColumnRow1, ColumnRow5)
+    add(addBox, ColumnRow1, ColumnRow6)
 
     val selectButton = new Button {
       text = "Select"
@@ -132,7 +148,7 @@ class NewTeamGrid(private var newTeamController: NewTeamControllerImpl) {
       }
     }
     val cancelButton = new Button() {
-      text = "Cancel"
+      text = "Back"
       font = defaultFont
       margin = Insets(Insets30)
       prefWidth = WidthHeight150
@@ -146,8 +162,8 @@ class NewTeamGrid(private var newTeamController: NewTeamControllerImpl) {
       padding = Insets(Insets30)
       children.addAll(selectButton, cancelButton)
     }
-    add(buttonBox, ColumnRow0, ColumnRow6)
-    GridPane.setConstraints(buttonBox, ColumnRow0, ColumnRow6, ColumnRow2, ColumnRow1)
+    add(buttonBox, ColumnRow0, ColumnRow7)
+    GridPane.setConstraints(buttonBox, ColumnRow0, ColumnRow7, ColumnRow2, ColumnRow1)
   }
 
   def grid = _grid

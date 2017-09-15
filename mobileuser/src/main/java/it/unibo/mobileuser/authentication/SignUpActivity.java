@@ -9,6 +9,7 @@ import it.unibo.drescue.StringUtils;
 import it.unibo.drescue.communication.builder.requests.SignUpMessageBuilderImpl;
 import it.unibo.drescue.communication.messages.Message;
 import it.unibo.drescue.communication.messages.MessageType;
+import it.unibo.drescue.communication.messages.MessageUtils;
 import it.unibo.drescue.connection.QueueType;
 import it.unibo.mobileuser.R;
 import it.unibo.mobileuser.ToolbarActivity;
@@ -76,13 +77,18 @@ public class SignUpActivity extends ToolbarActivity {
      */
     private void signUp(final Message message) {
 
+        setDoingRequest();
+        showProgressDialog();
+
         new RabbitAsyncTask(QueueType.MOBILEUSER_QUEUE.getQueueName(),
                 message,
                 new AbstractResponse() {
 
                     @Override
                     public void onSuccessfulRequest(final String response) {
-                        if (StringUtils.getMessageType(response).equals(MessageType.SUCCESSFUL_MESSAGE.getMessageType())) {
+                        dismissProgressDialog();
+                        setDoingRequest();
+                        if (MessageUtils.getMessageNameByJson(response) == MessageType.SUCCESSFUL_MESSAGE) {
                             Toast.makeText(SignUpActivity.this, R.string.sign_up_successful, Toast.LENGTH_LONG).show();
                             finish();
                         }
@@ -90,6 +96,8 @@ public class SignUpActivity extends ToolbarActivity {
 
                     @Override
                     public void onErrorRequest(final String errorMessage) {
+                        dismissProgressDialog();
+                        setDoingRequest();
                         showDialog(R.string.sign_up, errorMessage);
                     }
 
