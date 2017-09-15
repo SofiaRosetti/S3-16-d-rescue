@@ -5,7 +5,10 @@ import it.unibo.drescue.model.ObjectModel
 class NewTeamControllerImpl(private var model: List[ObjectModel],
                             private var mainController: MainControllerImpl) {
 
+  //TODO start here a request for GetAllRescueTeam
+
   //TODO addPress()
+  //check Input insert
   //start thread with future (insertAndGet)
   //when future returns
   // OK -> add the return to combobox
