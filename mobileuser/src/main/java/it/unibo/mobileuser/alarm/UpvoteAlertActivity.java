@@ -8,6 +8,7 @@ import it.unibo.drescue.model.Alert;
 import it.unibo.drescue.model.AlertImplBuilder;
 import it.unibo.mobileuser.R;
 import it.unibo.mobileuser.gps.GpsActivityImpl;
+import it.unibo.mobileuser.utils.PreferencesKey;
 import it.unibo.mobileuser.utils.Utils;
 
 import java.util.ArrayList;
@@ -73,7 +74,7 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
      * @param alertID
      */
     private void upvoteAlert(final int alertID) {
-        final String userID = Utils.getUserIDfromSharedPreferences(getApplicationContext());
+        final String userID = Utils.getUserDataFromSharedPreferences(getApplicationContext(), PreferencesKey.USER_ID);
 
         System.out.println("[UpvoteAlertActivity] upvoteAlert: userID=" + userID + " alertID=" + alertID);
 
