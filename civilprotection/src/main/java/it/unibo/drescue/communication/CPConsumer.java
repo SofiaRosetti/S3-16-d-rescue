@@ -7,7 +7,7 @@ import com.rabbitmq.client.Envelope;
 import it.unibo.drescue.communication.messages.*;
 import it.unibo.drescue.utils.Coordinator;
 import it.unibo.drescue.utils.CoordinatorCondition;
-import it.unibo.drescue.utils.CoordinatorImpl;
+
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -46,7 +46,7 @@ public class CPConsumer extends DefaultConsumer {
                 System.out.println("From: " + cpConfigurationMessage.getFrom());
                 System.out.println("To: " + cpConfigurationMessage.getTo());
                 break;
-            case REQ_COORDINATION_MESSAGE:
+           /* case REQ_COORDINATION_MESSAGE:
 
                 //TODO Refactor
                 final ReqCoordinationMessage reqCoordinationMessage = GsonUtils.fromGson(msg, ReqCoordinationMessage.class);
@@ -54,7 +54,7 @@ public class CPConsumer extends DefaultConsumer {
                 String rescueTeamID = reqCoordinationMessage.getRescueTeamID();
                 Timestamp timestamp = reqCoordinationMessage.getTimestamp();
 
-                Coordinator coordinator = CoordinatorImpl.getIstance();
+                Coordinator coordinator = CoordinatorImpl.getInstance();
                 if (coordinator.getCondition() == CoordinatorCondition.WANTED && (timestamp.after(coordinator.getReqTimestamp()) ||
                         (timestamp.equals(coordinator.getReqTimestamp() ) )) ) {
                     //TODO add RescueTeam to deferRescueTeam
@@ -65,7 +65,7 @@ public class CPConsumer extends DefaultConsumer {
 
             case REPLAY_COORDINATION_MESSAGE:
                 //TODO update pendingCPReplay
-
+*/
         }
     }
 }
