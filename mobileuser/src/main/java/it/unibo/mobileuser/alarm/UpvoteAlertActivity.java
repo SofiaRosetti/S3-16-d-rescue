@@ -106,12 +106,10 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
     private void onRequestAlerts() {
 
         final String latitudeString = getLatitude();
-        //TODO final double latitude = convertCoordinate(latitudeString);
-        final double latitude = 44.420826;
+        final double latitude = convertCoordinate(latitudeString);
         if (latitude != ERROR_VALUE) {
             final String longitudeString = getLongitude();
-            //TODO final double longitude = convertCoordinate(longitudeString);
-            final double longitude = 11.912387;
+            final double longitude = convertCoordinate(longitudeString);
             if (longitude != ERROR_VALUE) {
 
                 final Message message = new RequestAlertsMessageImpl(latitude, longitude).build();

@@ -10,11 +10,11 @@ import it.unibo.drescue.connection.QueueType;
 import it.unibo.mobileuser.R;
 import it.unibo.mobileuser.connection.RabbitPublishAsyncTask;
 import it.unibo.mobileuser.gps.GpsActivityImpl;
+import it.unibo.mobileuser.utils.PreferencesKey;
+import it.unibo.mobileuser.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * A class that allows to show graphical interface to report new alarm and sends the alarm to server.
@@ -29,14 +29,10 @@ public class NewAlarmActivity extends GpsActivityImpl {
         setToolbar(true);
         getSupportActionBar().setTitle(R.string.new_alarm);
 
-        //TODO example of event types
-        final Set<String> set = new HashSet<>();
-        set.add("Earthquakes");
-        set.add("Floods");
-        //TODO change with commented line
+        final String userID = Utils.getUserDataFromSharedPreferences(getApplicationContext(), PreferencesKey.USER_ID);
+
         final List<String> arrayList = new ArrayList<>();
-        arrayList.addAll(set);
-        //arrayList.addAll(Utils.getDataSetFromSharedPreferences(getApplicationContext()));
+        arrayList.addAll(Utils.getDataSetFromSharedPreferences(getApplicationContext()));
 
         final Spinner spinner = (Spinner) findViewById(R.id.event_type_spinner);
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(
@@ -53,17 +49,14 @@ public class NewAlarmActivity extends GpsActivityImpl {
         sendButton.setOnClickListener((View view) -> {
             final String eventType = spinner.getSelectedItem().toString();
             final String latitudeString = latitudeTextView.getText().toString();
-            //TODO final double latitude = convertCoordinate(latitudeString);
-            final double latitude = 44.420826;
+            final double latitude = convertCoordinate(latitudeString);
             if (latitude != ERROR_VALUE) {
                 final String longitudeString = longitudeTextView.getText().toString();
-                //TODO final double longitude = convertCoordinate(longitudeString);
-                final double longitude = 11.912387;
+                final double longitude = convertCoordinate(longitudeString);
                 if (longitude != ERROR_VALUE) {
 
-                    //TODO change - example
                     final Message message = new NewAlertMessageBuilderImpl()
-                            .setUserID(4) //TODO get userID from shared preferences
+                            .setUserID(Integer.valueOf(userID))
                             .setEventType(eventType)
                             .setLatitude(latitude)
                             .setLongitude(longitude)
