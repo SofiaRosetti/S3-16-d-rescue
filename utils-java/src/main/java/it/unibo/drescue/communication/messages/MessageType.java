@@ -21,7 +21,9 @@ public enum MessageType {
     SIGN_UP_MESSAGE("sign_up_message"),
     SUCCESSFUL_MESSAGE("successful_message"),
     FORWARD_MESSAGE("forward_message"),
-    OBJECT_MODEL_MESSAGE("object_model_message");
+    OBJECT_MODEL_MESSAGE("object_model_message"),
+    CP_LOGIN_MESSAGE("cp_login_message"),
+    RESCUE_TEAMS_MESSAGE("rescue_teams_message");
 
     private final String messageType;
 
