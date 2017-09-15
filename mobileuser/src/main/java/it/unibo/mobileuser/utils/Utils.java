@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.Collections;
@@ -14,8 +13,6 @@ import java.util.Set;
  * Class with specific utils for mobileuser module.
  */
 public class Utils {
-
-    //private static final String USER_ID = "userID";
 
     /**
      * Get MaterialEditText typed text.
