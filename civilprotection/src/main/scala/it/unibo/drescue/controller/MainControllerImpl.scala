@@ -37,4 +37,6 @@ class MainControllerImpl(private var model: List[ObjectModel]) {
   }
 
   def _loginChannel: RabbitMQImpl = loginChannel
+
+  def _view: MainView = view
 }
