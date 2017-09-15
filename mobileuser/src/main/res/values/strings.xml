@@ -63,7 +63,10 @@
     <string name="upvote_content_description">Upvote this alert</string>
     <string name="upvote_message">Do you want to upvote this alert?</string>
     <string name="upvotes_number">0</string>
-    <string name="upvote_successful">Upvote successful!</string>
+    <string name="upvote_sent">Upvote successful!</string>
+    <string name="upvote_sent_successful">Your upvote will be visible as soon as it is processed at next refresh.
+    </string>
+    <string name="upvote_sent_error">Error while sending the upvote. Retry later.</string>
     <string name="your_position">Your position</string>
 
 </resources>
