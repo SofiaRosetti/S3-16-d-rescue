@@ -4,6 +4,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import it.unibo.mobileuser.utils.PreferencesKey;
+import it.unibo.mobileuser.utils.Utils;
 
 /**
  * Base activity from which every activity of the App extends.
@@ -62,6 +64,16 @@ public class BaseActivity extends AppCompatActivity {
      */
     protected void setDoingRequest() {
         this.isDoingRequest = !this.isDoingRequest;
+    }
+
+    /**
+     * Checks if a user is logged.
+     *
+     * @return true if the shared preferences are set, otherwise false.
+     */
+    protected boolean checkIfUserIsLogged() {
+        final String userID = Utils.getUserDataFromSharedPreferences(getApplicationContext(), PreferencesKey.USER_ID);
+        return userID.length() != 0;
     }
 
     @Override
