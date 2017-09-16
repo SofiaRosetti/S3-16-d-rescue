@@ -61,22 +61,18 @@ public class CpEnrollmentDaoImplTest extends GenericDaoAbstractTest {
         this.civilProtectionDao.delete(CP_TEST);
     }
 
-    @Test
-    public void isFindingCpEnrollmentGivenARescueTeam() throws Exception {
-        this.cpEnrollmentDao.insert(CP_ENROLLMENT_TEST);
-        final List<CpEnrollment> cpEnrollmentsOfRescueTeam =
-                this.cpEnrollmentDao.findAllCpEnrollmentRelatedToARescueTeam(RESCUE_TEAM_TEST.getRescueTeamID());
-        assertNotNull(cpEnrollmentsOfRescueTeam);
-        assertTrue(cpEnrollmentsOfRescueTeam.size() > 0);
-        this.cpEnrollmentDao.delete(CP_ENROLLMENT_TEST);
-    }
+    /*@Test
+    public void isFindingCpGivenARescueTeam() throws Exception {
+    //TODO
+    }*/
 
     @Test
-    public void isFindingCpEnrollmentGivenACp() throws Exception {
+    public void isFindingRescueTeamsGivenACp() throws Exception {
         this.cpEnrollmentDao.insert(CP_ENROLLMENT_TEST);
-        final List<CpEnrollment> cpEnrollmentsOfCp = this.cpEnrollmentDao.findAllCpEnrollmentRelatedToACp(CP_TEST.getCpID());
-        assertNotNull(cpEnrollmentsOfCp);
-        assertTrue(cpEnrollmentsOfCp.size() > 0);
+        final List<RescueTeam> rescueTeamsOfCp =
+                this.cpEnrollmentDao.findAllRescueTeamRelatedToACp(CP_TEST.getCpID());
+        assertNotNull(rescueTeamsOfCp);
+        assertTrue(rescueTeamsOfCp.size() > 0);
         this.cpEnrollmentDao.delete(CP_ENROLLMENT_TEST);
     }
 
