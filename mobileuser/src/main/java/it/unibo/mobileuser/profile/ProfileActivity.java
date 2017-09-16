@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import it.unibo.mobileuser.R;
 import it.unibo.mobileuser.ToolbarActivity;
+import it.unibo.mobileuser.utils.Utils;
 
 /**
  * A class that allows to show user profile and manage interaction with the graphical interface.
@@ -38,11 +39,9 @@ public class ProfileActivity extends ToolbarActivity {
         });*/
 
         final Button logoutProfile = (Button) findViewById(R.id.logout_button);
-        logoutProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                //TODO: logout
-            }
+        logoutProfile.setOnClickListener((View view) -> {
+            Utils.deleteSharedPreferences(getApplicationContext());
+            finish();
         });
     }
 }
