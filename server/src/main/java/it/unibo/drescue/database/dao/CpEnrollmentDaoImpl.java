@@ -93,17 +93,31 @@ public class CpEnrollmentDaoImpl extends GenericDaoAbstract<CpEnrollment> implem
     }
 
     @Override
-    public List<RescueTeam> findAllRescueTeamRelatedToACp(final String cpID) throws DBQueryException {
+    public List<RescueTeam> findAllRescueTeamGivenACp(final String cpID, final boolean related) throws DBQueryException {
+        //Preparing query
+        final String queryRelated = "SELECT " + RescueTeamDaoImpl.TABLENAME + ".rescueTeamID,"
+                + RescueTeamDaoImpl.TABLENAME + ".name,"
+                + RescueTeamDaoImpl.TABLENAME + ".latitude,"
+                + RescueTeamDaoImpl.TABLENAME + ".longitude,"
+                + RescueTeamDaoImpl.TABLENAME + ".phoneNumber"
+                + " FROM " + RescueTeamDaoImpl.TABLENAME + " JOIN " + TABLENAME
+                + " ON " + TABLENAME + ".rescueTeamID = " + RescueTeamDaoImpl.TABLENAME + ".rescueTeamID"
+                + " WHERE " + TABLENAME + ".cpID = ?";
+        final String nestedQuery = "SELECT " + RescueTeamDaoImpl.TABLENAME + ".rescueTeamID"
+                + " FROM " + RescueTeamDaoImpl.TABLENAME + " JOIN " + TABLENAME
+                + " ON " + TABLENAME + ".rescueTeamID = " + RescueTeamDaoImpl.TABLENAME + ".rescueTeamID"
+                + " WHERE " + TABLENAME + ".cpID = ?";
+        final String queryNotRelated = "SELECT " + RescueTeamDaoImpl.TABLENAME + ".rescueTeamID,"
+                + RescueTeamDaoImpl.TABLENAME + ".name,"
+                + RescueTeamDaoImpl.TABLENAME + ".latitude,"
+                + RescueTeamDaoImpl.TABLENAME + ".longitude,"
+                + RescueTeamDaoImpl.TABLENAME + ".phoneNumber"
+                + " FROM " + RescueTeamDaoImpl.TABLENAME
+                + " WHERE " + RescueTeamDaoImpl.TABLENAME + ".rescueTeamID NOT IN (" + nestedQuery + ")";
+
         final List<RescueTeam> rescueTeams = new ArrayList<>();
         try {
-            final String query = "SELECT " + RescueTeamDaoImpl.TABLENAME + ".rescueTeamID,"
-                    + RescueTeamDaoImpl.TABLENAME + ".name,"
-                    + RescueTeamDaoImpl.TABLENAME + ".latitude,"
-                    + RescueTeamDaoImpl.TABLENAME + ".longitude,"
-                    + RescueTeamDaoImpl.TABLENAME + ".phoneNumber"
-                    + " FROM " + RescueTeamDaoImpl.TABLENAME + " JOIN " + TABLENAME
-                    + " ON " + TABLENAME + ".rescueTeamID = " + RescueTeamDaoImpl.TABLENAME + ".rescueTeamID"
-                    + " WHERE " + TABLENAME + ".cpID = ?";
+            final String query = related ? queryRelated : queryNotRelated;
             final PreparedStatement statement = this.connection.prepareStatement(query);
             statement.setString(1, cpID);
             final ResultSet resultSet = statement.executeQuery();
