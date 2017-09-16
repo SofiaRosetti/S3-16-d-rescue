@@ -18,6 +18,14 @@ class HomeControllerImpl(private var model: List[ObjectModel],
   //      - when pressed -> change view to manage rescue with alert params
   // - manageRescues button -> change view to manage rescues without alert params
 
+  def startAlertsRequest() = {
+    // TODO request for alerts with RequestCpAlertMsg(cpID)
+  }
+
+  def manageRescuesPress() = {
+    mainController.changeView("ManageRescues")
+  }
+
   def newRescuePress() = {
     mainController.changeView("NewRescue")
   }

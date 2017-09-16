@@ -19,6 +19,7 @@ class MainView(loginGrid: LoginGrid,
   var rescue = new NewRescueGrid(newRescueController)
   var team = new EnrollTeamGrid(newTeamController)
   var occTeams = new OccupiedTeamsGrid(occupiedTeamsController)
+  var manage = new ManageRescuesGrid(new ManageRescuesControllerImpl) // TODO remove new and pass controller through constructor
 
   def setStage(): Unit = {
     stage = new PrimaryStage {
@@ -37,15 +38,17 @@ class MainView(loginGrid: LoginGrid,
     val RescueCase: String = "NewRescue"
     val TeamCase: String = "NewTeam"
     val OccTeamsCase: String = "OccupiedTeams"
+    val ManageRescuesCase: String = "ManageRescues"
 
     var newScene = new Scene {
-
+      // TODO remove not used case
       view match {
         case LoginCase => {
           login = new LoginGrid(loginController)
           content = login.grid
         }
         case HomeCase => {
+          homeController.startAlertsRequest()
           home = new HomeGrid(homeController)
           content = home.grid
         }
@@ -60,6 +63,10 @@ class MainView(loginGrid: LoginGrid,
         case OccTeamsCase => {
           occTeams = new OccupiedTeamsGrid(occupiedTeamsController)
           content = occTeams.grid
+        }
+        case ManageRescuesCase => {
+          manage = new ManageRescuesGrid(new ManageRescuesControllerImpl)
+          content = manage.grid
         }
         case _ => println("error") // TODO throw and handle exception
       }
