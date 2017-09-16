@@ -17,10 +17,14 @@ public interface CpEnrollmentDao extends GenericDao {
     List<CivilProtection> findAllCpRelatedToARescueTeam(String rescueTeamID) throws DBQueryException;
 
     /**
-     * Get all rescue teams related to a specified civil protection
+     * Get all rescue teams related or not to a specified civil protection
      *
+     * @param cpID    the cp involved
+     * @param related specify if you want to find all teams enrolled to the specified cp (if true)
+     *                or if you want to find all teams NOT enrolled yet to the specified cp (if false)
      * @return a list with all rescue teams enrolled to the given cpID
      * @throws DBQueryException if something goes wrong executing the query
      */
-    List<RescueTeam> findAllRescueTeamRelatedToACp(String cpID) throws DBQueryException;
+    List<RescueTeam> findAllRescueTeamGivenACp(String cpID, boolean related) throws DBQueryException;
+
 }
