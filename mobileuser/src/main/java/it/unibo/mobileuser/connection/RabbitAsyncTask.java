@@ -13,7 +13,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * Class used to send an async request to server.
+ * Class used to send an async RPC request to server.
  */
 public class RabbitAsyncTask extends AsyncTask<Void, Void, String> {
 
@@ -24,7 +24,7 @@ public class RabbitAsyncTask extends AsyncTask<Void, Void, String> {
     private final RequestDelegate delegate;
 
     /**
-     * Creates a new async task which perform the request.
+     * Creates a new async task which perform the RPC request.
      *
      * @param destinationQueue queue on which to send the request
      * @param message          message to send
