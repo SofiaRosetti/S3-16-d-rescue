@@ -77,7 +77,6 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
         this.swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         this.swipeRefreshLayout.setOnRefreshListener(this::onRequestAlerts);
 
-        //TODO
         onRequestAlerts();
 
     }

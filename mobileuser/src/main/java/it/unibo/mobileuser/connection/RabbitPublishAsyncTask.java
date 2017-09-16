@@ -55,7 +55,7 @@ public class RabbitPublishAsyncTask extends AsyncTask<Void, Void, Boolean> {
     protected void onPostExecute(final Boolean successfulPublish) {
         super.onPostExecute(successfulPublish);
         if (this.delegate != null) {
-            this.delegate.onSendingRequest(successfulPublish);
+            this.delegate.onPublishingMessage(successfulPublish);
         }
     }
 }

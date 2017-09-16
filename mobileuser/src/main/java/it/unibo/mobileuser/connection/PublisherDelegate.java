@@ -10,6 +10,6 @@ public interface PublisherDelegate {
      *
      * @param bool true if the message was correctly published, false otherwise
      */
-    void onSendingRequest(boolean bool);
+    void onPublishingMessage(boolean bool);
 
 }
