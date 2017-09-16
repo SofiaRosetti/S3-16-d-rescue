@@ -2,7 +2,7 @@ package it.unibo.drescue.view
 
 import javafx.scene.input.MouseEvent
 
-import it.unibo.drescue.controller.NewTeamControllerImpl
+import it.unibo.drescue.controller.EnrollTeamControllerImpl
 import it.unibo.drescue.view.ViewConstants._
 
 import scalafx.collections.ObservableBuffer
@@ -11,7 +11,7 @@ import scalafx.scene.control.{Button, ComboBox, Label, TextField}
 import scalafx.scene.layout.{GridPane, HBox}
 import scalafx.scene.text.Font
 
-class EnrollTeamGrid(private var newTeamController: NewTeamControllerImpl) {
+class EnrollTeamGrid(private var enrollTeamController: EnrollTeamControllerImpl) {
 
   val _grid = new GridPane() {
     hgap = Gap
@@ -131,6 +131,9 @@ class EnrollTeamGrid(private var newTeamController: NewTeamControllerImpl) {
       font = smallFont
       margin = Insets(Insets10)
       prefWidth = WidthHeight100
+      onMouseClicked = (event: MouseEvent) => {
+        enrollTeamController.addPress()
+      }
     }
     val addBox = new HBox {
       children = addButton
@@ -144,7 +147,7 @@ class EnrollTeamGrid(private var newTeamController: NewTeamControllerImpl) {
       margin = Insets(Insets30)
       prefWidth = WidthHeight150
       onMouseClicked = (event: MouseEvent) => {
-        newTeamController.selectPress()
+        enrollTeamController.selectPress()
       }
     }
     val cancelButton = new Button() {
@@ -154,7 +157,7 @@ class EnrollTeamGrid(private var newTeamController: NewTeamControllerImpl) {
       prefWidth = WidthHeight150
 
       onMouseClicked = (event: MouseEvent) => {
-        newTeamController.cancelPress()
+        enrollTeamController.backPress()
       }
     }
     val buttonBox = new HBox {
