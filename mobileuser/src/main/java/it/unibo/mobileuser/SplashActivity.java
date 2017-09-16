@@ -45,6 +45,7 @@ public class SplashActivity extends ToolbarActivity {
     @Override
     protected void onResume() {
         setToolbarVisibility(false);
+        checkIfUserIsLogged();
         super.onResume();
     }
 
