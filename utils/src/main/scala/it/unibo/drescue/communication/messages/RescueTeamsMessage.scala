@@ -13,10 +13,10 @@ sealed trait RescueTeamsMessage {
     *
     * @return the list of rescue teams related to the CP
     */
-  def rescueTeamsList: List[RescueTeam]
+  def rescueTeamsList: java.util.List[RescueTeam]
 }
 
-case class RescueTeamsMessageImpl(override val rescueTeamsList: List[RescueTeam])
+case class RescueTeamsMessageImpl(override val rescueTeamsList: java.util.List[RescueTeam])
   extends AbstractMessage(MessageType.RESCUE_TEAMS_MESSAGE) with RescueTeamsMessage with MessageBuilder {
 
   override def build(): Message = this
