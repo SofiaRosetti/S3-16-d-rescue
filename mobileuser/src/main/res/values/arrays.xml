@@ -21,17 +21,5 @@
         <item>Occurred events</item>
         <item>Profile</item>
     </string-array>
-    <string-array name="event_type_array">
-        <item>Avalanche</item>
-        <item>Earthquake</item>
-        <item>Fire</item>
-        <item>Flood</item>
-        <item>Hurricane</item>
-        <item>Landslide</item>
-        <item>Meteorite impact</item>
-        <item>Tornado</item>
-        <item>Tsunami</item>
-        <item>Volcanic eruption</item>
-    </string-array>
 
 </resources>

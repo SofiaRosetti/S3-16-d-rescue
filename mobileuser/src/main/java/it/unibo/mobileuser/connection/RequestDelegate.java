@@ -1,7 +1,7 @@
 package it.unibo.mobileuser.connection;
 
 /**
- * Interface implemented to perform different actions on client request.
+ * Interface implemented to perform different actions on RPC client request.
  */
 public interface RequestDelegate {
 
