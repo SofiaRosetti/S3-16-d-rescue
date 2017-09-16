@@ -20,6 +20,8 @@ import it.unibo.mobileuser.ToolbarActivity;
  */
 public class GpsActivityImpl extends ToolbarActivity implements GpsActivity {
 
+    protected static final double ERROR_VALUE = -2000;
+
     private static final int REQUEST_CODE = 200;
     private static final int MIN_INTERVAL = 5000;
     private static final int MIN_DISTANCE = 1;
@@ -80,6 +82,23 @@ public class GpsActivityImpl extends ToolbarActivity implements GpsActivity {
                 Toast.makeText(this, getResources().getString(R.string.gps_permission), Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    /**
+     * Converts the coordinate from string to double. If the coordinate is not
+     * a double value, it shows a message.
+     *
+     * @param value the coordinate to convert
+     * @return the converted coordinate
+     */
+    protected double convertCoordinate(final String value) {
+        double convertedValue = ERROR_VALUE;
+        try {
+            convertedValue = Double.parseDouble(value);
+        } catch (final NumberFormatException ex) {
+            showDialog(R.string.attention, R.string.gps_unavailable);
+        }
+        return convertedValue;
     }
 
     /**

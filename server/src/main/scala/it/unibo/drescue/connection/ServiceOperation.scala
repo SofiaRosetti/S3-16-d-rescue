@@ -60,11 +60,16 @@ trait ServiceResponse extends ServiceOperation {
 trait ServiceForward extends ServiceOperation {
 
   override def handleDBresult(rabbitMQ: RabbitMQ, properties: AMQP.BasicProperties, message: Message): Unit = {
-    val forwardObjectMessage = message.asInstanceOf[ForwardObjectMessage]
-    val objectModelMessage = new ObjectModelMessageImpl(forwardObjectMessage.objectModel)
-    forwardObjectMessage.cpIDList foreach (cpID => {
-      rabbitMQ sendMessage("", cpID, null, objectModelMessage)
-    })
+    val forwardObjectMessageType = MessageType.FORWARD_MESSAGE.getMessageType
+    message.getMessageType match {
+      case `forwardObjectMessageType` =>
+        val forwardObjectMessage = message.asInstanceOf[ForwardObjectMessage]
+        val objectModelMessage = new ObjectModelMessageImpl(forwardObjectMessage.objectModel)
+        forwardObjectMessage.cpIDList foreach (cpID => {
+          rabbitMQ sendMessage("", cpID, null, objectModelMessage)
+        })
+      case _ => //do nothing
+    }
   }
 
 }

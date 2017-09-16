@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 import it.unibo.drescue.model.Alert;
 import it.unibo.mobileuser.R;
@@ -46,17 +45,15 @@ public class AlertAdapter extends ArrayAdapter<Alert> {
             alertViewHolder.timestamp = convertView.findViewById(R.id.alert_timestamp);
             alertViewHolder.latitude = convertView.findViewById(R.id.alert_latitude);
             alertViewHolder.longitude = convertView.findViewById(R.id.alert_longitude);
-            alertViewHolder.upvoteIcon = convertView.findViewById(R.id.upvote_icon);
             alertViewHolder.upvotesNumber = convertView.findViewById(R.id.alert_upvotes_number);
             convertView.setTag(alertViewHolder);
         }
 
-        alertViewHolder.eventName.setText(String.valueOf(alert.getAlertID())); //TODO alert must contain event name not ID
-        alertViewHolder.timestamp.setText(alert.getTimestamp().toString());
+        alertViewHolder.eventName.setText(String.valueOf(alert.getEventName()));
+        alertViewHolder.timestamp.setText(String.valueOf(alert.getTimestamp()));
         alertViewHolder.latitude.setText(String.valueOf(alert.getLatitude()));
         alertViewHolder.longitude.setText(String.valueOf(alert.getLongitude()));
-        //TODO add into alert model upvotesNumber and set upvotesNumber and upvotesIcon to green
-        //alertViewHolder.upvotesNumber.setText(String.valueOf(alert.getUpvotesNumber()));
+        alertViewHolder.upvotesNumber.setText(String.valueOf(alert.getUpvotes()));
 
         return convertView;
 
@@ -72,7 +69,6 @@ public class AlertAdapter extends ArrayAdapter<Alert> {
         private TextView timestamp;
         private TextView latitude;
         private TextView longitude;
-        private ImageView upvoteIcon;
         private TextView upvotesNumber;
 
     }
