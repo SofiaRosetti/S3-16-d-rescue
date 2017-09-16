@@ -8,8 +8,9 @@ class MainControllerImpl(private var model: List[ObjectModel]) {
 
   var connection: RabbitMQConnectionImpl = null
   var loginChannel: RabbitMQImpl = null
+  var cpID: String = null
 
-  var view = new MainView(null, null, null, null, null, null)
+  var view = new MainView(null, null, null, null, null, null, null)
 
   def addView(viewValue: MainView): Unit = {
     view = viewValue
@@ -22,4 +23,8 @@ class MainControllerImpl(private var model: List[ObjectModel]) {
   def _loginChannel: RabbitMQImpl = loginChannel
 
   def _view: MainView = view
+
+  def cpID_(currentCpID: String): Unit = {
+    cpID = currentCpID
+  }
 }

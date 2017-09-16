@@ -6,13 +6,15 @@ import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.scene.Scene
 
-class MainView(login: LoginGrid,
+class MainView(loginGrid: LoginGrid,
+               loginController: LoginControllerImpl,
                controller: MainControllerImpl,
                homeController: HomeControllerImpl,
                newRescueController: NewRescueControllerImpl,
                newTeamController: NewTeamControllerImpl,
                occupiedTeamsController: OccupiedTeamsControllerImpl) extends JFXApp {
 
+  var login = new LoginGrid(loginController)
   var home = new HomeGrid(homeController)
   var rescue = new NewRescueGrid(newRescueController)
   var team = new EnrollTeamGrid(newTeamController)
@@ -23,13 +25,14 @@ class MainView(login: LoginGrid,
       title = "D-rescue"
       resizable = false
       scene = new Scene {
-        content = login.grid
+        content = loginGrid.grid
       }
     }
   }
 
   def changeView(view: String): Unit = {
 
+    val LoginCase: String = "Login"
     val HomeCase: String = "Home"
     val RescueCase: String = "NewRescue"
     val TeamCase: String = "NewTeam"
@@ -38,6 +41,10 @@ class MainView(login: LoginGrid,
     var newScene = new Scene {
 
       view match {
+        case LoginCase => {
+          login = new LoginGrid(loginController)
+          content = login.grid
+        }
         case HomeCase => {
           home = new HomeGrid(homeController)
           content = home.grid

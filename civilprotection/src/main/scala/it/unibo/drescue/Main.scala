@@ -24,8 +24,9 @@ object Main extends JFXApp {
   var loginGrid = new LoginGrid(loginController)
 
   var view = new MainView(
+    loginController = loginController,
     controller = controller,
-    login = loginGrid,
+    loginGrid = loginGrid,
     homeController = homeController,
     newRescueController = newRescueController,
     newTeamController = newTeamController,

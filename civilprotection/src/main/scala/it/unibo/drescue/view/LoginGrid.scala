@@ -49,7 +49,7 @@ class LoginGrid(private var loginController: LoginControllerImpl) {
       onMouseClicked = (event: MouseEvent) => {
         checkInputs(username.getText, password.getText) match {
           case true => loginController.loginPress(username.getText, password.getText)
-          case false => loginController.emptyLogin()
+          case false => loginController.startEmptyLoginDialog()
         }
       }
     }
