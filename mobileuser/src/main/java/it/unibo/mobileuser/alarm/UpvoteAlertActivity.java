@@ -138,6 +138,7 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
 
                             @Override
                             public void onErrorRequest(final String errorMessage) {
+                                UpvoteAlertActivity.this.swipeRefreshLayout.setRefreshing(false);
                                 dismissProgressDialog();
                                 setDoingRequest();
                                 showDialog(R.string.last_alerts, R.string.alerts_error);
