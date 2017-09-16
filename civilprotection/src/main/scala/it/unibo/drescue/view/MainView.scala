@@ -10,12 +10,12 @@ class MainView(login: LoginGrid,
                controller: MainControllerImpl,
                homeController: HomeControllerImpl,
                newRescueController: NewRescueControllerImpl,
-               newTeamController: NewTeamControllerImpl,
+               enrollTeamControllerImpl: EnrollTeamControllerImpl,
                occupiedTeamsController: OccupiedTeamsControllerImpl) extends JFXApp {
 
   var home = new HomeGrid(homeController)
   var rescue = new NewRescueGrid(newRescueController)
-  var team = new EnrollTeamGrid(newTeamController)
+  var team = new EnrollTeamGrid(enrollTeamControllerImpl)
   var occTeams = new OccupiedTeamsGrid(occupiedTeamsController)
 
   def setStage(): Unit = {
@@ -47,7 +47,7 @@ class MainView(login: LoginGrid,
           content = rescue.grid
         }
         case TeamCase => {
-          team = new EnrollTeamGrid(newTeamController)
+          team = new EnrollTeamGrid(enrollTeamControllerImpl)
           content = team.grid
         }
         case OccTeamsCase => {

@@ -18,7 +18,7 @@ object Main extends JFXApp {
   var loginController = new LoginControllerImpl(new CivilProtectionImpl("prova", "prova") :: Nil, controller, loginChannel)
   var homeController = new HomeControllerImpl(new CivilProtectionImpl("prova", "prova") :: Nil, controller)
   var newRescueController = new NewRescueControllerImpl(new CivilProtectionImpl("prova", "prova") :: Nil, controller)
-  var newTeamController = new NewTeamControllerImpl(new CivilProtectionImpl("prova", "prova") :: Nil, controller)
+  var enrollTeamController = new EnrollTeamControllerImpl(new CivilProtectionImpl("prova", "prova") :: Nil, controller)
   var occupiedTeamsController = new OccupiedTeamsControllerImpl(new CivilProtectionImpl("prova", "prova") :: Nil, controller)
 
   var loginGrid = new LoginGrid(loginController)
@@ -28,7 +28,7 @@ object Main extends JFXApp {
     login = loginGrid,
     homeController = homeController,
     newRescueController = newRescueController,
-    newTeamController = newTeamController,
+    enrollTeamControllerImpl = enrollTeamController,
     occupiedTeamsController = occupiedTeamsController)
 
   controller.addView(view)
