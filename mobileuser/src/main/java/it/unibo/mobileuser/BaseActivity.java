@@ -13,7 +13,6 @@ import it.unibo.mobileuser.utils.Utils;
 public class BaseActivity extends AppCompatActivity {
 
     private AlertDialog dialog;
-    private boolean isDoingRequest = false;
 
     /**
      * Shows a simple dialog with a title and a message.
@@ -60,13 +59,6 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets true if needs to wait for download, otherwise false.
-     */
-    protected void setDoingRequest() {
-        this.isDoingRequest = !this.isDoingRequest;
-    }
-
-    /**
      * Checks if a user is logged.
      *
      * @return true if the shared preferences are set, otherwise false.
@@ -74,12 +66,5 @@ public class BaseActivity extends AppCompatActivity {
     protected boolean checkIfUserIsLogged() {
         final String userID = Utils.getUserDataFromSharedPreferences(getApplicationContext(), PreferencesKey.USER_ID);
         return userID.length() != 0;
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (!this.isDoingRequest) {
-            super.onBackPressed();
-        }
     }
 }

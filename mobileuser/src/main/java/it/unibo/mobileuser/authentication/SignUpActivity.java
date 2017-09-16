@@ -77,7 +77,6 @@ public class SignUpActivity extends ToolbarActivity {
      */
     private void signUp(final Message message) {
 
-        setDoingRequest();
         showProgressDialog();
 
         new RabbitAsyncTask(QueueType.MOBILEUSER_QUEUE.getQueueName(),
@@ -87,7 +86,6 @@ public class SignUpActivity extends ToolbarActivity {
                     @Override
                     public void onSuccessfulRequest(final String response) {
                         dismissProgressDialog();
-                        setDoingRequest();
                         if (MessageUtils.getMessageNameByJson(response) == MessageType.SUCCESSFUL_MESSAGE) {
                             Toast.makeText(SignUpActivity.this, R.string.sign_up_successful, Toast.LENGTH_LONG).show();
                             finish();
@@ -97,7 +95,6 @@ public class SignUpActivity extends ToolbarActivity {
                     @Override
                     public void onErrorRequest(final String errorMessage) {
                         dismissProgressDialog();
-                        setDoingRequest();
                         showDialog(R.string.sign_up, errorMessage);
                     }
 
