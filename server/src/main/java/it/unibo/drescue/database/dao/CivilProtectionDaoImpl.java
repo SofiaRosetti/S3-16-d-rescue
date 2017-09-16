@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 public class CivilProtectionDaoImpl extends LoggableDaoAbstract<CivilProtection> implements CivilProtectionDao {
 
-    private static final String TABLENAME = "CIVIL_PROTECTION";
+    protected static final String TABLENAME = "CIVIL_PROTECTION";
 
     public CivilProtectionDaoImpl(final Connection connection) {
         super(connection, TABLENAME);

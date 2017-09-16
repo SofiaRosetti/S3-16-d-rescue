@@ -69,8 +69,27 @@ public class CpEnrollmentDaoImpl extends GenericDaoAbstract<CpEnrollment> implem
 
     @Override
     public List<CivilProtection> findAllCpRelatedToARescueTeam(final String rescueTeamID) throws DBQueryException {
-        /*TODO*/
-        return null;
+        final List<CivilProtection> civilProtectionList = new ArrayList<>();
+        try {
+            final String query = "SELECT cpID"
+                    + " FROM " + TABLENAME
+                    + " WHERE rescueTeamID = ?";
+            final PreparedStatement statement = this.connection.prepareStatement(query);
+            statement.setString(1, rescueTeamID);
+            final ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                //NOTE: the password is hidden
+                final CivilProtection civilProtection = new CivilProtectionImpl(
+                        resultSet.getString("cpID"), null);
+                civilProtectionList.add(civilProtection);
+            }
+            resultSet.close();
+            statement.close();
+
+        } catch (final SQLException e) {
+            throw new DBQueryException(FIND_RELATED_TO_RESCUE_TEAM_EXCEPTION);
+        }
+        return civilProtectionList;
     }
 
     @Override
