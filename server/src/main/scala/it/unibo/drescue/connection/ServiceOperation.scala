@@ -428,7 +428,7 @@ case class CivilProtectionService() extends ServiceResponseOrForward {
           val cpDao = (dbConnection getDAO DBConnection.Table.CIVIL_PROTECTION).asInstanceOf[CivilProtectionDao]
           val cpSelected = (cpDao login cp).asInstanceOf[CivilProtection]
           val cpEnrollmentDao = (dbConnection getDAO DBConnection.Table.CP_ENROLLMENT).asInstanceOf[CpEnrollmentDao]
-          val rescueTeamsList = cpEnrollmentDao.findAllRescueTeamRelatedToACp(cp.getCpID)
+          val rescueTeamsList = cpEnrollmentDao.findAllRescueTeamGivenACp(cp.getCpID, true)
           Option(new RescueTeamsMessageImpl(rescueTeamsList))
         } catch {
           case connection: DBConnectionException => throw connection
