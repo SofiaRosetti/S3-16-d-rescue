@@ -85,6 +85,8 @@ trait ServiceResponseOrForward extends ServiceResponse with ServiceForward {
 
 }
 
+import java.util
+
 import it.unibo.drescue.communication.GsonUtils
 import it.unibo.drescue.communication.messages.requests._
 import it.unibo.drescue.communication.messages.response._
@@ -145,10 +147,10 @@ case class MobileuserService() extends ServiceResponse {
           .createUserImpl()
         try {
           val userDao = (dbConnection getDAO DBConnection.Table.USER).asInstanceOf[UserDao]
-          val userSelected = (userDao login user).asInstanceOf[User]
+          val userSelected = (userDao login user).asInstanceOf[UserImpl]
           val eventTypeDao = (dbConnection getDAO DBConnection.Table.EVENT_TYPE).asInstanceOf[EventTypeDao]
           val eventTypeList = eventTypeDao.findAll
-          Option(new ResponseLoginMessageImpl(userSelected, eventTypeList))
+          Option(new ResponseLoginMessageImpl(userSelected, eventTypeList.asInstanceOf[util.List[EventTypeImpl]]))
         } catch {
           case connection: DBConnectionException => throw connection
           case query: DBQueryException => throw query
@@ -210,8 +212,6 @@ case class MobileuserService() extends ServiceResponse {
   }
 
 }
-
-import java.util
 
 import scala.collection.mutable.ListBuffer
 

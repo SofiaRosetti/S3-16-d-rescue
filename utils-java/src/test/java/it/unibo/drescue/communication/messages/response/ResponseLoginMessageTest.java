@@ -1,9 +1,8 @@
 package it.unibo.drescue.communication.messages.response;
 
 import it.unibo.drescue.communication.messages.MessageType;
-import it.unibo.drescue.model.EventType;
 import it.unibo.drescue.model.EventTypeImpl;
-import it.unibo.drescue.model.User;
+import it.unibo.drescue.model.UserImpl;
 import it.unibo.drescue.model.UserImplBuilder;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,8 +23,8 @@ public class ResponseLoginMessageTest {
     private static final String EVENT_TYPE_1 = "Fire";
     private static final String EVENT_TYPE_2 = "Earthquake";
 
-    private User user;
-    private List<EventType> eventTypes;
+    private UserImpl user;
+    private List<EventTypeImpl> eventTypes;
     private ResponseLoginMessageImpl responseLoginMessage;
 
     @Before
