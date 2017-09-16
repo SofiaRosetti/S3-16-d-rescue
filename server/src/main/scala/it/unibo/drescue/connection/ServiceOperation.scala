@@ -422,28 +422,14 @@ case class CivilProtectionService() extends ServiceResponseOrForward {
     messageName match {
 
       case MessageType.CP_LOGIN_MESSAGE =>
-
         val login = GsonUtils.fromGson(jsonMessage, classOf[CpLoginMessageImpl])
         val cp = new CivilProtectionImpl(login.cpID, login.password)
         try {
-          //val cpDao = (dbConnection getDAO DBConnection.Table.CIVIL_PROTECTION).asInstanceOf[CivilProtectionDao]
-          //val cpSelected = (cpDao login cp).asInstanceOf[CivilProtection]
-          //val cpEnrollmentDao = (dbConnection getDAO DBConnection.Table.CP_ENROLLMENT).asInstanceOf[CpEnrollmentDao]
-          //TODO nested query that return the list of rescue teams enrolled to this cp
-
-          val RT = new RescueTeamImplBuilder()
-            .setName("RT1")
-            .setLatitude(44.21365)
-            .setLongitude(40.85479)
-            .setPassword("passwordRT")
-            .setPhoneNumber("3657778845")
-            .setRescueTeamID("RTID")
-            .createRescueTeamImpl()
-
-          val RTList: java.util.List[RescueTeam] = new util.ArrayList[RescueTeam]()
-          RTList add RT
-
-          Option(new RescueTeamsMessageImpl(RTList))
+          val cpDao = (dbConnection getDAO DBConnection.Table.CIVIL_PROTECTION).asInstanceOf[CivilProtectionDao]
+          val cpSelected = (cpDao login cp).asInstanceOf[CivilProtection]
+          val cpEnrollmentDao = (dbConnection getDAO DBConnection.Table.CP_ENROLLMENT).asInstanceOf[CpEnrollmentDao]
+          val rescueTeamsList = cpEnrollmentDao.findAllRescueTeamRelatedToACp(cp.getCpID)
+          Option(new RescueTeamsMessageImpl(rescueTeamsList))
         } catch {
           case connection: DBConnectionException => throw connection
           case query: DBQueryException => throw query
@@ -451,6 +437,7 @@ case class CivilProtectionService() extends ServiceResponseOrForward {
             Option(new ErrorMessageImpl(CivilProtectionService.WrongCpIdOrPassword))
         }
 
+      case _ => throw new Exception
     }
   }
 }
