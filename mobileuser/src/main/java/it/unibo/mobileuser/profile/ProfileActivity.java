@@ -29,21 +29,9 @@ public class ProfileActivity extends ToolbarActivity {
         setEditText(R.id.phone_field, PreferencesKey.USER_PHONE);
 
         final Button changePassword = (Button) findViewById(R.id.password_change_button);
-        changePassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                startActivity(new Intent(view.getContext(), ChangePasswordActivity.class));
-            }
+        changePassword.setOnClickListener((View view) -> {
+            startActivity(new Intent(view.getContext(), ChangePasswordActivity.class));
         });
-
-        /* TODO: Uncomment when the functionality will be implemented
-        final Button editProfile = (Button) findViewById(R.id.edit_button);
-        editProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                startActivity(new Intent(view.getContext(), EditProfileActivity.class));
-            }
-        });*/
 
         final Button logoutProfile = (Button) findViewById(R.id.logout_button);
         logoutProfile.setOnClickListener((View view) -> {
