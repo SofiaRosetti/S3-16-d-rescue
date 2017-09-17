@@ -413,6 +413,7 @@ case class AlertsService() extends ServiceResponseOrForward {
 
 object CivilProtectionService {
   private val WrongCpIdOrPassword = "Wrong cpID and/or password."
+  private val DuplicatedTeamIDMessage: String = "Duplicated teamID."
 }
 
 /**
@@ -440,6 +441,38 @@ case class CivilProtectionService() extends ServiceResponseOrForward {
           case query: DBQueryException => throw query
           case notFound: DBNotFoundRecordException =>
             Option(new ErrorMessageImpl(CivilProtectionService.WrongCpIdOrPassword))
+        }
+
+      case MessageType.RESCUE_TEAMS_NOT_ENROLLED_MESSAGE =>
+        val message = GsonUtils.fromGson(jsonMessage, classOf[GetRescueTeamsNotEnrolledMessageImpl])
+        try {
+          val cpEnrollmentDao = (dbConnection getDAO DBConnection.Table.CP_ENROLLMENT).asInstanceOf[CpEnrollmentDao]
+          val rescueTeamsList = cpEnrollmentDao.findAllRescueTeamGivenACp(message.cpID, false)
+          Option(new RescueTeamsMessageImpl(rescueTeamsList))
+        } catch {
+          case connection: DBConnectionException => throw connection
+          case query: DBQueryException => throw query
+        }
+
+      case MessageType.ADD_RESCUE_TEAM_MESSAGE =>
+        val message = GsonUtils.fromGson(jsonMessage, classOf[NewRescueTeamMessage])
+        try {
+          val rescueTeamDao = (dbConnection getDAO DBConnection.Table.RESCUE_TEAM).asInstanceOf[RescueTeamDao]
+          val rescueTeam = new RescueTeamImplBuilder()
+            .setRescueTeamID(message.rescueTeamID)
+            .setName(message.rescueTeamName)
+            .setLatitude(message.rescueTeamLatitude)
+            .setLongitude(message.rescueTeamLongitude)
+            .setPassword(message.rescueTeamPassword)
+            .setPhoneNumber(message.rescueTeamPhoneNumber)
+            .createRescueTeamImpl()
+          rescueTeamDao insert rescueTeam
+          Option(new SuccessfulMessageImpl())
+        } catch {
+          case connection: DBConnectionException => throw connection
+          case query: DBQueryException => throw query
+          case duplicated: DBDuplicatedRecordException =>
+            Option(new ErrorMessageImpl(CivilProtectionService.DuplicatedTeamIDMessage))
         }
 
       case _ => throw new Exception
