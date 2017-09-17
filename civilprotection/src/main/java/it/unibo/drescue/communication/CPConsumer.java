@@ -42,9 +42,9 @@ public class CPConsumer extends DefaultConsumer {
         final MessageType nameMessage = MessageUtils.getMessageNameByJson(msg);
 
         Coordinator coordinator = CoordinatorImpl.getInstance();
-        CoordinatorCondition myCondition = null;
-        String myCs = "";
-        Timestamp myTimestamp = null;
+        CoordinatorCondition myCondition;
+        String myCs;
+        Timestamp myTimestamp;
 
         switch (nameMessage){
             case REQ_COORDINATION_MESSAGE:
@@ -68,7 +68,7 @@ public class CPConsumer extends DefaultConsumer {
                         coordinator.addBlockedCP(reqFrom);
 
                     } else {
-                        //TODO se la rescue team è occupata ed è stata occupata una CP diversa da me allora lo stato del RT = AVAILABLE
+                        //TODO se la rescue team è occupata ed è stata occupata da CP diversa da me allora lo stato del RT = AVAILABLE
                         coordinator.sendReplayMessageTo(reqCoordinationMessage.getRescueTeamID(), reqFrom);
                     }
                 }
@@ -88,9 +88,7 @@ public class CPConsumer extends DefaultConsumer {
                 myCs = coordinator.getCsName();
 
                 if (!replayFrom.equals(this.cpID)){
-
                     System.out.println("[REPLAY] From: " + replayFrom + " To: "+ replayTo + " Timestamp: " + replayTimestamp + " Cs: " + replayCs + " RT Condition " + replayRTCondition);
-
                     if (myCondition == CoordinatorCondition.WANTED && myCs.equals(replayCs) && replayTo.equals(this.cpID)){
 
                         //TODO CONTROLLARE LO STATO DEL RS
@@ -105,23 +103,14 @@ public class CPConsumer extends DefaultConsumer {
                 }
                 break;
 
-        }
-
-      /*
-        switch (nameMessage) {
-            case COORDINATION_MESSAGE:
-                final CPCoordinationMessage cpCoordinationMessage = GsonUtils.fromGson(msg, CPCoordinationMessage.class);
-                System.out.println("RescueTeam name: " + cpCoordinationMessage.getRescueTeam().getName());
-                System.out.println("From: " + cpCoordinationMessage.getFrom());
-                System.out.println("To: " + cpCoordinationMessage.getTo());
-                break;
             case CONFIGURATION_MESSAGE:
                 final CPConfigurationMessage cpConfigurationMessage = GsonUtils.fromGson(msg, CPConfigurationMessage.class);
-                System.out.println("RescueTeam name: " + cpConfigurationMessage.getRescueTeamCollection().get(0).getName());
-                System.out.println("From: " + cpConfigurationMessage.getFrom());
-                System.out.println("To: " + cpConfigurationMessage.getTo());
+                System.out.println("[Configuration Message] RescueTeam name: " + cpConfigurationMessage.getRescueTeamCollection().get(0).getName() + " From: " + cpConfigurationMessage.getFrom()
+                         + " To: " +  cpConfigurationMessage.getTo());
+
                 break;
+
+
         }
-        */
     }
 }

@@ -25,7 +25,8 @@ public enum MessageType {
     FORWARD_MESSAGE("forward_message"),
     OBJECT_MODEL_MESSAGE("object_model_message"),
     CP_LOGIN_MESSAGE("cp_login_message"),
-    RESCUE_TEAMS_MESSAGE("rescue_teams_message");
+    RESCUE_TEAMS_MESSAGE("rescue_teams_message"),
+    RESCUE_TEAM_CONDITION("rescue_team_condition");
 
     private final String messageType;
 
