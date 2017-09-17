@@ -35,7 +35,7 @@ class LoginControllerImpl(private var mainController: MainControllerImpl,
       case MessageType.RESCUE_TEAMS_MESSAGE => { //TODO success
         //TODO set rescue teams list in main controller (with getter and setter)
         mainController.changeView("Home") // stop dialog and change view
-        mainController.cpID_(username) // set cpID in main controller
+        mainController.model.cpID = username // set cpID in main controller
       }
       case MessageType.ERROR_MESSAGE => {
         startWrongLoginDialog() // show ERROR -> change dialog
