@@ -414,6 +414,7 @@ case class AlertsService() extends ServiceResponseOrForward {
 object CivilProtectionService {
   private val WrongCpIdOrPassword = "Wrong cpID and/or password."
   private val DuplicatedTeamIDMessage: String = "Duplicated teamID."
+  private val DuplicatedEnrollmentMessage: String = "Duplicated enrollment."
 }
 
 /**
@@ -473,6 +474,19 @@ case class CivilProtectionService() extends ServiceResponseOrForward {
           case query: DBQueryException => throw query
           case duplicated: DBDuplicatedRecordException =>
             Option(new ErrorMessageImpl(CivilProtectionService.DuplicatedTeamIDMessage))
+        }
+      case MessageType.ENROLL_RESCUE_TEAM_MESSAGE =>
+        val message = GsonUtils.fromGson(jsonMessage, classOf[EnrollRescueTeamMessageImpl])
+        try {
+          val cpEnrollmentDao = (dbConnection getDAO DBConnection.Table.CP_ENROLLMENT).asInstanceOf[CpEnrollmentDao]
+          val cpEnrollment = new CpEnrollmentImpl(message.cpID, message.rescueTeamID)
+          cpEnrollmentDao insert cpEnrollment
+          Option(new SuccessfulMessageImpl())
+        } catch {
+          case connection: DBConnectionException => throw connection
+          case query: DBQueryException => throw query
+          case duplicated: DBDuplicatedRecordException =>
+            Option(new ErrorMessageImpl(CivilProtectionService.DuplicatedEnrollmentMessage))
         }
 
       case _ => throw new Exception
