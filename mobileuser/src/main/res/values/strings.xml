@@ -2,7 +2,10 @@
     <string name="app_name">DRescue</string>
 
     <string name="alert_negative_button">Cancel</string>
+    <string name="alert_sent">Alert sent!</string>
+    <string name="alert_sent_error">Error while sending the alert. Retry later.</string>
     <string name="alerts_error">Error in loading alerts.</string>
+    <string name="alerts_missing">No alerts in your district.</string>
     <string name="attention">Attention!</string>
     <string name="change_password">Change password</string>
     <string name="change_password_successful">Your password has been successfully changed</string>
@@ -62,7 +65,10 @@
     <string name="upvote_content_description">Upvote this alert</string>
     <string name="upvote_message">Do you want to upvote this alert?</string>
     <string name="upvotes_number">0</string>
-    <string name="upvote_successful">Upvote successful!</string>
+    <string name="upvote_sent">Upvote successful!</string>
+    <string name="upvote_sent_successful">Your upvote will be visible as soon as it is processed at next refresh.
+    </string>
+    <string name="upvote_sent_error">Error while sending the upvote. Retry later.</string>
     <string name="your_position">Your position</string>
 
 </resources>

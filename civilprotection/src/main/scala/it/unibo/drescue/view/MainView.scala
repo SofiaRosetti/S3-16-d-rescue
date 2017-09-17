@@ -6,39 +6,49 @@ import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.scene.Scene
 
-class MainView(login: LoginGrid,
+class MainView(loginGrid: LoginGrid,
+               loginController: LoginControllerImpl,
                controller: MainControllerImpl,
                homeController: HomeControllerImpl,
                newRescueController: NewRescueControllerImpl,
-               newTeamController: NewTeamControllerImpl,
+               enrollTeamControllerImpl: EnrollTeamControllerImpl,
                occupiedTeamsController: OccupiedTeamsControllerImpl) extends JFXApp {
 
+  var login = new LoginGrid(loginController)
   var home = new HomeGrid(homeController)
   var rescue = new NewRescueGrid(newRescueController)
-  var team = new EnrollTeamGrid(newTeamController)
+  var team = new EnrollTeamGrid(enrollTeamControllerImpl)
   var occTeams = new OccupiedTeamsGrid(occupiedTeamsController)
+  var manage = new ManageRescuesGrid(new ManageRescuesControllerImpl) // TODO remove new and pass controller through constructor
 
   def setStage(): Unit = {
     stage = new PrimaryStage {
       title = "D-rescue"
       resizable = false
       scene = new Scene {
-        content = login.grid
+        content = loginGrid.grid
       }
     }
   }
 
   def changeView(view: String): Unit = {
 
+    val LoginCase: String = "Login"
     val HomeCase: String = "Home"
     val RescueCase: String = "NewRescue"
     val TeamCase: String = "NewTeam"
     val OccTeamsCase: String = "OccupiedTeams"
+    val ManageRescuesCase: String = "ManageRescues"
 
     var newScene = new Scene {
-
+      // TODO remove not used case
       view match {
+        case LoginCase => {
+          login = new LoginGrid(loginController)
+          content = login.grid
+        }
         case HomeCase => {
+          homeController.startAlertsRequest()
           home = new HomeGrid(homeController)
           content = home.grid
         }
@@ -47,12 +57,16 @@ class MainView(login: LoginGrid,
           content = rescue.grid
         }
         case TeamCase => {
-          team = new EnrollTeamGrid(newTeamController)
+          team = new EnrollTeamGrid(enrollTeamControllerImpl)
           content = team.grid
         }
         case OccTeamsCase => {
           occTeams = new OccupiedTeamsGrid(occupiedTeamsController)
           content = occTeams.grid
+        }
+        case ManageRescuesCase => {
+          manage = new ManageRescuesGrid(new ManageRescuesControllerImpl)
+          content = manage.grid
         }
         case _ => println("error") // TODO throw and handle exception
       }
