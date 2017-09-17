@@ -113,7 +113,6 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
 
                 final Message message = new RequestAlertsMessageImpl(latitude, longitude).build();
 
-                setDoingRequest();
                 showProgressDialog();
 
                 new RabbitAsyncTask(QueueType.ALERTS_QUEUE.getQueueName(),
@@ -124,7 +123,6 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
                             public void onSuccessfulRequest(final String response) {
                                 UpvoteAlertActivity.this.swipeRefreshLayout.setRefreshing(false);
                                 dismissProgressDialog();
-                                setDoingRequest();
                                 if (MessageUtils.getMessageNameByJson(response) == MessageType.ALERTS_MESSAGE) {
                                     final AlertsMessageImpl alertsMessage = GsonUtils.fromGson(response, AlertsMessageImpl.class);
                                     final List<AlertImpl> list = alertsMessage.getAlerts();
@@ -140,7 +138,6 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
                             public void onErrorRequest(final String errorMessage) {
                                 UpvoteAlertActivity.this.swipeRefreshLayout.setRefreshing(false);
                                 dismissProgressDialog();
-                                setDoingRequest();
                                 showDialog(R.string.last_alerts, R.string.alerts_error);
                             }
 

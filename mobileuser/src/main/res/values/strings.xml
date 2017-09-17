@@ -8,6 +8,7 @@
     <string name="alerts_missing">No alerts in your district.</string>
     <string name="attention">Attention!</string>
     <string name="change_password">Change password</string>
+    <string name="change_password_successful">Your password has been successfully changed</string>
     <string name="confirm_password">Confirm password</string>
     <string name="description">Description:</string>
     <string name="description_hint">Enter a description of the event</string>
@@ -27,6 +28,7 @@
     <string name="icon_card_view">Icon of card view.</string>
     <string name="incorrect_email_format">Incorrect email format.</string>
     <string name="incorrect_login_data">Incorrect login data.</string>
+    <string name="incorrect_password_format">Incorrect password format (minimum length 6 characters).</string>
     <string name="incorrect_sign_up_data">Incorrect sign up data.</string>
     <string name="incorrect_upvote">You already upvote this alert.</string>
     <string name="last_alerts">Last alerts</string>
