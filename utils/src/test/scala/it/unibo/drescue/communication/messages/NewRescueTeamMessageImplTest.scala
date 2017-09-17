@@ -15,7 +15,7 @@ class NewRescueTeamMessageImplTest extends FunSuite {
 
   import NewRescueTeamMessageImplTest._
 
-  val newRescueTeamMessage: NewRescueTeamMessageImpl = new NewRescueTeamMessageImpl(
+  val newRescueTeamMessage: NewRescueTeamMessage = new NewRescueTeamMessage(
     rescueTeamID = RTId,
     rescueTeamName = RTName,
     rescueTeamLatitude = RTLatitude,
