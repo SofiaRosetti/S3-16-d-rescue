@@ -23,7 +23,7 @@ public class CoordinatorImpl implements Coordinator {
     private Timestamp reqTimestamp = null;
     private String myID = "";
     private String cs = "";
-    private Map<String, Boolean> pendingCPReplay; //Le Risp che devo ricevere prima di accedere alla Cs
+    private Map<String, Boolean> pendingCPReplay;
     private Set<String> blockedCP;
     private RabbitMQ connection;
 
