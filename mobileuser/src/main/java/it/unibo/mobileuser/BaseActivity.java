@@ -4,6 +4,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import it.unibo.mobileuser.utils.PreferencesKey;
+import it.unibo.mobileuser.utils.Utils;
 
 /**
  * Base activity from which every activity of the App extends.
@@ -11,7 +13,6 @@ import android.view.View;
 public class BaseActivity extends AppCompatActivity {
 
     private AlertDialog dialog;
-    private boolean isDoingRequest = false;
 
     /**
      * Shows a simple dialog with a title and a message.
@@ -45,6 +46,7 @@ public class BaseActivity extends AppCompatActivity {
         final View dialogView = inflater.inflate(R.layout.progress_bar, null);
         this.dialog = new AlertDialog.Builder(this)
                 .setView(dialogView)
+                .setCancelable(false)
                 .create();
         this.dialog.show();
     }
@@ -57,16 +59,12 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets true if needs to wait for download, otherwise false.
+     * Checks if a user is logged.
+     *
+     * @return true if the shared preferences are set, otherwise false.
      */
-    protected void setDoingRequest() {
-        this.isDoingRequest = !this.isDoingRequest;
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (!this.isDoingRequest) {
-            super.onBackPressed();
-        }
+    protected boolean checkIfUserIsLogged() {
+        final String userID = Utils.getUserDataFromSharedPreferences(getApplicationContext(), PreferencesKey.USER_ID);
+        return userID.length() != 0;
     }
 }

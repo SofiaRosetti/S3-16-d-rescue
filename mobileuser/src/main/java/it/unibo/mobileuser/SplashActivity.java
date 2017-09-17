@@ -7,8 +7,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import it.unibo.mobileuser.authentication.LoginActivity;
 import it.unibo.mobileuser.authentication.SignUpActivity;
-import it.unibo.mobileuser.utils.PreferencesKey;
-import it.unibo.mobileuser.utils.Utils;
 
 /**
  * Launcher activity of the App.
@@ -22,7 +20,7 @@ public class SplashActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        checkIfUserIsLogged();
+        isUserLogged();
 
         setToolbar(false);
 
@@ -45,6 +43,7 @@ public class SplashActivity extends ToolbarActivity {
     @Override
     protected void onResume() {
         setToolbarVisibility(false);
+        isUserLogged();
         super.onResume();
     }
 
@@ -68,11 +67,11 @@ public class SplashActivity extends ToolbarActivity {
     /**
      * Checks if a user is already logged when opening the app.
      */
-    private void checkIfUserIsLogged() {
-        final String userID = Utils.getUserDataFromSharedPreferences(getApplicationContext(), PreferencesKey.USER_ID);
-        if (userID.length() != 0) {
+    private void isUserLogged() {
+        if (checkIfUserIsLogged()) {
             goToMainActivity();
             finish();
         }
     }
+
 }

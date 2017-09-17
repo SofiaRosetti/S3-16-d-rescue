@@ -3,19 +3,23 @@ package it.unibo.mobileuser.alarm;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.*;
+import it.unibo.drescue.communication.builder.requests.NewAlertMessageBuilderImpl;
+import it.unibo.drescue.communication.messages.Message;
+import it.unibo.drescue.connection.QueueType;
 import it.unibo.mobileuser.R;
+import it.unibo.mobileuser.connection.RabbitPublishAsyncTask;
 import it.unibo.mobileuser.gps.GpsActivityImpl;
+import it.unibo.mobileuser.utils.PreferencesKey;
+import it.unibo.mobileuser.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A class that allows to show graphical interface to report new alarm and sends the alarm to server.
  */
 public class NewAlarmActivity extends GpsActivityImpl {
-
-    private static final double ERROR_VALUE = -2000;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -25,12 +29,14 @@ public class NewAlarmActivity extends GpsActivityImpl {
         setToolbar(true);
         getSupportActionBar().setTitle(R.string.new_alarm);
 
-        //TODO: Change with an array of events coming from database
+        final String userID = Utils.getUserDataFromSharedPreferences(getApplicationContext(), PreferencesKey.USER_ID);
+
+        final List<String> arrayList = new ArrayList<>();
+        arrayList.addAll(Utils.getDataSetFromSharedPreferences(getApplicationContext()));
+
         final Spinner spinner = (Spinner) findViewById(R.id.event_type_spinner);
-        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.event_type_array,
-                R.layout.spinner_event_type_item);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                NewAlarmActivity.this, R.layout.spinner_event_type_item, arrayList);
         adapter.setDropDownViewResource(R.layout.spinner_event_type_dropdown_item);
         spinner.setAdapter(adapter);
 
@@ -48,34 +54,38 @@ public class NewAlarmActivity extends GpsActivityImpl {
                 final String longitudeString = longitudeTextView.getText().toString();
                 final double longitude = convertCoordinate(longitudeString);
                 if (longitude != ERROR_VALUE) {
-                    /* TODO: insert userID and event type
-                    Message message = new NewAlertMessageBuilderImpl()
-                            .setUserID()
-                            .setEventType()
+
+                    final Message message = new NewAlertMessageBuilderImpl()
+                            .setUserID(Integer.valueOf(userID))
+                            .setEventType(eventType)
                             .setLatitude(latitude)
                             .setLongitude(longitude)
                             .build();
-                     */
+
+                    sendNewAlert(message);
                 }
             }
         });
     }
 
     /**
-     * Converts the coordinate from string to double. If the coordinate is not
-     * a double value, it shows a message.
+     * Performs the sending of a new alert.
      *
-     * @param value the coordinate to convert
-     * @return the converted coordinate
+     * @param message message containing the alert
      */
-    private double convertCoordinate(final String value) {
-        double convertedValue = ERROR_VALUE;
-        try {
-            convertedValue = Double.parseDouble(value);
-        } catch (final NumberFormatException ex) {
-            showDialog(R.string.attention, R.string.gps_unavailable);
-        }
-        return convertedValue;
+    private void sendNewAlert(final Message message) {
+
+        new RabbitPublishAsyncTask(QueueType.ALERTS_QUEUE.getQueueName(),
+                message,
+                bool -> {
+                    if (bool) {
+                        Toast.makeText(NewAlarmActivity.this, R.string.alert_sent, Toast.LENGTH_LONG).show();
+                        finish();
+                    } else {
+                        Toast.makeText(NewAlarmActivity.this, R.string.alert_sent_error, Toast.LENGTH_LONG).show();
+                    }
+
+                }).execute();
     }
 
 

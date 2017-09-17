@@ -14,6 +14,8 @@ public class StringUtils {
 
     private static final String EMAIL_REGEX = "^[-\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,}$";
     private static final String MESSAGE_TYPE = "messageType";
+    private static final String PASSWORD_REGEX = "^[a-zA-Z0-9]*$";
+    private static final int MIN_LENGTH_PASSWORD = 6;
 
     /**
      * Checks if a string is null or empty
@@ -38,6 +40,18 @@ public class StringUtils {
         final Matcher matcher = pattern.matcher(charSequenceEmail);
 
         return matcher.matches();
+    }
+
+    /**
+     * Check if a string is in a valid password format.
+     *
+     * @param password password string
+     * @return true if password lenght is correct and password matches a regex, otherwise false
+     */
+    public static boolean isAValidPassword(final String password) {
+        final Pattern pattern = Pattern.compile(PASSWORD_REGEX);
+        final Matcher matcher = pattern.matcher(password);
+        return password.length() >= MIN_LENGTH_PASSWORD && matcher.matches();
     }
 
     /**

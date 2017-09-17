@@ -60,11 +60,16 @@ trait ServiceResponse extends ServiceOperation {
 trait ServiceForward extends ServiceOperation {
 
   override def handleDBresult(rabbitMQ: RabbitMQ, properties: AMQP.BasicProperties, message: Message): Unit = {
-    val forwardObjectMessage = message.asInstanceOf[ForwardObjectMessage]
-    val objectModelMessage = new ObjectModelMessageImpl(forwardObjectMessage.objectModel)
-    forwardObjectMessage.cpIDList foreach (cpID => {
-      rabbitMQ sendMessage("", cpID, null, objectModelMessage)
-    })
+    val forwardObjectMessageType = MessageType.FORWARD_MESSAGE.getMessageType
+    message.getMessageType match {
+      case `forwardObjectMessageType` =>
+        val forwardObjectMessage = message.asInstanceOf[ForwardObjectMessage]
+        val objectModelMessage = new ObjectModelMessageImpl(forwardObjectMessage.objectModel)
+        forwardObjectMessage.cpIDList foreach (cpID => {
+          rabbitMQ sendMessage("", cpID, null, objectModelMessage)
+        })
+      case _ => //do nothing
+    }
   }
 
 }
@@ -84,6 +89,8 @@ trait ServiceResponseOrForward extends ServiceResponse with ServiceForward {
   }
 
 }
+
+import java.util
 
 import it.unibo.drescue.communication.GsonUtils
 import it.unibo.drescue.communication.messages.requests._
@@ -145,10 +152,10 @@ case class MobileuserService() extends ServiceResponse {
           .createUserImpl()
         try {
           val userDao = (dbConnection getDAO DBConnection.Table.USER).asInstanceOf[UserDao]
-          val userSelected = (userDao login user).asInstanceOf[User]
+          val userSelected = (userDao login user).asInstanceOf[UserImpl]
           val eventTypeDao = (dbConnection getDAO DBConnection.Table.EVENT_TYPE).asInstanceOf[EventTypeDao]
           val eventTypeList = eventTypeDao.findAll
-          Option(new ResponseLoginMessageImpl(userSelected, eventTypeList))
+          Option(new ResponseLoginMessageImpl(userSelected, eventTypeList.asInstanceOf[util.List[EventTypeImpl]]))
         } catch {
           case connection: DBConnectionException => throw connection
           case query: DBQueryException => throw query
@@ -210,8 +217,6 @@ case class MobileuserService() extends ServiceResponse {
   }
 
 }
-
-import java.util
 
 import scala.collection.mutable.ListBuffer
 
@@ -422,28 +427,14 @@ case class CivilProtectionService() extends ServiceResponseOrForward {
     messageName match {
 
       case MessageType.CP_LOGIN_MESSAGE =>
-
         val login = GsonUtils.fromGson(jsonMessage, classOf[CpLoginMessageImpl])
         val cp = new CivilProtectionImpl(login.cpID, login.password)
         try {
-          //val cpDao = (dbConnection getDAO DBConnection.Table.CIVIL_PROTECTION).asInstanceOf[CivilProtectionDao]
-          //val cpSelected = (cpDao login cp).asInstanceOf[CivilProtection]
-          //val cpEnrollmentDao = (dbConnection getDAO DBConnection.Table.CP_ENROLLMENT).asInstanceOf[CpEnrollmentDao]
-          //TODO nested query that return the list of rescue teams enrolled to this cp
-
-          val RT = new RescueTeamImplBuilder()
-            .setName("RT1")
-            .setLatitude(44.21365)
-            .setLongitude(40.85479)
-            .setPassword("passwordRT")
-            .setPhoneNumber("3657778845")
-            .setRescueTeamID("RTID")
-            .createRescueTeamImpl()
-
-          val RTList: java.util.List[RescueTeam] = new util.ArrayList[RescueTeam]()
-          RTList add RT
-
-          Option(new RescueTeamsMessageImpl(RTList))
+          val cpDao = (dbConnection getDAO DBConnection.Table.CIVIL_PROTECTION).asInstanceOf[CivilProtectionDao]
+          val cpSelected = (cpDao login cp).asInstanceOf[CivilProtection]
+          val cpEnrollmentDao = (dbConnection getDAO DBConnection.Table.CP_ENROLLMENT).asInstanceOf[CpEnrollmentDao]
+          val rescueTeamsList = cpEnrollmentDao.findAllRescueTeamGivenACp(cp.getCpID, true)
+          Option(new RescueTeamsMessageImpl(rescueTeamsList))
         } catch {
           case connection: DBConnectionException => throw connection
           case query: DBQueryException => throw query
@@ -451,6 +442,7 @@ case class CivilProtectionService() extends ServiceResponseOrForward {
             Option(new ErrorMessageImpl(CivilProtectionService.WrongCpIdOrPassword))
         }
 
+      case _ => throw new Exception
     }
   }
 }

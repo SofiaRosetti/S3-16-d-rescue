@@ -25,6 +25,7 @@ public class MainActivity extends GpsActivityImpl {
         setContentView(R.layout.activity_main);
 
         setToolbar(false);
+        goToSplashActivity();
 
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -45,6 +46,24 @@ public class MainActivity extends GpsActivityImpl {
         final RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder> adapter = new RecyclerViewAdapter(data, onClickListener);
         recyclerView.setAdapter(adapter);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setToolbar(false);
+        goToSplashActivity();
+    }
+
+    /**
+     * Go to Splash Activity because the user is no longer logged.
+     */
+    private void goToSplashActivity() {
+        if (!checkIfUserIsLogged()) {
+            final Intent intent = new Intent(MainActivity.this, SplashActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     /**

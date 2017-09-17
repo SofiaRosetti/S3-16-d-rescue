@@ -47,19 +47,23 @@ public class SignUpActivity extends ToolbarActivity {
                     StringUtils.isAValidString(email) && StringUtils.isAValidString(phone) &&
                     StringUtils.isAValidString(password) && StringUtils.isAValidString(confirmPassword)) {
                 if (StringUtils.isAValidEmail(email)) {
-                    if (password.equals(confirmPassword)) {
+                    if (StringUtils.isAValidPassword(password)) {
+                        if (password.equals(confirmPassword)) {
 
-                        final Message message = new SignUpMessageBuilderImpl()
-                                .setName(name)
-                                .setSurname(surname)
-                                .setEmail(email)
-                                .setPhoneNumber(phone)
-                                .setPassword(password)
-                                .build();
+                            final Message message = new SignUpMessageBuilderImpl()
+                                    .setName(name)
+                                    .setSurname(surname)
+                                    .setEmail(email)
+                                    .setPhoneNumber(phone)
+                                    .setPassword(password)
+                                    .build();
 
-                        signUp(message);
+                            signUp(message);
+                        } else {
+                            showDialog(R.string.sign_up, R.string.password_mismatch);
+                        }
                     } else {
-                        showDialog(R.string.sign_up, R.string.password_mismatch);
+                        showDialog(R.string.sign_up, R.string.incorrect_password_format);
                     }
                 } else {
                     showDialog(R.string.sign_up, R.string.incorrect_email_format);
@@ -77,7 +81,6 @@ public class SignUpActivity extends ToolbarActivity {
      */
     private void signUp(final Message message) {
 
-        setDoingRequest();
         showProgressDialog();
 
         new RabbitAsyncTask(QueueType.MOBILEUSER_QUEUE.getQueueName(),
@@ -87,7 +90,6 @@ public class SignUpActivity extends ToolbarActivity {
                     @Override
                     public void onSuccessfulRequest(final String response) {
                         dismissProgressDialog();
-                        setDoingRequest();
                         if (MessageUtils.getMessageNameByJson(response) == MessageType.SUCCESSFUL_MESSAGE) {
                             Toast.makeText(SignUpActivity.this, R.string.sign_up_successful, Toast.LENGTH_LONG).show();
                             finish();
@@ -97,7 +99,6 @@ public class SignUpActivity extends ToolbarActivity {
                     @Override
                     public void onErrorRequest(final String errorMessage) {
                         dismissProgressDialog();
-                        setDoingRequest();
                         showDialog(R.string.sign_up, errorMessage);
                     }
 

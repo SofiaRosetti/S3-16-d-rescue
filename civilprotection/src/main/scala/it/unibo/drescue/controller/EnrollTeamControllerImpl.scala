@@ -2,10 +2,12 @@ package it.unibo.drescue.controller
 
 import it.unibo.drescue.model.ObjectModel
 
-class NewTeamControllerImpl(private var model: List[ObjectModel],
-                            private var mainController: MainControllerImpl) {
-
+class EnrollTeamControllerImpl(private var model: List[ObjectModel],
+                               private var mainController: MainControllerImpl) {
+  
   //TODO start here a request for GetAllRescueTeam
+
+  def addPress(): Unit = ???
 
   //TODO addPress()
   //check Input insert
@@ -22,7 +24,7 @@ class NewTeamControllerImpl(private var model: List[ObjectModel],
     // ERROR -> dialog
   }
 
-  def cancelPress() = {
+  def backPress() = {
     mainController.changeView("Home")
   }
 

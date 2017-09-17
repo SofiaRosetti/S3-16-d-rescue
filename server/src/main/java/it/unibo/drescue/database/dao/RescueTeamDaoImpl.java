@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class RescueTeamDaoImpl extends LoggableDaoAbstract<Alert> implements RescueTeamDao {
-    private static final String TABLENAME = "RESCUE_TEAM";
+    protected static final String TABLENAME = "RESCUE_TEAM";
 
     public RescueTeamDaoImpl(final Connection connection) {
         super(connection, TABLENAME);

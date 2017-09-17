@@ -32,4 +32,7 @@ object ViewConstants {
   val WidthHeight250 = 250
   val WidthHeight300 = 300
   val WidthHeight400 = 400
+  val WidthHeight500 = 500
+  val WidthHeight600 = 600
+  val WidthHeight1000 = 1000
 }
