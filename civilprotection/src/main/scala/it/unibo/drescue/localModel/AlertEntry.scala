@@ -18,8 +18,8 @@ class AlertEntry(alertID_ : Int,
   val latitude = new StringProperty(this, "latitude", latitude_.toString)
   val longitude = new StringProperty(this, "longitude", longitude_.toString)
   val userID = new StringProperty(this, "userID", userID_.toString)
-  val eventName = new StringProperty(this, "eventName", eventName)
-  val districtID = new StringProperty(this, "districtID", districtID)
+  val eventName = new StringProperty(this, "eventName", eventName_)
+  val districtID = new StringProperty(this, "districtID", districtID_)
   val upvotes = new StringProperty(this, "upvotes", upvotes_.toString)
 
 }
