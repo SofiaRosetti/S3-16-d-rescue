@@ -10,6 +10,13 @@ import it.unibo.drescue.view.CustomDialog
 import scalafx.scene.control.Alert
 
 object LoginControllerImpl {
+
+  val Login = "Login"
+  val Home = "Home"
+
+  val EmptyLogin = "EmptyLogin"
+  val InfoLogin = "InfoLogin"
+  val WrongLogin = "WrongLogin"
 }
 
 class LoginControllerImpl(private var model: List[ObjectModel],
@@ -36,7 +43,7 @@ class LoginControllerImpl(private var model: List[ObjectModel],
 
       case MessageType.RESCUE_TEAMS_MESSAGE => { //TODO success
         //TODO set rescue teams list in main controller (with getter and setter)
-        mainController.changeView("Home") // stop dialog and change view
+        mainController.changeView(LoginControllerImpl.Home) // stop dialog and change view
         mainController.cpID_(username) // set cpID in main controller
       }
       case MessageType.ERROR_MESSAGE => {
@@ -49,18 +56,18 @@ class LoginControllerImpl(private var model: List[ObjectModel],
   }
 
   def startLoadingDialog() = {
-    dialog = new CustomDialog(mainController).createDialog("InfoLogin")
+    dialog = new CustomDialog(mainController).createDialog(LoginControllerImpl.InfoLogin)
     dialog.show()
   }
 
   def startWrongLoginDialog() = {
-    mainController.changeView("Login")
-    dialog = new CustomDialog(mainController).createDialog("WrongLogin")
+    mainController.changeView(LoginControllerImpl.Login)
+    dialog = new CustomDialog(mainController).createDialog(LoginControllerImpl.WrongLogin)
     dialog.showAndWait()
   }
 
   def startEmptyLoginDialog() = {
-    dialog = new CustomDialog(mainController).createDialog("EmptyLogin")
+    dialog = new CustomDialog(mainController).createDialog(LoginControllerImpl.EmptyLogin)
     dialog.showAndWait()
   }
 
