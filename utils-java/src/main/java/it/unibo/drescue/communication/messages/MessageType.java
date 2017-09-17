@@ -25,6 +25,7 @@ public enum MessageType {
     CP_LOGIN_MESSAGE("cp_login_message"),
     RESCUE_TEAMS_MESSAGE("rescue_teams_message"),
     RESCUE_TEAMS_NOT_ENROLLED_MESSAGE("rescue_teams_not_enrolled_message"),
+    ENROLL_RESCUE_TEAM_MESSAGE("enroll_rescue_team_message"),
     ADD_RESCUE_TEAM_MESSAGE("add_rescue_team_message"),
     FAKE_RPC_MESSAGE("fake_rpc_message"),
     FAKE_FORWARD_MESSAGE("fake_forward_message");
