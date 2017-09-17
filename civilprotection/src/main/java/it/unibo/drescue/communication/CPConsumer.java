@@ -7,12 +7,17 @@ import com.rabbitmq.client.Envelope;
 import it.unibo.drescue.communication.messages.*;
 import it.unibo.drescue.utils.Coordinator;
 import it.unibo.drescue.utils.CoordinatorCondition;
+import it.unibo.drescue.utils.CoordinatorImpl;
+import it.unibo.drescue.utils.RescueTeamCondition;
 
 
 import java.io.IOException;
 import java.sql.Timestamp;
 
 public class CPConsumer extends DefaultConsumer {
+
+    private String cpID;
+
     /**
      * Constructs a new instance and records its association to the passed-in channel.
      *
@@ -22,6 +27,10 @@ public class CPConsumer extends DefaultConsumer {
         super(channel);
     }
 
+    public void setCpID(final String cpID){
+        this.cpID = cpID;
+    }
+
     @Override
     public void handleDelivery(final String consumerTag,
                                final Envelope envelope,
@@ -29,10 +38,76 @@ public class CPConsumer extends DefaultConsumer {
                                final byte[] body)
             throws IOException {
         final String msg = new String(body, "UTF-8");
-        System.out.println("received message :[ " + msg + " ]");
+        //System.out.println("received message :[ " + msg + " ]");
         final MessageType nameMessage = MessageUtils.getMessageNameByJson(msg);
 
-        //TODO Refactor
+        Coordinator coordinator = CoordinatorImpl.getInstance();
+        CoordinatorCondition myCondition = null;
+        String myCs = "";
+        Timestamp myTimestamp = null;
+
+        switch (nameMessage){
+            case REQ_COORDINATION_MESSAGE:
+                final ReqCoordinationMessage reqCoordinationMessage = GsonUtils.fromGson(msg, ReqCoordinationMessage.class);
+
+                Timestamp reqTimestamp = reqCoordinationMessage.getTimestamp();
+                String reqFrom = reqCoordinationMessage.getFrom();
+                String reqTo = reqCoordinationMessage.getTo();
+                String reqCs = reqCoordinationMessage.getRescueTeamID();
+
+                if (!reqFrom.equals(this.cpID)){
+
+                    System.out.println("[REQUEST] From: " + reqFrom + " To: "+ reqTo + " Timestamp: " + reqTimestamp + " Cs: "+ reqCs );
+
+                    myCondition = coordinator.getCondition();
+                    myCs = coordinator.getCsName();
+                    myTimestamp = coordinator.getReqTimestamp();
+
+                    if ((myCondition == CoordinatorCondition.HELD && reqCs.equals(myCs)) || (myCondition == CoordinatorCondition.WANTED && reqCs.equals(myCs)
+                            && reqTimestamp.after(myTimestamp))){
+                        coordinator.addBlockedCP(reqFrom);
+
+                    } else {
+                        //TODO se la rescue team è occupata ed è stata occupata una CP diversa da me allora lo stato del RT = AVAILABLE
+                        coordinator.sendReplayMessageTo(reqCoordinationMessage.getRescueTeamID(), reqFrom);
+                    }
+                }
+                break;
+
+            case REPLAY_COORDINATION_MESSAGE:
+
+                final ReplayCoordinationMessage replayMessage = GsonUtils.fromGson(msg, ReplayCoordinationMessage.class);
+
+                Timestamp replayTimestamp = replayMessage.getTimestamp();
+                String replayFrom = replayMessage.getFrom();
+                String replayTo = replayMessage.getTo();
+                String replayCs = replayMessage.getRescueTeamID();
+                RescueTeamCondition replayRTCondition = replayMessage.getRTCondition();
+
+                myCondition = coordinator.getCondition();
+                myCs = coordinator.getCsName();
+
+                if (!replayFrom.equals(this.cpID)){
+
+                    System.out.println("[REPLAY] From: " + replayFrom + " To: "+ replayTo + " Timestamp: " + replayTimestamp + " Cs: " + replayCs + " RT Condition " + replayRTCondition);
+
+                    if (myCondition == CoordinatorCondition.WANTED && myCs.equals(replayCs) && replayTo.equals(this.cpID)){
+
+                        //TODO CONTROLLARE LO STATO DEL RS
+                        if (replayRTCondition == RescueTeamCondition.AVAILABLE){
+                            coordinator.updatePendingCivilProtectionReplayStructure(replayFrom);
+                        }
+                        else {
+                            coordinator.setCondition(CoordinatorCondition.DETACHED);
+                        }
+
+                    }
+                }
+                break;
+
+        }
+
+      /*
         switch (nameMessage) {
             case COORDINATION_MESSAGE:
                 final CPCoordinationMessage cpCoordinationMessage = GsonUtils.fromGson(msg, CPCoordinationMessage.class);
@@ -46,26 +121,7 @@ public class CPConsumer extends DefaultConsumer {
                 System.out.println("From: " + cpConfigurationMessage.getFrom());
                 System.out.println("To: " + cpConfigurationMessage.getTo());
                 break;
-           /* case REQ_COORDINATION_MESSAGE:
-
-                //TODO Refactor
-                final ReqCoordinationMessage reqCoordinationMessage = GsonUtils.fromGson(msg, ReqCoordinationMessage.class);
-                String civilProtectionID = reqCoordinationMessage.getFrom();
-                String rescueTeamID = reqCoordinationMessage.getRescueTeamID();
-                Timestamp timestamp = reqCoordinationMessage.getTimestamp();
-
-                Coordinator coordinator = CoordinatorImpl.getInstance();
-                if (coordinator.getCondition() == CoordinatorCondition.WANTED && (timestamp.after(coordinator.getReqTimestamp()) ||
-                        (timestamp.equals(coordinator.getReqTimestamp() ) )) ) {
-                    //TODO add RescueTeam to deferRescueTeam
-                }
-                else{
-                    //TODO send a replayCoordinationMessage
-                }
-
-            case REPLAY_COORDINATION_MESSAGE:
-                //TODO update pendingCPReplay
-*/
         }
+        */
     }
 }

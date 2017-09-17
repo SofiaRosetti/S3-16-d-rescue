@@ -4,11 +4,9 @@ public class ReqCoordinationMessage extends CoordinationMessage {
 
 
     /**
-     * Creates a simple routing message of the given type.
      *
-     * @param messageType type of the message
      */
-    public ReqCoordinationMessage(MessageType messageType) {
-        super(messageType.REQ_COORDINATION_MESSAGE);
+    public ReqCoordinationMessage() {
+        super(MessageType.REQ_COORDINATION_MESSAGE);
     }
 }

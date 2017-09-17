@@ -1,12 +1,25 @@
 package it.unibo.drescue.communication.messages;
 
+import it.unibo.drescue.utils.RescueTeamCondition;
+
 public class ReplayCoordinationMessage extends CoordinationMessage {
+
+    private RescueTeamCondition condition;
+
     /**
-     * Creates a simple routing message of the given type.
      *
-     * @param messageType type of the message
      */
-    public ReplayCoordinationMessage(MessageType messageType) {
-        super(messageType.REPLAY_COORDINATION_MESSAGE);
+    public ReplayCoordinationMessage() {
+        super(MessageType.REPLAY_COORDINATION_MESSAGE);
     }
+
+    public void setRTcondition(RescueTeamCondition condition){
+        this.condition = condition;
+    }
+
+    public RescueTeamCondition getRTCondition(){
+        return this.condition;
+    }
+
+
 }

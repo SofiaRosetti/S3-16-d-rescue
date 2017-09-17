@@ -64,7 +64,7 @@ public class CPMain {
 
 
         //TODO Make a server request in order to get the cp's rescue team
-        final String[] bindingQueue = {"RT001", "RT002",};
+        final String[] bindingQueue = {"RT001", "RT002"};
 
         RabbitMQConnectionImpl connection = null;
         RabbitMQImpl rabbitMQ = null;
@@ -84,7 +84,7 @@ public class CPMain {
             rabbitMQ.addConsumer(consumer, queueName);
 
             rabbitMQ.sendMessage(EXCHANGE_NAME,  bindingQueue[1], null, coordinationMessage);
-            rabbitMQ.sendMessage(EXCHANGE_NAME,  bindingQueue[1], null, configurationMessage);
+            rabbitMQ.sendMessage(EXCHANGE_NAME,  bindingQueue[0], null, configurationMessage);
 
         }
         catch (Exception e){
