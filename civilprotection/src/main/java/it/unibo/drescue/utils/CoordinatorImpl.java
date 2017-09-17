@@ -8,8 +8,11 @@ import java.sql.Timestamp;
 import java.util.*;
 
 /**
- *  Una Cs per RescueTeam
- *  Ogni CP accede ad una cs alla volta (il coordinator mantiene le informazioni di 1 sola cs)
+ *
+ *
+ *  It is a singleton that keep the process' state in order  to ensure communication and coordination with other civil protection
+ *
+ *  The process can be in one critical section  at a time (the coordinator keep the state about one critical section)
  */
 public class CoordinatorImpl implements Coordinator {
 
@@ -100,16 +103,16 @@ public class CoordinatorImpl implements Coordinator {
 
     @Override
     public void updatePendingCivilProtectionReplayStructure(String civilProtectionID) {
-        boolean ok = true;
+        boolean allReplay = true;
         if (this.pendingCPReplay.get(civilProtectionID)!= null){
             this.pendingCPReplay.put(civilProtectionID, true);
         }
         for (String s: pendingCPReplay.keySet()) {
             if (pendingCPReplay.get(s)== false){
-                ok = false;
+                allReplay = false;
             }
         }
-        if (ok == true){
+        if (allReplay == true){
             this.condition = CoordinatorCondition.HELD;
             System.out.println("change condition to HELD");
         }

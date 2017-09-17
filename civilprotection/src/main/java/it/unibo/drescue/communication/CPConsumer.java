@@ -68,7 +68,7 @@ public class CPConsumer extends DefaultConsumer {
                         coordinator.addBlockedCP(reqFrom);
 
                     } else {
-                        //TODO se la rescue team è occupata ed è stata occupata da CP diversa da me allora lo stato del RT = AVAILABLE
+                        //TODO se la rescue team è occupata, ed è stata occupata da altre CP  allora settare lo stato del RT = AVAILABLE
                         coordinator.sendReplayMessageTo(reqCoordinationMessage.getRescueTeamID(), reqFrom);
                     }
                 }
@@ -91,7 +91,7 @@ public class CPConsumer extends DefaultConsumer {
                     System.out.println("[REPLAY] From: " + replayFrom + " To: "+ replayTo + " Timestamp: " + replayTimestamp + " Cs: " + replayCs + " RT Condition " + replayRTCondition);
                     if (myCondition == CoordinatorCondition.WANTED && myCs.equals(replayCs) && replayTo.equals(this.cpID)){
 
-                        //TODO CONTROLLARE LO STATO DEL RS
+                        //TODO Check RescueTeam state (if state = Occupied then update coordination state)
                         if (replayRTCondition == RescueTeamCondition.AVAILABLE){
                             coordinator.updatePendingCivilProtectionReplayStructure(replayFrom);
                         }

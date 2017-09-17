@@ -18,7 +18,7 @@ public class CPCoordinationMessageTest {
     private static final String RESCUE_TEAM_PASSWORD = "test_password";
     private static final String RESCUE_TEAM_PHONE_NUMBER = "test_phone_number";
 
-    private RescueTeamConditionMessage cpCoordinationMessage;
+    private CPCoordinationMessage cpCoordinationMessage;
 
     @Before
     public void build() {
@@ -30,7 +30,7 @@ public class CPCoordinationMessageTest {
                 .setPhoneNumber(RESCUE_TEAM_PHONE_NUMBER)
                 .createRescueTeamImpl();
 
-        this.cpCoordinationMessage = (RescueTeamConditionMessage) new CPCoordinationMessageBuilderImpl()
+        this.cpCoordinationMessage = (CPCoordinationMessage) new CPCoordinationMessageBuilderImpl()
                 .setRescueTeam(rescueTeam)
                 .setFrom(FROM)
                 .setTo(TO)
