@@ -5,7 +5,7 @@ import it.unibo.drescue.communication.messages._
 import it.unibo.drescue.communication.messages.response.ObjectModelMessageImpl
 import it.unibo.drescue.database.DBConnection
 import it.unibo.drescue.database.exceptions._
-import it.unibo.drescue.utils._
+import it.unibo.drescue.geocoding.{GeocodingException, GeocodingImpl}
 
 /**
   * Trait modelling a general service to accessDB and handle the result.
@@ -20,7 +20,7 @@ sealed trait ServiceOperation {
     * @throws it.unibo.drescue.database.exceptions.DBConnectionException     if an error occur in DB connection
     * @throws it.unibo.drescue.database.exceptions.DBNotFoundRecordException if an error occur while searching an object
     * @throws it.unibo.drescue.database.exceptions.DBQueryException          if an error occur while executing a query
-    * @throws it.unibo.drescue.utils.GeocodingException                      if an error occur while executing geocoding operations
+    * @throws it.unibo.drescue.geocoding.GeocodingException                  if an error occur while executing geocoding operations
     * @throws java.lang.Exception                                            if an unknown error occur
     * @return message to send as a response or forward
     */
@@ -254,7 +254,7 @@ object AlertsService {
     *
     * @param latitude
     * @param longitude
-    * @throws it.unibo.drescue.utils.GeocodingException
+    * @throws it.unibo.drescue.geocoding.GeocodingException
     * @return the string representing the district
     */
   @throws(classOf[GeocodingException])
