@@ -40,15 +40,19 @@ public class ChangePasswordActivity extends ToolbarActivity {
             final String newPasswordConfirmText = Utils.getEditTextString(newPasswordConfirm);
             if (StringUtils.isAValidString(oldPasswordText) && StringUtils.isAValidString(newPasswordText)
                     && StringUtils.isAValidString(newPasswordConfirmText)) {
-                if (newPasswordText.equals(newPasswordConfirmText)) {
-                    final Message message = new ChangePasswordMessageBuilderImpl()
-                            .setUserEmail(Utils.getUserDataFromSharedPreferences(getApplicationContext(), PreferencesKey.USER_EMAIL))
-                            .setOldPassword(oldPasswordText)
-                            .setNewPassword(newPasswordText)
-                            .build();
-                    changePassword(message);
+                if (StringUtils.isAValidPassword(oldPasswordText) && StringUtils.isAValidPassword(newPasswordText)) {
+                    if (newPasswordText.equals(newPasswordConfirmText)) {
+                        final Message message = new ChangePasswordMessageBuilderImpl()
+                                .setUserEmail(Utils.getUserDataFromSharedPreferences(getApplicationContext(), PreferencesKey.USER_EMAIL))
+                                .setOldPassword(oldPasswordText)
+                                .setNewPassword(newPasswordText)
+                                .build();
+                        changePassword(message);
+                    } else {
+                        showDialog(R.string.change_password, R.string.password_mismatch);
+                    }
                 } else {
-                    showDialog(R.string.change_password, R.string.password_mismatch);
+                    showDialog(R.string.change_password, R.string.incorrect_password_format);
                 }
             } else {
                 showDialog(R.string.change_password, R.string.fill_fields);

@@ -28,6 +28,7 @@
     <string name="icon_card_view">Icon of card view.</string>
     <string name="incorrect_email_format">Incorrect email format.</string>
     <string name="incorrect_login_data">Incorrect login data.</string>
+    <string name="incorrect_password_format">Incorrect password format (minimum length 6 characters).</string>
     <string name="incorrect_sign_up_data">Incorrect sign up data.</string>
     <string name="incorrect_upvote">You already upvote this alert.</string>
     <string name="last_alerts">Last alerts</string>

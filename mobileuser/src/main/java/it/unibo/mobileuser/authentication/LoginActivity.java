@@ -44,7 +44,7 @@ public class LoginActivity extends ToolbarActivity {
             final String email = Utils.getEditTextString(emailEditText);
             final String password = Utils.getEditTextString(passwordEditText);
             if (StringUtils.isAValidString(email) && StringUtils.isAValidString(password)
-                    && StringUtils.isAValidEmail(email)) {
+                    && StringUtils.isAValidEmail(email) && StringUtils.isAValidPassword(password)) {
                 final Message message = new LoginMessageImpl(email, password);
                 login(message);
             } else {
