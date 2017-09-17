@@ -4,7 +4,6 @@ import java.util.concurrent.{ExecutorService, Executors, Future}
 
 import it.unibo.drescue.communication.messages.{CpLoginMessageImpl, Message, MessageType, MessageUtils}
 import it.unibo.drescue.connection.{RabbitMQImpl, RequestHandler}
-import it.unibo.drescue.model.ObjectModel
 import it.unibo.drescue.view.CustomDialog
 
 import scalafx.scene.control.Alert
@@ -12,8 +11,7 @@ import scalafx.scene.control.Alert
 object LoginControllerImpl {
 }
 
-class LoginControllerImpl(private var model: List[ObjectModel],
-                          private var mainController: MainControllerImpl,
+class LoginControllerImpl(private var mainController: MainControllerImpl,
                           val channel: RabbitMQImpl
                          ) {
 

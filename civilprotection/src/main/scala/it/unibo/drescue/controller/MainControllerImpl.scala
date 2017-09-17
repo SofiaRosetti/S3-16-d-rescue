@@ -1,10 +1,10 @@
 package it.unibo.drescue.controller
 
 import it.unibo.drescue.connection.{RabbitMQConnectionImpl, RabbitMQImpl}
-import it.unibo.drescue.model.ObjectModel
+import it.unibo.drescue.localModel.CivilProtectionData
 import it.unibo.drescue.view.MainView
 
-class MainControllerImpl(private var model: List[ObjectModel]) {
+class MainControllerImpl(var model: CivilProtectionData) {
 
   var connection: RabbitMQConnectionImpl = null
   var loginChannel: RabbitMQImpl = null
