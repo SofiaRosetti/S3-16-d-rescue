@@ -25,9 +25,11 @@ public class GpsListener implements LocationListener {
     @Override
     public void onLocationChanged(final Location location) {
         if (location != null) {
-            setCoordinates(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
+            setCoordinates(String
+                    .valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
         } else {
-            setCoordinates(this.gpsActivity.getResources().getString(R.string.location_not_available));
+            setCoordinates(this.gpsActivity.getResources()
+                    .getString(R.string.location_not_available));
         }
     }
 
