@@ -16,6 +16,8 @@ configure(subprojects.findAll()) {
         if (it.name != 'utils-java') {
             apply plugin: 'scala'
 
+            scaladoc.destinationDir = file("docs/scala/")
+
             dependencies {
                 compile 'org.scala-lang:scala-library:2.12.2'
                 testCompile group: 'org.scalatest', name: 'scalatest_2.12', version: '3.0.1'
@@ -23,6 +25,8 @@ configure(subprojects.findAll()) {
         }
 
         apply plugin: 'java'
+
+        javadoc.destinationDir = file("docs/java/")
 
         sourceCompatibility = 1.8
 
@@ -36,4 +40,4 @@ configure(subprojects.findAll()) {
 
 
 
-defaultTasks('clean', 'build')
+defaultTasks('clean', 'build', 'javadoc', 'scaladoc')
