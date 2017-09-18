@@ -8,6 +8,8 @@ public enum MessageType {
     CHANGE_PASSWORD_MESSAGE("change_password_message"),
     CONFIGURATION_MESSAGE("configuration_message"),
     COORDINATION_MESSAGE("coordination_message"),
+    REQ_COORDINATION_MESSAGE("req_coordination_message"),
+    REPLAY_COORDINATION_MESSAGE("replay_coordination_message"),
     ERROR_MESSAGE("error_message"),
     LOGIN_MESSAGE("login_message"),
     NEW_ALERT_MESSAGE("new_alert_message"),
@@ -27,8 +29,10 @@ public enum MessageType {
     RESCUE_TEAMS_NOT_ENROLLED_MESSAGE("rescue_teams_not_enrolled_message"),
     ENROLL_RESCUE_TEAM_MESSAGE("enroll_rescue_team_message"),
     ADD_RESCUE_TEAM_MESSAGE("add_rescue_team_message"),
+    RESCUE_TEAM_CONDITION("rescue_team_condition"),
     FAKE_RPC_MESSAGE("fake_rpc_message"),
     FAKE_FORWARD_MESSAGE("fake_forward_message");
+
 
     private final String messageType;
 
