@@ -12,14 +12,15 @@ class MainView(loginGrid: LoginGrid,
                homeController: HomeControllerImpl,
                newRescueController: NewRescueControllerImpl,
                enrollTeamControllerImpl: EnrollTeamControllerImpl,
-               occupiedTeamsController: OccupiedTeamsControllerImpl) extends JFXApp {
+               occupiedTeamsController: OccupiedTeamsControllerImpl,
+               manageRescuesController: ManageRescuesControllerImpl) extends JFXApp {
 
   var login = new LoginGrid(loginController)
   var home = new HomeGrid(homeController)
   var rescue = new NewRescueGrid(newRescueController)
   var team = new EnrollTeamGrid(enrollTeamControllerImpl)
   var occTeams = new OccupiedTeamsGrid(occupiedTeamsController)
-  var manage = new ManageRescuesGrid(new ManageRescuesControllerImpl) // TODO remove new and pass controller through constructor
+  var manage = new ManageRescuesGrid(manageRescuesController)
 
   def setStage(): Unit = {
     stage = new PrimaryStage {
@@ -65,7 +66,7 @@ class MainView(loginGrid: LoginGrid,
           content = occTeams.grid
         }
         case ManageRescuesCase => {
-          manage = new ManageRescuesGrid(new ManageRescuesControllerImpl)
+          manage = new ManageRescuesGrid(manageRescuesController)
           content = manage.grid
         }
         case _ => println("error") // TODO throw and handle exception

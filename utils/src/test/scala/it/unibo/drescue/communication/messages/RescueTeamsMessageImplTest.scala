@@ -2,7 +2,7 @@ package it.unibo.drescue.communication.messages
 
 import java.util
 
-import it.unibo.drescue.model.{RescueTeam, RescueTeamImplBuilder}
+import it.unibo.drescue.model.{RescueTeamImpl, RescueTeamImplBuilder}
 import org.scalatest.FunSuite
 
 object RescueTeamsMessageImplTest {
@@ -18,7 +18,7 @@ object RescueTeamsMessageImplTest {
 
 class RescueTeamsMessageImplTest extends FunSuite {
 
-  var RTList: java.util.List[RescueTeam] = new util.ArrayList[RescueTeam]() //TODO refactor
+  var RTList: java.util.List[RescueTeamImpl] = new util.ArrayList[RescueTeamImpl]() //TODO refactor
   RTList add RescueTeamsMessageImplTest.RT
 
   var RescueTeamsMessage = RescueTeamsMessageImpl(RTList)

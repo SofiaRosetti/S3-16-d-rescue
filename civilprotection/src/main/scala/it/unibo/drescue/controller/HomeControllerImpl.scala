@@ -1,11 +1,15 @@
 package it.unibo.drescue.controller
 
+import it.unibo.drescue.localModel.{AlertEntry, Observers}
+
 import scalafx.collections.ObservableBuffer
 
-class HomeControllerImpl(private var mainController: MainControllerImpl) {
+class HomeControllerImpl(private var mainController: MainControllerImpl) extends Observer {
+
+  mainController.model.addObserver(Observers.Home, this)
 
   //TODO start here a request for RequestCpAlertMsg(cpID)
-  var obsBuffer = new ObservableBuffer[String]()
+  private var _obsBuffer = new ObservableBuffer[AlertEntry]()
 
   //TODO
   // - listView with alerts updated by a thread consumer
@@ -35,10 +39,28 @@ class HomeControllerImpl(private var mainController: MainControllerImpl) {
     mainController.changeView("OccupiedTeams")
   }
 
-  def _obsBuffer = obsBuffer
-
   def refreshAlertsList() = {
-    obsBuffer.insert(0, "new alert")
+    //obsBuffer.insert(0, "new alert")
   }
 
+  /**
+    * TODO
+    */
+  override def onReceivingNotification(): Unit = {
+    obsBuffer = fromAlertEntryListToObsBuffer(mainController.model.lastAlerts)
+  }
+
+  def fromAlertEntryListToObsBuffer(alertEntryList: java.util.List[AlertEntry]): ObservableBuffer[AlertEntry] = {
+    val obsBuffer = new ObservableBuffer[AlertEntry]()
+    alertEntryList.forEach(
+      (alertEntry: AlertEntry) => {
+        obsBuffer add alertEntry
+      }
+    )
+    obsBuffer
+  }
+
+  def obsBuffer = _obsBuffer
+
+  def obsBuffer_=(newBuffer: ObservableBuffer[AlertEntry]) = _obsBuffer = newBuffer
 }

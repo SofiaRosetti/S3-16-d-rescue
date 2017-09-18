@@ -1,13 +1,11 @@
 package it.unibo.drescue.view
 
-import java.sql.Timestamp
 import javafx.scene.input.MouseEvent
 
 import it.unibo.drescue.controller.HomeControllerImpl
 import it.unibo.drescue.localModel.AlertEntry
 import it.unibo.drescue.view.ViewConstants._
 
-import scalafx.collections.ObservableBuffer
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.TableColumn._
 import scalafx.scene.control._
@@ -39,9 +37,7 @@ class HomeGrid(private var homeController: HomeControllerImpl) {
     add(titleBox, ColumnRow0, ColumnRow0)
     GridPane.setConstraints(titleBox, ColumnRow0, ColumnRow0, ColumnRow2, ColumnRow1)
 
-    var alertsEntries = ObservableBuffer[AlertEntry](
-      new AlertEntry(1234, new Timestamp(100000), 44.23587, 45.36987, 354, "Earthquake", "FC", 36)
-    )
+    var alertsEntries = homeController.obsBuffer
 
     val AlertTable = new TableView[AlertEntry](alertsEntries) {
       maxHeight = WidthHeight200
