@@ -1,9 +1,6 @@
 package it.unibo.drescue.communication;
 
 import com.rabbitmq.client.*;
-import it.unibo.drescue.StringUtils;
-import it.unibo.drescue.communication.messages.CPConfigurationMessage;
-import it.unibo.drescue.communication.messages.CPCoordinationMessage;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
