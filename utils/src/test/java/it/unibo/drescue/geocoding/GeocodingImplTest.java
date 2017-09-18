@@ -15,6 +15,8 @@ public class GeocodingImplTest {
     private static final String ADDRESS = "Via Sacchi 3 Cesena";
     private static final double LATITUDE_FC = 44.1397615;
     private static final double LONGITUDE_FC = 12.2432193;
+    private static final double LATITUDE_LONDON = 51.509865;
+    private static final double LONGITUDE_LONDON = -0.118092;
     private GeocodingImpl geocoding;
 
     @Before
@@ -25,6 +27,11 @@ public class GeocodingImplTest {
     @Test
     public void isDistrictCorrect() throws Exception {
         assertEquals(this.geocoding.getDistrict(LATITUDE_RA, LONGITUDE_RA), DISTRICT);
+    }
+
+    @Test(expected = GeocodingException.class)
+    public void isDistrictNotCorrect() throws Exception {
+        this.geocoding.getDistrict(LATITUDE_LONDON, LONGITUDE_LONDON);
     }
 
     @Test
