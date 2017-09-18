@@ -1,4 +1,4 @@
-package it.unibo.drescue.utils;
+package it.unibo.drescue.geocoding;
 
 import com.google.gson.JsonObject;
 import org.junit.Before;

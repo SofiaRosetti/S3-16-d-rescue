@@ -2,6 +2,7 @@ package it.unibo.drescue.connection
 
 import com.rabbitmq.client.DefaultConsumer
 import it.unibo.drescue.database.DBConnectionImpl
+import it.unibo.drescue.geocoding.GeocodingException
 
 /**
   * Class that represents a general server side consumer.
@@ -29,7 +30,6 @@ case class ServerConsumer(private val rabbitMQ: RabbitMQ,
 
     import it.unibo.drescue.communication.messages.Message
     import it.unibo.drescue.database.exceptions._
-    import it.unibo.drescue.utils.GeocodingException
 
     var response: Option[Message] = None
     try {

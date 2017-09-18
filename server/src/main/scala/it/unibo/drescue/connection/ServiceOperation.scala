@@ -5,7 +5,7 @@ import it.unibo.drescue.communication.messages._
 import it.unibo.drescue.communication.messages.response.ObjectModelMessageImpl
 import it.unibo.drescue.database.DBConnection
 import it.unibo.drescue.database.exceptions._
-import it.unibo.drescue.utils._
+import it.unibo.drescue.geocoding.{GeocodingException, GeocodingImpl}
 
 /**
   * Trait modelling a general service to accessDB and handle the result.
@@ -20,7 +20,7 @@ sealed trait ServiceOperation {
     * @throws it.unibo.drescue.database.exceptions.DBConnectionException     if an error occur in DB connection
     * @throws it.unibo.drescue.database.exceptions.DBNotFoundRecordException if an error occur while searching an object
     * @throws it.unibo.drescue.database.exceptions.DBQueryException          if an error occur while executing a query
-    * @throws it.unibo.drescue.utils.GeocodingException                      if an error occur while executing geocoding operations
+    * @throws it.unibo.drescue.geocoding.GeocodingException                  if an error occur while executing geocoding operations
     * @throws java.lang.Exception                                            if an unknown error occur
     * @return message to send as a response or forward
     */
@@ -254,7 +254,7 @@ object AlertsService {
     *
     * @param latitude
     * @param longitude
-    * @throws it.unibo.drescue.utils.GeocodingException
+    * @throws it.unibo.drescue.geocoding.GeocodingException
     * @return the string representing the district
     */
   @throws(classOf[GeocodingException])
@@ -413,6 +413,8 @@ case class AlertsService() extends ServiceResponseOrForward {
 
 object CivilProtectionService {
   private val WrongCpIdOrPassword = "Wrong cpID and/or password."
+  private val DuplicatedTeamIDMessage: String = "Duplicated teamID."
+  private val DuplicatedEnrollmentMessage: String = "Duplicated enrollment."
 }
 
 /**
@@ -440,6 +442,51 @@ case class CivilProtectionService() extends ServiceResponseOrForward {
           case query: DBQueryException => throw query
           case notFound: DBNotFoundRecordException =>
             Option(new ErrorMessageImpl(CivilProtectionService.WrongCpIdOrPassword))
+        }
+
+      case MessageType.RESCUE_TEAMS_NOT_ENROLLED_MESSAGE =>
+        val message = GsonUtils.fromGson(jsonMessage, classOf[GetRescueTeamsNotEnrolledMessageImpl])
+        try {
+          val cpEnrollmentDao = (dbConnection getDAO DBConnection.Table.CP_ENROLLMENT).asInstanceOf[CpEnrollmentDao]
+          val rescueTeamsList = cpEnrollmentDao.findAllRescueTeamGivenACp(message.cpID, false)
+          Option(new RescueTeamsMessageImpl(rescueTeamsList))
+        } catch {
+          case connection: DBConnectionException => throw connection
+          case query: DBQueryException => throw query
+        }
+
+      case MessageType.ADD_RESCUE_TEAM_MESSAGE =>
+        val message = GsonUtils.fromGson(jsonMessage, classOf[NewRescueTeamMessage])
+        try {
+          val rescueTeamDao = (dbConnection getDAO DBConnection.Table.RESCUE_TEAM).asInstanceOf[RescueTeamDao]
+          val rescueTeam = new RescueTeamImplBuilder()
+            .setRescueTeamID(message.rescueTeamID)
+            .setName(message.rescueTeamName)
+            .setLatitude(message.rescueTeamLatitude)
+            .setLongitude(message.rescueTeamLongitude)
+            .setPassword(message.rescueTeamPassword)
+            .setPhoneNumber(message.rescueTeamPhoneNumber)
+            .createRescueTeamImpl()
+          rescueTeamDao insert rescueTeam
+          Option(new SuccessfulMessageImpl())
+        } catch {
+          case connection: DBConnectionException => throw connection
+          case query: DBQueryException => throw query
+          case duplicated: DBDuplicatedRecordException =>
+            Option(new ErrorMessageImpl(CivilProtectionService.DuplicatedTeamIDMessage))
+        }
+      case MessageType.ENROLL_RESCUE_TEAM_MESSAGE =>
+        val message = GsonUtils.fromGson(jsonMessage, classOf[EnrollRescueTeamMessageImpl])
+        try {
+          val cpEnrollmentDao = (dbConnection getDAO DBConnection.Table.CP_ENROLLMENT).asInstanceOf[CpEnrollmentDao]
+          val cpEnrollment = new CpEnrollmentImpl(message.cpID, message.rescueTeamID)
+          cpEnrollmentDao insert cpEnrollment
+          Option(new SuccessfulMessageImpl())
+        } catch {
+          case connection: DBConnectionException => throw connection
+          case query: DBQueryException => throw query
+          case duplicated: DBDuplicatedRecordException =>
+            Option(new ErrorMessageImpl(CivilProtectionService.DuplicatedEnrollmentMessage))
         }
 
       case _ => throw new Exception

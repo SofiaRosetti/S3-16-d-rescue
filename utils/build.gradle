@@ -1,3 +1,5 @@
 dependencies {
+
+    compile 'com.google.maps:google-maps-services:0.2.2'
     compile project(':utils-java')
 }

@@ -1,10 +1,7 @@
 package it.unibo.drescue.controller
 
-import it.unibo.drescue.model.ObjectModel
+class EnrollTeamControllerImpl(private var mainController: MainControllerImpl) {
 
-class EnrollTeamControllerImpl(private var model: List[ObjectModel],
-                               private var mainController: MainControllerImpl) {
-  
   //TODO start here a request for GetAllRescueTeam
 
   def addPress(): Unit = ???

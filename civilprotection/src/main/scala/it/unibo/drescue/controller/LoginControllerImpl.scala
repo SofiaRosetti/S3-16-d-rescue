@@ -4,7 +4,6 @@ import java.util.concurrent.{ExecutorService, Executors, Future}
 
 import it.unibo.drescue.communication.messages.{CpLoginMessageImpl, Message, MessageType, MessageUtils}
 import it.unibo.drescue.connection.{RabbitMQImpl, RequestHandler}
-import it.unibo.drescue.model.ObjectModel
 import it.unibo.drescue.view.CustomDialog
 
 import scalafx.scene.control.Alert
@@ -19,8 +18,7 @@ object LoginControllerImpl {
   val WrongLogin = "WrongLogin"
 }
 
-class LoginControllerImpl(private var model: List[ObjectModel],
-                          private var mainController: MainControllerImpl,
+class LoginControllerImpl(private var mainController: MainControllerImpl,
                           val channel: RabbitMQImpl
                          ) {
 
@@ -44,7 +42,7 @@ class LoginControllerImpl(private var model: List[ObjectModel],
       case MessageType.RESCUE_TEAMS_MESSAGE => { //TODO success
         //TODO set rescue teams list in main controller (with getter and setter)
         mainController.changeView(LoginControllerImpl.Home) // stop dialog and change view
-        mainController.cpID_(username) // set cpID in main controller
+        mainController.model.cpID = username // set cpID in main controller
       }
       case MessageType.ERROR_MESSAGE => {
         startWrongLoginDialog() // show ERROR -> change dialog
