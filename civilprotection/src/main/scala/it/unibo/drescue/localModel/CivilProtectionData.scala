@@ -3,17 +3,17 @@ package it.unibo.drescue.localModel
 import java.util
 import java.util.{ArrayList, List}
 
-import it.unibo.drescue.model.RescueTeam
+import it.unibo.drescue.model.RescueTeamImpl
 
 case class CivilProtectionData() extends Observable {
 
-  private var _cpID: String = null
+  private var _cpID: String = _
 
   private var _lastAlerts: List[AlertEntry] = new ArrayList[AlertEntry]()
 
-  private var _enrolledRescueTeams: List[RescueTeam] = new ArrayList[RescueTeam]()
+  private var _enrolledRescueTeams: List[RescueTeamImpl] = new ArrayList[RescueTeamImpl]()
 
-  private var _notEnrolledRescueTeams: List[RescueTeam] = new ArrayList[RescueTeam]()
+  private var _notEnrolledRescueTeams: List[RescueTeamImpl] = new ArrayList[RescueTeamImpl]()
 
   private var _enrolledTeamInfoList: List[EnrolledTeamInfo] = new ArrayList[EnrolledTeamInfo]()
 
@@ -63,7 +63,7 @@ case class CivilProtectionData() extends Observable {
     *
     * @param list
     */
-  def enrolledRescueTeams_=(list: util.List[RescueTeam]): Unit = {
+  def enrolledRescueTeams_=(list: util.List[RescueTeamImpl]): Unit = {
     _enrolledRescueTeams = list
     notifyObserver(Observers.ManageRescue)
   }
@@ -80,7 +80,7 @@ case class CivilProtectionData() extends Observable {
     *
     * @param list
     */
-  def notEnrolledRescueTeams_=(list: util.List[RescueTeam]): Unit = {
+  def notEnrolledRescueTeams_=(list: util.List[RescueTeamImpl]): Unit = {
     _notEnrolledRescueTeams = list
     notifyObserver(Observers.EnrollTeam)
   }

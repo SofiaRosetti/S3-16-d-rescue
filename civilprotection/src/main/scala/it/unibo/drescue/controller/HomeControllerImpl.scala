@@ -1,10 +1,12 @@
 package it.unibo.drescue.controller
 
-import it.unibo.drescue.localModel.AlertEntry
+import it.unibo.drescue.localModel.{AlertEntry, Observers}
 
 import scalafx.collections.ObservableBuffer
 
 class HomeControllerImpl(private var mainController: MainControllerImpl) extends Observer {
+
+  mainController.model.addObserver(Observers.Home, this)
 
   //TODO start here a request for RequestCpAlertMsg(cpID)
   private var _obsBuffer = new ObservableBuffer[AlertEntry]()

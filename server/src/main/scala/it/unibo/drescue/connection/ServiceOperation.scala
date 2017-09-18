@@ -403,8 +403,6 @@ case class AlertsService() extends ServiceResponseOrForward {
           case query: DBQueryException => throw query
         }
 
-        throw new Exception
-
       case _ => throw new Exception
     }
   }
@@ -436,7 +434,7 @@ case class CivilProtectionService() extends ServiceResponseOrForward {
           val cpSelected = (cpDao login cp).asInstanceOf[CivilProtection]
           val cpEnrollmentDao = (dbConnection getDAO DBConnection.Table.CP_ENROLLMENT).asInstanceOf[CpEnrollmentDao]
           val rescueTeamsList = cpEnrollmentDao.findAllRescueTeamGivenACp(cp.getCpID, true)
-          Option(new RescueTeamsMessageImpl(rescueTeamsList))
+          Option(new RescueTeamsMessageImpl(rescueTeamsList.asInstanceOf[util.List[RescueTeamImpl]]))
         } catch {
           case connection: DBConnectionException => throw connection
           case query: DBQueryException => throw query
@@ -449,7 +447,7 @@ case class CivilProtectionService() extends ServiceResponseOrForward {
         try {
           val cpEnrollmentDao = (dbConnection getDAO DBConnection.Table.CP_ENROLLMENT).asInstanceOf[CpEnrollmentDao]
           val rescueTeamsList = cpEnrollmentDao.findAllRescueTeamGivenACp(message.cpID, false)
-          Option(new RescueTeamsMessageImpl(rescueTeamsList))
+          Option(new RescueTeamsMessageImpl(rescueTeamsList.asInstanceOf[util.List[RescueTeamImpl]]))
         } catch {
           case connection: DBConnectionException => throw connection
           case query: DBQueryException => throw query
