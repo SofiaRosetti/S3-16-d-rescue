@@ -1,9 +1,10 @@
-package it.unibo.drescue.view
+package it.unibo.drescue.localModel
 
 import scalafx.beans.property.StringProperty
 
-class TableEntry(teamName_ : String, phoneNumber_ : String, availability_ : Boolean, cpID_ : String, alertID_ : Int) {
+class EnrolledTeamInfo(teamID_ : String, teamName_ : String, phoneNumber_ : String, availability_ : Boolean, cpID_ : String, alertID_ : Int) {
 
+  val teamID = new StringProperty(this, "teamID", teamID_)
   val teamName = new StringProperty(this, "teamName", teamName_)
   val phoneNumber = new StringProperty(this, "phoneNumber", phoneNumber_)
   val availability = new StringProperty(this, "availability", availability_.toString)

@@ -3,6 +3,7 @@ package it.unibo.drescue.view
 import javafx.scene.input.MouseEvent
 
 import it.unibo.drescue.controller.ManageRescuesControllerImpl
+import it.unibo.drescue.localModel.EnrolledTeamInfo
 import it.unibo.drescue.view.ViewConstants._
 
 import scalafx.collections.ObservableBuffer
@@ -17,7 +18,7 @@ class ManageRescuesGrid(private var manageRescuesController: ManageRescuesContro
   val _grid = new GridPane() {
 
     hgap = Gap
-    vgap = 5
+    vgap = Gap5
     padding = Insets(Insets50)
 
     val defaultFont = new Font(Font20)
@@ -59,51 +60,53 @@ class ManageRescuesGrid(private var manageRescuesController: ManageRescuesContro
     }
     add(chooseBox, ColumnRow0, ColumnRow3)
 
-    var entries = ObservableBuffer[TableEntry](
-      new TableEntry("Rescue team 001", "3335874588", true, "FC001", 256)
+    var entries = ObservableBuffer[EnrolledTeamInfo](
+      new EnrolledTeamInfo("RT001", "Rescue team 001", "3335874588", true, "FC001", 256),
+      new EnrolledTeamInfo("RT002", "Rescue team 002", "3335874588", true, "FC001", 256)
     )
 
-    val Table = new TableView[TableEntry](entries) {
-      maxHeight = 200
+    val Table = new TableView[EnrolledTeamInfo](entries) {
+      maxHeight = WidthHeight200
       columns ++= List(
-        new TableColumn[TableEntry, String]() {
+        new TableColumn[EnrolledTeamInfo, String]() {
           text = "Team name"
           cellValueFactory = {
             _.value.teamName
           }
-          prefWidth = 300
+          prefWidth = WidthHeight300
         },
-        new TableColumn[TableEntry, String]() {
+        new TableColumn[EnrolledTeamInfo, String]() {
           text = "Phone number"
           cellValueFactory = {
             _.value.phoneNumber
           }
-          prefWidth = 200
+          prefWidth = WidthHeight200
         },
-        new TableColumn[TableEntry, String]() {
+        new TableColumn[EnrolledTeamInfo, String]() {
           text = "Availability"
           cellValueFactory = {
             _.value.availability
           }
-          prefWidth = 150
+          prefWidth = WidthHeight150
         },
-        new TableColumn[TableEntry, String]() {
+        new TableColumn[EnrolledTeamInfo, String]() {
           text = "Cp ID"
           cellValueFactory = {
             _.value.cpID
           }
-          prefWidth = 150
+          prefWidth = WidthHeight150
         },
-        new TableColumn[TableEntry, String]() {
+        new TableColumn[EnrolledTeamInfo, String]() {
           text = "Alert ID"
           cellValueFactory = {
             _.value.alertID
           }
-          prefWidth = 150
+          prefWidth = WidthHeight150
         }
       )
     }
     add(Table, ColumnRow0, ColumnRow4)
+
 
     val SendButton = new Button() {
       text = "Send"
@@ -112,6 +115,10 @@ class ManageRescuesGrid(private var manageRescuesController: ManageRescuesContro
       prefWidth = WidthHeight200
       onMouseClicked = (event: MouseEvent) => {
         //homeController.newTeamPress()
+        var selected = Table.getSelectionModel.getFocusedIndex
+        var team = entries.get(selected)
+        println(team.teamID.value)
+        entries.add(new EnrolledTeamInfo("RT003", "Rescue team 003", "3335874588", true, "FC001", 256))
       }
     }
     val StopButton = new Button() {
