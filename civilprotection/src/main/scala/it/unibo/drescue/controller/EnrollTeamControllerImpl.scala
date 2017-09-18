@@ -1,6 +1,6 @@
 package it.unibo.drescue.controller
 
-class EnrollTeamControllerImpl(private var mainController: MainControllerImpl) {
+class EnrollTeamControllerImpl(private var mainController: MainControllerImpl) extends Observer{
 
   //TODO start here a request for GetAllRescueTeam
 
@@ -25,4 +25,8 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl) {
     mainController.changeView("Home")
   }
 
+  /**
+    * TODO
+    */
+  override def onReceivingNotification(): Unit = ???
 }

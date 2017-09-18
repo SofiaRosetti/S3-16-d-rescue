@@ -2,7 +2,7 @@ package it.unibo.drescue.controller
 
 import scalafx.collections.ObservableBuffer
 
-class HomeControllerImpl(private var mainController: MainControllerImpl) {
+class HomeControllerImpl(private var mainController: MainControllerImpl) extends Observer{
 
   //TODO start here a request for RequestCpAlertMsg(cpID)
   var obsBuffer = new ObservableBuffer[String]()
@@ -41,4 +41,8 @@ class HomeControllerImpl(private var mainController: MainControllerImpl) {
     obsBuffer.insert(0, "new alert")
   }
 
+  /**
+    * TODO
+    */
+  override def onReceivingNotification(): Unit = ???
 }

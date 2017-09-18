@@ -4,7 +4,7 @@ import java.util.{ArrayList, List}
 
 import it.unibo.drescue.model.RescueTeam
 
-case class CivilProtectionData() {
+case class CivilProtectionData() extends Observable {
 
   var cpID: String = null
 
