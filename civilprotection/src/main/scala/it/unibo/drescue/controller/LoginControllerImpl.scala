@@ -47,6 +47,7 @@ class LoginControllerImpl(private var mainController: MainControllerImpl,
       case MessageType.ERROR_MESSAGE => {
         startWrongLoginDialog() // show ERROR -> change dialog
       }
+      case _ => //do nothing
     }
 
     //pool.shutdown() //TODO verify
