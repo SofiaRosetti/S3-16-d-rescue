@@ -403,8 +403,6 @@ case class AlertsService() extends ServiceResponseOrForward {
           case query: DBQueryException => throw query
         }
 
-        throw new Exception
-
       case _ => throw new Exception
     }
   }
