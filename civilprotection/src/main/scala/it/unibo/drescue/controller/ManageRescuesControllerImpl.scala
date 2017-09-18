@@ -1,6 +1,6 @@
 package it.unibo.drescue.controller
 
-class ManageRescuesControllerImpl extends Observer{
+class ManageRescuesControllerImpl extends Observer {
   /**
     * TODO
     */

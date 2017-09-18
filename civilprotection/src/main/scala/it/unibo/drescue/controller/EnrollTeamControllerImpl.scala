@@ -1,6 +1,6 @@
 package it.unibo.drescue.controller
 
-class EnrollTeamControllerImpl(private var mainController: MainControllerImpl) extends Observer{
+class EnrollTeamControllerImpl(private var mainController: MainControllerImpl) extends Observer {
 
   //TODO start here a request for GetAllRescueTeam
 
