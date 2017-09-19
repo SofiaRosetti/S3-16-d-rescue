@@ -2,6 +2,8 @@ package it.unibo.drescue.connection;
 
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -11,13 +13,15 @@ import java.util.concurrent.TimeoutException;
  */
 public class RabbitMQConnectionImpl implements RabbitMQConnection {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(RabbitMQConnection.class);
+
     private final String host;
     private Connection connection;
 
     /**
      * Create an object with the option to open a connection to the given host.
      *
-     * @param host
+     * @param host host name
      */
     public RabbitMQConnectionImpl(final String host) {
         this.host = host;
@@ -35,9 +39,9 @@ public class RabbitMQConnectionImpl implements RabbitMQConnection {
         try {
             this.connection = factory.newConnection();
         } catch (final IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Error occur during an operation of I/O.", e);
         } catch (final TimeoutException e) {
-            e.printStackTrace();
+            LOGGER.error("Error occur while a blocking operation times out.", e);
         }
     }
 
@@ -46,7 +50,7 @@ public class RabbitMQConnectionImpl implements RabbitMQConnection {
         try {
             this.connection.close();
         } catch (final IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Error occur during an operation of I/O.", e);
         }
     }
 }

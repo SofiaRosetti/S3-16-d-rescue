@@ -13,7 +13,7 @@ public interface RequestUpvoteAlertMessage {
     /**
      * Sets the userID of the user who wants to upvote the alert.
      *
-     * @param userID
+     * @param userID user identifier
      */
     void setUserID(int userID);
 
@@ -25,7 +25,7 @@ public interface RequestUpvoteAlertMessage {
     /**
      * Sets the alertID of the alert to upvote.
      *
-     * @param alertID
+     * @param alertID alert identifier
      */
     void setAlertID(int alertID);
 
@@ -37,7 +37,7 @@ public interface RequestUpvoteAlertMessage {
     /**
      * Sets the districtID of the alert to upvote.
      *
-     * @param districtID
+     * @param districtID district identifier
      */
     void setDistrictID(String districtID);
 }

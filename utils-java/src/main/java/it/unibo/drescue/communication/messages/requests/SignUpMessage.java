@@ -13,7 +13,7 @@ public interface SignUpMessage {
     /**
      * Sets the user's name.
      *
-     * @param name
+     * @param name user name
      */
     void setName(String name);
 
@@ -25,7 +25,7 @@ public interface SignUpMessage {
     /**
      * Sets the user's surname.
      *
-     * @param surname
+     * @param surname user surname
      */
     void setSurname(String surname);
 
@@ -37,7 +37,7 @@ public interface SignUpMessage {
     /**
      * Sets the user's email.
      *
-     * @param email
+     * @param email user email
      */
     void setEmail(String email);
 
@@ -49,7 +49,7 @@ public interface SignUpMessage {
     /**
      * Sets the user's phone number.
      *
-     * @param phoneNumber
+     * @param phoneNumber user phone number
      */
     void setPhoneNumber(String phoneNumber);
 
@@ -61,7 +61,7 @@ public interface SignUpMessage {
     /**
      * Sets the user's password.
      *
-     * @param password
+     * @param password user password
      */
     void setPassword(String password);
 }

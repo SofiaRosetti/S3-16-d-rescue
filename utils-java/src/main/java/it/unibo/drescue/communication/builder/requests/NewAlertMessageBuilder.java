@@ -8,25 +8,25 @@ import it.unibo.drescue.communication.builder.MessageBuilder;
 public interface NewAlertMessageBuilder extends MessageBuilder {
 
     /**
-     * @param userID
+     * @param userID user identifier
      * @return the builder with the given userID
      */
     NewAlertMessageBuilder setUserID(int userID);
 
     /**
-     * @param eventType
+     * @param eventType event type name
      * @return the builder with the given eventType
      */
     NewAlertMessageBuilder setEventType(String eventType);
 
     /**
-     * @param latitude
+     * @param latitude latitude value
      * @return the builder with the given latitude
      */
     NewAlertMessageBuilder setLatitude(double latitude);
 
     /**
-     * @param longitude
+     * @param longitude longitude value
      * @return the builder with the given longitude
      */
     NewAlertMessageBuilder setLongitude(double longitude);
