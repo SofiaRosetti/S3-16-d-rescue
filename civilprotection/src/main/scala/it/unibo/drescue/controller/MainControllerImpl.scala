@@ -31,7 +31,9 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
     rabbitMQ declareExchange(ExchangeName, BuiltinExchangeType.DIRECT)
     val queueName = rabbitMQ addReplyQueue()
     rabbitMQ bindQueueToExchange(queueName, ExchangeName, rescueTeams)
-    rabbitMQ addConsumer(new CPConsumer(rabbitMQ.getChannel), queueName)
+    val cpConsumer : CPConsumer = new CPConsumer(rabbitMQ.getChannel)
+    cpConsumer.setCpID(username)
+    rabbitMQ addConsumer(cpConsumer, queueName)
     //ask for availability
 
     rescueTeams forEach (rescueTeam => {
@@ -40,6 +42,7 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
         .setRescueTeamID(rescueTeam.getRescueTeamID)
         .setFrom(username)
         .build()
+
 
       rabbitMQ.sendMessage(ExchangeName, rescueTeam.getRescueTeamID, null, rescueTeamConditionMessage)
     })

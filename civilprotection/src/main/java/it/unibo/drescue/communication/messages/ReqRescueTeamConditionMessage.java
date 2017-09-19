@@ -10,7 +10,7 @@ public class ReqRescueTeamConditionMessage extends AbstractRoutingMessage {
      *
      */
     public ReqRescueTeamConditionMessage() {
-        super(MessageType.REQ_COORDINATION_MESSAGE);
+        super(MessageType.REQ_RESCUE_TEAM_CONDITION);
     }
 
     public String getRescueTeamID() {
