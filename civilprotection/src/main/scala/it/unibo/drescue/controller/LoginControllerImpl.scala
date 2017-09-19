@@ -2,8 +2,9 @@ package it.unibo.drescue.controller
 
 import java.util.concurrent.{ExecutorService, Executors, Future}
 
-import it.unibo.drescue.communication.messages.{CpLoginMessageImpl, Message, MessageType, MessageUtils}
-import it.unibo.drescue.connection.{RabbitMQImpl, RequestHandler}
+import it.unibo.drescue.communication.GsonUtils
+import it.unibo.drescue.communication.messages._
+import it.unibo.drescue.connection.{QueueType, RabbitMQImpl, RequestHandler}
 import it.unibo.drescue.view.CustomDialog
 
 import scalafx.scene.control.Alert
@@ -19,8 +20,9 @@ object LoginControllerImpl {
 }
 
 class LoginControllerImpl(private var mainController: MainControllerImpl,
-                          val channel: RabbitMQImpl
+                          val rabbitMQ: RabbitMQImpl
                          ) {
+
 
   val pool: ExecutorService = Executors.newFixedThreadPool(1)
   var dialog: Alert = null
@@ -32,7 +34,7 @@ class LoginControllerImpl(private var mainController: MainControllerImpl,
     println(password)
 
     val message: Message = CpLoginMessageImpl(username, password)
-    val task: Future[String] = pool.submit(new RequestHandler(channel, message))
+    val task: Future[String] = pool.submit(new RequestHandler(rabbitMQ, message, QueueType.CIVIL_PROTECTION_QUEUE))
     val response: String = task.get()
     println("Login controller: " + response)
     val messageName: MessageType = MessageUtils.getMessageNameByJson(response)
@@ -40,13 +42,14 @@ class LoginControllerImpl(private var mainController: MainControllerImpl,
     messageName match {
 
       case MessageType.RESCUE_TEAMS_MESSAGE => { //TODO success
-        //TODO set rescue teams list in main controller (with getter and setter)
+        val responseMessage: RescueTeamsMessageImpl = GsonUtils.fromGson(response, classOf[RescueTeamsMessageImpl])
+        mainController.userLogged(username, responseMessage.rescueTeamsList)
         mainController.changeView(LoginControllerImpl.Home) // stop dialog and change view
-        mainController.model.cpID = username // set cpID in main controller
       }
       case MessageType.ERROR_MESSAGE => {
         startWrongLoginDialog() // show ERROR -> change dialog
       }
+      case _ => //do nothing
     }
 
     //pool.shutdown() //TODO verify

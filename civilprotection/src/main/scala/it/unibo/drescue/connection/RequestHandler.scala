@@ -11,18 +11,18 @@ object RequestHandler {
   private val ErrorServer = "Error during server communication."
 }
 
-class RequestHandler(val channel: RabbitMQImpl, val message: Message) extends Callable[String] {
+class RequestHandler(val rabbitMQ: RabbitMQImpl, val message: Message, val queue: QueueType) extends Callable[String] {
 
 
   override def call() = {
     var responseMessage: String = null
     //TODO request channel.send message and wait response
     try {
-      val replyQueue = channel.addReplyQueue(); //queue for response
-      val props = channel.setReplyTo(replyQueue);
-      channel.sendMessage("", QueueType.CIVIL_PROTECTION_QUEUE.getQueueName, props, message)
+      val replyQueue = rabbitMQ.addReplyQueue(); //queue for response
+      val props = rabbitMQ.setReplyTo(replyQueue);
+      rabbitMQ.sendMessage("", queue.getQueueName, props, message)
       val response = new ArrayBlockingQueue[String](1)
-      responseMessage = channel.addRPCClientConsumer(response, replyQueue)
+      responseMessage = rabbitMQ.addRPCClientConsumer(response, replyQueue)
     } catch {
       case e: Exception => responseMessage = GsonUtils.toGson(new ErrorMessageImpl(RequestHandler.ErrorServer))
     }

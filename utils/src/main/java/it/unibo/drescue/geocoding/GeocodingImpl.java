@@ -10,6 +10,8 @@ public class GeocodingImpl implements Geocoding {
 
     private static final String KEY = "AIzaSyAhBFJafCe2FWr0ZejtEcQqvuB3TtyLZrE";
     private static final String AREA = "ADMINISTRATIVE_AREA_LEVEL_2";
+    private static final String COUNTRY = "COUNTRY";
+    private static final String ITALY_SHORT_NAME = "IT";
     private static final String TYPES = "types";
     private static final String SHORT_NAME = "shortName";
     private String response;
@@ -20,6 +22,8 @@ public class GeocodingImpl implements Geocoding {
 
     @Override
     public String getDistrict(final double latitude, final double longitude) throws GeocodingException {
+
+        boolean inItaly = false;
 
         try {
             this.reverseGeocode(latitude, longitude);
@@ -37,7 +41,15 @@ public class GeocodingImpl implements Geocoding {
             if (typeString.contains(AREA)) {
                 this.district = object.get(SHORT_NAME).toString().substring(1, 3);
             }
+            if (typeString.contains(COUNTRY) && object.get(SHORT_NAME).toString().substring(1, 3).equals(ITALY_SHORT_NAME)) {
+                inItaly = true;
+            }
         }
+
+        if (!inItaly) {
+            throw new GeocodingException();
+        }
+
         return this.district;
     }
 
