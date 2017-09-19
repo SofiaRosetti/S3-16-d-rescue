@@ -17,7 +17,7 @@ public interface RabbitMQ {
     /**
      * Creates a channel (virtual connection) over the real TCP connection.
      *
-     * @throws IOException
+     * @throws IOException if an error is encountered
      */
     void createChannel() throws IOException;
 
@@ -32,7 +32,7 @@ public interface RabbitMQ {
      * Creates an exclusive queue on the Java client.
      *
      * @return the queue name
-     * @throws IOException
+     * @throws IOException if an error is encountered
      */
     String addReplyQueue() throws IOException;
 
@@ -53,7 +53,7 @@ public interface RabbitMQ {
      * @param routingKey queue name on which to publish the message
      * @param props      null props for only publish, full for receiving response
      * @param message    message to send
-     * @throws IOException
+     * @throws IOException if an error is encountered
      */
     void sendMessage(String exchange, String routingKey, AMQP.BasicProperties props, Message message) throws IOException;
 
@@ -63,8 +63,8 @@ public interface RabbitMQ {
      * @param response     queue from which retreive the response
      * @param receiveQueue queue name on which to wait for messages
      * @return the response or null if timeout is reached
-     * @throws IOException
-     * @throws InterruptedException
+     * @throws IOException          if an error is encountered
+     * @throws InterruptedException if an error interrupt the activity
      */
     String addRPCClientConsumer(BlockingQueue<String> response, String receiveQueue) throws IOException, InterruptedException;
 
@@ -72,11 +72,11 @@ public interface RabbitMQ {
     /**
      * Add a new consumer on the channel
      *
-     * @param consumer
+     * @param consumer  the consumer
      * @param queueName the name of the queue
      * @throws IOException if an error is encountered
      */
-    void addConsumer(Consumer consumer, String queueName)throws IOException;
+    void addConsumer(Consumer consumer, String queueName) throws IOException;
 
     /**
      * declare a new exchange with no extra arguments
@@ -91,8 +91,8 @@ public interface RabbitMQ {
     /**
      * Bind a queue to an exchange using a routing keys
      *
-     * @param queueName the name of the queue
-     * @param exchange  the name of the exchange
+     * @param queueName   the name of the queue
+     * @param exchange    the name of the exchange
      * @param routingKeys the routine key to use for the binding
      * @throws IOException if an error is encountered
      */

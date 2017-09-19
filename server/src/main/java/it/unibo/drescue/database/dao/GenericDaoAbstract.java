@@ -4,6 +4,8 @@ import it.unibo.drescue.database.exceptions.DBDuplicatedRecordException;
 import it.unibo.drescue.database.exceptions.DBNotFoundRecordException;
 import it.unibo.drescue.database.exceptions.DBQueryException;
 import it.unibo.drescue.model.ObjectModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,6 +20,9 @@ public abstract class GenericDaoAbstract<T> implements GenericDao {
             "Exception while trying to find all objects";
     private static final String INSERT_EXCEPTION = "Exception while trying to insert an object";
     private static final String DELETE_EXCEPTION = "Exception while trying to delete an object";
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenericDaoAbstract.class);
+
     private final String tableName;
     protected Connection connection;
 
@@ -62,7 +67,7 @@ public abstract class GenericDaoAbstract<T> implements GenericDao {
                     this.fillStatement(objectModel, preparedStatement, QueryType.INSERT);
             preparedStatement.executeUpdate();
             preparedStatement.close();
-            System.out.println("[DB]: INSERT_OK: Added object");
+            LOGGER.info("INSERT OK: Added object");
         } catch (final SQLException e1) {
             throw new DBQueryException(INSERT_EXCEPTION);
         }
@@ -81,7 +86,7 @@ public abstract class GenericDaoAbstract<T> implements GenericDao {
                     this.fillStatement(objectModel, preparedStatement, QueryType.DELETE);
             preparedStatement.executeUpdate();
             preparedStatement.close();
-            System.out.println("[DB]: DELETE OK: Deleted an object");
+            LOGGER.info("DELETE OK: Deleted an object");
         } catch (final SQLException e) {
             throw new DBQueryException(DELETE_EXCEPTION);
         }

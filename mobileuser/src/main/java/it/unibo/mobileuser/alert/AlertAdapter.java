@@ -1,4 +1,4 @@
-package it.unibo.mobileuser.alarm;
+package it.unibo.mobileuser.alert;
 
 import android.content.Context;
 import android.view.LayoutInflater;

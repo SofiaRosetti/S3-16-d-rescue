@@ -117,7 +117,6 @@ public class AlertAndUpvotedAlertDaoTest extends GenericDaoAbstractTest {
         final List<Alert> alertList =
                 this.alertDao.findLast(LAST_X, this.districtTest.getDistrictID());
         assertNotEquals(alertList.size(), 0);
-        //assertTrue(alertList.contains(this.alertTest)); //TODO
         this.alertDao.delete(this.alertTest);
     }
 

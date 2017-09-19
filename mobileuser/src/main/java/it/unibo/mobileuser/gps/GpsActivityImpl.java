@@ -79,7 +79,9 @@ public class GpsActivityImpl extends ToolbarActivity implements GpsActivity {
                 checkPermission();
                 checkProvider();
             } else {
-                Toast.makeText(this, getResources().getString(R.string.gps_permission), Toast.LENGTH_SHORT).show();
+                Toast
+                        .makeText(this, getResources().getString(R.string.gps_permission), Toast.LENGTH_SHORT)
+                        .show();
             }
         }
     }
@@ -115,7 +117,8 @@ public class GpsActivityImpl extends ToolbarActivity implements GpsActivity {
             this.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     MIN_INTERVAL, MIN_DISTANCE, this.listener);
             if (this.locationManager != null) {
-                this.location = this.locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                this.location = this.locationManager
+                        .getLastKnownLocation(LocationManager.GPS_PROVIDER);
             }
         }
     }
@@ -140,17 +143,11 @@ public class GpsActivityImpl extends ToolbarActivity implements GpsActivity {
                 .setTitle(getResources().getString(R.string.attention))
                 .setMessage(getResources().getString(R.string.gps_alert_message))
                 .setCancelable(false)
-                .setPositiveButton(getResources().getString(R.string.gps_alert_positive_button), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialogInterface, final int i) {
-                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                    }
+                .setPositiveButton(getResources().getString(R.string.gps_alert_positive_button), (final DialogInterface dialog, final int i) -> {
+                    startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                 })
-                .setNeutralButton(getResources().getString(R.string.alert_negative_button), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialogInterface, final int i) {
-                        dialogInterface.cancel();
-                    }
+                .setNeutralButton(getResources().getString(R.string.alert_negative_button), (final DialogInterface dialogInterface, final int i) -> {
+                    dialogInterface.cancel();
                 })
                 .create();
         alert.show();

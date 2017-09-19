@@ -5,12 +5,16 @@ import it.unibo.drescue.communication.messages.Message;
 import it.unibo.drescue.connection.QueueType;
 import it.unibo.drescue.connection.RabbitMQConnectionImpl;
 import it.unibo.drescue.connection.RabbitMQImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ClientMain {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClientMain.class);
+
     public static void main(final String[] args) {
 
-        System.out.println("[ClientMain] Client started");
+        LOGGER.info("Client started");
 
         RabbitMQConnectionImpl connection = null;
         RabbitMQImpl rabbitMQ = null;

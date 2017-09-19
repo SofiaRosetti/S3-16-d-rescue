@@ -1,5 +1,8 @@
 package it.unibo.drescue.database.helper;
 
+/**
+ * Interface that allows to initialize records of database with data containing in an external file.
+ */
 public interface DBInitialization {
 
     /**
