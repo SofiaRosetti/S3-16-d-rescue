@@ -37,9 +37,9 @@ class HomeGrid(private var homeController: HomeControllerImpl) {
     add(titleBox, ColumnRow0, ColumnRow0)
     GridPane.setConstraints(titleBox, ColumnRow0, ColumnRow0, ColumnRow2, ColumnRow1)
 
-    var alertsEntries = homeController.obsBuffer
+    //var alertsEntries = homeController.obsBuffer
 
-    val AlertTable = new TableView[AlertEntry](alertsEntries) {
+    val AlertTable = new TableView[AlertEntry](homeController.obsBuffer) {
       maxHeight = WidthHeight200
       columns ++= List(
         new TableColumn[AlertEntry, String]() {
