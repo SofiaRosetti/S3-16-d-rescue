@@ -7,4 +7,5 @@ dependencies {
 
     // The production code uses the SLF4J logging API at compile time
     compile "org.slf4j:slf4j-api:${slf4jVersion}"
+    runtime "ch.qos.logback:logback-classic:${logbackVersion}"
 }
