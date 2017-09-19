@@ -8,8 +8,7 @@ class HomeControllerImpl(private var mainController: MainControllerImpl) extends
 
   mainController.model.addObserver(Observers.Home, this)
 
-  //TODO start here a request for RequestCpAlertMsg(cpID)
-  private var _obsBuffer = new ObservableBuffer[AlertEntry]()
+  var obsBuffer = new ObservableBuffer[AlertEntry]()
 
   //TODO
   // - listView with alerts updated by a thread consumer
@@ -47,20 +46,12 @@ class HomeControllerImpl(private var mainController: MainControllerImpl) extends
     * TODO
     */
   override def onReceivingNotification(): Unit = {
-    obsBuffer = fromAlertEntryListToObsBuffer(mainController.model.lastAlerts)
-  }
-
-  def fromAlertEntryListToObsBuffer(alertEntryList: java.util.List[AlertEntry]): ObservableBuffer[AlertEntry] = {
-    val obsBuffer = new ObservableBuffer[AlertEntry]()
-    alertEntryList.forEach(
+    obsBuffer.clear()
+    mainController.model.lastAlerts.forEach(
       (alertEntry: AlertEntry) => {
         obsBuffer add alertEntry
       }
     )
-    obsBuffer
   }
 
-  def obsBuffer = _obsBuffer
-
-  def obsBuffer_=(newBuffer: ObservableBuffer[AlertEntry]) = _obsBuffer = newBuffer
 }

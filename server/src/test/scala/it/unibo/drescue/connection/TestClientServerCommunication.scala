@@ -78,8 +78,8 @@ class TestClientServerCommunication extends FunSuite with BeforeAndAfter {
         case MessageType.FAKE_FORWARD_MESSAGE =>
           val fakeListID = new ListBuffer[String]
           fakeListID.append(clientForwardQueue)
-          val objectModel = new AlertImplBuilder().createAlertImpl()
-          Option(ForwardObjectMessage(fakeListID, objectModel)) //send an alert as example
+          val alert = new AlertImplBuilder().createAlertImpl()
+          Option(ForwardObjectMessage(fakeListID, alert)) //send an alert as example
         case _ => None
       }
     }
@@ -100,7 +100,7 @@ class TestClientServerCommunication extends FunSuite with BeforeAndAfter {
         val message = new String(body, "UTF-8")
         val messageName = MessageUtils.getMessageNameByJson(message)
         messageName match {
-          case MessageType.OBJECT_MODEL_MESSAGE =>
+          case MessageType.FORWARD_ALERT_MESSAGE =>
           case _ => fail
         }
 

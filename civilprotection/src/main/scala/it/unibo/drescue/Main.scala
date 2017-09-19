@@ -19,7 +19,6 @@ object Main extends JFXApp {
   var enrollTeamController = new EnrollTeamControllerImpl(controller)
   var occupiedTeamsController = new OccupiedTeamsControllerImpl(controller)
   var manageRescuesController = new ManageRescuesControllerImpl(controller)
-
   var loginGrid = new LoginGrid(loginController)
 
   var view = new MainView(
