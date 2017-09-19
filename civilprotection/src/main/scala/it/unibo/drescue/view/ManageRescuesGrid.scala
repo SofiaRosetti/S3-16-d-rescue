@@ -61,8 +61,8 @@ class ManageRescuesGrid(private var manageRescuesController: ManageRescuesContro
     add(chooseBox, ColumnRow0, ColumnRow3)
 
     var entries = ObservableBuffer[EnrolledTeamInfo](
-      new EnrolledTeamInfo("RT001", "Rescue team 001", "3335874588", true, "FC001", 256),
-      new EnrolledTeamInfo("RT002", "Rescue team 002", "3335874588", true, "FC001", 256)
+      new EnrolledTeamInfo("RT2ID", "Rescue team 001", "3335874588", false, "", 2),
+      new EnrolledTeamInfo("RT3ID", "Rescue team 002", "3335874588", false, "", 256)
     )
 
     val Table = new TableView[EnrolledTeamInfo](entries) {

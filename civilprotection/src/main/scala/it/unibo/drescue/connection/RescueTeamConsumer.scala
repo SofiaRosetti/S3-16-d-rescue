@@ -4,8 +4,10 @@ import java.sql.Timestamp
 
 import com.rabbitmq.client.{AMQP, DefaultConsumer, Envelope}
 import it.unibo.drescue.communication.GsonUtils
+import it.unibo.drescue.communication.builder.ReplyRescueTeamConditionMessageBuilderImpl
 import it.unibo.drescue.communication.messages._
 import it.unibo.drescue.controller.MainControllerImpl
+import it.unibo.drescue.localModel.EnrolledTeamInfo
 import it.unibo.drescue.utils.{Coordinator, CoordinatorCondition, CoordinatorImpl, RescueTeamCondition}
 
 case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
@@ -87,6 +89,38 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
         //TODO check from
         val reqRescueTeamConditionMessage = GsonUtils.fromGson(message, classOf[ReqRescueTeamConditionMessage])
         println("[Req RT condition Message] RescueTeam name: " + reqRescueTeamConditionMessage.getRescueTeamID + " From: " + reqRescueTeamConditionMessage.getFrom + " To: " + reqRescueTeamConditionMessage.getTo)
+
+        println("Enrolled team info size: " + mainControllerImpl.model.enrolledTeamInfoList.size())
+
+        mainControllerImpl.model.enrolledTeamInfoList forEach((enrolledTeam: EnrolledTeamInfo) => {
+          val rescueTeamID = enrolledTeam.teamID.value
+          println("rescueTeamID : " + rescueTeamID)
+          if (rescueTeamID == reqRescueTeamConditionMessage.getRescueTeamID) {
+
+            val rtAvailability : String = enrolledTeam.availability.value
+            val cpID : String = enrolledTeam.cpID.value
+
+            println("Availability: "+ rtAvailability)
+            println("cpID: " + cpID)
+
+            if (rtAvailability == "false" && cpID == mainControllerImpl.model.cpID){
+              //TODO send a reply_rescue_team_condition condition OCCUPIED
+            }
+            else {
+              //TODO send a reply_rescue_team_condition condition AVAILABLE
+              println("Send replay message AVAILABLE")
+
+              val reply : Message = new ReplyRescueTeamConditionMessageBuilderImpl()
+                .setRescueTeamID(rescueTeamID)
+                .setRescueTeamCondition(RescueTeamCondition.AVAILABLE)
+                .setFrom(mainControllerImpl.model.cpID)
+                .build()
+
+                rabbitMQ.sendMessage(mainControllerImpl.ExchangeName, rescueTeamID, null, reply)
+            }
+          }
+
+        })
 
       case _ => //do nothing
 
