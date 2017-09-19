@@ -2,10 +2,10 @@ package it.unibo.drescue.connection
 
 import com.rabbitmq.client.AMQP
 import it.unibo.drescue.communication.messages._
-import it.unibo.drescue.communication.messages.response.ObjectModelMessageImpl
 import it.unibo.drescue.database.DBConnection
 import it.unibo.drescue.database.exceptions._
 import it.unibo.drescue.geocoding.{GeocodingException, GeocodingImpl}
+import it.unibo.drescue.model.{AlertImpl, UpvotedAlertImpl}
 
 /**
   * Trait modelling a general service to accessDB and handle the result.
@@ -64,12 +64,22 @@ trait ServiceForward extends ServiceOperation {
     message.getMessageType match {
       case `forwardObjectMessageType` =>
         val forwardObjectMessage = message.asInstanceOf[ForwardObjectMessage]
-        val objectModelMessage = new ObjectModelMessageImpl(forwardObjectMessage.objectModel)
-        forwardObjectMessage.cpIDList foreach (cpID => {
-          rabbitMQ sendMessage("", cpID, null, objectModelMessage)
-        })
+        forwardObjectMessage.objectModel match {
+          case alert: AlertImpl =>
+            val messageAlert: ForwardAlertMessage = ForwardAlertMessage(forwardObjectMessage.objectModel.asInstanceOf[AlertImpl])
+            sendMessageToCp(rabbitMQ, forwardObjectMessage, messageAlert)
+          case upvotedAlert: UpvotedAlertImpl =>
+            val messageUpvoted: ForwardUpvotedAlertMessage = ForwardUpvotedAlertMessage(forwardObjectMessage.objectModel.asInstanceOf[UpvotedAlertImpl])
+            sendMessageToCp(rabbitMQ, forwardObjectMessage, messageUpvoted)
+        }
       case _ => //do nothing
     }
+  }
+
+  def sendMessageToCp(rabbitMQ: RabbitMQ, resultMessage: ForwardObjectMessage, forwardMessage: Message) = {
+    resultMessage.cpIDList foreach (cpID => {
+      rabbitMQ sendMessage("", cpID, null, forwardMessage)
+    })
   }
 
 }
