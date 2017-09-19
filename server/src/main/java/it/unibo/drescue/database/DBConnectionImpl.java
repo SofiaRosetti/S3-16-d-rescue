@@ -9,6 +9,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * A class that allows communication with database.
+ */
 public class DBConnectionImpl implements DBConnection {
 
     protected static final String LOCAL_ADDRESS = "jdbc:mysql://localhost:3306/drescueDB";

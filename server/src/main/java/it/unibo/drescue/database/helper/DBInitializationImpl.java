@@ -15,6 +15,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+/**
+ * Class that allows to initialize records of database.
+ */
 public class DBInitializationImpl implements DBInitialization {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DBInitializationImpl.class);
