@@ -2,6 +2,8 @@ package it.unibo.drescue.database;
 
 import it.unibo.drescue.database.dao.*;
 import it.unibo.drescue.database.exceptions.DBConnectionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,6 +21,7 @@ public class DBConnectionImpl implements DBConnection {
     private static final String CLOSE_EXCEPTION = "Exception while trying to close connection";
     private static final String TABLE_EXCEPTION = "Exception while trying to link to a nonexistent table";
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(DBConnectionImpl.class);
 
     private static Connection connection;
     private static String dbAddress;
@@ -72,7 +75,7 @@ public class DBConnectionImpl implements DBConnection {
             if (connection == null || connection.isClosed()) {
                 Class.forName(DRIVER_NAME);
                 connection = DriverManager.getConnection(dbAddress, dbUsername, dbPassword);
-                System.out.println("[DB]: Connection established with db address: " + dbAddress);
+                LOGGER.info("Connection established with db address: " + dbAddress);
             }
         } catch (final Exception e) {
             throw new DBConnectionException(OPEN_EXCEPTION);
@@ -84,7 +87,7 @@ public class DBConnectionImpl implements DBConnection {
         try {
             if (connection != null && !connection.isClosed()) {
                 connection.close();
-                System.out.println("[DB]: Connection closed");
+                LOGGER.info("Connection closed");
             }
         } catch (final Exception e) {
             throw new DBConnectionException(CLOSE_EXCEPTION);
