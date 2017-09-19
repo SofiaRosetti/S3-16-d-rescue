@@ -1,5 +1,6 @@
 dependencies {
-    compile 'mysql:mysql-connector-java:5.1.42'
+    compile "mysql:mysql-connector-java:${mySqlVersion}"
+    compile "com.google.maps:google-maps-services:${googleMapsServicesVersion}"
 
     compile project(':utils')
 }

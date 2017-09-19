@@ -42,9 +42,6 @@ public class CpAreaDaoImplTest extends GenericDaoAbstractTest {
                 connectionForTest.getDAO(DBConnection.Table.DISTRICT);
         this.civilProtectionDao = (CivilProtectionDao)
                 connectionForTest.getDAO(DBConnection.Table.CIVIL_PROTECTION);
-        /*
-         * TODO use district and civil protection already inserted in DB
-         */
         //Insert util records
         this.civilProtectionDao.insert(CP_TEST);
         this.districtDao.insert(DISTRICT_TEST);

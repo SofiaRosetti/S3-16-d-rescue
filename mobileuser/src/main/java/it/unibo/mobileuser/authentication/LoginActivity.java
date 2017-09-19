@@ -1,5 +1,6 @@
 package it.unibo.mobileuser.authentication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -81,6 +82,8 @@ public class LoginActivity extends ToolbarActivity {
                                 eventTypeSet.add(event.getEventName());
                             }
                             setSharedPreferences(PreferencesKey.EVENT_TYPE, eventTypeSet);
+                            final Intent intent = new Intent();
+                            setResult(RESULT_OK, intent);
                             finish();
                         }
                     }

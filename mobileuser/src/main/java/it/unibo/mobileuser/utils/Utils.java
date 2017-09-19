@@ -17,7 +17,7 @@ public class Utils {
     /**
      * Get MaterialEditText typed text.
      *
-     * @param editText
+     * @param editText the material edit text
      * @return the typed text
      */
     public static String getEditTextString(final MaterialEditText editText) {

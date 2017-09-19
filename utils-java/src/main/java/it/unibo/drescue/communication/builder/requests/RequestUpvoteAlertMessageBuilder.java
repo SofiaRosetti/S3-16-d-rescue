@@ -8,19 +8,19 @@ import it.unibo.drescue.communication.builder.MessageBuilder;
 public interface RequestUpvoteAlertMessageBuilder extends MessageBuilder {
 
     /**
-     * @param userID
+     * @param userID user identifier
      * @return the builder with the given userID
      */
     RequestUpvoteAlertMessageBuilder setUserID(int userID);
 
     /**
-     * @param alertID
+     * @param alertID alert identifier
      * @return the builder with the given alertID
      */
     RequestUpvoteAlertMessageBuilder setAlertID(int alertID);
 
     /**
-     * @param districtID
+     * @param districtID district identifier
      * @return the builder with the given districtID
      */
     RequestUpvoteAlertMessageBuilder setDistrictID(String districtID);

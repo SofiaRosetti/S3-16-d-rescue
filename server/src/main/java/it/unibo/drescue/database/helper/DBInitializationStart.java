@@ -2,6 +2,10 @@ package it.unibo.drescue.database.helper;
 
 import it.unibo.drescue.database.DBConnectionImpl;
 
+/**
+ * Main of database initialization.
+ * Initialize records for districts, event types, civil protection and civil protection areas.
+ */
 public class DBInitializationStart {
 
     private static final String FILE_PATH = "server/res";

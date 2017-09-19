@@ -1,4 +1,4 @@
-package it.unibo.mobileuser.alarm;
+package it.unibo.mobileuser.alert;
 
 
 import android.os.Bundle;
@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * A class that allows to show graphical interface to report new alarm and sends the alarm to server.
  */
-public class NewAlarmActivity extends GpsActivityImpl {
+public class NewAlertActivity extends GpsActivityImpl {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class NewAlarmActivity extends GpsActivityImpl {
         setContentView(R.layout.activity_new_alarm);
 
         setToolbar(true);
-        getSupportActionBar().setTitle(R.string.new_alarm);
+        getSupportActionBar().setTitle(R.string.new_alert);
 
         final String userID = Utils.getUserDataFromSharedPreferences(getApplicationContext(), PreferencesKey.USER_ID);
 
@@ -36,7 +36,7 @@ public class NewAlarmActivity extends GpsActivityImpl {
 
         final Spinner spinner = (Spinner) findViewById(R.id.event_type_spinner);
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                NewAlarmActivity.this, R.layout.spinner_event_type_item, arrayList);
+                NewAlertActivity.this, R.layout.spinner_event_type_item, arrayList);
         adapter.setDropDownViewResource(R.layout.spinner_event_type_dropdown_item);
         spinner.setAdapter(adapter);
 
@@ -79,10 +79,10 @@ public class NewAlarmActivity extends GpsActivityImpl {
                 message,
                 bool -> {
                     if (bool) {
-                        Toast.makeText(NewAlarmActivity.this, R.string.alert_sent, Toast.LENGTH_LONG).show();
+                        Toast.makeText(NewAlertActivity.this, R.string.alert_sent, Toast.LENGTH_LONG).show();
                         finish();
                     } else {
-                        Toast.makeText(NewAlarmActivity.this, R.string.alert_sent_error, Toast.LENGTH_LONG).show();
+                        Toast.makeText(NewAlertActivity.this, R.string.alert_sent_error, Toast.LENGTH_LONG).show();
                     }
 
                 }).execute();

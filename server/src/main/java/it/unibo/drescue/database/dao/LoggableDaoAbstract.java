@@ -2,11 +2,15 @@ package it.unibo.drescue.database.dao;
 
 import it.unibo.drescue.database.exceptions.DBNotFoundRecordException;
 import it.unibo.drescue.model.LoggableModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 
 /*Note: LoggableDao extends from Updatable because an object with credentials should change the password*/
 public abstract class LoggableDaoAbstract<T> extends UpdatableDaoAbstract implements LoggableDao {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoggableDaoAbstract.class);
 
     protected LoggableDaoAbstract(final Connection connection, final String tableName) {
         super(connection, tableName);
@@ -18,7 +22,7 @@ public abstract class LoggableDaoAbstract<T> extends UpdatableDaoAbstract implem
         final LoggableModel loggableInDb =
                 (LoggableModel) this.selectByIdentifier(loggableInserted);
         if (loggableInDb == null) {
-            System.out.println("[DB]: LOGIN_FAIL: object not found");
+            LOGGER.error("LOGIN FAIL: object not found");
             throw new DBNotFoundRecordException();
         }
 
@@ -26,10 +30,10 @@ public abstract class LoggableDaoAbstract<T> extends UpdatableDaoAbstract implem
         final String passInserted = loggableInserted.getPassword();
 
         if (!passInserted.equals(passInDb)) {
-            System.out.println("[DB]: LOGIN_FAIL: wrong credentials");
+            LOGGER.error("LOGIN FAIL: wrong credentials");
             throw new DBNotFoundRecordException();
         } else {
-            System.out.println("[DB]: LOGIN_OK");
+            LOGGER.info("LOGIN OK");
             /*Note: return the object without password*/
             loggableInDb.setPassword("");
             return loggableInDb;

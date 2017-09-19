@@ -20,7 +20,7 @@ public class StringUtils {
     /**
      * Checks if a string is null or empty
      *
-     * @param string
+     * @param string the string to check
      * @return true if is null or empty, false otherwise
      */
     public static boolean isAValidString(final String string) {
@@ -30,7 +30,7 @@ public class StringUtils {
     /**
      * Checks if a string is in a valid email format
      *
-     * @param email
+     * @param email the email to check
      * @return true if matches a regex, false otherwise
      */
     public static boolean isAValidEmail(final String email) {
@@ -45,7 +45,7 @@ public class StringUtils {
     /**
      * Check if a string is in a valid password format.
      *
-     * @param password password string
+     * @param password the password to check
      * @return true if password lenght is correct and password matches a regex, otherwise false
      */
     public static boolean isAValidPassword(final String password) {
@@ -57,7 +57,7 @@ public class StringUtils {
     /**
      * Gets the message type of the given json message.
      *
-     * @param jsonMessage
+     * @param jsonMessage the json message
      * @return the json message type
      */
     public static String getMessageType(final String jsonMessage) {

@@ -4,7 +4,7 @@ import it.unibo.drescue.database.dao.GenericDaoAbstract;
 import it.unibo.drescue.database.exceptions.DBConnectionException;
 
 /**
- * A class that allows communication with database
+ * Interface that allows communication with database.
  */
 public interface DBConnection {
 

@@ -48,9 +48,6 @@ public class UserDaoImplTest extends GenericDaoAbstractTest {
         //DO NOTHING
     }
 
-    /**
-     * TODO
-     */
     @Test
     public void isRejectingDuplicateEmail() throws Exception {
 
@@ -96,7 +93,7 @@ public class UserDaoImplTest extends GenericDaoAbstractTest {
         this.userTest.setEmail("a@a.com");
         try {
             this.userDao.login(this.userTest);
-        } catch (DBNotFoundRecordException e) {
+        } catch (final DBNotFoundRecordException e) {
             assertNotNull(e);
         }
         this.userTest.setEmail(EMAIL_TEST);

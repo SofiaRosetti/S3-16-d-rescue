@@ -8,31 +8,31 @@ import it.unibo.drescue.communication.builder.MessageBuilder;
 public interface SignUpMessageBuilder extends MessageBuilder {
 
     /**
-     * @param name
+     * @param name user name
      * @return the builder with the given name
      */
     SignUpMessageBuilder setName(String name);
 
     /**
-     * @param surname
+     * @param surname user surname
      * @return the builder with the given surname
      */
     SignUpMessageBuilder setSurname(String surname);
 
     /**
-     * @param email
+     * @param email user email
      * @return the builder with the given email
      */
     SignUpMessageBuilder setEmail(String email);
 
     /**
-     * @param phoneNumber
+     * @param phoneNumber user phone number
      * @return the builder with the given phoneNumber
      */
     SignUpMessageBuilder setPhoneNumber(String phoneNumber);
 
     /**
-     * @param password
+     * @param password user password
      * @return the builder with the given password
      */
     SignUpMessageBuilder setPassword(String password);

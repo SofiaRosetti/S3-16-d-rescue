@@ -3,6 +3,9 @@ package it.unibo.drescue.communication.builder.requests;
 import it.unibo.drescue.communication.messages.Message;
 import it.unibo.drescue.communication.messages.requests.RequestUpvoteAlertMessageImpl;
 
+/**
+ * Builder class for request upvote alert messages.
+ */
 public class RequestUpvoteAlertMessageBuilderImpl implements RequestUpvoteAlertMessageBuilder {
 
     private final RequestUpvoteAlertMessageImpl message;

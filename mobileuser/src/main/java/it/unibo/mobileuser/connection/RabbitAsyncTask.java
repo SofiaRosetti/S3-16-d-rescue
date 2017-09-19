@@ -1,6 +1,7 @@
 package it.unibo.mobileuser.connection;
 
 import android.os.AsyncTask;
+import android.util.Log;
 import com.rabbitmq.client.AMQP;
 import it.unibo.drescue.StringUtils;
 import it.unibo.drescue.communication.GsonUtils;
@@ -63,7 +64,7 @@ public class RabbitAsyncTask extends AsyncTask<Void, Void, String> {
                 responseMessage = GsonUtils.toGson(new ErrorMessageImpl(ERROR_SERVER));
             }
 
-            System.out.println("[RabbitAsyncTask] responseMessage=" + responseMessage);
+            Log.i("RabbitAsyncTask", "Response message=" + responseMessage);
 
         } catch (final Exception e) {
             responseMessage = GsonUtils.toGson(new ErrorMessageImpl(ERROR_SERVER));

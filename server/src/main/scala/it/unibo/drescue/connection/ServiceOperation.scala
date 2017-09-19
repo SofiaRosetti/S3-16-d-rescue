@@ -262,9 +262,9 @@ object AlertsService {
   /**
     * Calculate the district using Geocoding classes.
     *
-    * @param latitude
-    * @param longitude
-    * @throws it.unibo.drescue.geocoding.GeocodingException
+    * @param latitude  latitude
+    * @param longitude longitude
+    * @throws it.unibo.drescue.geocoding.GeocodingException if an error occur while executing geocoding operations
     * @return the string representing the district
     */
   @throws(classOf[GeocodingException])
@@ -275,9 +275,9 @@ object AlertsService {
   /**
     * Gets alerts of the given district.
     *
-    * @param alertDao
+    * @param alertDao DAO of alert
     * @param district district of which to find the alerts
-    * @throws it.unibo.drescue.database.exceptions.DBQueryException
+    * @throws it.unibo.drescue.database.exceptions.DBQueryException if an error occur while executing a query
     * @return a java.util.List containing the alerts
     */
   @throws(classOf[DBQueryException])

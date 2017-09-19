@@ -9,15 +9,14 @@
     </integer-array>
 
     <string-array name="card_activities">
-        <item>it.unibo.mobileuser.alarm.UpvoteAlertActivity</item>
-        <item>it.unibo.mobileuser.alarm.NewAlarmActivity
-        </item><!--TODO: in future change with the activity of my alarms-->
-        <item>null</item><!--TODO: in future change with the activity of occured events-->
+        <item>it.unibo.mobileuser.alert.UpvoteAlertActivity</item>
+        <item>it.unibo.mobileuser.alert.NewAlertActivity</item>
+        <item>null</item><!--In future change with the activity of occured events-->
         <item>it.unibo.mobileuser.profile.ProfileActivity</item>
     </string-array>
     <string-array name="card_titles">
         <item>Last alerts</item>
-        <item>New alarm</item><!--TODO: in future change with "My alarms"-->
+        <item>New alert</item>
         <item>Occurred events</item>
         <item>Profile</item>
     </string-array>

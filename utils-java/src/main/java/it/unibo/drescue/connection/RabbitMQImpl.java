@@ -8,11 +8,20 @@ import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Class modelling operations that can be invoked on RabbitMQ connections.
+ */
 public class RabbitMQImpl implements RabbitMQ {
 
-    RabbitMQConnection rabbitMQConnection;
-    Channel channel;
+    private final RabbitMQConnection rabbitMQConnection;
+    private Channel channel;
 
+    /**
+     * Constructor.
+     *
+     * @param rabbitMQConnection the RabbitMQ connection
+     * @throws IOException if an error is encountered
+     */
     public RabbitMQImpl(final RabbitMQConnection rabbitMQConnection) throws IOException {
         this.rabbitMQConnection = rabbitMQConnection;
         createChannel();
@@ -75,7 +84,7 @@ public class RabbitMQImpl implements RabbitMQ {
     }
 
     @Override
-    public void bindQueueToExchange(final String queue, final String exchange,final String[] routingKeys) throws IOException {
+    public void bindQueueToExchange(final String queue, final String exchange, final String[] routingKeys) throws IOException {
         for (final String routingKey : routingKeys) {
             this.channel.queueBind(queue, exchange, routingKey);
         }

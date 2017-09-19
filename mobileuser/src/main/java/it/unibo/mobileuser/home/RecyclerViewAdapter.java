@@ -78,7 +78,7 @@ public class RecyclerViewAdapter extends
          *
          * @return the text view of title
          */
-        public TextView getTitleTextView() {
+        private TextView getTitleTextView() {
             return this.titleTextView;
         }
 
@@ -87,7 +87,7 @@ public class RecyclerViewAdapter extends
          *
          * @return the image view of icon
          */
-        public ImageView getIconImageView() {
+        private ImageView getIconImageView() {
             return this.iconImageView;
         }
     }
