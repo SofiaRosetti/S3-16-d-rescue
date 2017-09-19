@@ -3,6 +3,7 @@ package it.unibo.drescue.view
 object ViewConstants {
 
   val Gap = 10
+  val Gap5 = 5
 
   val Insets5 = 5
   val Insets10 = 10
@@ -27,8 +28,10 @@ object ViewConstants {
 
   val WidthHeight60 = 60
   val WidthHeight100 = 100
+  val WidthHeight120 = 120
   val WidthHeight150 = 150
   val WidthHeight200 = 200
+  val WidthHeight230 = 230
   val WidthHeight250 = 250
   val WidthHeight300 = 300
   val WidthHeight400 = 400
