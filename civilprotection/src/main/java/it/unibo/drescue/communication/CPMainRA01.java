@@ -43,7 +43,7 @@ public class CPMainRA01 {
             rabbitMQ = new RabbitMQImpl(connection);
             rabbitMQ.declareExchange(CoordinatorImpl.EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
             final String queueName = rabbitMQ.addReplyQueue();
-            rabbitMQ.bindQueueToExchange(queueName, CoordinatorImpl.EXCHANGE_NAME, bindingQueue);
+            //rabbitMQ.bindQueueToExchange(queueName, CoordinatorImpl.EXCHANGE_NAME, bindingQueue);
 
             final CPConsumer consumer = new CPConsumer(rabbitMQ.getChannel());
             consumer.setCpID(myID);

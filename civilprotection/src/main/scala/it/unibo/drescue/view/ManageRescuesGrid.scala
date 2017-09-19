@@ -114,11 +114,10 @@ class ManageRescuesGrid(private var manageRescuesController: ManageRescuesContro
       margin = Insets(Insets30)
       prefWidth = WidthHeight200
       onMouseClicked = (event: MouseEvent) => {
-        //homeController.newTeamPress()
         var selected = Table.getSelectionModel.getFocusedIndex
         var team = entries.get(selected)
-        println(team.teamID.value)
-        entries.add(new EnrolledTeamInfo("RT003", "Rescue team 003", "3335874588", true, "FC001", 256))
+        println("SendButton " + team.teamID.value)
+        manageRescuesController.sendPressed(team.teamID.value)
       }
     }
     val StopButton = new Button() {
@@ -127,7 +126,10 @@ class ManageRescuesGrid(private var manageRescuesController: ManageRescuesContro
       margin = Insets(Insets30)
       prefWidth = WidthHeight200
       onMouseClicked = (event: MouseEvent) => {
-        //homeController.occupiedTeamsPress()
+        var selected = Table.getSelectionModel.getFocusedIndex
+        var team = entries.get(selected)
+        println("StopButton " + team.teamID.value)
+        manageRescuesController.sendPressed(team.teamID.value)
       }
     }
     val BackButton = new Button() {
@@ -136,8 +138,7 @@ class ManageRescuesGrid(private var manageRescuesController: ManageRescuesContro
       margin = Insets(Insets30)
       prefWidth = WidthHeight200
       onMouseClicked = (event: MouseEvent) => {
-        //homeController.newRescuePress()
-        //homeController.refreshAlertsList()
+        manageRescuesController.backPress()
       }
     }
     val buttonBox = new HBox {

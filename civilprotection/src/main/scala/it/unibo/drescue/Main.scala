@@ -18,7 +18,7 @@ object Main extends JFXApp {
   var newRescueController = new NewRescueControllerImpl(controller)
   var enrollTeamController = new EnrollTeamControllerImpl(controller)
   var occupiedTeamsController = new OccupiedTeamsControllerImpl(controller)
-  var manageRescuesController = new ManageRescuesControllerImpl(controller)
+  var manageRescuesController = new ManageRescuesControllerImpl(controller, new RabbitMQImpl(connection))
   var loginGrid = new LoginGrid(loginController)
 
   var view = new MainView(

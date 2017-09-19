@@ -5,8 +5,10 @@ import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Consumer;
 import it.unibo.drescue.communication.messages.Message;
+import it.unibo.drescue.model.RescueTeamImpl;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -93,9 +95,9 @@ public interface RabbitMQ {
      *
      * @param queueName   the name of the queue
      * @param exchange    the name of the exchange
-     * @param routingKeys the routine key to use for the binding
+     * @param routingKeysList the routine key to use for the binding
      * @throws IOException if an error is encountered
      */
-    void bindQueueToExchange(String queueName, String exchange, String[] routingKeys) throws IOException;
+    void bindQueueToExchange(String queueName, String exchange, List<RescueTeamImpl> routingKeysList) throws IOException;
 
 }
