@@ -105,14 +105,6 @@
                 android:paddingStart="@dimen/padding_icon_small"
                 android:clickable="true"/>
 
-        <!-- TODO: Uncomment when the functionality will be implemented.
-        <Button
-                android:id="@+id/edit_button"
-                android:text="@string/edit"
-                style="@style/button_look"
-                android:layout_marginBottom="@dimen/margin_small"
-                android:clickable="true"/>-->
-
         <Button
                 android:id="@+id/logout_button"
                 android:text="@string/logout"

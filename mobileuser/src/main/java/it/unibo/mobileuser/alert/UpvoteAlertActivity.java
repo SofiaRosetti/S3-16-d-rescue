@@ -1,4 +1,4 @@
-package it.unibo.mobileuser.alarm;
+package it.unibo.mobileuser.alert;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;

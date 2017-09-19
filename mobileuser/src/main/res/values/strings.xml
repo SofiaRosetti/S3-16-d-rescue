@@ -42,7 +42,7 @@
     <string name="missing_account">You don\'t have an account?</string>
     <string name="name">Name</string>
     <string name="name_label">Name:</string>
-    <string name="new_alarm">New alarm</string>
+    <string name="new_alert">New alert</string>
     <string name="ok">ok</string>
     <string name="password">Password</string>
     <string name="password_confirm">Confirm password</string>
