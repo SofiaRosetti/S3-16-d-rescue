@@ -47,10 +47,7 @@ public class UserDaoImplTest extends GenericDaoAbstractTest {
     protected void doOtherTearDown() {
         //DO NOTHING
     }
-
-    /**
-     * TODO
-     */
+    
     @Test
     public void isRejectingDuplicateEmail() throws Exception {
 
