@@ -1,26 +1,25 @@
 package it.unibo.drescue.communication.builder;
 
 import it.unibo.drescue.communication.messages.Message;
-import it.unibo.drescue.communication.messages.RescueTeamConditionMessage;
-import it.unibo.drescue.model.RescueTeamImplBuilder;
+import it.unibo.drescue.communication.messages.ReplyRescueTeamConditionMessage;
 import it.unibo.drescue.utils.RescueTeamCondition;
 
-public class RescueTeamConditionMessageBuilderImpl implements RescueTeamConditionMessageBuilder {
+public class ReplyRescueTeamConditionMessageBuilderImpl implements ReplyRescueTeamConditionMessageBuilder {
 
-    private final RescueTeamConditionMessage message;
+    private final ReplyRescueTeamConditionMessage message;
 
-    public RescueTeamConditionMessageBuilderImpl() {
-        this.message = new RescueTeamConditionMessage();
+    public ReplyRescueTeamConditionMessageBuilderImpl() {
+        this.message = new ReplyRescueTeamConditionMessage();
     }
 
     @Override
-    public RescueTeamConditionMessageBuilder setRescueTeamID(String rescueTeamID) {
+    public ReplyRescueTeamConditionMessageBuilder setRescueTeamID(String rescueTeamID) {
         this.message.setRescueTeamID(rescueTeamID);
         return this;
     }
 
     @Override
-    public RescueTeamConditionMessageBuilder setRescueTeamCondition(RescueTeamCondition rescueTeamCondtion) {
+    public ReplyRescueTeamConditionMessageBuilder setRescueTeamCondition(RescueTeamCondition rescueTeamCondtion) {
         this.message.setRescueTeamCondition(rescueTeamCondtion);
         return this;
     }

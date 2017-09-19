@@ -3,7 +3,9 @@ package it.unibo.drescue.controller
 import java.util
 import java.util.concurrent.{ExecutorService, Executors, Future}
 
-import it.unibo.drescue.communication.GsonUtils
+import com.rabbitmq.client.BuiltinExchangeType
+import it.unibo.drescue.communication.builder.ReqRescueTeamConditionMessageBuilderImpl
+import it.unibo.drescue.communication.{CPConsumer, GsonUtils}
 import it.unibo.drescue.communication.messages._
 import it.unibo.drescue.communication.messages.response.AlertsMessageImpl
 import it.unibo.drescue.connection._
@@ -12,6 +14,8 @@ import it.unibo.drescue.model.{AlertImpl, RescueTeamImpl}
 import it.unibo.drescue.view.MainView
 
 class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQImpl) {
+
+  val ExchangeName = "rt_exchange"
 
   val pool: ExecutorService = Executors.newFixedThreadPool(Runtime.getRuntime.availableProcessors() + 1)
   var view = new MainView(null, null, null, null, null, null, null, null)
@@ -23,6 +27,23 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
   def userLogged(username: String, rescueTeams: java.util.List[RescueTeamImpl]): Unit = {
     model.cpID = username // set cpID in main controller
     model.enrolledRescueTeams = rescueTeams
+
+    rabbitMQ declareExchange(ExchangeName, BuiltinExchangeType.DIRECT)
+    val queueName = rabbitMQ addReplyQueue()
+    rabbitMQ bindQueueToExchange(queueName, ExchangeName, rescueTeams)
+    rabbitMQ addConsumer(new CPConsumer(rabbitMQ.getChannel), queueName)
+    //ask for availability
+
+    rescueTeams forEach (rescueTeam => {
+
+      val rescueTeamConditionMessage = new ReqRescueTeamConditionMessageBuilderImpl()
+        .setRescueTeamID(rescueTeam.getRescueTeamID)
+        .setFrom(username)
+        .build()
+
+      rabbitMQ.sendMessage(ExchangeName, rescueTeam.getRescueTeamID, null, rescueTeamConditionMessage)
+    })
+
 
     val message: Message = RequestCpAlertsMessageImpl(model.cpID)
     val task: Future[String] = pool.submit(new RequestHandler(rabbitMQ, message, QueueType.ALERTS_QUEUE))
