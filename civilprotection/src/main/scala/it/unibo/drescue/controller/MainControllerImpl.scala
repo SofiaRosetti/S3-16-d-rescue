@@ -89,7 +89,6 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
       alert.getUpvotes)
   }
 
-
   def initializeEnrolledTeamInfoList(list: java.util.List[RescueTeamImpl]): Unit = {
     model.enrolledTeamInfoList = fromRescueTeamListToEnrolledTeamInfoList(list)
   }
@@ -110,6 +109,25 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
       true,
       "",
       -1)
+  }
+
+  def initializeNotEnrolled(): Unit = {
+    //TODO request to NotEnrolledMessage
+    val message: Message = GetRescueTeamsNotEnrolledMessageImpl(model.cpID)
+    val task: Future[String] = pool.submit(new RequestHandler(rabbitMQ, message, QueueType.CIVIL_PROTECTION_QUEUE))
+    val response: String = task.get()
+    println("Main controller - initialize not enrolled rescue team: " + response)
+    val messageName: MessageType = MessageUtils.getMessageNameByJson(response)
+    messageName match {
+      case MessageType.RESCUE_TEAMS_MESSAGE =>
+        val teamsMessage = GsonUtils.fromGson(response, classOf[RescueTeamsMessageImpl])
+        initializeNotEnrolledModel(teamsMessage.rescueTeamsList)
+      case _ => //TODO error
+    }
+  }
+
+  def initializeNotEnrolledModel(list: java.util.List[RescueTeamImpl]) = {
+    model.notEnrolledRescueTeams = list
   }
 
   def changeView(nextView: String) = {
