@@ -25,6 +25,8 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
     println("[RescueTeamConsumer] " + message)
 
     val coordinator: Coordinator = CoordinatorImpl.getInstance()
+    coordinator.setConnection(rabbitMQ)
+    coordinator.setExchange(mainControllerImpl.ExchangeName)
     var myCondition: CoordinatorCondition = null
     var myCs: String = null
     var myTimestamp: Timestamp = null
@@ -52,8 +54,11 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
           else {
 
             //TODO se la rescue team è occupata, ed è stata occupata da altre CP  allora settare lo stato del RT = AVAILABLE
-            coordinator.sendReplayMessageTo(reqCoordinationMessage.getRescueTeamID, reqFrom)
+            coordinator.sendReplayMessageTo(reqCs, reqFrom)
+            println("Sended replay")
           }
+
+
         }
 
       case MessageType.REPLAY_COORDINATION_MESSAGE =>

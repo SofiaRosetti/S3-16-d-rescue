@@ -56,6 +56,7 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
     //Coordinator configuration
     val coordinator : Coordinator = CoordinatorImpl.getInstance()
     coordinator.setConnection(rabbitMQ)
+    coordinator.setExchange(mainController.ExchangeName)
     coordinator.setCondition(CoordinatorCondition.WANTED);
     coordinator.setCsName(wantedRescueTeamID);
     coordinator.setMyID(mainController.model.cpID);
@@ -67,6 +68,20 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
     reqCoordinationMessage.setFrom(mainController.model.cpID)
     reqCoordinationMessage.setRescueTeamID(wantedRescueTeamID)
     reqCoordinationMessage.setTimestamp(coordinator.getReqTimestamp())
+
+    rabbitMQ.sendMessage(mainController.ExchangeName, wantedRescueTeamID, null, reqCoordinationMessage)
+
+    //The process is blocked as long as enter in cs (coordinator condition == HELD) or has received a negative responde (RS = OCCUPIED)
+    while (coordinator.getCondition() != CoordinatorCondition.HELD && coordinator.getCondition() != CoordinatorCondition.DETACHED){
+      println(coordinator.getCondition());
+    }
+    if (coordinator.getCondition() == CoordinatorCondition.HELD){
+      //TODO CS execution Update RT condition
+      System.out.println("[CS Execution]");
+      //the process came back from CS
+      coordinator.backToCs();
+    }
+
   }
 
   def stopPressed(wantedRescueTeamID: String) = {

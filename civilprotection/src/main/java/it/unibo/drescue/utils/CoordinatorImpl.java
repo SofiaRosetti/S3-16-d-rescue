@@ -18,6 +18,8 @@ public class CoordinatorImpl implements Coordinator {
 
     public final static String EXCHANGE_NAME = "rabbit_cp";
 
+    private String exchangeName = "";
+
     private static CoordinatorImpl instance;
     private CoordinatorCondition condition;
     private Timestamp reqTimestamp = null;
@@ -136,7 +138,7 @@ public class CoordinatorImpl implements Coordinator {
         replayCoordinationMessage.setFrom(myID);
 
         try {
-            this.connection.sendMessage(EXCHANGE_NAME, csName, null, replayCoordinationMessage);
+            this.connection.sendMessage(this.exchangeName, csName, null, replayCoordinationMessage);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -151,7 +153,10 @@ public class CoordinatorImpl implements Coordinator {
         replayCoordinationMessage.setFrom(myID);
         replayCoordinationMessage.setTo(to);
         try {
-            this.connection.sendMessage(EXCHANGE_NAME, csName, null, replayCoordinationMessage);
+            System.out.println("connection " + connection);
+            System.out.println("csName " + csName);
+            System.out.println("replay " + replayCoordinationMessage);
+            this.connection.sendMessage(this.exchangeName, csName, null, replayCoordinationMessage);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -168,5 +173,10 @@ public class CoordinatorImpl implements Coordinator {
             }
         }
         this.cs = "";
+    }
+
+    @Override
+    public void setExchange(String exchange) {
+        this.exchangeName = exchange;
     }
 }
