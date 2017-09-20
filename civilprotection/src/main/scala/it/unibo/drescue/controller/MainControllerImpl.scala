@@ -4,8 +4,8 @@ import java.util
 import java.util.concurrent.{ExecutorService, Executors, Future}
 
 import com.rabbitmq.client.BuiltinExchangeType
+import it.unibo.drescue.communication.GsonUtils
 import it.unibo.drescue.communication.builder.ReqRescueTeamConditionMessageBuilderImpl
-import it.unibo.drescue.communication.{CPConsumer, GsonUtils}
 import it.unibo.drescue.communication.messages._
 import it.unibo.drescue.communication.messages.response.AlertsMessageImpl
 import it.unibo.drescue.connection._
@@ -31,7 +31,7 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
     rabbitMQ declareExchange(ExchangeName, BuiltinExchangeType.DIRECT)
     val queueName = rabbitMQ addReplyQueue()
     rabbitMQ bindQueueToExchange(queueName, ExchangeName, rescueTeams)
-    val cpConsumer : RescueTeamConsumer = RescueTeamConsumer(rabbitMQ, this)
+    val cpConsumer: RescueTeamConsumer = RescueTeamConsumer(rabbitMQ, this)
     rabbitMQ addConsumer(cpConsumer, queueName)
     //ask for availability
 

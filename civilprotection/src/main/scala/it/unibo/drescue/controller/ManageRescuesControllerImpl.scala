@@ -1,13 +1,10 @@
 package it.unibo.drescue.controller
 
-import com.rabbitmq.client.BuiltinExchangeType
-import it.unibo.drescue.communication.CPConsumer
 import it.unibo.drescue.connection.RabbitMQImpl
 import it.unibo.drescue.localModel.Observers
-import it.unibo.drescue.utils.CoordinatorImpl
 
 class ManageRescuesControllerImpl(private var mainController: MainControllerImpl,
-                                 var rabbitMQ: RabbitMQImpl) extends Observer {
+                                  var rabbitMQ: RabbitMQImpl) extends Observer {
 
   mainController.model.addObserver(Observers.ManageRescue, this)
 
@@ -19,7 +16,6 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
   }
 
   def sendPressed(wantedRescueTeamID: String) = {
-
 
 
   }
