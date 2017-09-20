@@ -1,7 +1,15 @@
 package it.unibo.drescue.controller
 
-import it.unibo.drescue.connection.RabbitMQImpl
+import java.sql.Timestamp
+import java.util
+import java.util.concurrent.Future
+
+import it.unibo.drescue.communication.{GsonUtils, messages}
+import it.unibo.drescue.communication.messages.{CPsMessageImpl, GetAssociatedCpMessageImpl, Message, ReqCoordinationMessage}
+import it.unibo.drescue.connection.{QueueType, RabbitMQImpl, RequestHandler}
 import it.unibo.drescue.localModel.{EnrolledTeamInfo, Observers}
+import it.unibo.drescue.model.CivilProtectionImpl
+import it.unibo.drescue.utils.{Coordinator, CoordinatorCondition, CoordinatorImpl}
 
 import scalafx.collections.ObservableBuffer
 
@@ -25,8 +33,40 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
 
     //TODO get commonCP (see messages in ServerSideHandler and create Server Service)
 
-    //TODO start Ricart Agrawala's Algorithm to occupy the given rescueTeamID
+    val message : Message = GetAssociatedCpMessageImpl(wantedRescueTeamID)
+    val task: Future[String] = mainController.pool.submit(new RequestHandler(rabbitMQ, message, QueueType.CIVIL_PROTECTION_QUEUE))
+    val response: String = task.get()
+    println("Manage Rescues Controller - cp: " + response)
+    val associatedCpMessage = GsonUtils.fromGson(response, classOf[CPsMessageImpl])
+    val cpList: java.util.List[CivilProtectionImpl] = associatedCpMessage.cpList
 
+    val cpIDList: java.util.List[String] = new util.ArrayList[String]()
+
+    //TODO make this check into server
+    cpList.forEach((cp: CivilProtectionImpl) => {
+      if (cp.getCpID != mainController.model.cpID){
+        cpIDList.add(cp.getCpID)
+      }
+
+    })
+    println("&&" + cpIDList)
+
+
+    //TODO start Ricart Agrawala's Algorithm to occupy the given rescueTeamID
+    //Coordinator configuration
+    val coordinator : Coordinator = CoordinatorImpl.getInstance()
+    coordinator.setConnection(rabbitMQ)
+    coordinator.setCondition(CoordinatorCondition.WANTED);
+    coordinator.setCsName(wantedRescueTeamID);
+    coordinator.setMyID(mainController.model.cpID);
+    coordinator.setReqTimestamp(new Timestamp(System.currentTimeMillis()));
+    coordinator.createPendingCivilProtectionReplayStructure(cpIDList)
+
+    //Broadcast request
+    val reqCoordinationMessage : ReqCoordinationMessage = new messages.ReqCoordinationMessage()
+    reqCoordinationMessage.setFrom(mainController.model.cpID)
+    reqCoordinationMessage.setRescueTeamID(wantedRescueTeamID)
+    reqCoordinationMessage.setTimestamp(coordinator.getReqTimestamp())
   }
 
   def stopPressed(wantedRescueTeamID: String) = {
