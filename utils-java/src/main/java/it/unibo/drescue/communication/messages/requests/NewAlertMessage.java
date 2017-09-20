@@ -12,6 +12,8 @@ public interface NewAlertMessage {
 
     /**
      * Sets the user's id.
+     *
+     * @param userID user identifier
      */
     void setUserID(int userID);
 
@@ -22,6 +24,8 @@ public interface NewAlertMessage {
 
     /**
      * Sets the event type that the user wats to report.
+     *
+     * @param eventType event type name
      */
     void setEventType(String eventType);
 
@@ -32,6 +36,8 @@ public interface NewAlertMessage {
 
     /**
      * Sets the latitude at which the event happened.
+     *
+     * @param latitude latitude value
      */
     void setLatitude(double latitude);
 
@@ -42,6 +48,7 @@ public interface NewAlertMessage {
 
     /**
      * Sets the longitude at which the event happened.
+     * @param longitude longitude value
      */
     void setLongitude(double longitude);
 

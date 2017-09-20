@@ -16,7 +16,9 @@ public class DBInitializationStart {
     private static final String CP_AREAS_FILE = "/cp_areas.json";
 
     /**
-     * Used to initialize DB with static tables contents
+     * Used to initialize DB with static tables contents.
+     *
+     * @param args some arguments
      */
     public static void main(final String[] args) {
         start();
