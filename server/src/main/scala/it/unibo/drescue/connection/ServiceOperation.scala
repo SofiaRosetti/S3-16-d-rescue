@@ -76,6 +76,13 @@ trait ServiceForward extends ServiceOperation {
     }
   }
 
+  /**
+    * Forward a message to the right CPs.
+    *
+    * @param rabbitMQ       connection to rabbitMQ
+    * @param resultMessage  result message from accessDB call
+    * @param forwardMessage message to forward
+    */
   def sendMessageToCp(rabbitMQ: RabbitMQ, resultMessage: ForwardObjectMessage, forwardMessage: Message) = {
     resultMessage.cpIDList foreach (cpID => {
       rabbitMQ sendMessage("", cpID, null, forwardMessage)
@@ -495,6 +502,17 @@ case class CivilProtectionService() extends ServiceResponseOrForward {
           case query: DBQueryException => throw query
           case duplicated: DBDuplicatedRecordException =>
             Option(new ErrorMessageImpl(CivilProtectionService.DuplicatedEnrollmentMessage))
+        }
+
+      case MessageType.ASSOCIATED_CPS_MESSAGE =>
+        val message = GsonUtils.fromGson(jsonMessage, classOf[GetAssociatedCpMessageImpl])
+        try {
+          val cpEnrollmentDao = (dbConnection getDAO DBConnection.Table.CP_ENROLLMENT).asInstanceOf[CpEnrollmentDao]
+          val CPsList = cpEnrollmentDao.findAllCpRelatedToARescueTeam(message.rescueTeamID)
+          Option(CPsMessageImpl(CPsList.asInstanceOf[util.List[CivilProtectionImpl]]))
+        } catch {
+          case connection: DBConnectionException => throw connection
+          case query: DBQueryException => throw query
         }
 
       case _ => throw new Exception

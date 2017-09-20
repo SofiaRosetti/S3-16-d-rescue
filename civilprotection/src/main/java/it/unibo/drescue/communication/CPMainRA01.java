@@ -1,24 +1,14 @@
 package it.unibo.drescue.communication;
 
-import com.rabbitmq.client.BuiltinExchangeType;
-import it.unibo.drescue.communication.builder.CPCoordinationMessageBuilder;
-import it.unibo.drescue.communication.builder.CPCoordinationMessageBuilderImpl;
-import it.unibo.drescue.communication.messages.Message;
-import it.unibo.drescue.communication.messages.ReqCoordinationMessage;
 import it.unibo.drescue.connection.RabbitMQConnectionImpl;
 import it.unibo.drescue.connection.RabbitMQImpl;
-import it.unibo.drescue.utils.Coordinator;
-import it.unibo.drescue.utils.CoordinatorCondition;
-import it.unibo.drescue.utils.CoordinatorImpl;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 public class CPMainRA01 {
-
 
 
     public static void main(final String[] args) throws IOException, TimeoutException {
@@ -31,14 +21,14 @@ public class CPMainRA01 {
 
         final String myID = "RA01";
         final String wantedRescueTeam = args[1];
-        System.out.println("myID: "+ wantedRescueTeam);
-        System.out.println("wanted rescue team: "+ myID);
+        System.out.println("myID: " + wantedRescueTeam);
+        System.out.println("wanted rescue team: " + myID);
 
-        RabbitMQConnectionImpl connection = null;
-        RabbitMQImpl rabbitMQ = null;
+        final RabbitMQConnectionImpl connection = null;
+        final RabbitMQImpl rabbitMQ = null;
 
         try {
-            connection =  new RabbitMQConnectionImpl("localhost");
+            /*connection =  new RabbitMQConnectionImpl("localhost");
             connection.openConnection();
             rabbitMQ = new RabbitMQImpl(connection);
             rabbitMQ.declareExchange(CoordinatorImpl.EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
@@ -76,9 +66,8 @@ public class CPMainRA01 {
                 System.out.println("[CS Execution]");
                 //the process came back from cs
                 coordinator.backToCs();
-            }
-        }
-        catch (Exception e){
+            }*/
+        } catch (final Exception e) {
             //TODO
             e.printStackTrace();
         }

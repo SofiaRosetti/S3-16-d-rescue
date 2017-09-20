@@ -4,12 +4,12 @@ import java.util
 import java.util.concurrent.{ExecutorService, Executors, Future}
 
 import com.rabbitmq.client.BuiltinExchangeType
+import it.unibo.drescue.communication.GsonUtils
 import it.unibo.drescue.communication.builder.ReqRescueTeamConditionMessageBuilderImpl
-import it.unibo.drescue.communication.{CPConsumer, GsonUtils}
 import it.unibo.drescue.communication.messages._
 import it.unibo.drescue.communication.messages.response.AlertsMessageImpl
 import it.unibo.drescue.connection._
-import it.unibo.drescue.localModel.{AlertEntry, CivilProtectionData}
+import it.unibo.drescue.localModel.{AlertEntry, CivilProtectionData, EnrolledTeamInfo}
 import it.unibo.drescue.model.{AlertImpl, RescueTeamImpl}
 import it.unibo.drescue.view.MainView
 
@@ -28,25 +28,26 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
     model.cpID = username // set cpID in main controller
     model.enrolledRescueTeams = rescueTeams
 
+    //initialize model.enrolledTeamInfoList
+    initializeEnrolledTeamInfoList(rescueTeams)
+    println(model.enrolledTeamInfoList)
+
+    //ask for availability of enrolledRescueTeams
     rabbitMQ declareExchange(ExchangeName, BuiltinExchangeType.DIRECT)
     val queueName = rabbitMQ addReplyQueue()
     rabbitMQ bindQueueToExchange(queueName, ExchangeName, rescueTeams)
-    val cpConsumer : RescueTeamConsumer = RescueTeamConsumer(rabbitMQ, this)
+    val cpConsumer: RescueTeamConsumer = RescueTeamConsumer(rabbitMQ, this)
     rabbitMQ addConsumer(cpConsumer, queueName)
-    //ask for availability
 
     rescueTeams forEach (rescueTeam => {
-
       val rescueTeamConditionMessage = new ReqRescueTeamConditionMessageBuilderImpl()
         .setRescueTeamID(rescueTeam.getRescueTeamID)
         .setFrom(username)
         .build()
-
-
       rabbitMQ.sendMessage(ExchangeName, rescueTeam.getRescueTeamID, null, rescueTeamConditionMessage)
     })
 
-
+    //request of alerts of my zone
     val message: Message = RequestCpAlertsMessageImpl(model.cpID)
     val task: Future[String] = pool.submit(new RequestHandler(rabbitMQ, message, QueueType.ALERTS_QUEUE))
     val response: String = task.get()
@@ -61,8 +62,6 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
 
     rabbitMQ.addQueue(model.cpID)
     rabbitMQ addConsumer(AlertConsumer(rabbitMQ, this), model.cpID)
-
-    //TODO request availability on each rescue team queue
 
   }
 
@@ -88,6 +87,47 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
       alert.getEventName,
       alert.getDistrictID,
       alert.getUpvotes)
+  }
+
+  def initializeEnrolledTeamInfoList(list: java.util.List[RescueTeamImpl]): Unit = {
+    model.enrolledTeamInfoList = fromRescueTeamListToEnrolledTeamInfoList(list)
+  }
+
+  def fromRescueTeamListToEnrolledTeamInfoList(list: java.util.List[RescueTeamImpl]): java.util.List[EnrolledTeamInfo] = {
+    val entryList: java.util.List[EnrolledTeamInfo] = new util.ArrayList[EnrolledTeamInfo]()
+    list.forEach((rescueTeam: RescueTeamImpl) => {
+      entryList.add(fromRescueTeamToEnrolledTeamInfoEntry(rescueTeam))
+    })
+    entryList
+  }
+
+  def fromRescueTeamToEnrolledTeamInfoEntry(rescueTeam: RescueTeamImpl): EnrolledTeamInfo = {
+    new EnrolledTeamInfo(
+      rescueTeam.getRescueTeamID,
+      rescueTeam.getName,
+      rescueTeam.getPhoneNumber,
+      true,
+      "",
+      "")
+  }
+
+  def initializeNotEnrolled(): Unit = {
+    //TODO request to NotEnrolledMessage
+    val message: Message = GetRescueTeamsNotEnrolledMessageImpl(model.cpID)
+    val task: Future[String] = pool.submit(new RequestHandler(rabbitMQ, message, QueueType.CIVIL_PROTECTION_QUEUE))
+    val response: String = task.get()
+    println("Main controller - initialize not enrolled rescue team: " + response)
+    val messageName: MessageType = MessageUtils.getMessageNameByJson(response)
+    messageName match {
+      case MessageType.RESCUE_TEAMS_MESSAGE =>
+        val teamsMessage = GsonUtils.fromGson(response, classOf[RescueTeamsMessageImpl])
+        initializeNotEnrolledModel(teamsMessage.rescueTeamsList)
+      case _ => //TODO error
+    }
+  }
+
+  def initializeNotEnrolledModel(list: java.util.List[RescueTeamImpl]) = {
+    model.notEnrolledRescueTeams = list
   }
 
   def changeView(nextView: String) = {

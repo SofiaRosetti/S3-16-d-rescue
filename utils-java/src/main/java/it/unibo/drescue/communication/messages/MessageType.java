@@ -32,6 +32,8 @@ public enum MessageType {
     ADD_RESCUE_TEAM_MESSAGE("add_rescue_team_message"),
     REQ_RESCUE_TEAM_CONDITION("req_rescue_team_condition"),
     REPLY_RESCUE_TEAM_CONDITION("reply_rescue_team_condition"),
+    ASSOCIATED_CPS_MESSAGE("associated_cps_message"),
+    CPS_MESSAGE("cps_message"),
     FAKE_RPC_MESSAGE("fake_rpc_message"),
     FAKE_FORWARD_MESSAGE("fake_forward_message");
 

@@ -3,9 +3,9 @@ package it.unibo.drescue.view
 import javafx.scene.input.MouseEvent
 
 import it.unibo.drescue.controller.EnrollTeamControllerImpl
+import it.unibo.drescue.model.RescueTeamImpl
 import it.unibo.drescue.view.ViewConstants._
 
-import scalafx.collections.ObservableBuffer
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.{Button, ComboBox, Label, TextField}
 import scalafx.scene.layout.{GridPane, HBox}
@@ -56,11 +56,13 @@ class EnrollTeamGrid(private var enrollTeamController: EnrollTeamControllerImpl)
     }
     add(insertBox, ColumnRow1, ColumnRow1)
 
-    val choices = ObservableBuffer("Team A", "Team B", "Team C")
-    val teamChoice = new ComboBox[String] {
+    val choices = enrollTeamController.obsBuffer
+    //ObservableBuffer("Team A", "Team B", "Team C")
+    val teamChoice = new ComboBox[RescueTeamImpl] {
       maxWidth = WidthHeight250
       editable = true
       items = choices
+      //TODO fix the view of rescue teams
     }
     teamChoice.setStyle("-fx-font-size:25")
     add(teamChoice, ColumnRow0, ColumnRow2)
@@ -132,7 +134,7 @@ class EnrollTeamGrid(private var enrollTeamController: EnrollTeamControllerImpl)
       margin = Insets(Insets10)
       prefWidth = WidthHeight100
       onMouseClicked = (event: MouseEvent) => {
-        enrollTeamController.addPress()
+        val result: String = enrollTeamController.checkInputsAndAdd(IDField.getText(), nameField.getText(), AddressField.getText(), PhoneField.getText())
       }
     }
     val addBox = new HBox {
