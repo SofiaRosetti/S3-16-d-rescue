@@ -30,7 +30,8 @@ public enum MessageType {
     RESCUE_TEAMS_NOT_ENROLLED_MESSAGE("rescue_teams_not_enrolled_message"),
     ENROLL_RESCUE_TEAM_MESSAGE("enroll_rescue_team_message"),
     ADD_RESCUE_TEAM_MESSAGE("add_rescue_team_message"),
-    RESCUE_TEAM_CONDITION("rescue_team_condition"),
+    REQ_RESCUE_TEAM_CONDITION("req_rescue_team_condition"),
+    REPLY_RESCUE_TEAM_CONDITION("reply_rescue_team_condition"),
     FAKE_RPC_MESSAGE("fake_rpc_message"),
     FAKE_FORWARD_MESSAGE("fake_forward_message");
 

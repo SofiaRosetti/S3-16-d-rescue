@@ -1,5 +1,6 @@
 package it.unibo.drescue.communication;
 
+import com.google.gson.Gson;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
@@ -110,7 +111,22 @@ public class CPConsumer extends DefaultConsumer {
 
                 break;
 
+            case REPLY_RESCUE_TEAM_CONDITION:
+                //TODO check from
+                final ReplyRescueTeamConditionMessage replyRescueTeamConditionMessage = GsonUtils.fromGson(msg, ReplyRescueTeamConditionMessage.class);
+                System.out.println("[Replay RT condition Message] RescueTeam name: " + replyRescueTeamConditionMessage.getRescueTeamID()
+                        + " Condition: " + replyRescueTeamConditionMessage.getRescueTeamCondition()
+                        + " From: " + replyRescueTeamConditionMessage.getFrom()
+                        + " To: " +  replyRescueTeamConditionMessage.getTo());
+                break;
 
+            case REQ_RESCUE_TEAM_CONDITION:
+                //TODO check from
+                final ReqRescueTeamConditionMessage reqRescueTeamConditionMessage = GsonUtils.fromGson(msg, ReqRescueTeamConditionMessage.class);
+                System.out.println("[Req RT condition Message] RescueTeam name: " + reqRescueTeamConditionMessage.getRescueTeamID()
+                        + " From: " + reqRescueTeamConditionMessage.getFrom()
+                        + " To: " +  reqRescueTeamConditionMessage.getTo());
+                break;
         }
     }
 }

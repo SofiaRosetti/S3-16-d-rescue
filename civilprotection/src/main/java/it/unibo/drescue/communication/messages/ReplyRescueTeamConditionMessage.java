@@ -2,13 +2,13 @@ package it.unibo.drescue.communication.messages;
 
 import it.unibo.drescue.utils.RescueTeamCondition;
 
-public class RescueTeamConditionMessage extends AbstractRoutingMessage {
+public class ReplyRescueTeamConditionMessage extends AbstractRoutingMessage {
 
     private String rescueTeamID;
     private RescueTeamCondition rescueTeamCondition;
 
-    public RescueTeamConditionMessage() {
-       super(MessageType.RESCUE_TEAM_CONDITION);
+    public ReplyRescueTeamConditionMessage() {
+       super(MessageType.REPLY_RESCUE_TEAM_CONDITION);
     }
 
     public String getRescueTeamID() {

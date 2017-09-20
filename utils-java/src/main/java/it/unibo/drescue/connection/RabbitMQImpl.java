@@ -3,8 +3,10 @@ package it.unibo.drescue.connection;
 import com.rabbitmq.client.*;
 import it.unibo.drescue.communication.GsonUtils;
 import it.unibo.drescue.communication.messages.Message;
+import it.unibo.drescue.model.RescueTeamImpl;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
@@ -84,9 +86,9 @@ public class RabbitMQImpl implements RabbitMQ {
     }
 
     @Override
-    public void bindQueueToExchange(final String queue, final String exchange, final String[] routingKeys) throws IOException {
-        for (final String routingKey : routingKeys) {
-            this.channel.queueBind(queue, exchange, routingKey);
+    public void bindQueueToExchange(final String queue, final String exchange, final List<RescueTeamImpl> routingKeysList) throws IOException {
+        for (final RescueTeamImpl routingKeyElement : routingKeysList) {
+            this.channel.queueBind(queue, exchange, routingKeyElement.getRescueTeamID());
         }
     }
 
