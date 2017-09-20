@@ -108,7 +108,7 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
       rescueTeam.getPhoneNumber,
       true,
       "",
-      -1)
+      "")
   }
 
   def initializeNotEnrolled(): Unit = {
