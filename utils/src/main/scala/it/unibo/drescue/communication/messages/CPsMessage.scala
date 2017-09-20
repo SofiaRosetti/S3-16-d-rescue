@@ -1,5 +1,6 @@
+package it.unibo.drescue.communication.messages
+
 import it.unibo.drescue.communication.builder.MessageBuilder
-import it.unibo.drescue.communication.messages.{AbstractMessage, Message, MessageType}
 import it.unibo.drescue.model.CivilProtectionImpl
 
 /**

@@ -81,8 +81,11 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
       case MessageType.REPLY_RESCUE_TEAM_CONDITION =>
         val replyRescueTeamConditionMessage = GsonUtils.fromGson(message, classOf[ReplyRescueTeamConditionMessage])
         println("[Replay RT condition Message] RescueTeam name: " + replyRescueTeamConditionMessage.getRescueTeamID + " Condition: " + replyRescueTeamConditionMessage.getRescueTeamCondition + " From: " + replyRescueTeamConditionMessage.getFrom + " To: " + replyRescueTeamConditionMessage.getTo)
+
+        //TODO I think this check is unnecessary due to the fact that in case REQ_RESCUE_TEAM_CONDITION
+        //if a message arrive and getFrom is myCPID the message is ignored
         if (!(replyRescueTeamConditionMessage.getFrom == mainControllerImpl.model.cpID)) {
-          //TODO update rescue team condition into model
+          //TODO update rescue team condition into model (see alert update)
         }
 
       case MessageType.REQ_RESCUE_TEAM_CONDITION =>
