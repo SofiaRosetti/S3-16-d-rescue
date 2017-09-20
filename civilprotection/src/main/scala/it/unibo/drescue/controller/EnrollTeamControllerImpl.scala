@@ -7,6 +7,9 @@ import it.unibo.drescue.communication.messages.{Message, MessageType, MessageUti
 import it.unibo.drescue.connection.{QueueType, RabbitMQImpl, RequestHandler}
 import it.unibo.drescue.geocoding.{Geocoding, GeocodingException, GeocodingImpl}
 import it.unibo.drescue.localModel.Observers
+import it.unibo.drescue.model.RescueTeamImpl
+
+import scalafx.collections.ObservableBuffer
 
 object EnrollTeamControllerImpl extends Enumeration {
   val CommandFillAll: String = "Fill all data."
@@ -19,9 +22,8 @@ object EnrollTeamControllerImpl extends Enumeration {
 class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, val rabbitMQ: RabbitMQImpl) extends Observer {
 
   mainController.model.addObserver(Observers.EnrollTeam, this)
-
-
   val pool: ExecutorService = Executors.newFixedThreadPool(1)
+  var obsBuffer = new ObservableBuffer[RescueTeamImpl]()
 
   def checkInputsAndAdd(rescueTeamId: String, name: String, address: String, phoneNumber: String): String = {
 
@@ -73,7 +75,7 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
         // stop dialog and delete all fields / change view to this
       }
       case MessageType.ERROR_MESSAGE => {
-        println("[EnrollTeam] : Team not added, ERRROR " + rescueTeamId)
+        println("[EnrollTeam] : Team not added, ERROR " + rescueTeamId)
         // show ERROR -> change dialog
         //TODO
         //if duplicated -> return CommandDuplicated
@@ -98,13 +100,6 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
     // ERROR -> dialog
   }
 
-  //TODO addPress()
-  //check Input insert
-  //start thread with future (insertAndGet)
-  //when future returns
-  // OK -> add the return to combobox
-  //ERROR -> dialog
-
   def backPress() = {
     mainController.changeView("Home")
   }
@@ -112,6 +107,14 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
   /**
     * TODO
     */
-  override def onReceivingNotification(): Unit = ???
+  override def onReceivingNotification(): Unit = {
+    obsBuffer.clear()
+    mainController.model.notEnrolledRescueTeams.forEach(
+      (rescueTeam: RescueTeamImpl) => {
+        obsBuffer add rescueTeam
+        println("[EnrolledTeamController]: notification for: " + rescueTeam.toPrintableString)
+      }
+    )
+  }
 
 }
