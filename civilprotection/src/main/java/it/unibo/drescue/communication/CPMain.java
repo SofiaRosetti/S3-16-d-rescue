@@ -69,6 +69,7 @@ public class CPMain {
         RabbitMQConnectionImpl connection = null;
         RabbitMQImpl rabbitMQ = null;
 
+        /*
         try {
 
             connection =  new RabbitMQConnectionImpl("localhost");
@@ -90,6 +91,7 @@ public class CPMain {
         catch (Exception e){
             //TODO
         }
+        */
 
     }
 }
