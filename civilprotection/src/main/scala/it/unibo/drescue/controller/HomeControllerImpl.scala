@@ -31,6 +31,7 @@ class HomeControllerImpl(private var mainController: MainControllerImpl) extends
   }
 
   def newTeamPress() = {
+    mainController.initializeNotEnrolled()
     mainController.changeView("NewTeam")
   }
 

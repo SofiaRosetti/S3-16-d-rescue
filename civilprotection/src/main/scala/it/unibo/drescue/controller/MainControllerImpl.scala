@@ -4,8 +4,8 @@ import java.util
 import java.util.concurrent.{ExecutorService, Executors, Future}
 
 import com.rabbitmq.client.BuiltinExchangeType
+import it.unibo.drescue.communication.GsonUtils
 import it.unibo.drescue.communication.builder.ReqRescueTeamConditionMessageBuilderImpl
-import it.unibo.drescue.communication.{CPConsumer, GsonUtils}
 import it.unibo.drescue.communication.messages._
 import it.unibo.drescue.communication.messages.response.AlertsMessageImpl
 import it.unibo.drescue.connection._
@@ -31,7 +31,7 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
     rabbitMQ declareExchange(ExchangeName, BuiltinExchangeType.DIRECT)
     val queueName = rabbitMQ addReplyQueue()
     rabbitMQ bindQueueToExchange(queueName, ExchangeName, rescueTeams)
-    val cpConsumer : RescueTeamConsumer = RescueTeamConsumer(rabbitMQ, this)
+    val cpConsumer: RescueTeamConsumer = RescueTeamConsumer(rabbitMQ, this)
     rabbitMQ addConsumer(cpConsumer, queueName)
     //ask for availability
 
@@ -88,6 +88,25 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
       alert.getEventName,
       alert.getDistrictID,
       alert.getUpvotes)
+  }
+
+  def initializeNotEnrolled(): Unit = {
+    //TODO request to NotEnrolledMessage
+    val message: Message = GetRescueTeamsNotEnrolledMessageImpl(model.cpID)
+    val task: Future[String] = pool.submit(new RequestHandler(rabbitMQ, message, QueueType.CIVIL_PROTECTION_QUEUE))
+    val response: String = task.get()
+    println("Main controller - initialize not enrolled rescue team: " + response)
+    val messageName: MessageType = MessageUtils.getMessageNameByJson(response)
+    messageName match {
+      case MessageType.RESCUE_TEAMS_MESSAGE =>
+        val teamsMessage = GsonUtils.fromGson(response, classOf[RescueTeamsMessageImpl])
+        initializeNotEnrolledModel(teamsMessage.rescueTeamsList)
+      case _ => //TODO error
+    }
+  }
+
+  def initializeNotEnrolledModel(list: java.util.List[RescueTeamImpl]) = {
+    model.notEnrolledRescueTeams = list
   }
 
   def changeView(nextView: String) = {
