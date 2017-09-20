@@ -114,12 +114,4 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
     */
   override def onReceivingNotification(): Unit = ???
 
-  object EnrollTeamControllerImpl extends Enumeration {
-    val CommandFillAll: String = "Fill all data."
-    val CommandInsertValidAddress: String = "Insert a valid address"
-    val CommandDuplicated: String = "Error inserting the team, teamID duplicated"
-    val Error: String = "An error occurred"
-    val Ok: String = "All data ok, inserting the team"
-  }
-
 }
