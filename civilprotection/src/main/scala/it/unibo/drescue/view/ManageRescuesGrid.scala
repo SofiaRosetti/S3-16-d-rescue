@@ -6,7 +6,6 @@ import it.unibo.drescue.controller.ManageRescuesControllerImpl
 import it.unibo.drescue.localModel.EnrolledTeamInfo
 import it.unibo.drescue.view.ViewConstants._
 
-import scalafx.collections.ObservableBuffer
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.TableColumn._
 import scalafx.scene.control.{Button, Label, TableColumn, TableView}
@@ -60,10 +59,7 @@ class ManageRescuesGrid(private var manageRescuesController: ManageRescuesContro
     }
     add(chooseBox, ColumnRow0, ColumnRow3)
 
-    var entries = ObservableBuffer[EnrolledTeamInfo](
-      new EnrolledTeamInfo("RT2ID", "Rescue team 001", "3335874588", false, "", 2),
-      new EnrolledTeamInfo("RT3ID", "Rescue team 002", "3335874588", false, "", 256)
-    )
+    var entries = manageRescuesController.obsBuffer
 
     val Table = new TableView[EnrolledTeamInfo](entries) {
       maxHeight = WidthHeight200
