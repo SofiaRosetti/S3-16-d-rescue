@@ -27,6 +27,7 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
     val coordinator: Coordinator = CoordinatorImpl.getInstance()
     coordinator.setConnection(rabbitMQ)
     coordinator.setExchange(mainControllerImpl.ExchangeName)
+    coordinator.setMyID(mainControllerImpl.model.cpID)
     var myCondition: CoordinatorCondition = null
     var myCs: String = null
     var myTimestamp: Timestamp = null
@@ -43,7 +44,7 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
         val reqCs = reqCoordinationMessage.getRescueTeamID
 
         if (!(reqFrom == mainControllerImpl.model.cpID)) {
-          println("[REQUEST] From: " + reqFrom + " To: " + reqTo + " Timestamp: " + reqTimestamp + " Cs: " + reqCs)
+          println("[COORDINATION REQUEST] From: " + reqFrom + " To: " + reqTo + " Timestamp: " + reqTimestamp + " Cs: " + reqCs)
           myCondition = coordinator.getCondition
           myCs = coordinator.getCsName
           myTimestamp = coordinator.getReqTimestamp
@@ -52,13 +53,18 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
             ((CoordinatorCondition.WANTED == myCondition) && reqCs == myCs && reqTimestamp.after(myTimestamp)))
             coordinator.addBlockedCP(reqFrom)
           else {
-
-            //TODO se la rescue team è occupata, ed è stata occupata da altre CP  allora settare lo stato del RT = AVAILABLE
-            coordinator.sendReplayMessageTo(reqCs, reqFrom)
-            println("Sended replay")
+              var replyRtCondition : RescueTeamCondition = RescueTeamCondition.AVAILABLE
+              mainControllerImpl.model.enrolledTeamInfoList forEach ((enrolledTeam: EnrolledTeamInfo) => {
+                val rtAvailability: String = enrolledTeam.availability.value
+                val cpID: String = enrolledTeam.cpID.value
+                val rtID : String = enrolledTeam.teamID.value
+                if (rtAvailability == "false" && cpID == mainControllerImpl.model.cpID && reqCs == rtID){
+                  replyRtCondition = RescueTeamCondition.OCCUPIED
+                }
+              })
+              //TODO add rt condition
+              coordinator.sendReplayMessageTo(reqCs, reqFrom)
           }
-
-
         }
 
       case MessageType.REPLAY_COORDINATION_MESSAGE =>
@@ -71,11 +77,16 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
         myCondition = coordinator.getCondition
         myCs = coordinator.getCsName
         if (!(replayFrom == mainControllerImpl.model.cpID)) {
-          System.out.println("[REPLAY] From: " + replayFrom + " To: " + replayTo + " Timestamp: " + replayTimestamp + " Cs: " + replayCs + " RT Condition " + replayRTCondition)
+          System.out.println("[COORDINATION REPLAY] From: " + replayFrom + " To: " + replayTo + " Timestamp: " + replayTimestamp + " Cs: " + replayCs + " RT Condition " + replayRTCondition)
+
           if ((myCondition eq CoordinatorCondition.WANTED) && myCs == replayCs && replayTo == mainControllerImpl.model.cpID) {
             //TODO Check RescueTeam state (if state = Occupied then update coordination state)
-            if (replayRTCondition eq RescueTeamCondition.AVAILABLE) coordinator.updatePendingCivilProtectionReplayStructure(replayFrom)
-            else coordinator.setCondition(CoordinatorCondition.DETACHED)
+            if (replayRTCondition eq RescueTeamCondition.AVAILABLE)
+              coordinator.updatePendingCivilProtectionReplayStructure(replayFrom)
+              /*
+            else
+              coordinator.setCondition(CoordinatorCondition.DETACHED)
+              */
           }
         }
 

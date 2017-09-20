@@ -146,6 +146,7 @@ public class CoordinatorImpl implements Coordinator {
 
     @Override
     public void sendReplayMessageTo(String csName, String to) {
+        //TODO add RescueTeamCondition parameter
         ReplayCoordinationMessage replayCoordinationMessage = new ReplayCoordinationMessage();
         replayCoordinationMessage.setTimestamp(new Timestamp(System.currentTimeMillis()));
         replayCoordinationMessage.setRescueTeamID(csName);
@@ -153,9 +154,6 @@ public class CoordinatorImpl implements Coordinator {
         replayCoordinationMessage.setFrom(myID);
         replayCoordinationMessage.setTo(to);
         try {
-            System.out.println("connection " + connection);
-            System.out.println("csName " + csName);
-            System.out.println("replay " + replayCoordinationMessage);
             this.connection.sendMessage(this.exchangeName, csName, null, replayCoordinationMessage);
         } catch (IOException e) {
             e.printStackTrace();
@@ -164,6 +162,7 @@ public class CoordinatorImpl implements Coordinator {
 
     @Override
     public void backToCs() {
+        //TODO check the EnrolledTeamInfo condition and cpID (send Occupied if cpID= myCpID and condition = occupied)
         this.condition = CoordinatorCondition.DETACHED;
         this.reqTimestamp = null;
         this.pendingCPReplay = null;
