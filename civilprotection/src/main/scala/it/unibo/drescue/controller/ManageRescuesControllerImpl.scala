@@ -31,6 +31,10 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
 
   def stopPressed(wantedRescueTeamID: String) = {
 
+    //TODO stop the given rescueTeamID, change local state of rescueTeamID in available
+
+    //TODO send message to the other CP with in order to update their view
+
   }
 
   def backPress() = {
