@@ -103,37 +103,40 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
           + " From: " + replyRescueTeamConditionMessage.getFrom
           + " To: " + replyRescueTeamConditionMessage.getTo)
 
-        val rescueTeamCondition = replyRescueTeamConditionMessage.getRescueTeamCondition
-        val rescueTeamID = replyRescueTeamConditionMessage.getRescueTeamID
+        if (replyRescueTeamConditionMessage.getFrom != mainControllerImpl.model.cpID) {
+          val rescueTeamCondition = replyRescueTeamConditionMessage.getRescueTeamCondition
+          val rescueTeamID = replyRescueTeamConditionMessage.getRescueTeamID
 
-        rescueTeamCondition match {
-          case RescueTeamCondition.OCCUPIED =>
+          rescueTeamCondition match {
+            case RescueTeamCondition.OCCUPIED =>
 
-            var indexToChange: Int = -1
-            mainControllerImpl.model.enrolledTeamInfoList forEach ((enrolledTeamInfo: EnrolledTeamInfo) => {
-              val enrolledTeamID = enrolledTeamInfo.teamID.value
-              if (rescueTeamID == enrolledTeamID) {
-                indexToChange = mainControllerImpl.model.enrolledTeamInfoList.indexOf(enrolledTeamInfo)
+              var indexToChange: Int = -1
+              mainControllerImpl.model.enrolledTeamInfoList forEach ((enrolledTeamInfo: EnrolledTeamInfo) => {
+                val enrolledTeamID = enrolledTeamInfo.teamID.value
+                if (rescueTeamID == enrolledTeamID) {
+                  indexToChange = mainControllerImpl.model.enrolledTeamInfoList.indexOf(enrolledTeamInfo)
+                }
+              })
+
+              val list = mainControllerImpl.model.enrolledTeamInfoList
+              if (indexToChange != -1) {
+                val enrolledTeamInfo = list.get(indexToChange)
+                list.set(indexToChange, new EnrolledTeamInfo(
+                  enrolledTeamInfo.teamID.value,
+                  enrolledTeamInfo.teamName.value,
+                  enrolledTeamInfo.phoneNumber.value,
+                  false, //occupied
+                  replyRescueTeamConditionMessage.getFrom, //cpID
+                  enrolledTeamInfo.alertID.value)
+                )
+                mainControllerImpl.model.enrolledTeamInfoList = list
               }
-            })
 
-            val list = mainControllerImpl.model.enrolledTeamInfoList
-            if (indexToChange != -1) {
-              val enrolledTeamInfo = list.get(indexToChange)
-              list.set(indexToChange, new EnrolledTeamInfo(
-                enrolledTeamInfo.teamID.value,
-                enrolledTeamInfo.teamName.value,
-                enrolledTeamInfo.phoneNumber.value,
-                false, //occupied
-                replyRescueTeamConditionMessage.getFrom, //cpID
-                enrolledTeamInfo.alertID.value)
-              )
-              mainControllerImpl.model.enrolledTeamInfoList = list
-            }
+            case RescueTeamCondition.AVAILABLE => //do nothing //TODO to check
 
-          case RescueTeamCondition.AVAILABLE => //do nothing //TODO to check
-
+          }
         }
+
 
       case MessageType.REQ_RESCUE_TEAM_CONDITION =>
 
@@ -144,18 +147,14 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
 
         if (reqRescueTeamConditionMessage.getFrom != mainControllerImpl.model.cpID) {
           mainControllerImpl.model.enrolledTeamInfoList forEach ((enrolledTeam: EnrolledTeamInfo) => {
+
             val rescueTeamID = enrolledTeam.teamID.value
-            println("rescueTeamID : " + rescueTeamID)
             if (rescueTeamID == reqRescueTeamConditionMessage.getRescueTeamID) {
 
               val rtAvailability: String = enrolledTeam.availability.value
               val cpID: String = enrolledTeam.cpID.value
 
-              println("Availability: " + rtAvailability)
-              println("cpID: " + cpID)
-
               var reply: Message = null
-
               if (rtAvailability == "false" && cpID == mainControllerImpl.model.cpID) {
                 reply = new ReplyRescueTeamConditionMessageBuilderImpl()
                   .setRescueTeamID(rescueTeamID)
