@@ -3,6 +3,8 @@ package it.unibo.drescue.controller
 import java.util.concurrent.{ExecutorService, Executors, Future}
 
 import it.unibo.drescue.StringUtils
+import it.unibo.drescue.communication.GsonUtils
+import it.unibo.drescue.communication.messages.response.ErrorMessageImpl
 import it.unibo.drescue.communication.messages.{Message, MessageType, MessageUtils, NewRescueTeamMessage}
 import it.unibo.drescue.connection.{QueueType, RabbitMQImpl, RequestHandler}
 import it.unibo.drescue.geocoding.{Geocoding, GeocodingException, GeocodingImpl}
@@ -53,7 +55,7 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
             startAddressDialog()
             println("[EnrollTeam] : Address not valid")
             EnrollTeamControllerImpl.CommandInsertValidAddress
-          case _ =>
+          case _: Throwable =>
             mainController.changeView("NewTeam")
             startErrorDialog()
             println("[EnrollTeam] : Address not valid")
@@ -104,14 +106,16 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
 
         mainController.changeView("NewTeam")
         startSuccessDialog()
-        // stop dialog and delete all fields / change view to this
       }
       case MessageType.ERROR_MESSAGE => {
         println("[EnrollTeam] : Team not added, ERROR " + rescueTeamId)
-        // show ERROR -> change dialog
-        //TODO
-        //if duplicated -> return CommandDuplicated
+        mainController.changeView("NewTeam")
+        val customDialog = new CustomDialog(mainController)
+        customDialog.setErrorText(GsonUtils.fromGson(response, classOf[ErrorMessageImpl]).getError)
+        dialog = customDialog.createDialog(EnrollTeamControllerImpl.Error)
+        dialog.showAndWait()
       }
+      case _ => // do nothing
     }
 
     EnrollTeamControllerImpl.Adding
@@ -122,11 +126,14 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
     dialog.showAndWait()
   }
 
-  //TODO start here a request for GetAllRescueTeam
-
   def startProcessingDialog() = {
     dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.Processing)
     dialog.show()
+  }
+
+  def startErrorDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.Error)
+    dialog.showAndWait()
   }
 
   def startAddressDialog() = {
@@ -147,11 +154,6 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
   def startCheckingDataDialog() = {
     dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.Checking)
     dialog.show()
-  }
-
-  def startErrorDialog() = {
-    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.Error)
-    dialog.showAndWait()
   }
 
   def selectPress() = {

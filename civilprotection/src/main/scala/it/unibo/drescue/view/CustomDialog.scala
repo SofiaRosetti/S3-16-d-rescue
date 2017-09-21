@@ -54,9 +54,14 @@ object CustomDialog {
   val Error = "Error"
 
   var dialog: Alert = _
+  var errorMsg: String = _
 }
 
 class CustomDialog(mainController: MainControllerImpl) {
+
+  def setErrorText(text: String): Unit = {
+    CustomDialog.errorMsg = text
+  }
 
 
   def createDialog(dialogType: String): Alert = {
@@ -135,11 +140,16 @@ class CustomDialog(mainController: MainControllerImpl) {
           buttonTypes.remove(0)
         }
       case CustomDialog.Error =>
-        CustomDialog.dialog = new Alert(AlertType.Information) {
+        CustomDialog.dialog = new Alert(AlertType.Error) {
           initOwner(mainController._view._stage)
           title = CustomDialog.ErrorDialogTitle
-          headerText = CustomDialog.ErrorDialogHeader
-          contentText = CustomDialog.ErrorDialogContent
+          if (CustomDialog.errorMsg != null) {
+            headerText = CustomDialog.ErrorDialogContent
+            contentText = CustomDialog.errorMsg
+          } else {
+            headerText = CustomDialog.ErrorDialogHeader
+            contentText = CustomDialog.ErrorDialogContent
+          }
         }
     }
     CustomDialog.dialog
