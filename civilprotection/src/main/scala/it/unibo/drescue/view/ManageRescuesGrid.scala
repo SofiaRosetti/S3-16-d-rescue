@@ -20,44 +20,44 @@ class ManageRescuesGrid(private var manageRescuesController: ManageRescuesContro
     vgap = Gap5
     padding = Insets(Insets50)
 
-    val defaultFont = new Font(Font20)
-    val titleFont = new Font(Font30)
-    val checkBoxFont = new Font(Font18)
-    val buttonFont = new Font(Font25)
+    val DefaultFont = new Font(Font20)
+    val TitleFont = new Font(Font30)
+    val CheckBoxFont = new Font(Font18)
+    val ButtonFont = new Font(Font25)
 
     val ManageRescuesLabel = new Label() {
       text = "MANAGE RESCUES:"
-      font = titleFont
+      font = TitleFont
       padding = Insets(Insets20)
     }
-    val titleBox = new HBox() {
+    val TitleBox = new HBox() {
       children = ManageRescuesLabel
       alignment = Pos.Center
     }
-    add(titleBox, ColumnRow0, ColumnRow0)
-    GridPane.setConstraints(titleBox, ColumnRow0, ColumnRow0, ColumnRow2, ColumnRow1)
+    add(TitleBox, ColumnRow0, ColumnRow0)
+    GridPane.setConstraints(TitleBox, ColumnRow0, ColumnRow0, ColumnRow2, ColumnRow1)
 
     val AlertLabel = new Label() {
       text = "Alert: 2017-09-20 16:51:19 Earthquake lat: 44.139123 long: 12.243698 FC user: 27549 upvotes: 36"
-      font = defaultFont
+      font = DefaultFont
       padding = Insets(Insets10)
     }
-    val alertBox = new HBox() {
+    val AlertBox = new HBox() {
       children = AlertLabel
       alignment = Pos.Center
     }
-    add(alertBox, ColumnRow0, ColumnRow1)
+    add(AlertBox, ColumnRow0, ColumnRow1)
 
     val ChooseTeamLabel = new Label() {
       text = "Choose team:"
-      font = buttonFont
+      font = ButtonFont
       padding = Insets(Insets10)
     }
-    val chooseBox = new HBox() {
+    val ChooseBox = new HBox() {
       children = ChooseTeamLabel
       alignment = Pos.Center
     }
-    add(chooseBox, ColumnRow0, ColumnRow3)
+    add(ChooseBox, ColumnRow0, ColumnRow3)
 
     var entries = manageRescuesController.obsBuffer
 
@@ -103,10 +103,9 @@ class ManageRescuesGrid(private var manageRescuesController: ManageRescuesContro
     }
     add(Table, ColumnRow0, ColumnRow4)
 
-
     val SendButton = new Button() {
       text = "Send"
-      font = buttonFont
+      font = ButtonFont
       margin = Insets(Insets30)
       prefWidth = WidthHeight200
       onMouseClicked = (event: MouseEvent) => {
@@ -118,7 +117,7 @@ class ManageRescuesGrid(private var manageRescuesController: ManageRescuesContro
     }
     val StopButton = new Button() {
       text = "Stop"
-      font = buttonFont
+      font = ButtonFont
       margin = Insets(Insets30)
       prefWidth = WidthHeight200
       onMouseClicked = (event: MouseEvent) => {
@@ -130,19 +129,19 @@ class ManageRescuesGrid(private var manageRescuesController: ManageRescuesContro
     }
     val BackButton = new Button() {
       text = "Back"
-      font = buttonFont
+      font = ButtonFont
       margin = Insets(Insets30)
       prefWidth = WidthHeight200
       onMouseClicked = (event: MouseEvent) => {
         manageRescuesController.backPress()
       }
     }
-    val buttonBox = new HBox {
+    val ButtonBox = new HBox {
       alignment = Pos.Center
       padding = Insets(Insets10)
       children.addAll(SendButton, StopButton, BackButton)
     }
-    add(buttonBox, ColumnRow0, ColumnRow5)
+    add(ButtonBox, ColumnRow0, ColumnRow5)
   }
 
   def grid = _grid
