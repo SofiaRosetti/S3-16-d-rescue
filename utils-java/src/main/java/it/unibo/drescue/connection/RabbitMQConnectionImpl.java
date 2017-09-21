@@ -36,13 +36,20 @@ public class RabbitMQConnectionImpl implements RabbitMQConnection {
     public void openConnection() {
         final ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(this.host);
+        if (!this.host.equals(RabbitConnectionConstants.LOCAL_HOST)) {
+            factory.setPort(RabbitConnectionConstants.REMOTE_PORT);
+            factory.setUsername(RabbitConnectionConstants.REMOTE_USER);
+            factory.setPassword(RabbitConnectionConstants.REMOTE_PASSWORD);
+        }
         try {
             this.connection = factory.newConnection();
+            LOGGER.info("RabbitMQ connection open.");
         } catch (final IOException e) {
             LOGGER.error("Error occur during an operation of I/O.", e);
         } catch (final TimeoutException e) {
             LOGGER.error("Error occur while a blocking operation times out.", e);
         }
+
     }
 
     @Override

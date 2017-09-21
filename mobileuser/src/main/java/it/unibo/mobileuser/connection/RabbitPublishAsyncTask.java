@@ -2,6 +2,7 @@ package it.unibo.mobileuser.connection;
 
 import android.os.AsyncTask;
 import it.unibo.drescue.communication.messages.Message;
+import it.unibo.drescue.connection.RabbitConnectionConstants;
 import it.unibo.drescue.connection.RabbitMQConnectionImpl;
 import it.unibo.drescue.connection.RabbitMQImpl;
 
@@ -33,7 +34,7 @@ public class RabbitPublishAsyncTask extends AsyncTask<Void, Void, Boolean> {
     protected Boolean doInBackground(final Void... voids) {
         boolean successfulPublish;
 
-        final RabbitMQConnectionImpl connection = new RabbitMQConnectionImpl("10.0.2.2");
+        final RabbitMQConnectionImpl connection = new RabbitMQConnectionImpl(RabbitConnectionConstants.REMOTE_HOST);
         connection.openConnection();
 
         final RabbitMQImpl rabbitMQ;
