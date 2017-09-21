@@ -3,7 +3,6 @@ package it.unibo.drescue.view
 import javafx.scene.input.MouseEvent
 
 import it.unibo.drescue.controller.EnrollTeamControllerImpl
-import it.unibo.drescue.model.RescueTeamImpl
 import it.unibo.drescue.view.ViewConstants._
 
 import scalafx.geometry.{Insets, Pos}
@@ -57,8 +56,7 @@ class EnrollTeamGrid(private var enrollTeamController: EnrollTeamControllerImpl)
     add(insertBox, ColumnRow1, ColumnRow1)
 
     val choices = enrollTeamController.obsBuffer
-    //ObservableBuffer("Team A", "Team B", "Team C")
-    val teamChoice = new ComboBox[RescueTeamImpl] {
+    val teamChoice = new ComboBox[String] {
       maxWidth = WidthHeight250
       editable = true
       items = choices

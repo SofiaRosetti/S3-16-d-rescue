@@ -7,23 +7,28 @@ import it.unibo.drescue.communication.messages.{Message, MessageType, MessageUti
 import it.unibo.drescue.connection.{QueueType, RabbitMQImpl, RequestHandler}
 import it.unibo.drescue.geocoding.{Geocoding, GeocodingException, GeocodingImpl}
 import it.unibo.drescue.localModel.Observers
-import it.unibo.drescue.model.RescueTeamImpl
+import it.unibo.drescue.model.{RescueTeamImpl, RescueTeamImplBuilder}
+import it.unibo.drescue.view.CustomDialog
 
 import scalafx.collections.ObservableBuffer
+import scalafx.scene.control.Alert
 
 object EnrollTeamControllerImpl extends Enumeration {
   val CommandFillAll: String = "Fill all data."
   val CommandInsertValidAddress: String = "Insert a valid address"
   val CommandDuplicated: String = "Error inserting the team, teamID duplicated"
   val Error: String = "An error occurred"
-  val Ok: String = "All data ok, inserting the team"
+  val Added: String = "The team has been added."
+  val Adding: String = "All data ok, adding the team."
+  val Processing: String = "Processing"
 }
 
 class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, val rabbitMQ: RabbitMQImpl) extends Observer {
 
   mainController.model.addObserver(Observers.EnrollTeam, this)
   val pool: ExecutorService = Executors.newFixedThreadPool(1)
-  var obsBuffer = new ObservableBuffer[RescueTeamImpl]()
+  var obsBuffer = new ObservableBuffer[String]()
+  var dialog: Alert = _
 
   def checkInputsAndAdd(rescueTeamId: String, name: String, address: String, phoneNumber: String): String = {
 
@@ -54,6 +59,9 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
       println("[EnrollTeam] Error in geocoding")
       EnrollTeamControllerImpl.Error
     }
+
+    startProcessingDialog()
+
     val message: Message = NewRescueTeamMessage(
       rescueTeamID = rescueTeamId,
       rescueTeamName = name,
@@ -69,9 +77,20 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
 
     messageName match {
 
-      case MessageType.SUCCESSFUL_MESSAGE => { //TODO success
+      case MessageType.SUCCESSFUL_MESSAGE => {
         println("[EnrollTeam] : Team added: " + rescueTeamId)
-        //TODO add rescue team to list in main controller
+        val notEnrolledTeams = mainController.model.notEnrolledRescueTeams
+        notEnrolledTeams.add(new RescueTeamImplBuilder().setRescueTeamID(rescueTeamId)
+          .setPassword("")
+          .setName(name)
+          .setLatitude(latitude)
+          .setLongitude(longitude)
+          .setPhoneNumber(phoneNumber)
+          .createRescueTeamImpl())
+        mainController.model.notEnrolledRescueTeams = notEnrolledTeams
+
+        mainController.changeView("NewTeam")
+        startSuccessDialog()
         // stop dialog and delete all fields / change view to this
       }
       case MessageType.ERROR_MESSAGE => {
@@ -82,7 +101,7 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
       }
     }
 
-    EnrollTeamControllerImpl.Ok
+    EnrollTeamControllerImpl.Adding
   }
 
   def checkInputs(rescueTeamId: String, name: String, address: String, phoneNumber: String): Boolean = {
@@ -91,6 +110,16 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
   }
 
   //TODO start here a request for GetAllRescueTeam
+
+  def startSuccessDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.Added)
+    dialog.showAndWait()
+  }
+
+  def startProcessingDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.Processing)
+    dialog.show()
+  }
 
   def selectPress() = {
     mainController.changeView("Home")
@@ -111,7 +140,7 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
     obsBuffer.clear()
     mainController.model.notEnrolledRescueTeams.forEach(
       (rescueTeam: RescueTeamImpl) => {
-        obsBuffer add rescueTeam
+        obsBuffer add rescueTeam.getRescueTeamID
         println("[EnrolledTeamController]: notification for: " + rescueTeam.toPrintableString)
       }
     )
