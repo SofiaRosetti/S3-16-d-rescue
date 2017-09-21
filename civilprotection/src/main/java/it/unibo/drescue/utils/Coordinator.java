@@ -99,12 +99,12 @@ public interface Coordinator {
      * @param csName he critical section name
      * @param to the process to which send a replay
      */
-    void sendReplayMessageTo(String csName, String to);
+    void sendReplayMessageTo(String csName, String to, RescueTeamCondition rescueTeamCondition);
 
     /**
      *  The process came back to critical section
      */
-    void backToCs();
+    void backToCs(RescueTeamCondition rescueTeamCondition);
 
     void setExchange(String exchange);
 

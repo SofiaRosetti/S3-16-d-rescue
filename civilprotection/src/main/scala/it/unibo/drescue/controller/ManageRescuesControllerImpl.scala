@@ -18,6 +18,7 @@ import scalafx.scene.control.Alert
 
 object ManageRescuesControllerImpl extends Enumeration {
   val Sent: String = "The rescue team was notified"
+  var Error: String = "The rescue team is at work"
 }
 
 class ManageRescuesControllerImpl(private var mainController: MainControllerImpl,
@@ -44,7 +45,6 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
   }
 
   def sendPressed(wantedRescueTeamID: String) = {
-
     val message: Message = GetAssociatedCpMessageImpl(wantedRescueTeamID)
     val task: Future[String] = pool.submit(new RequestHandler(rabbitMQ, message, QueueType.CIVIL_PROTECTION_QUEUE))
     val response: String = task.get()
@@ -75,11 +75,12 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
     rabbitMQ.sendMessage(mainController.ExchangeName, wantedRescueTeamID, null, reqCoordinationMessage)
 
     //The process is blocked as long as enter in cs (coordinator condition == HELD) or has received a negative responde (RS = OCCUPIED)
+    //TODO Thread or timeout?
     while (coordinator.getCondition != CoordinatorCondition.HELD && coordinator.getCondition != CoordinatorCondition.DETACHED) {
       println(coordinator.getCondition)
     }
     if (coordinator.getCondition == CoordinatorCondition.HELD) {
-      //TODO CS execution Update RT condition
+
       System.out.println("[CS Execution]")
       var indexToChange: Int = -1
       var rescueTeamToChange : EnrolledTeamInfo = null
@@ -101,13 +102,12 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
         mainController.model.cpID,
         rescueTeamToChange.alertID.value)
       )
-
       mainController.model.enrolledTeamInfoList = list
 
       //the process came back from CS
-      coordinator.backToCs()
+      coordinator.backToCs(RescueTeamCondition.OCCUPIED)
 
-      //TODO send a message to inform other cp
+        //TODO send a message to inform other cp
       var reply: Message = null
       reply = new ReplyRescueTeamConditionMessageBuilderImpl()
         .setRescueTeamID(wantedRescueTeamID)
@@ -117,10 +117,12 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
       rabbitMQ.sendMessage(mainController.ExchangeName, wantedRescueTeamID, null, reply)
 
       mainController.changeView("ManageRescues")
+      print("RT OTTENUTA")
       startSuccessDialog()
     }
     else {
-      //TODO dialog error
+      println("RT occupied!")
+      startErrorDialog()
     }
 
   }
@@ -140,6 +142,11 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
 
   def startSuccessDialog() = {
     dialog = new CustomDialog(mainController).createDialog(ManageRescuesControllerImpl.Sent)
+    dialog.showAndWait()
+  }
+
+  def startErrorDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(ManageRescuesControllerImpl.Error)
     dialog.showAndWait()
   }
 

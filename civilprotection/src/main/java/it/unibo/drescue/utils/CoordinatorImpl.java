@@ -2,6 +2,7 @@ package it.unibo.drescue.utils;
 
 import it.unibo.drescue.communication.messages.ReplayCoordinationMessage;
 import it.unibo.drescue.connection.RabbitMQ;
+import it.unibo.drescue.model.RescueTeam;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -136,7 +137,6 @@ public class CoordinatorImpl implements Coordinator {
         ReplayCoordinationMessage replayCoordinationMessage = new ReplayCoordinationMessage();
         replayCoordinationMessage.setTimestamp(new Timestamp(System.currentTimeMillis()));
         replayCoordinationMessage.setFrom(myID);
-
         try {
             this.connection.sendMessage(this.exchangeName, csName, null, replayCoordinationMessage);
         } catch (IOException e) {
@@ -145,12 +145,11 @@ public class CoordinatorImpl implements Coordinator {
     }
 
     @Override
-    public void sendReplayMessageTo(String csName, String to) {
-        //TODO add RescueTeamCondition parameter
+    public void sendReplayMessageTo(String csName, String to, RescueTeamCondition rescueTeamCondition) {
         ReplayCoordinationMessage replayCoordinationMessage = new ReplayCoordinationMessage();
         replayCoordinationMessage.setTimestamp(new Timestamp(System.currentTimeMillis()));
         replayCoordinationMessage.setRescueTeamID(csName);
-        replayCoordinationMessage.setRTcondition(RescueTeamCondition.AVAILABLE);
+        replayCoordinationMessage.setRTcondition(rescueTeamCondition);
         replayCoordinationMessage.setFrom(myID);
         replayCoordinationMessage.setTo(to);
         try {
@@ -161,14 +160,13 @@ public class CoordinatorImpl implements Coordinator {
     }
 
     @Override
-    public void backToCs() {
-        //TODO check the EnrolledTeamInfo condition and cpID (send Occupied if cpID= myCpID and condition = occupied)
+    public void backToCs(RescueTeamCondition rescueTeamCondition) {
         this.condition = CoordinatorCondition.DETACHED;
         this.reqTimestamp = null;
         this.pendingCPReplay = null;
         if (this.blockedCP != null){
             for (String s: this.blockedCP){
-                sendReplayMessageTo(cs, s);
+                sendReplayMessageTo(cs, s, rescueTeamCondition );
             }
         }
         this.cs = "";
