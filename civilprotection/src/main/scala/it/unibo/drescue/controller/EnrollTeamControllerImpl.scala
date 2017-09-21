@@ -4,11 +4,12 @@ import java.util.concurrent.{ExecutorService, Executors, Future}
 
 import it.unibo.drescue.StringUtils
 import it.unibo.drescue.communication.GsonUtils
+import it.unibo.drescue.communication.builder.ReqRescueTeamConditionMessageBuilderImpl
+import it.unibo.drescue.communication.messages._
 import it.unibo.drescue.communication.messages.response.ErrorMessageImpl
-import it.unibo.drescue.communication.messages.{Message, MessageType, MessageUtils, NewRescueTeamMessage}
 import it.unibo.drescue.connection.{QueueType, RabbitMQImpl, RequestHandler}
 import it.unibo.drescue.geocoding.{Geocoding, GeocodingException, GeocodingImpl}
-import it.unibo.drescue.localModel.Observers
+import it.unibo.drescue.localModel.{EnrolledTeamInfo, Observers}
 import it.unibo.drescue.model.{RescueTeamImpl, RescueTeamImplBuilder}
 import it.unibo.drescue.view.CustomDialog
 
@@ -156,27 +157,88 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
     dialog.show()
   }
 
-  def selectPress() = {
-    mainController.changeView("Home")
-    //TODO start thread with future
-    //when future return add the returns
-    // OK -> back to home
-    // ERROR -> dialog
+  def selectPress(selectedTeamID: String) = {
+
+    if (StringUtils.isAValidString(selectedTeamID)) {
+
+      val message: Message = EnrollRescueTeamMessageImpl(selectedTeamID, mainController.model.cpID)
+      val task: Future[String] = pool.submit(new RequestHandler(rabbitMQ, message, QueueType.CIVIL_PROTECTION_QUEUE))
+      val response: String = task.get()
+      println("EnrollTeam controller: " + response)
+      val messageName: MessageType = MessageUtils.getMessageNameByJson(response)
+
+      messageName match {
+        case MessageType.SUCCESSFUL_MESSAGE =>
+
+          //TODO dialog successful
+
+          //add rescue team to rescueTeamList and enrolledTeamInfoList
+          var indexToChange: Int = -1
+          mainController.model.notEnrolledRescueTeams forEach ((rescueTeam: RescueTeamImpl) => {
+            val rescueTeamID = rescueTeam.getRescueTeamID
+            if (rescueTeamID == selectedTeamID) {
+              indexToChange = mainController.model.notEnrolledRescueTeams.indexOf(rescueTeam)
+            }
+          })
+
+          val notEnrolledList = mainController.model.notEnrolledRescueTeams
+          val newEnrollment = notEnrolledList.get(indexToChange)
+
+          val enrolledList = mainController.model.enrolledRescueTeams
+          val enrolledInfoList = mainController.model.enrolledTeamInfoList
+          if (indexToChange != -1) {
+
+            val newTeam = new RescueTeamImplBuilder()
+              .setRescueTeamID(newEnrollment.getRescueTeamID)
+              .setName(newEnrollment.getName)
+              .setPhoneNumber(newEnrollment.getPhoneNumber)
+              .createRescueTeamImpl()
+            enrolledList.add(newTeam)
+            mainController.model.enrolledRescueTeams = enrolledList
+
+            val newTeamInfo = new EnrolledTeamInfo(
+              newEnrollment.getRescueTeamID,
+              newEnrollment.getName,
+              newEnrollment.getPhoneNumber,
+              true,
+              "",
+              "")
+            enrolledInfoList.add(newTeamInfo)
+            mainController.model.enrolledTeamInfoList = enrolledInfoList
+
+            //send message to get availability
+            val rescueTeamConditionMessage = new ReqRescueTeamConditionMessageBuilderImpl()
+              .setRescueTeamID(newEnrollment.getRescueTeamID)
+              .setFrom(mainController.model.cpID)
+              .build()
+
+            mainController.rabbitMQ.bindQueueToExchange(mainController.queueName, mainController.ExchangeName, newEnrollment)
+            mainController.rabbitMQ.sendMessage(mainController.ExchangeName,
+              newEnrollment.getRescueTeamID, null, rescueTeamConditionMessage)
+
+            mainController.changeView("Home")
+
+          }
+
+        case MessageType.ERROR_MESSAGE => //TODO dialog error
+
+        case _ => //do nothing
+
+      }
+    } else {
+      //TODO dialog select a rescue team
+    }
   }
 
   def backPress() = {
     mainController.changeView("Home")
   }
 
-  /**
-    * TODO
-    */
   override def onReceivingNotification(): Unit = {
     obsBuffer.clear()
     mainController.model.notEnrolledRescueTeams.forEach(
       (rescueTeam: RescueTeamImpl) => {
         obsBuffer add rescueTeam.getRescueTeamID
-        println("[EnrolledTeamController]: notification for: " + rescueTeam.toPrintableString)
       }
     )
   }
