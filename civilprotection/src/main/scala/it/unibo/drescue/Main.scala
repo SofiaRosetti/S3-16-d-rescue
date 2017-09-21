@@ -15,9 +15,7 @@ object Main extends JFXApp {
   var controller = new MainControllerImpl(cpData, new RabbitMQImpl(connection))
   var loginController = new LoginControllerImpl(controller, new RabbitMQImpl(connection))
   var homeController = new HomeControllerImpl(controller)
-  var newRescueController = new NewRescueControllerImpl(controller)
   var enrollTeamController = new EnrollTeamControllerImpl(controller, new RabbitMQImpl(connection))
-  var occupiedTeamsController = new OccupiedTeamsControllerImpl(controller)
   var manageRescuesController = new ManageRescuesControllerImpl(controller, new RabbitMQImpl(connection))
   var loginGrid = new LoginGrid(loginController)
 
@@ -26,9 +24,7 @@ object Main extends JFXApp {
     controller = controller,
     loginGrid = loginGrid,
     homeController = homeController,
-    newRescueController = newRescueController,
     enrollTeamControllerImpl = enrollTeamController,
-    occupiedTeamsController = occupiedTeamsController,
     manageRescuesController = manageRescuesController)
 
   controller.addView(view)

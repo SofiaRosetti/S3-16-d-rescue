@@ -3,57 +3,80 @@ package it.unibo.drescue.controller
 import java.util.concurrent.{ExecutorService, Executors, Future}
 
 import it.unibo.drescue.StringUtils
+import it.unibo.drescue.communication.GsonUtils
+import it.unibo.drescue.communication.messages.response.ErrorMessageImpl
 import it.unibo.drescue.communication.messages.{Message, MessageType, MessageUtils, NewRescueTeamMessage}
 import it.unibo.drescue.connection.{QueueType, RabbitMQImpl, RequestHandler}
 import it.unibo.drescue.geocoding.{Geocoding, GeocodingException, GeocodingImpl}
 import it.unibo.drescue.localModel.Observers
-import it.unibo.drescue.model.RescueTeamImpl
+import it.unibo.drescue.model.{RescueTeamImpl, RescueTeamImplBuilder}
+import it.unibo.drescue.view.CustomDialog
 
 import scalafx.collections.ObservableBuffer
+import scalafx.scene.control.Alert
 
 object EnrollTeamControllerImpl extends Enumeration {
   val CommandFillAll: String = "Fill all data."
   val CommandInsertValidAddress: String = "Insert a valid address"
   val CommandDuplicated: String = "Error inserting the team, teamID duplicated"
-  val Error: String = "An error occurred"
-  val Ok: String = "All data ok, inserting the team"
+  //val Error: String = "An error occurred"
+  val Added: String = "The team has been added."
+  val Adding: String = "All data ok, adding the team."
+  val Processing: String = "Processing"
+  val EmptyTeamData = "EmptyTeamData"
+  val InvalidAddress = "InvalidAddress"
+  val Checking = "Checking"
+  val Error = "Error"
 }
 
 class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, val rabbitMQ: RabbitMQImpl) extends Observer {
 
   mainController.model.addObserver(Observers.EnrollTeam, this)
   val pool: ExecutorService = Executors.newFixedThreadPool(1)
-  var obsBuffer = new ObservableBuffer[RescueTeamImpl]()
+  var obsBuffer = new ObservableBuffer[String]()
+  var dialog: Alert = _
 
-  def checkInputsAndAdd(rescueTeamId: String, name: String, address: String, phoneNumber: String): String = {
+  def startChecks(rescueTeamId: String, name: String, address: String, phoneNumber: String) = {
 
-    if (!checkInputs(rescueTeamId, name, address, phoneNumber)) {
-      //TODO show dialog 'fill al data'
-      println("[EnrollTeam] : Fill all data")
-      EnrollTeamControllerImpl.CommandFillAll
+    checkInputs(rescueTeamId, name, address, phoneNumber) match {
+      case false => startFillAllDataDialog()
+      case true =>
+        startCheckingDataDialog()
+        val geocoding: Geocoding = new GeocodingImpl()
+        var latitude: Double = 0.0
+        var longitude: Double = 0.0
+        try {
+          val latlng = geocoding.getLatLng(address)
+          latitude = latlng.get("lat").getAsDouble
+          longitude = latlng.get("lng").getAsDouble
+        } catch {
+          case e: GeocodingException =>
+            mainController.changeView("NewTeam")
+            startAddressDialog()
+            println("[EnrollTeam] : Address not valid")
+            EnrollTeamControllerImpl.CommandInsertValidAddress
+          case _: Throwable =>
+            mainController.changeView("NewTeam")
+            startErrorDialog()
+            println("[EnrollTeam] : Address not valid")
+            EnrollTeamControllerImpl.Error
+        }
+
+        println("[EnrollTeam] : lat " + latitude + " long: " + longitude)
+        if (latitude == 0.0 || longitude == 0.0) {
+          println("[EnrollTeam] Error in geocoding")
+          EnrollTeamControllerImpl.Error
+        } else {
+          addTeam(rescueTeamId, name, address, phoneNumber, latitude, longitude)
+        }
     }
+  }
 
-    val geocoding: Geocoding = new GeocodingImpl()
-    var latitude: Double = 0.0
-    var longitude: Double = 0.0
-    try {
-      val latlng = geocoding.getLatLng(address)
-      latitude = latlng.get("lat").getAsDouble
-      longitude = latlng.get("lng").getAsDouble
-    } catch {
-      case e: GeocodingException => //TODO show dialog "insert a correct address"
-        println("[EnrollTeam] : Address not valid")
-        EnrollTeamControllerImpl.CommandInsertValidAddress
-      case _ => //TODO show dialog "an error occurred"
-        println("[EnrollTeam] : Address not valid")
-        EnrollTeamControllerImpl.Error
-    }
+  def addTeam(rescueTeamId: String, name: String, address: String, phoneNumber: String, latitude: Double, longitude: Double): String = {
 
-    println("[EnrollTeam] : lat " + latitude + " long: " + longitude)
-    if (latitude == 0.0 || longitude == 0.0) {
-      println("[EnrollTeam] Error in geocoding")
-      EnrollTeamControllerImpl.Error
-    }
+    mainController.changeView("NewTeam")
+    startProcessingDialog()
+
     val message: Message = NewRescueTeamMessage(
       rescueTeamID = rescueTeamId,
       rescueTeamName = name,
@@ -69,20 +92,53 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
 
     messageName match {
 
-      case MessageType.SUCCESSFUL_MESSAGE => { //TODO success
+      case MessageType.SUCCESSFUL_MESSAGE => {
         println("[EnrollTeam] : Team added: " + rescueTeamId)
-        //TODO add rescue team to list in main controller
-        // stop dialog and delete all fields / change view to this
+        val notEnrolledTeams = mainController.model.notEnrolledRescueTeams
+        notEnrolledTeams.add(new RescueTeamImplBuilder().setRescueTeamID(rescueTeamId)
+          .setPassword("")
+          .setName(name)
+          .setLatitude(latitude)
+          .setLongitude(longitude)
+          .setPhoneNumber(phoneNumber)
+          .createRescueTeamImpl())
+        mainController.model.notEnrolledRescueTeams = notEnrolledTeams
+
+        mainController.changeView("NewTeam")
+        startSuccessDialog()
       }
       case MessageType.ERROR_MESSAGE => {
         println("[EnrollTeam] : Team not added, ERROR " + rescueTeamId)
-        // show ERROR -> change dialog
-        //TODO
-        //if duplicated -> return CommandDuplicated
+        mainController.changeView("NewTeam")
+        val customDialog = new CustomDialog(mainController)
+        customDialog.setErrorText(GsonUtils.fromGson(response, classOf[ErrorMessageImpl]).getError)
+        dialog = customDialog.createDialog(EnrollTeamControllerImpl.Error)
+        dialog.showAndWait()
       }
+      case _ => // do nothing
     }
 
-    EnrollTeamControllerImpl.Ok
+    EnrollTeamControllerImpl.Adding
+  }
+
+  def startSuccessDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.Added)
+    dialog.showAndWait()
+  }
+
+  def startProcessingDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.Processing)
+    dialog.show()
+  }
+
+  def startErrorDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.Error)
+    dialog.showAndWait()
+  }
+
+  def startAddressDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.InvalidAddress)
+    dialog.showAndWait()
   }
 
   def checkInputs(rescueTeamId: String, name: String, address: String, phoneNumber: String): Boolean = {
@@ -90,7 +146,15 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
       StringUtils.isAValidString(phoneNumber) && StringUtils.isAValidString(address)
   }
 
-  //TODO start here a request for GetAllRescueTeam
+  def startFillAllDataDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.EmptyTeamData)
+    dialog.showAndWait()
+  }
+
+  def startCheckingDataDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.Checking)
+    dialog.show()
+  }
 
   def selectPress() = {
     mainController.changeView("Home")
@@ -111,7 +175,7 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
     obsBuffer.clear()
     mainController.model.notEnrolledRescueTeams.forEach(
       (rescueTeam: RescueTeamImpl) => {
-        obsBuffer add rescueTeam
+        obsBuffer add rescueTeam.getRescueTeamID
         println("[EnrolledTeamController]: notification for: " + rescueTeam.toPrintableString)
       }
     )

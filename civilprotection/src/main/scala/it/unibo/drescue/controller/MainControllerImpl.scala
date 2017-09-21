@@ -18,7 +18,7 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
   val ExchangeName = "rt_exchange"
 
   val pool: ExecutorService = Executors.newFixedThreadPool(Runtime.getRuntime.availableProcessors() + 1)
-  var view = new MainView(null, null, null, null, null, null, null, null)
+  var view = new MainView(null, null, null, null, null, null)
 
   def addView(viewValue: MainView): Unit = {
     view = viewValue
