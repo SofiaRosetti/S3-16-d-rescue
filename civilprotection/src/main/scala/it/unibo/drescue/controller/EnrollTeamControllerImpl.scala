@@ -4,6 +4,7 @@ import java.util.concurrent.{ExecutorService, Executors, Future}
 
 import it.unibo.drescue.StringUtils
 import it.unibo.drescue.communication.GsonUtils
+import it.unibo.drescue.communication.builder.ReqRescueTeamConditionMessageBuilderImpl
 import it.unibo.drescue.communication.messages._
 import it.unibo.drescue.communication.messages.response.ErrorMessageImpl
 import it.unibo.drescue.connection.{QueueType, RabbitMQImpl, RequestHandler}
@@ -167,7 +168,9 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
       val messageName: MessageType = MessageUtils.getMessageNameByJson(response)
 
       messageName match {
-        case MessageType.SUCCESSFUL_MESSAGE => //TODO dialog successful
+        case MessageType.SUCCESSFUL_MESSAGE =>
+
+          //TODO dialog successful
 
           //add rescue team to rescueTeamList and enrolledTeamInfoList
           var indexToChange: Int = -1
@@ -203,12 +206,23 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
             enrolledInfoList.add(newTeamInfo)
             mainController.model.enrolledTeamInfoList = enrolledInfoList
 
-            //TODO send message to get availability
+            //send message to get availability
+            val rescueTeamConditionMessage = new ReqRescueTeamConditionMessageBuilderImpl()
+              .setRescueTeamID(newEnrollment.getRescueTeamID)
+              .setFrom(mainController.model.cpID)
+              .build()
+
+            mainController.rabbitMQ.bindQueueToExchange(mainController.queueName, mainController.ExchangeName, newEnrollment)
+            mainController.rabbitMQ.sendMessage(mainController.ExchangeName,
+              newEnrollment.getRescueTeamID, null, rescueTeamConditionMessage)
 
             mainController.changeView("Home")
+
           }
 
         case MessageType.ERROR_MESSAGE => //TODO dialog error
+
+        case _ => //do nothing
 
       }
     } else {

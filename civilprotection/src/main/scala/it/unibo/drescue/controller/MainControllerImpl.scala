@@ -113,7 +113,6 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
   }
 
   def initializeNotEnrolled(): Unit = {
-    //TODO request to NotEnrolledMessage
     val message: Message = GetRescueTeamsNotEnrolledMessageImpl(model.cpID)
     val task: Future[String] = pool.submit(new RequestHandler(rabbitMQ, message, QueueType.CIVIL_PROTECTION_QUEUE))
     val response: String = task.get()
