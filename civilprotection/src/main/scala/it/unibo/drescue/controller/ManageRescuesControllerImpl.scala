@@ -81,11 +81,10 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
     }
     if (coordinator.getCondition == CoordinatorCondition.HELD) {
 
-      System.out.println("[CS Execution]")
+      println("[CS Execution]")
       var indexToChange: Int = -1
       var rescueTeamToChange : EnrolledTeamInfo = null
       val list = mainController.model.enrolledTeamInfoList
-
       list forEach((rescueTeam: EnrolledTeamInfo) => {
         if ( rescueTeam.teamID.value == wantedRescueTeamID){
           indexToChange = list.indexOf(rescueTeam)
@@ -107,38 +106,56 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
       //the process came back from CS
       coordinator.backToCs(RescueTeamCondition.OCCUPIED)
 
-        //TODO send a message to inform other cp
-      var reply: Message = null
-      reply = new ReplyRescueTeamConditionMessageBuilderImpl()
-        .setRescueTeamID(wantedRescueTeamID)
-        .setRescueTeamCondition(RescueTeamCondition.OCCUPIED)
-        .setFrom(mainController.model.cpID)
-        .build()
-      rabbitMQ.sendMessage(mainController.ExchangeName, wantedRescueTeamID, null, reply)
+      //TODO send a message to inform other cp
+      sendReplyRescueTeamCondition(wantedRescueTeamID, RescueTeamCondition.OCCUPIED)
 
       mainController.changeView("ManageRescues")
-      print("RT OTTENUTA")
       startSuccessDialog()
     }
     else {
-      println("RT occupied!")
       startErrorDialog()
     }
-
   }
 
   def stopPressed(wantedRescueTeamID: String) = {
 
     //TODO stop the given rescueTeamID, change local state of rescueTeamID in available
+    var indexToChange: Int = -1
+    var rescueTeamToChange : EnrolledTeamInfo = null
+    val list = mainController.model.enrolledTeamInfoList
 
-    //TODO send message to the other CP with in order to update their view
+    list forEach((rescueTeam: EnrolledTeamInfo) => {
+      if ( rescueTeam.teamID.value == wantedRescueTeamID){
+        indexToChange = list.indexOf(rescueTeam)
+        rescueTeamToChange = list.get(indexToChange)
+      }
+    })
+
+    if (rescueTeamToChange.cpID == mainController.model.cpID) {
+      list.set(indexToChange, new EnrolledTeamInfo(
+        rescueTeamToChange.teamID.value,
+        rescueTeamToChange.teamName.value,
+        rescueTeamToChange.phoneNumber.value,
+        true,
+        "",
+        "")
+      )
+      mainController.model.enrolledTeamInfoList = list
+
+      //TODO send message to the other CP with in order to update their view
+      sendReplyRescueTeamCondition(wantedRescueTeamID, RescueTeamCondition.AVAILABLE)
+
+      //TODO confirm dialog
+      mainController.changeView("ManageRescues")
+    } else {
+      //TODO error message
+    }
 
   }
 
   def backPress() = {
     mainController.changeView("Home")
   }
-
 
   def startSuccessDialog() = {
     dialog = new CustomDialog(mainController).createDialog(ManageRescuesControllerImpl.Sent)
@@ -148,6 +165,20 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
   def startErrorDialog() = {
     dialog = new CustomDialog(mainController).createDialog(ManageRescuesControllerImpl.Error)
     dialog.showAndWait()
+  }
+
+  def updateEnrollTeamInfo(wantedRescueTeamID: String, enrolledTeamInfo: EnrolledTeamInfo) = {
+    //TODO same coda stop and send button
+  }
+
+  def sendReplyRescueTeamCondition(rescueTeamID: String, rescueTeamCondition: RescueTeamCondition) = {
+    var reply: Message = null
+    reply = new ReplyRescueTeamConditionMessageBuilderImpl()
+      .setRescueTeamID(rescueTeamID)
+      .setRescueTeamCondition(rescueTeamCondition)
+      .setFrom(mainController.model.cpID)
+      .build()
+    rabbitMQ.sendMessage(mainController.ExchangeName, rescueTeamID, null, reply)
   }
 
 }
