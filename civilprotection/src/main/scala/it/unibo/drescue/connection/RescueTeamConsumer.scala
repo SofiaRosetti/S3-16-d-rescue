@@ -104,21 +104,25 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
           + " To: " + replyRescueTeamConditionMessage.getTo)
 
         if (replyRescueTeamConditionMessage.getFrom != mainControllerImpl.model.cpID) {
+
           val rescueTeamCondition = replyRescueTeamConditionMessage.getRescueTeamCondition
           val rescueTeamID = replyRescueTeamConditionMessage.getRescueTeamID
+          val senderCP = replyRescueTeamConditionMessage.getFrom
+
+          var indexToChange: Int = -1
+          mainControllerImpl.model.enrolledTeamInfoList forEach ((enrolledTeamInfo: EnrolledTeamInfo) => {
+            val enrolledTeamID = enrolledTeamInfo.teamID.value
+            if (rescueTeamID == enrolledTeamID) {
+              indexToChange = mainControllerImpl.model.enrolledTeamInfoList.indexOf(enrolledTeamInfo)
+            }
+          })
+
+          val list = mainControllerImpl.model.enrolledTeamInfoList
 
           rescueTeamCondition match {
+
             case RescueTeamCondition.OCCUPIED =>
 
-              var indexToChange: Int = -1
-              mainControllerImpl.model.enrolledTeamInfoList forEach ((enrolledTeamInfo: EnrolledTeamInfo) => {
-                val enrolledTeamID = enrolledTeamInfo.teamID.value
-                if (rescueTeamID == enrolledTeamID) {
-                  indexToChange = mainControllerImpl.model.enrolledTeamInfoList.indexOf(enrolledTeamInfo)
-                }
-              })
-
-              val list = mainControllerImpl.model.enrolledTeamInfoList
               if (indexToChange != -1) {
                 val enrolledTeamInfo = list.get(indexToChange)
                 list.set(indexToChange, new EnrolledTeamInfo(
@@ -132,7 +136,22 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
                 mainControllerImpl.model.enrolledTeamInfoList = list
               }
 
-            case RescueTeamCondition.AVAILABLE => //do nothing //TODO to check
+            case RescueTeamCondition.AVAILABLE =>
+
+              if (indexToChange != -1) {
+                val enrolledTeamInfo = list.get(indexToChange)
+                if (enrolledTeamInfo.cpID.value == senderCP) {
+                  list.set(indexToChange, new EnrolledTeamInfo(
+                    enrolledTeamInfo.teamID.value,
+                    enrolledTeamInfo.teamName.value,
+                    enrolledTeamInfo.phoneNumber.value,
+                    true, //available
+                    "", //cpID
+                    "")
+                  )
+                  mainControllerImpl.model.enrolledTeamInfoList = list
+                }
+              }
 
           }
         }
