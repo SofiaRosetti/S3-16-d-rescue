@@ -1,9 +1,11 @@
 package it.unibo.drescue.view
 
+import javafx.stage.WindowEvent
+
 import it.unibo.drescue.controller._
 
-import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
+import scalafx.application.{JFXApp, Platform}
 import scalafx.scene.Scene
 
 class MainView(loginGrid: LoginGrid,
@@ -29,6 +31,11 @@ class MainView(loginGrid: LoginGrid,
       scene = new Scene {
         content = loginGrid.grid
       }
+      onCloseRequest_=((event: WindowEvent) => {
+        event.consume()
+        Platform.exit()
+        System.exit(0)
+      })
     }
   }
 
