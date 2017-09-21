@@ -4,12 +4,13 @@ import java.sql.Timestamp
 import java.util
 import java.util.concurrent.{ExecutorService, Executors, Future}
 
+import it.unibo.drescue.communication.builder.ReplyRescueTeamConditionMessageBuilderImpl
 import it.unibo.drescue.communication.messages.{CPsMessageImpl, GetAssociatedCpMessageImpl, Message, ReqCoordinationMessage}
 import it.unibo.drescue.communication.{GsonUtils, messages}
 import it.unibo.drescue.connection.{QueueType, RabbitMQImpl, RequestHandler}
 import it.unibo.drescue.localModel.{EnrolledTeamInfo, Observers}
 import it.unibo.drescue.model.CivilProtectionImpl
-import it.unibo.drescue.utils.{Coordinator, CoordinatorCondition, CoordinatorImpl}
+import it.unibo.drescue.utils.{Coordinator, CoordinatorCondition, CoordinatorImpl, RescueTeamCondition}
 import it.unibo.drescue.view.CustomDialog
 
 import scalafx.collections.ObservableBuffer
@@ -80,7 +81,6 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
     if (coordinator.getCondition == CoordinatorCondition.HELD) {
       //TODO CS execution Update RT condition
       System.out.println("[CS Execution]")
-
       var indexToChange: Int = -1
       var rescueTeamToChange : EnrolledTeamInfo = null
       val list = mainController.model.enrolledTeamInfoList
@@ -92,23 +92,29 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
         }
       })
 
+      //TODO get alert ID
       list.set(indexToChange, new EnrolledTeamInfo(
         rescueTeamToChange.teamID.value,
         rescueTeamToChange.teamName.value,
         rescueTeamToChange.phoneNumber.value,
-        true,
+        false,
         mainController.model.cpID,
         rescueTeamToChange.alertID.value)
       )
 
       mainController.model.enrolledTeamInfoList = list
 
-      //TODO recuperare alert ID
-
       //the process came back from CS
       coordinator.backToCs()
 
       //TODO send a message to inform other cp
+      var reply: Message = null
+      reply = new ReplyRescueTeamConditionMessageBuilderImpl()
+        .setRescueTeamID(wantedRescueTeamID)
+        .setRescueTeamCondition(RescueTeamCondition.OCCUPIED)
+        .setFrom(mainController.model.cpID)
+        .build()
+      rabbitMQ.sendMessage(mainController.ExchangeName, wantedRescueTeamID, null, reply)
 
       mainController.changeView("ManageRescues")
       startSuccessDialog()
