@@ -86,10 +86,16 @@ public class RabbitMQImpl implements RabbitMQ {
     }
 
     @Override
-    public void bindQueueToExchange(final String queue, final String exchange, final List<RescueTeamImpl> routingKeysList) throws IOException {
+    public void bindQueueToExchange(final String queueName, final String exchange, final List<RescueTeamImpl> routingKeysList) throws IOException {
         for (final RescueTeamImpl routingKeyElement : routingKeysList) {
-            this.channel.queueBind(queue, exchange, routingKeyElement.getRescueTeamID());
+            bindQueueToExchange(queueName, exchange, routingKeyElement);
         }
     }
+
+    @Override
+    public void bindQueueToExchange(final String queueName, final String exchange, final RescueTeamImpl routingKey) throws IOException {
+        this.channel.queueBind(queueName, exchange, routingKey.getRescueTeamID());
+    }
+
 
 }

@@ -25,7 +25,7 @@ class LoginControllerImpl(private var mainController: MainControllerImpl,
 
 
   val pool: ExecutorService = Executors.newFixedThreadPool(1)
-  var dialog: Alert = null
+  var dialog: Alert = _
 
   def loginPress(username: String, password: String) = {
     startLoadingDialog()

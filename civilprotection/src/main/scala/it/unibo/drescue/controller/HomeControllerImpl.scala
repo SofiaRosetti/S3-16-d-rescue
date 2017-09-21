@@ -10,42 +10,24 @@ class HomeControllerImpl(private var mainController: MainControllerImpl) extends
 
   var obsBuffer = new ObservableBuffer[AlertEntry]()
 
-  //TODO
-  // - listView with alerts updated by a thread consumer
-  // - enrollTeam button -> change view
-  // - startRescue button ->
-  //      - inactive until alert (from list view) selected
-  //      - when pressed -> change view to manage rescue with alert params
-  // - manageRescues button -> change view to manage rescues without alert params
-
-  def startAlertsRequest() = {
-    // TODO request for alerts with RequestCpAlertMsg(cpID)
-  }
-
   def manageRescuesPress() = {
+    //TODO
+    //when pressed -> change view to manage rescues WITHOUT alert params
     mainController.changeView("ManageRescues")
   }
 
-  def newRescuePress() = {
-    mainController.changeView("NewRescue")
+  def startRescuePress() = {
+    //TODO
+    // start rescue button inactive until alert (from list view selected)
+    // when pressed -> change view to manage rescue WITH alert params
+    mainController.changeView("ManageRescues")
   }
 
-  def newTeamPress() = {
+  def enrollTeamPress() = {
     mainController.initializeNotEnrolled()
     mainController.changeView("NewTeam")
   }
 
-  def occupiedTeamsPress() = {
-    mainController.changeView("OccupiedTeams")
-  }
-
-  def refreshAlertsList() = {
-    //obsBuffer.insert(0, "new alert")
-  }
-
-  /**
-    * TODO
-    */
   override def onReceivingNotification(): Unit = {
     obsBuffer.clear()
     mainController.model.lastAlerts.forEach(

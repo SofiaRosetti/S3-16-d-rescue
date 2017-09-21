@@ -106,4 +106,6 @@ public interface Coordinator {
      */
     void backToCs();
 
+    void setExchange(String exchange);
+
 }

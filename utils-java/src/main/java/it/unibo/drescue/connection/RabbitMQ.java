@@ -91,13 +91,23 @@ public interface RabbitMQ {
 
 
     /**
-     * Bind a queue to an exchange using a routing keys
+     * Bind a queue to an exchange using a list of routing keys.
      *
-     * @param queueName   the name of the queue
-     * @param exchange    the name of the exchange
-     * @param routingKeysList the routine key to use for the binding
+     * @param queueName       the name of the queue
+     * @param exchange        the name of the exchange
+     * @param routingKeysList the routing key to use for the binding
      * @throws IOException if an error is encountered
      */
     void bindQueueToExchange(String queueName, String exchange, List<RescueTeamImpl> routingKeysList) throws IOException;
+
+    /**
+     * Bind a queue to an exchange using a routing key.
+     *
+     * @param queueName  the name of the queue
+     * @param exchange   the name of the exchange
+     * @param routingKey the routing key to use for the binding
+     * @throws IOException if an error is encountered
+     */
+    void bindQueueToExchange(String queueName, String exchange, RescueTeamImpl routingKey) throws IOException;
 
 }

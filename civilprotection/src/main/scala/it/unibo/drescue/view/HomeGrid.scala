@@ -110,7 +110,7 @@ class HomeGrid(private var homeController: HomeControllerImpl) {
       margin = Insets(Insets30)
       prefWidth = WidthHeight250
       onMouseClicked = (event: MouseEvent) => { // TODO change event after pressure
-        homeController.newTeamPress()
+        homeController.enrollTeamPress()
       }
     }
     val ManageRescuesButton = new Button() {
@@ -129,8 +129,7 @@ class HomeGrid(private var homeController: HomeControllerImpl) {
       margin = Insets(Insets30)
       prefWidth = WidthHeight250
       onMouseClicked = (event: MouseEvent) => { // TODO change event after pressure
-        homeController.newRescuePress()
-        //homeController.refreshAlertsList()
+        homeController.startRescuePress()
       }
     }
     val buttonBox = new HBox {

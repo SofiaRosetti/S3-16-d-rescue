@@ -3,7 +3,6 @@ package it.unibo.drescue.view
 import javafx.scene.input.MouseEvent
 
 import it.unibo.drescue.controller.EnrollTeamControllerImpl
-import it.unibo.drescue.model.RescueTeamImpl
 import it.unibo.drescue.view.ViewConstants._
 
 import scalafx.geometry.{Insets, Pos}
@@ -57,12 +56,10 @@ class EnrollTeamGrid(private var enrollTeamController: EnrollTeamControllerImpl)
     add(insertBox, ColumnRow1, ColumnRow1)
 
     val choices = enrollTeamController.obsBuffer
-    //ObservableBuffer("Team A", "Team B", "Team C")
-    val teamChoice = new ComboBox[RescueTeamImpl] {
+    val teamChoice = new ComboBox[String] {
       maxWidth = WidthHeight250
       editable = true
       items = choices
-      //TODO fix the view of rescue teams
     }
     teamChoice.setStyle("-fx-font-size:25")
     add(teamChoice, ColumnRow0, ColumnRow2)
@@ -134,7 +131,7 @@ class EnrollTeamGrid(private var enrollTeamController: EnrollTeamControllerImpl)
       margin = Insets(Insets10)
       prefWidth = WidthHeight100
       onMouseClicked = (event: MouseEvent) => {
-        val result: String = enrollTeamController.checkInputsAndAdd(IDField.getText(), nameField.getText(), AddressField.getText(), PhoneField.getText())
+        enrollTeamController.startChecks(IDField.getText(), nameField.getText(), AddressField.getText(), PhoneField.getText())
       }
     }
     val addBox = new HBox {
@@ -149,7 +146,9 @@ class EnrollTeamGrid(private var enrollTeamController: EnrollTeamControllerImpl)
       margin = Insets(Insets30)
       prefWidth = WidthHeight150
       onMouseClicked = (event: MouseEvent) => {
-        enrollTeamController.selectPress()
+        var selectedTeamID = teamChoice.getValue
+        println("SelectButton" + selectedTeamID)
+        enrollTeamController.selectPress(selectedTeamID)
       }
     }
     val cancelButton = new Button() {
