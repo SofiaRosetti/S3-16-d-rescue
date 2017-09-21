@@ -33,6 +33,14 @@ object CustomDialog {
   val AddedDialogHeader = "The team has been added successfully."
   val AddedDialogContent = "You can proceed now."
 
+  val CheckingDialogTitle = "Checking"
+  val CheckingDialogHeader = "Checking inserted data."
+  val CheckingDialogContent = "Please wait until process is finished."
+
+  val ErrorDialogTitle = "Error"
+  val ErrorDialogHeader = "Something went wrong."
+  val ErrorDialogContent = "An error occurred."
+
   val Processing = "Processing"
   val EmptyLogin = "EmptyLogin"
   val InfoLogin = "InfoLogin"
@@ -42,6 +50,8 @@ object CustomDialog {
   val ExistingTeamID = "ExistingTeamID"
   val Ok = "Ok"
   val Added = "The team has been added."
+  val Checking = "Checking"
+  val Error = "Error"
 
   var dialog: Alert = _
 }
@@ -115,6 +125,21 @@ class CustomDialog(mainController: MainControllerImpl) {
           title = CustomDialog.Ok
           headerText = CustomDialog.AddedDialogHeader
           contentText = CustomDialog.AddedDialogContent
+        }
+      case CustomDialog.Checking =>
+        CustomDialog.dialog = new Alert(AlertType.Information) {
+          initOwner(mainController._view._stage)
+          title = CustomDialog.CheckingDialogTitle
+          headerText = CustomDialog.CheckingDialogHeader
+          contentText = CustomDialog.CheckingDialogContent
+          buttonTypes.remove(0)
+        }
+      case CustomDialog.Error =>
+        CustomDialog.dialog = new Alert(AlertType.Information) {
+          initOwner(mainController._view._stage)
+          title = CustomDialog.ErrorDialogTitle
+          headerText = CustomDialog.ErrorDialogHeader
+          contentText = CustomDialog.ErrorDialogContent
         }
     }
     CustomDialog.dialog

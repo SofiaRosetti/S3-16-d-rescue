@@ -17,10 +17,14 @@ object EnrollTeamControllerImpl extends Enumeration {
   val CommandFillAll: String = "Fill all data."
   val CommandInsertValidAddress: String = "Insert a valid address"
   val CommandDuplicated: String = "Error inserting the team, teamID duplicated"
-  val Error: String = "An error occurred"
+  //val Error: String = "An error occurred"
   val Added: String = "The team has been added."
   val Adding: String = "All data ok, adding the team."
   val Processing: String = "Processing"
+  val EmptyTeamData = "EmptyTeamData"
+  val InvalidAddress = "InvalidAddress"
+  val Checking = "Checking"
+  val Error = "Error"
 }
 
 class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, val rabbitMQ: RabbitMQImpl) extends Observer {
@@ -30,36 +34,45 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
   var obsBuffer = new ObservableBuffer[String]()
   var dialog: Alert = _
 
-  def checkInputsAndAdd(rescueTeamId: String, name: String, address: String, phoneNumber: String): String = {
+  def startChecks(rescueTeamId: String, name: String, address: String, phoneNumber: String) = {
 
-    if (!checkInputs(rescueTeamId, name, address, phoneNumber)) {
-      //TODO show dialog 'fill al data'
-      println("[EnrollTeam] : Fill all data")
-      EnrollTeamControllerImpl.CommandFillAll
+    checkInputs(rescueTeamId, name, address, phoneNumber) match {
+      case false => startFillAllDataDialog()
+      case true =>
+        startCheckingDataDialog()
+        val geocoding: Geocoding = new GeocodingImpl()
+        var latitude: Double = 0.0
+        var longitude: Double = 0.0
+        try {
+          val latlng = geocoding.getLatLng(address)
+          latitude = latlng.get("lat").getAsDouble
+          longitude = latlng.get("lng").getAsDouble
+        } catch {
+          case e: GeocodingException =>
+            mainController.changeView("NewTeam")
+            startAddressDialog()
+            println("[EnrollTeam] : Address not valid")
+            EnrollTeamControllerImpl.CommandInsertValidAddress
+          case _ =>
+            mainController.changeView("NewTeam")
+            startErrorDialog()
+            println("[EnrollTeam] : Address not valid")
+            EnrollTeamControllerImpl.Error
+        }
+
+        println("[EnrollTeam] : lat " + latitude + " long: " + longitude)
+        if (latitude == 0.0 || longitude == 0.0) {
+          println("[EnrollTeam] Error in geocoding")
+          EnrollTeamControllerImpl.Error
+        } else {
+          addTeam(rescueTeamId, name, address, phoneNumber, latitude, longitude)
+        }
     }
+  }
 
-    val geocoding: Geocoding = new GeocodingImpl()
-    var latitude: Double = 0.0
-    var longitude: Double = 0.0
-    try {
-      val latlng = geocoding.getLatLng(address)
-      latitude = latlng.get("lat").getAsDouble
-      longitude = latlng.get("lng").getAsDouble
-    } catch {
-      case e: GeocodingException => //TODO show dialog "insert a correct address"
-        println("[EnrollTeam] : Address not valid")
-        EnrollTeamControllerImpl.CommandInsertValidAddress
-      case _ => //TODO show dialog "an error occurred"
-        println("[EnrollTeam] : Address not valid")
-        EnrollTeamControllerImpl.Error
-    }
+  def addTeam(rescueTeamId: String, name: String, address: String, phoneNumber: String, latitude: Double, longitude: Double): String = {
 
-    println("[EnrollTeam] : lat " + latitude + " long: " + longitude)
-    if (latitude == 0.0 || longitude == 0.0) {
-      println("[EnrollTeam] Error in geocoding")
-      EnrollTeamControllerImpl.Error
-    }
-
+    mainController.changeView("NewTeam")
     startProcessingDialog()
 
     val message: Message = NewRescueTeamMessage(
@@ -104,21 +117,41 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
     EnrollTeamControllerImpl.Adding
   }
 
-  def checkInputs(rescueTeamId: String, name: String, address: String, phoneNumber: String): Boolean = {
-    StringUtils.isAValidString(rescueTeamId) && StringUtils.isAValidString(name) &&
-      StringUtils.isAValidString(phoneNumber) && StringUtils.isAValidString(address)
-  }
-
-  //TODO start here a request for GetAllRescueTeam
-
   def startSuccessDialog() = {
     dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.Added)
     dialog.showAndWait()
   }
 
+  //TODO start here a request for GetAllRescueTeam
+
   def startProcessingDialog() = {
     dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.Processing)
     dialog.show()
+  }
+
+  def startAddressDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.InvalidAddress)
+    dialog.showAndWait()
+  }
+
+  def checkInputs(rescueTeamId: String, name: String, address: String, phoneNumber: String): Boolean = {
+    StringUtils.isAValidString(rescueTeamId) && StringUtils.isAValidString(name) &&
+      StringUtils.isAValidString(phoneNumber) && StringUtils.isAValidString(address)
+  }
+
+  def startFillAllDataDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.EmptyTeamData)
+    dialog.showAndWait()
+  }
+
+  def startCheckingDataDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.Checking)
+    dialog.show()
+  }
+
+  def startErrorDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.Error)
+    dialog.showAndWait()
   }
 
   def selectPress() = {

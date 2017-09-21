@@ -132,7 +132,7 @@ class EnrollTeamGrid(private var enrollTeamController: EnrollTeamControllerImpl)
       margin = Insets(Insets10)
       prefWidth = WidthHeight100
       onMouseClicked = (event: MouseEvent) => {
-        val result: String = enrollTeamController.checkInputsAndAdd(IDField.getText(), nameField.getText(), AddressField.getText(), PhoneField.getText())
+        enrollTeamController.startChecks(IDField.getText(), nameField.getText(), AddressField.getText(), PhoneField.getText())
       }
     }
     val addBox = new HBox {
