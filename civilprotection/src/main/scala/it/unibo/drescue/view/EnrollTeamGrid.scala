@@ -146,7 +146,9 @@ class EnrollTeamGrid(private var enrollTeamController: EnrollTeamControllerImpl)
       margin = Insets(Insets30)
       prefWidth = WidthHeight150
       onMouseClicked = (event: MouseEvent) => {
-        enrollTeamController.selectPress()
+        var selectedTeamID = teamChoice.getValue
+        println("SelectButton" + selectedTeamID)
+        enrollTeamController.selectPress(selectedTeamID)
       }
     }
     val cancelButton = new Button() {

@@ -19,6 +19,7 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
 
   val pool: ExecutorService = Executors.newFixedThreadPool(Runtime.getRuntime.availableProcessors() + 1)
   var view = new MainView(null, null, null, null, null, null)
+  var queueName: String = _
 
   def addView(viewValue: MainView): Unit = {
     view = viewValue
@@ -34,7 +35,7 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
 
     //ask for availability of enrolledRescueTeams
     rabbitMQ declareExchange(ExchangeName, BuiltinExchangeType.DIRECT)
-    val queueName = rabbitMQ addReplyQueue()
+    queueName = rabbitMQ addReplyQueue()
     rabbitMQ bindQueueToExchange(queueName, ExchangeName, rescueTeams)
     val cpConsumer: RescueTeamConsumer = RescueTeamConsumer(rabbitMQ, this)
     rabbitMQ addConsumer(cpConsumer, queueName)

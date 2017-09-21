@@ -4,8 +4,8 @@ import java.util.concurrent.{ExecutorService, Executors, Future}
 
 import it.unibo.drescue.StringUtils
 import it.unibo.drescue.communication.GsonUtils
+import it.unibo.drescue.communication.messages._
 import it.unibo.drescue.communication.messages.response.ErrorMessageImpl
-import it.unibo.drescue.communication.messages.{Message, MessageType, MessageUtils, NewRescueTeamMessage}
 import it.unibo.drescue.connection.{QueueType, RabbitMQImpl, RequestHandler}
 import it.unibo.drescue.geocoding.{Geocoding, GeocodingException, GeocodingImpl}
 import it.unibo.drescue.localModel.Observers
@@ -156,12 +156,32 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
     dialog.show()
   }
 
-  def selectPress() = {
-    mainController.changeView("Home")
-    //TODO start thread with future
-    //when future return add the returns
-    // OK -> back to home
-    // ERROR -> dialog
+  def selectPress(selectedTeamID: String) = {
+
+    if (StringUtils.isAValidString(selectedTeamID)) {
+
+      val message: Message = EnrollRescueTeamMessageImpl(selectedTeamID, mainController.model.cpID)
+      val task: Future[String] = pool.submit(new RequestHandler(rabbitMQ, message, QueueType.CIVIL_PROTECTION_QUEUE))
+      val response: String = task.get()
+      println("EnrollTeam controller: " + response)
+      val messageName: MessageType = MessageUtils.getMessageNameByJson(response)
+
+      messageName match {
+        case MessageType.SUCCESSFUL_MESSAGE => //TODO dialog successful
+
+          //TODO
+          //add rescue team to enrolledTeamInfo
+          //add rescue team to rescueTeamList
+          //send message to get availability of rescue team
+
+          mainController.changeView("Home")
+
+        case MessageType.ERROR_MESSAGE => //TODO dialog error
+      }
+
+    } else {
+      //TODO dialog select a rescue team
+    }
   }
 
   def backPress() = {
