@@ -53,17 +53,17 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
             ((CoordinatorCondition.WANTED == myCondition) && reqCs == myCs && reqTimestamp.after(myTimestamp)))
             coordinator.addBlockedCP(reqFrom)
           else {
-              var replyRtCondition : RescueTeamCondition = RescueTeamCondition.AVAILABLE
-              mainControllerImpl.model.enrolledTeamInfoList forEach ((enrolledTeam: EnrolledTeamInfo) => {
-                val rtAvailability: String = enrolledTeam.availability.value
-                val cpID: String = enrolledTeam.cpID.value
-                val rtID : String = enrolledTeam.teamID.value
-                if (rtAvailability == "false" && cpID == mainControllerImpl.model.cpID && reqCs == rtID){
-                  replyRtCondition = RescueTeamCondition.OCCUPIED
-                }
-              })
-              //TODO add rt condition
-              coordinator.sendReplayMessageTo(reqCs, reqFrom)
+            var replyRtCondition: RescueTeamCondition = RescueTeamCondition.AVAILABLE
+            mainControllerImpl.model.enrolledTeamInfoList forEach ((enrolledTeam: EnrolledTeamInfo) => {
+              val rtAvailability: String = enrolledTeam.availability.value
+              val cpID: String = enrolledTeam.cpID.value
+              val rtID: String = enrolledTeam.teamID.value
+              if (rtAvailability == "false" && cpID == mainControllerImpl.model.cpID && reqCs == rtID) {
+                replyRtCondition = RescueTeamCondition.OCCUPIED
+              }
+            })
+            //TODO add rt condition
+            coordinator.sendReplayMessageTo(reqCs, reqFrom)
           }
         }
 
@@ -83,25 +83,56 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
             //TODO Check RescueTeam state (if state = Occupied then update coordination state)
             if (replayRTCondition eq RescueTeamCondition.AVAILABLE)
               coordinator.updatePendingCivilProtectionReplayStructure(replayFrom)
-              /*
-            else
-              coordinator.setCondition(CoordinatorCondition.DETACHED)
-              */
+            /*
+          else
+            coordinator.setCondition(CoordinatorCondition.DETACHED)
+            */
           }
         }
 
       case MessageType.CONFIGURATION_MESSAGE =>
         val cpConfigurationMessage = GsonUtils.fromGson(message, classOf[CPConfigurationMessage])
-        println("[Configuration Message] RescueTeam name: " + cpConfigurationMessage.getRescueTeamCollection.get(0).getName + " From: " + cpConfigurationMessage.getFrom + " To: " + cpConfigurationMessage.getTo)
+        println("[Configuration Message] RescueTeam name: " + cpConfigurationMessage.getRescueTeamCollection.get(0).getName
+          + " From: " + cpConfigurationMessage.getFrom
+          + " To: " + cpConfigurationMessage.getTo)
 
       case MessageType.REPLY_RESCUE_TEAM_CONDITION =>
         val replyRescueTeamConditionMessage = GsonUtils.fromGson(message, classOf[ReplyRescueTeamConditionMessage])
-        println("[Replay RT condition Message] RescueTeam name: " + replyRescueTeamConditionMessage.getRescueTeamID + " Condition: " + replyRescueTeamConditionMessage.getRescueTeamCondition + " From: " + replyRescueTeamConditionMessage.getFrom + " To: " + replyRescueTeamConditionMessage.getTo)
+        println("[Replay RT condition Message] RescueTeam name: " + replyRescueTeamConditionMessage.getRescueTeamID
+          + " Condition: " + replyRescueTeamConditionMessage.getRescueTeamCondition
+          + " From: " + replyRescueTeamConditionMessage.getFrom
+          + " To: " + replyRescueTeamConditionMessage.getTo)
 
-        //TODO I think this check is unnecessary due to the fact that in case REQ_RESCUE_TEAM_CONDITION
-        //if a message arrive and getFrom is myCPID the message is ignored
-        if (!(replyRescueTeamConditionMessage.getFrom == mainControllerImpl.model.cpID)) {
-          //TODO update rescue team condition into model (see alert update)
+        val rescueTeamCondition = replyRescueTeamConditionMessage.getRescueTeamCondition
+        val rescueTeamID = replyRescueTeamConditionMessage.getRescueTeamID
+
+        rescueTeamCondition match {
+          case RescueTeamCondition.OCCUPIED =>
+
+            var indexToChange: Int = -1
+            mainControllerImpl.model.enrolledTeamInfoList forEach ((enrolledTeamInfo: EnrolledTeamInfo) => {
+              val enrolledTeamID = enrolledTeamInfo.teamID.value
+              if (rescueTeamID == enrolledTeamID) {
+                indexToChange = mainControllerImpl.model.enrolledTeamInfoList.indexOf(enrolledTeamInfo)
+              }
+            })
+
+            val list = mainControllerImpl.model.enrolledTeamInfoList
+            if (indexToChange != -1) {
+              val enrolledTeamInfo = list.get(indexToChange)
+              list.set(indexToChange, new EnrolledTeamInfo(
+                enrolledTeamInfo.teamID.value,
+                enrolledTeamInfo.teamName.value,
+                enrolledTeamInfo.phoneNumber.value,
+                false, //occupied
+                replyRescueTeamConditionMessage.getFrom, //cpID
+                enrolledTeamInfo.alertID.value)
+              )
+              mainControllerImpl.model.enrolledTeamInfoList = list
+            }
+
+          case RescueTeamCondition.AVAILABLE => //do nothing //TODO to check
+
         }
 
       case MessageType.REQ_RESCUE_TEAM_CONDITION =>
