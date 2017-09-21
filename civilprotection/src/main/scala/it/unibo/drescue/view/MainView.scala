@@ -48,7 +48,6 @@ class MainView(loginGrid: LoginGrid,
           login = new LoginGrid(loginController)
           content = login.grid
         case HomeCase =>
-          homeController.startAlertsRequest()
           home = new HomeGrid(homeController)
           content = home.grid
         case EnrollCase =>

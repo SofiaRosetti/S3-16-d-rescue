@@ -220,15 +220,11 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
     mainController.changeView("Home")
   }
 
-  /**
-    * TODO
-    */
   override def onReceivingNotification(): Unit = {
     obsBuffer.clear()
     mainController.model.notEnrolledRescueTeams.forEach(
       (rescueTeam: RescueTeamImpl) => {
         obsBuffer add rescueTeam.getRescueTeamID
-        println("[EnrolledTeamController]: notification for: " + rescueTeam.toPrintableString)
       }
     )
   }
