@@ -8,7 +8,7 @@ import it.unibo.drescue.communication.messages._
 import it.unibo.drescue.communication.messages.response.ErrorMessageImpl
 import it.unibo.drescue.connection.{QueueType, RabbitMQImpl, RequestHandler}
 import it.unibo.drescue.geocoding.{Geocoding, GeocodingException, GeocodingImpl}
-import it.unibo.drescue.localModel.Observers
+import it.unibo.drescue.localModel.{EnrolledTeamInfo, Observers}
 import it.unibo.drescue.model.{RescueTeamImpl, RescueTeamImplBuilder}
 import it.unibo.drescue.view.CustomDialog
 
@@ -169,16 +169,48 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
       messageName match {
         case MessageType.SUCCESSFUL_MESSAGE => //TODO dialog successful
 
-          //TODO
-          //add rescue team to enrolledTeamInfo
-          //add rescue team to rescueTeamList
-          //send message to get availability of rescue team
+          //add rescue team to rescueTeamList and enrolledTeamInfoList
+          var indexToChange: Int = -1
+          mainController.model.notEnrolledRescueTeams forEach ((rescueTeam: RescueTeamImpl) => {
+            val rescueTeamID = rescueTeam.getRescueTeamID
+            if (rescueTeamID == selectedTeamID) {
+              indexToChange = mainController.model.notEnrolledRescueTeams.indexOf(rescueTeam)
+            }
+          })
 
-          mainController.changeView("Home")
+          val notEnrolledList = mainController.model.notEnrolledRescueTeams
+          val newEnrollment = notEnrolledList.get(indexToChange)
+
+          val enrolledList = mainController.model.enrolledRescueTeams
+          val enrolledInfoList = mainController.model.enrolledTeamInfoList
+          if (indexToChange != -1) {
+
+            val newTeam = new RescueTeamImplBuilder()
+              .setRescueTeamID(newEnrollment.getRescueTeamID)
+              .setName(newEnrollment.getName)
+              .setPhoneNumber(newEnrollment.getPhoneNumber)
+              .createRescueTeamImpl()
+            enrolledList.add(newTeam)
+            mainController.model.enrolledRescueTeams = enrolledList
+
+            val newTeamInfo = new EnrolledTeamInfo(
+              newEnrollment.getRescueTeamID,
+              newEnrollment.getName,
+              newEnrollment.getPhoneNumber,
+              true,
+              "",
+              "")
+            enrolledInfoList.add(newTeamInfo)
+            mainController.model.enrolledTeamInfoList = enrolledInfoList
+
+            //TODO send message to get availability
+
+            mainController.changeView("Home")
+          }
 
         case MessageType.ERROR_MESSAGE => //TODO dialog error
-      }
 
+      }
     } else {
       //TODO dialog select a rescue team
     }
