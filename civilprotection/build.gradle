@@ -12,6 +12,15 @@ dependencies {
     testCompile "junit:junit:${junitVersion}"
 
     compile project(path: ':utils')
+}
 
-
+jar {
+    archiveName = "${rootProject.name}-${this.name}-${rootProject.version}.jar"
+    destinationDir = new File("${jarFolder}/${this.name}")
+    manifest {
+        attributes 'Implementation-Title': 'DRescue Civil Protection',
+                'Implementation-Version': rootProject.version,
+                'Main-Class': 'it.unibo.drescue.Main'
+    }
+    from(configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }) {}
 }

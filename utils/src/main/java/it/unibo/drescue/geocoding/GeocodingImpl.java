@@ -8,7 +8,7 @@ import com.google.maps.model.LatLng;
 
 public class GeocodingImpl implements Geocoding {
 
-    private static final String KEY = "AIzaSyAhBFJafCe2FWr0ZejtEcQqvuB3TtyLZrE";
+    private static final String KEY = "AIzaSyBL8F9ebXIIXBF5IqjkG5Go2aFuJPpc-zQ";
     private static final String AREA = "ADMINISTRATIVE_AREA_LEVEL_2";
     private static final String COUNTRY = "COUNTRY";
     private static final String ITALY_SHORT_NAME = "IT";

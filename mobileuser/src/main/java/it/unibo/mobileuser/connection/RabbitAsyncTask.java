@@ -7,6 +7,7 @@ import it.unibo.drescue.StringUtils;
 import it.unibo.drescue.communication.GsonUtils;
 import it.unibo.drescue.communication.messages.Message;
 import it.unibo.drescue.communication.messages.response.ErrorMessageImpl;
+import it.unibo.drescue.connection.RabbitConnectionConstants;
 import it.unibo.drescue.connection.RabbitMQConnectionImpl;
 import it.unibo.drescue.connection.RabbitMQImpl;
 
@@ -47,7 +48,7 @@ public class RabbitAsyncTask extends AsyncTask<Void, Void, String> {
 
         try {
 
-            connection = new RabbitMQConnectionImpl("10.0.2.2");
+            connection = new RabbitMQConnectionImpl(RabbitConnectionConstants.REMOTE_HOST);
             connection.openConnection();
 
             rabbitMQ = new RabbitMQImpl(connection);

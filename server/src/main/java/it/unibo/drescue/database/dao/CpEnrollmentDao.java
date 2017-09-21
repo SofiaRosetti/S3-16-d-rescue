@@ -9,8 +9,9 @@ import java.util.List;
 public interface CpEnrollmentDao extends GenericDao {
 
     /**
-     * Get all civil protections related to a specified Rescue Team
+     * Get all civil protections related to a specified Rescue Team.
      *
+     * @param rescueTeamID rescue team identifier
      * @return a list with all civil protection related to a specific rescue team
      * @throws DBQueryException if something goes wrong executing the query
      */

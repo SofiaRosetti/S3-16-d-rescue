@@ -16,7 +16,7 @@ configure(subprojects.findAll()) {
         if (it.name != 'utils-java') {
             apply plugin: 'scala'
 
-            scaladoc.destinationDir = file("docs/scala/")
+            scaladoc.destinationDir = file("${docFolderScala}")
 
             dependencies {
                 compile "org.scala-lang:scala-library:${scalaVersion}"
@@ -26,7 +26,7 @@ configure(subprojects.findAll()) {
 
         apply plugin: 'java'
 
-        javadoc.destinationDir = file("docs/java/")
+        javadoc.destinationDir = file("${docFolderJava}")
 
         sourceCompatibility = "${jdk8Version}"
 

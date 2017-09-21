@@ -4,3 +4,14 @@ dependencies {
 
     compile project(':utils')
 }
+
+jar {
+    archiveName = "${rootProject.name}-${this.name}-${rootProject.version}.jar"
+    destinationDir = new File("${jarFolder}/${this.name}")
+    manifest {
+        attributes 'Implementation-Title': 'DRescue Server',
+                'Implementation-Version': rootProject.version,
+                'Main-Class': 'it.unibo.drescue.connection.ServerMain'
+    }
+    from(configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }) {}
+}

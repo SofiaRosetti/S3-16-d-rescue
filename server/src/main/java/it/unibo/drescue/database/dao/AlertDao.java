@@ -11,8 +11,8 @@ public interface AlertDao extends UpdatableDao {
     /**
      * Get last inserted x alerts in the given district
      *
-     * @param x
-     * @param districtId
+     * @param x          number of alarms to return
+     * @param districtId district identifier
      * @return a list with last inserted x alerts
      * @throws DBQueryException if something goes wrong executing the findLast query
      */
