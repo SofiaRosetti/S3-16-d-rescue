@@ -60,7 +60,6 @@ class EnrollTeamGrid(private var enrollTeamController: EnrollTeamControllerImpl)
       maxWidth = WidthHeight250
       editable = true
       items = choices
-      //TODO fix the view of rescue teams
     }
     teamChoice.setStyle("-fx-font-size:25")
     add(teamChoice, ColumnRow0, ColumnRow2)

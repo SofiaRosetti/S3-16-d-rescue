@@ -12,16 +12,12 @@ class MainView(loginGrid: LoginGrid,
                loginController: LoginControllerImpl,
                controller: MainControllerImpl,
                homeController: HomeControllerImpl,
-               newRescueController: NewRescueControllerImpl,
                enrollTeamControllerImpl: EnrollTeamControllerImpl,
-               occupiedTeamsController: OccupiedTeamsControllerImpl,
                manageRescuesController: ManageRescuesControllerImpl) extends JFXApp {
 
   var login = new LoginGrid(loginController)
   var home = new HomeGrid(homeController)
-  var rescue = new NewRescueGrid(newRescueController)
   var team = new EnrollTeamGrid(enrollTeamControllerImpl)
-  var occTeams = new OccupiedTeamsGrid(occupiedTeamsController)
   var manage = new ManageRescuesGrid(manageRescuesController)
 
   def setStage(): Unit = {
@@ -43,39 +39,24 @@ class MainView(loginGrid: LoginGrid,
 
     val LoginCase: String = "Login"
     val HomeCase: String = "Home"
-    val RescueCase: String = "NewRescue"
-    val TeamCase: String = "NewTeam"
-    val OccTeamsCase: String = "OccupiedTeams"
+    val EnrollCase: String = "NewTeam"
     val ManageRescuesCase: String = "ManageRescues"
 
-    var newScene = new Scene {
-      // TODO remove not used case
+    val newScene = new Scene {
       view match {
-        case LoginCase => {
+        case LoginCase =>
           login = new LoginGrid(loginController)
           content = login.grid
-        }
-        case HomeCase => {
+        case HomeCase =>
           homeController.startAlertsRequest()
           home = new HomeGrid(homeController)
           content = home.grid
-        }
-        case RescueCase => {
-          rescue = new NewRescueGrid(newRescueController)
-          content = rescue.grid
-        }
-        case TeamCase => {
+        case EnrollCase =>
           team = new EnrollTeamGrid(enrollTeamControllerImpl)
           content = team.grid
-        }
-        case OccTeamsCase => {
-          occTeams = new OccupiedTeamsGrid(occupiedTeamsController)
-          content = occTeams.grid
-        }
-        case ManageRescuesCase => {
+        case ManageRescuesCase =>
           manage = new ManageRescuesGrid(manageRescuesController)
           content = manage.grid
-        }
         case _ => println("error") // TODO throw and handle exception
       }
     }

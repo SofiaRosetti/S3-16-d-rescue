@@ -26,7 +26,16 @@ class HomeControllerImpl(private var mainController: MainControllerImpl) extends
     mainController.changeView("ManageRescues")
   }
 
-  def newRescuePress() = {
+  def startRescuePress() = {
+    mainController.changeView("ManageRescues")
+  }
+
+  def enrollTeamPress() = {
+    mainController.initializeNotEnrolled()
+    mainController.changeView("NewTeam")
+  }
+
+  /*def newRescuePress() = {
     mainController.changeView("NewRescue")
   }
 
@@ -40,8 +49,8 @@ class HomeControllerImpl(private var mainController: MainControllerImpl) extends
   }
 
   def refreshAlertsList() = {
-    //obsBuffer.insert(0, "new alert")
-  }
+    obsBuffer.insert(0, "new alert")
+  }*/
 
   /**
     * TODO
