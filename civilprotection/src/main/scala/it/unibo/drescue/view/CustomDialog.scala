@@ -41,6 +41,17 @@ object CustomDialog {
   val ErrorDialogHeader = "Something went wrong."
   val ErrorDialogContent = "An error occurred."
 
+  val EnrollOK = "The team has been successfully enrolled."
+
+  val SelectTeamContent = "Please select a rescue team."
+
+  val TeamNotified = "The rescue team has been notified."
+  val TeamWorking = "The rescue team is already occupied."
+  val ChooseAnotherTeam = "Please choose another team."
+
+  val SelectAlertHeader = "It is necessary to select an alert to start a rescue."
+  val SelectAlertContent = "Please select one."
+
   val Processing = "Processing"
   val EmptyLogin = "EmptyLogin"
   val InfoLogin = "InfoLogin"
@@ -52,6 +63,10 @@ object CustomDialog {
   val Added = "The team has been added."
   val Checking = "Checking"
   val Error = "Error"
+  val SelectTeam = "Nothing selected"
+  val Sent = "Team notified"
+  val TeamNotSent = "Team working"
+  val SelectAlert = "Select Alert"
 
   var dialog: Alert = _
   var errorMsg: String = _
@@ -151,6 +166,42 @@ class CustomDialog(mainController: MainControllerImpl) {
             contentText = CustomDialog.ErrorDialogContent
           }
         }
+      case CustomDialog.EnrollOK =>
+        CustomDialog.dialog = new Alert(AlertType.Information) {
+          initOwner(mainController._view._stage)
+          title = CustomDialog.Ok
+          headerText = CustomDialog.EnrollOK
+          contentText = CustomDialog.AddedDialogContent
+        }
+      case CustomDialog.SelectTeam =>
+        CustomDialog.dialog = new Alert(AlertType.Error) {
+          initOwner(mainController._view._stage)
+          title = CustomDialog.ErrorDialogTitle
+          headerText = CustomDialog.SelectTeam
+          contentText = CustomDialog.SelectTeamContent
+        }
+      case CustomDialog.Sent =>
+        CustomDialog.dialog = new Alert(AlertType.Information) {
+          initOwner(mainController._view._stage)
+          title = CustomDialog.Sent
+          headerText = CustomDialog.TeamNotified
+          contentText = CustomDialog.AddedDialogContent
+        }
+      case CustomDialog.TeamNotSent =>
+        CustomDialog.dialog = new Alert(AlertType.Error) {
+          initOwner(mainController._view._stage)
+          title = CustomDialog.ErrorDialogTitle
+          headerText = CustomDialog.TeamWorking
+          contentText = CustomDialog.ChooseAnotherTeam
+        }
+      case CustomDialog.SelectAlert =>
+        CustomDialog.dialog = new Alert(AlertType.Error) {
+          initOwner(mainController._view._stage)
+          title = CustomDialog.SelectAlert
+          headerText = CustomDialog.SelectAlertHeader
+          contentText = CustomDialog.SelectAlertContent
+        }
+      case _ => println("other match")
     }
     CustomDialog.dialog
   }

@@ -17,8 +17,8 @@ import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.Alert
 
 object ManageRescuesControllerImpl extends Enumeration {
-  val Sent: String = "The rescue team was notified"
-  var Error: String = "The rescue team is at work"
+  val Sent: String = "Team notified"
+  var Error: String = "Team working"
 }
 
 class ManageRescuesControllerImpl(private var mainController: MainControllerImpl,
@@ -26,11 +26,10 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
 
   mainController.model.addObserver(Observers.ManageRescue, this)
   val pool: ExecutorService = Executors.newFixedThreadPool(1)
-  var obsBuffer = new ObservableBuffer[EnrolledTeamInfo]()
-  var dialog: Alert = _
-
   //Coordinator configuration
   val coordinator: Coordinator = CoordinatorImpl.getInstance()
+  var obsBuffer = new ObservableBuffer[EnrolledTeamInfo]()
+  var dialog: Alert = _
   coordinator.setConnection(rabbitMQ)
   coordinator.setExchange(mainController.ExchangeName)
   coordinator.setMyID(mainController.model.cpID)
@@ -83,10 +82,10 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
 
       println("[CS Execution]")
       var indexToChange: Int = -1
-      var rescueTeamToChange : EnrolledTeamInfo = null
+      var rescueTeamToChange: EnrolledTeamInfo = null
       val list = mainController.model.enrolledTeamInfoList
-      list forEach((rescueTeam: EnrolledTeamInfo) => {
-        if ( rescueTeam.teamID.value == wantedRescueTeamID){
+      list forEach ((rescueTeam: EnrolledTeamInfo) => {
+        if (rescueTeam.teamID.value == wantedRescueTeamID) {
           indexToChange = list.indexOf(rescueTeam)
           rescueTeamToChange = list.get(indexToChange)
         }
@@ -109,23 +108,33 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
       //TODO send a message to inform other cp
       sendReplyRescueTeamCondition(wantedRescueTeamID, RescueTeamCondition.OCCUPIED)
 
-      mainController.changeView("ManageRescues")
       startSuccessDialog()
+      mainController.changeView("Home")
     }
     else {
       startErrorDialog()
     }
   }
 
+  def startSuccessDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(ManageRescuesControllerImpl.Sent)
+    dialog.showAndWait()
+  }
+
+  def startErrorDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(ManageRescuesControllerImpl.Error)
+    dialog.showAndWait()
+  }
+
   def stopPressed(wantedRescueTeamID: String) = {
 
     //TODO stop the given rescueTeamID, change local state of rescueTeamID in available
     var indexToChange: Int = -1
-    var rescueTeamToChange : EnrolledTeamInfo = null
+    var rescueTeamToChange: EnrolledTeamInfo = null
     val list = mainController.model.enrolledTeamInfoList
 
-    list forEach((rescueTeam: EnrolledTeamInfo) => {
-      if ( rescueTeam.teamID.value == wantedRescueTeamID){
+    list forEach ((rescueTeam: EnrolledTeamInfo) => {
+      if (rescueTeam.teamID.value == wantedRescueTeamID) {
         indexToChange = list.indexOf(rescueTeam)
         rescueTeamToChange = list.get(indexToChange)
       }
@@ -153,24 +162,6 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
 
   }
 
-  def backPress() = {
-    mainController.changeView("Home")
-  }
-
-  def startSuccessDialog() = {
-    dialog = new CustomDialog(mainController).createDialog(ManageRescuesControllerImpl.Sent)
-    dialog.showAndWait()
-  }
-
-  def startErrorDialog() = {
-    dialog = new CustomDialog(mainController).createDialog(ManageRescuesControllerImpl.Error)
-    dialog.showAndWait()
-  }
-
-  def updateEnrollTeamInfo(wantedRescueTeamID: String, enrolledTeamInfo: EnrolledTeamInfo) = {
-    //TODO same coda stop and send button
-  }
-
   def sendReplyRescueTeamCondition(rescueTeamID: String, rescueTeamCondition: RescueTeamCondition) = {
     var reply: Message = null
     reply = new ReplyRescueTeamConditionMessageBuilderImpl()
@@ -179,6 +170,14 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
       .setFrom(mainController.model.cpID)
       .build()
     rabbitMQ.sendMessage(mainController.ExchangeName, rescueTeamID, null, reply)
+  }
+
+  def backPress() = {
+    mainController.changeView("Home")
+  }
+
+  def updateEnrollTeamInfo(wantedRescueTeamID: String, enrolledTeamInfo: EnrolledTeamInfo) = {
+    //TODO same coda stop and send button
   }
 
 }

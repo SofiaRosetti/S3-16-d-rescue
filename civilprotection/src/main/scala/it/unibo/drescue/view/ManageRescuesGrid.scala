@@ -3,7 +3,7 @@ package it.unibo.drescue.view
 import javafx.scene.input.MouseEvent
 
 import it.unibo.drescue.controller.ManageRescuesControllerImpl
-import it.unibo.drescue.localModel.EnrolledTeamInfo
+import it.unibo.drescue.localModel.{AlertEntry, EnrolledTeamInfo}
 import it.unibo.drescue.view.ViewConstants._
 
 import scalafx.geometry.{Insets, Pos}
@@ -12,7 +12,9 @@ import scalafx.scene.control.{Button, Label, TableColumn, TableView}
 import scalafx.scene.layout.{GridPane, HBox}
 import scalafx.scene.text.Font
 
-class ManageRescuesGrid(private var manageRescuesController: ManageRescuesControllerImpl) {
+class ManageRescuesGrid(private var manageRescuesController: ManageRescuesControllerImpl,
+                        private var activeButton: String,
+                        private var alert: AlertEntry) {
 
   val _grid = new GridPane() {
 
@@ -38,7 +40,19 @@ class ManageRescuesGrid(private var manageRescuesController: ManageRescuesContro
     GridPane.setConstraints(TitleBox, ColumnRow0, ColumnRow0, ColumnRow2, ColumnRow1)
 
     val AlertLabel = new Label() {
-      text = "Alert: 2017-09-20 16:51:19 Earthquake lat: 44.139123 long: 12.243698 FC user: 27549 upvotes: 36"
+      if (alert != null) {
+        val LabelText = "Alert: " + alert.timestamp.value +
+          " " + alert.eventName.value +
+          " lat: " + alert.latitude.value +
+          " long: " + alert.longitude.value +
+          " " + alert.districtID.value +
+          " user: " + alert.userID.value +
+          " upvotes: " + alert.upvotes.value
+        text = LabelText
+      }
+      else {
+        visible = false
+      }
       font = DefaultFont
       padding = Insets(Insets10)
     }
@@ -114,6 +128,9 @@ class ManageRescuesGrid(private var manageRescuesController: ManageRescuesContro
         println("SendButton " + team.teamID.value)
         manageRescuesController.sendPressed(team.teamID.value)
       }
+      if (activeButton == "Stop") {
+        disable = true
+      }
     }
     val StopButton = new Button() {
       text = "Stop"
@@ -125,6 +142,9 @@ class ManageRescuesGrid(private var manageRescuesController: ManageRescuesContro
         var team = entries.get(selected)
         println("StopButton " + team.teamID.value)
         manageRescuesController.sendPressed(team.teamID.value)
+      }
+      if (activeButton == "Send") {
+        disable = true
       }
     }
     val BackButton = new Button() {
