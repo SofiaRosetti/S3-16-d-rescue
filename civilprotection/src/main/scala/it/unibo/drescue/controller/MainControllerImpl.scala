@@ -20,7 +20,8 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
   val pool: ExecutorService = Executors.newFixedThreadPool(Runtime.getRuntime.availableProcessors() + 1)
   var view = new MainView(null, null, null, null, null, null)
   var queueName: String = _
-  var _sendOrStop: String = "Stop"
+  private var _sendOrStop: String = "Stop"
+  private var _alertInManage: AlertEntry = _
 
   /**
     *
@@ -30,6 +31,12 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
 
   def sendOrStop_=(value: String): Unit = {
     _sendOrStop = value
+  }
+
+  def alertInManage = _alertInManage
+
+  def alertInManage_=(value: AlertEntry): Unit = {
+    _alertInManage = value
   }
 
   def addView(viewValue: MainView): Unit = {

@@ -12,18 +12,14 @@ class HomeControllerImpl(private var mainController: MainControllerImpl) extends
   var obsBuffer = new ObservableBuffer[AlertEntry]()
 
   def manageRescuesPress() = {
-    //TODO
-    //when pressed -> change view to manage rescues WITHOUT alert params
-    mainController._sendOrStop = "Stop"
+    mainController.sendOrStop = "Stop"
+    mainController.alertInManage = null
     mainController.changeView("ManageRescues")
   }
 
   def startRescuePress(alert: AlertEntry) = {
-    println(alert)
-    //TODO
-    // start rescue button inactive until alert (from list view selected)
-    // when pressed -> change view to manage rescue WITH alert params
-    mainController._sendOrStop = "Send"
+    mainController.alertInManage = alert
+    mainController.sendOrStop = "Send"
     mainController.changeView("ManageRescues")
   }
 
