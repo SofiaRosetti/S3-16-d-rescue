@@ -28,6 +28,7 @@ object EnrollTeamControllerImpl extends Enumeration {
   val InvalidAddress = "InvalidAddress"
   val Checking = "Checking"
   val Error = "Error"
+  val EnrollOK = "The team has been successfully enrolled."
 }
 
 class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, val rabbitMQ: RabbitMQImpl) extends Observer {
@@ -170,6 +171,8 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
       messageName match {
         case MessageType.SUCCESSFUL_MESSAGE =>
 
+          startEnrollOkDialog()
+
           //TODO dialog successful
 
           //add rescue team to rescueTeamList and enrolledTeamInfoList
@@ -228,6 +231,11 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
     } else {
       //TODO dialog select a rescue team
     }
+  }
+
+  def startEnrollOkDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.EnrollOK)
+    dialog.showAndWait()
   }
 
   def backPress() = {

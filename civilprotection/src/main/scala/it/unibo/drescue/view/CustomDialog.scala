@@ -41,6 +41,8 @@ object CustomDialog {
   val ErrorDialogHeader = "Something went wrong."
   val ErrorDialogContent = "An error occurred."
 
+  val EnrollOK = "The team has been successfully enrolled."
+
   val Processing = "Processing"
   val EmptyLogin = "EmptyLogin"
   val InfoLogin = "InfoLogin"
@@ -150,6 +152,13 @@ class CustomDialog(mainController: MainControllerImpl) {
             headerText = CustomDialog.ErrorDialogHeader
             contentText = CustomDialog.ErrorDialogContent
           }
+        }
+      case CustomDialog.EnrollOK =>
+        CustomDialog.dialog = new Alert(AlertType.Information) {
+          initOwner(mainController._view._stage)
+          title = CustomDialog.Ok
+          headerText = CustomDialog.EnrollOK
+          contentText = CustomDialog.AddedDialogContent
         }
     }
     CustomDialog.dialog
