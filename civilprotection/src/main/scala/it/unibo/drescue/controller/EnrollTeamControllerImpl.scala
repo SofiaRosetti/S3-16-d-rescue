@@ -172,7 +172,7 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
 
           //TODO dialog successful
 
-          //add rescue team to rescueTeamList and enrolledTeamInfoList
+          //get rescue team just enrolled
           var indexToChange: Int = -1
           mainController.model.notEnrolledRescueTeams forEach ((rescueTeam: RescueTeamImpl) => {
             val rescueTeamID = rescueTeam.getRescueTeamID
@@ -181,21 +181,24 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
             }
           })
 
-          val notEnrolledList = mainController.model.notEnrolledRescueTeams
-          val newEnrollment = notEnrolledList.get(indexToChange)
+          val newEnrollment = mainController.model.notEnrolledRescueTeams.get(indexToChange)
 
-          val enrolledList = mainController.model.enrolledRescueTeams
+          //add rescue team to rescueTeamList and enrolledTeamInfoList
           val enrolledInfoList = mainController.model.enrolledTeamInfoList
           if (indexToChange != -1) {
 
+            //add rescue team to rescueTeamList
             val newTeam = new RescueTeamImplBuilder()
               .setRescueTeamID(newEnrollment.getRescueTeamID)
               .setName(newEnrollment.getName)
               .setPhoneNumber(newEnrollment.getPhoneNumber)
               .createRescueTeamImpl()
+
+            val enrolledList = mainController.model.enrolledRescueTeams
             enrolledList.add(newTeam)
             mainController.model.enrolledRescueTeams = enrolledList
 
+            //add rescue team to enrolledTeamInfoList
             val newTeamInfo = new EnrolledTeamInfo(
               newEnrollment.getRescueTeamID,
               newEnrollment.getName,
@@ -203,8 +206,7 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
               true,
               "",
               "")
-            enrolledInfoList.add(newTeamInfo)
-            mainController.model.enrolledTeamInfoList = enrolledInfoList
+            mainController.model.addEnrollment(newTeamInfo)
 
             //send message to get availability
             val rescueTeamConditionMessage = new ReqRescueTeamConditionMessageBuilderImpl()
