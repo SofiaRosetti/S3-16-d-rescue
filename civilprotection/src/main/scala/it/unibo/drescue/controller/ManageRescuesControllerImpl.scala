@@ -92,7 +92,7 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
       })
 
       //TODO get alert ID
-      list.set(indexToChange, new EnrolledTeamInfo(
+      mainController.model.modifyEnrollment(indexToChange, new EnrolledTeamInfo(
         rescueTeamToChange.teamID.value,
         rescueTeamToChange.teamName.value,
         rescueTeamToChange.phoneNumber.value,
@@ -100,7 +100,6 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
         mainController.model.cpID,
         rescueTeamToChange.alertID.value)
       )
-      mainController.model.enrolledTeamInfoList = list
 
       //the process came back from CS
       coordinator.backToCs(RescueTeamCondition.OCCUPIED)
@@ -140,8 +139,8 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
       }
     })
 
-    if (rescueTeamToChange.cpID == mainController.model.cpID) {
-      list.set(indexToChange, new EnrolledTeamInfo(
+    if (rescueTeamToChange.cpID.value == mainController.model.cpID) {
+      mainController.model.modifyEnrollment(indexToChange, new EnrolledTeamInfo(
         rescueTeamToChange.teamID.value,
         rescueTeamToChange.teamName.value,
         rescueTeamToChange.phoneNumber.value,
@@ -149,7 +148,6 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
         "",
         "")
       )
-      mainController.model.enrolledTeamInfoList = list
 
       //TODO send message to the other CP with in order to update their view
       sendReplyRescueTeamCondition(wantedRescueTeamID, RescueTeamCondition.AVAILABLE)
