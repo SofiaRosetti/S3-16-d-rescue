@@ -20,6 +20,17 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
   val pool: ExecutorService = Executors.newFixedThreadPool(Runtime.getRuntime.availableProcessors() + 1)
   var view = new MainView(null, null, null, null, null, null)
   var queueName: String = _
+  var _sendOrStop: String = "Stop"
+
+  /**
+    *
+    * @return the button text that has to be active
+    */
+  def sendOrStop = _sendOrStop
+
+  def sendOrStop_=(value: String): Unit = {
+    _sendOrStop = value
+  }
 
   def addView(viewValue: MainView): Unit = {
     view = viewValue

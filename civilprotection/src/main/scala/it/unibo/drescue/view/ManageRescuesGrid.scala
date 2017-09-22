@@ -12,7 +12,8 @@ import scalafx.scene.control.{Button, Label, TableColumn, TableView}
 import scalafx.scene.layout.{GridPane, HBox}
 import scalafx.scene.text.Font
 
-class ManageRescuesGrid(private var manageRescuesController: ManageRescuesControllerImpl) {
+class ManageRescuesGrid(private var manageRescuesController: ManageRescuesControllerImpl,
+                        private var activeButton: String) {
 
   val _grid = new GridPane() {
 
@@ -114,6 +115,9 @@ class ManageRescuesGrid(private var manageRescuesController: ManageRescuesContro
         println("SendButton " + team.teamID.value)
         manageRescuesController.sendPressed(team.teamID.value)
       }
+      if (activeButton == "Stop") {
+        disable = true
+      }
     }
     val StopButton = new Button() {
       text = "Stop"
@@ -125,6 +129,9 @@ class ManageRescuesGrid(private var manageRescuesController: ManageRescuesContro
         var team = entries.get(selected)
         println("StopButton " + team.teamID.value)
         manageRescuesController.sendPressed(team.teamID.value)
+      }
+      if (activeButton == "Send") {
+        disable = true
       }
     }
     val BackButton = new Button() {

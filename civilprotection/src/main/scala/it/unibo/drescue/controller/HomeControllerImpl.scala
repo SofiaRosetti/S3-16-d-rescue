@@ -14,6 +14,7 @@ class HomeControllerImpl(private var mainController: MainControllerImpl) extends
   def manageRescuesPress() = {
     //TODO
     //when pressed -> change view to manage rescues WITHOUT alert params
+    mainController._sendOrStop = "Stop"
     mainController.changeView("ManageRescues")
   }
 
@@ -22,6 +23,7 @@ class HomeControllerImpl(private var mainController: MainControllerImpl) extends
     //TODO
     // start rescue button inactive until alert (from list view selected)
     // when pressed -> change view to manage rescue WITH alert params
+    mainController._sendOrStop = "Send"
     mainController.changeView("ManageRescues")
   }
 

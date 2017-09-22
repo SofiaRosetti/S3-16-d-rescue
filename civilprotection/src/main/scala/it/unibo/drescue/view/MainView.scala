@@ -18,7 +18,7 @@ class MainView(loginGrid: LoginGrid,
   var login = new LoginGrid(loginController)
   var home = new HomeGrid(homeController)
   var team = new EnrollTeamGrid(enrollTeamControllerImpl)
-  var manage = new ManageRescuesGrid(manageRescuesController)
+  var manage = new ManageRescuesGrid(manageRescuesController, "Stop")
 
   def setStage(): Unit = {
     stage = new PrimaryStage {
@@ -54,7 +54,8 @@ class MainView(loginGrid: LoginGrid,
           team = new EnrollTeamGrid(enrollTeamControllerImpl)
           content = team.grid
         case ManageRescuesCase =>
-          manage = new ManageRescuesGrid(manageRescuesController)
+          val ActiveButton = controller._sendOrStop
+          manage = new ManageRescuesGrid(manageRescuesController, ActiveButton)
           content = manage.grid
         case _ => println("error") // TODO throw and handle exception
       }
