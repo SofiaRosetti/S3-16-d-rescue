@@ -6,7 +6,7 @@ import it.unibo.drescue.model.AlertImplBuilder
 import org.scalatest.FunSuite
 
 object ForwardAlertMessageTest {
-  private val alert = new AlertImplBuilder()
+  private val Alert = new AlertImplBuilder()
     .setAlertID(1234)
     .setDistrictID("FC")
     .setEventName("Earthquake")
@@ -20,14 +20,14 @@ object ForwardAlertMessageTest {
 
 class ForwardAlertMessageTest extends FunSuite {
 
-  val ForwardAlertMsg = ForwardAlertMessage(ForwardAlertMessageTest.alert)
+  val ForwardAlertMsg = ForwardAlertMessage(ForwardAlertMessageTest.Alert)
 
   test("Check MessageType") {
     assert(ForwardAlertMsg.getMessageType == MessageType.FORWARD_ALERT_MESSAGE.getMessageType)
   }
 
   test("Check Message Alert") {
-    assert(ForwardAlertMsg.alert == ForwardAlertMessageTest.alert)
+    assert(ForwardAlertMsg.alert == ForwardAlertMessageTest.Alert)
   }
 
 }
