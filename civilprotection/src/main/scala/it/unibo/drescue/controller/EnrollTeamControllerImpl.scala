@@ -29,6 +29,7 @@ object EnrollTeamControllerImpl extends Enumeration {
   val Checking = "Checking"
   val Error = "Error"
   val EnrollOK = "The team has been successfully enrolled."
+  val SelectTeam = "Nothing selected"
 }
 
 class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, val rabbitMQ: RabbitMQImpl) extends Observer {
@@ -133,11 +134,6 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
     dialog.show()
   }
 
-  def startErrorDialog() = {
-    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.Error)
-    dialog.showAndWait()
-  }
-
   def startAddressDialog() = {
     dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.InvalidAddress)
     dialog.showAndWait()
@@ -172,8 +168,6 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
         case MessageType.SUCCESSFUL_MESSAGE =>
 
           startEnrollOkDialog()
-
-          //TODO dialog successful
 
           //add rescue team to rescueTeamList and enrolledTeamInfoList
           var indexToChange: Int = -1
@@ -223,14 +217,25 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
 
           }
 
-        case MessageType.ERROR_MESSAGE => //TODO dialog error
+        case MessageType.ERROR_MESSAGE =>
+          startErrorDialog()
 
         case _ => //do nothing
 
       }
     } else {
-      //TODO dialog select a rescue team
+      startSelectTeamDialog()
     }
+  }
+
+  def startSelectTeamDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.SelectTeam)
+    dialog.showAndWait()
+  }
+
+  def startErrorDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.Error)
+    dialog.showAndWait()
   }
 
   def startEnrollOkDialog() = {

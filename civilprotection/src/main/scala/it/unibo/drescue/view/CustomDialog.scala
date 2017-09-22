@@ -43,6 +43,8 @@ object CustomDialog {
 
   val EnrollOK = "The team has been successfully enrolled."
 
+  val SelectTeamContent = "Please select a rescue team."
+
   val Processing = "Processing"
   val EmptyLogin = "EmptyLogin"
   val InfoLogin = "InfoLogin"
@@ -54,6 +56,7 @@ object CustomDialog {
   val Added = "The team has been added."
   val Checking = "Checking"
   val Error = "Error"
+  val SelectTeam = "Nothing selected"
 
   var dialog: Alert = _
   var errorMsg: String = _
@@ -159,6 +162,13 @@ class CustomDialog(mainController: MainControllerImpl) {
           title = CustomDialog.Ok
           headerText = CustomDialog.EnrollOK
           contentText = CustomDialog.AddedDialogContent
+        }
+      case CustomDialog.SelectTeam =>
+        CustomDialog.dialog = new Alert(AlertType.Error) {
+          initOwner(mainController._view._stage)
+          title = CustomDialog.ErrorDialogTitle
+          headerText = CustomDialog.SelectTeam
+          contentText = CustomDialog.SelectTeamContent
         }
     }
     CustomDialog.dialog
