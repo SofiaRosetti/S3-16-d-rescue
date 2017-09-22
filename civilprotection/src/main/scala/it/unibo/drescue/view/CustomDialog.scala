@@ -49,6 +49,9 @@ object CustomDialog {
   val TeamWorking = "The rescue team is already occupied."
   val ChooseAnotherTeam = "Please choose another team."
 
+  val SelectAlertHeader = "It is necessary to select an alert to start a rescue."
+  val SelectAlertContent = "Please select one."
+
   val Processing = "Processing"
   val EmptyLogin = "EmptyLogin"
   val InfoLogin = "InfoLogin"
@@ -63,6 +66,7 @@ object CustomDialog {
   val SelectTeam = "Nothing selected"
   val Sent = "Team notified"
   val TeamNotSent = "Team working"
+  val SelectAlert = "Select Alert"
 
   var dialog: Alert = _
   var errorMsg: String = _
@@ -189,6 +193,13 @@ class CustomDialog(mainController: MainControllerImpl) {
           title = CustomDialog.ErrorDialogTitle
           headerText = CustomDialog.TeamWorking
           contentText = CustomDialog.ChooseAnotherTeam
+        }
+      case CustomDialog.SelectAlert =>
+        CustomDialog.dialog = new Alert(AlertType.Error) {
+          initOwner(mainController._view._stage)
+          title = CustomDialog.SelectAlert
+          headerText = CustomDialog.SelectAlertHeader
+          contentText = CustomDialog.SelectAlertContent
         }
       case _ => println("other match")
     }

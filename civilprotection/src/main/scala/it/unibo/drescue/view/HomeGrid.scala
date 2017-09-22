@@ -37,7 +37,8 @@ class HomeGrid(private var homeController: HomeControllerImpl) {
     add(TitleBox, ColumnRow0, ColumnRow0)
     GridPane.setConstraints(TitleBox, ColumnRow0, ColumnRow0, ColumnRow2, ColumnRow1)
 
-    val AlertTable = new TableView[AlertEntry](homeController.obsBuffer) {
+    val entries = homeController.obsBuffer
+    val AlertTable = new TableView[AlertEntry](entries) {
       maxHeight = WidthHeight200
       columns ++= List(
         new TableColumn[AlertEntry, String]() {
@@ -126,7 +127,14 @@ class HomeGrid(private var homeController: HomeControllerImpl) {
       margin = Insets(Insets30)
       prefWidth = WidthHeight250
       onMouseClicked = (event: MouseEvent) => {
-        homeController.startRescuePress()
+        var selected = AlertTable.getSelectionModel.getFocusedIndex
+        if (selected == -1) {
+          homeController.startSelectAlertDialog()
+        } else {
+          var alert = entries.get(selected)
+          //println(selected)
+          homeController.startRescuePress(alert)
+        }
       }
     }
     val ButtonBox = new HBox {
