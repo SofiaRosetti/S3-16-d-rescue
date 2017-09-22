@@ -23,6 +23,7 @@ public class CPMain {
 
     public static void main(final String[] args) throws IOException, TimeoutException {
 
+
         //TODO Insert into Test class
         final RescueTeamImpl rescueTeamRA01 = new RescueTeamImplBuilder()
                 .setRescueTeamID("Ra01")
@@ -41,6 +42,7 @@ public class CPMain {
                 .setLongitude(45489)
                 .setPhoneNumber("789258")
                 .createRescueTeamImpl();
+
 
         final List<RescueTeamImpl> rescueTeamCollection = new ArrayList<>();
         rescueTeamCollection.add(rescueTeamRA01);
@@ -63,13 +65,14 @@ public class CPMain {
                 .build();
 
 
+
         //TODO Make a server request in order to get the cp's rescue team
         final String[] bindingQueue = {"RT001", "RT002"};
 
         RabbitMQConnectionImpl connection = null;
         RabbitMQImpl rabbitMQ = null;
 
-        /*
+
         try {
 
             connection =  new RabbitMQConnectionImpl("localhost");
@@ -78,20 +81,25 @@ public class CPMain {
 
             rabbitMQ.declareExchange(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
-            final String queueName = rabbitMQ.addReplyQueue();
-            rabbitMQ.bindQueueToExchange(queueName, EXCHANGE_NAME, bindingQueue);
 
+            final String queueName = rabbitMQ.addReplyQueue();
+            rabbitMQ.bindQueueToExchange(queueName, EXCHANGE_NAME, rescueTeamCollection);
+
+            /*
             final CPConsumer consumer = new CPConsumer(rabbitMQ.getChannel());
             rabbitMQ.addConsumer(consumer, queueName);
+            */
 
             rabbitMQ.sendMessage(EXCHANGE_NAME,  bindingQueue[1], null, coordinationMessage);
             rabbitMQ.sendMessage(EXCHANGE_NAME,  bindingQueue[0], null, configurationMessage);
+
 
         }
         catch (Exception e){
             //TODO
         }
-        */
+
 
     }
+
 }

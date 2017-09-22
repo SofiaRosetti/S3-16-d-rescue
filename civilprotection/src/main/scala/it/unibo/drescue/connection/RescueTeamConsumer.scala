@@ -62,8 +62,7 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
                 replyRtCondition = RescueTeamCondition.OCCUPIED
               }
             })
-            //TODO add rt condition
-            coordinator.sendReplayMessageTo(reqCs, reqFrom)
+            coordinator.sendReplayMessageTo(reqCs, reqFrom, replyRtCondition)
           }
         }
 
@@ -78,15 +77,12 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
         myCs = coordinator.getCsName
         if (!(replayFrom == mainControllerImpl.model.cpID)) {
           System.out.println("[COORDINATION REPLAY] From: " + replayFrom + " To: " + replayTo + " Timestamp: " + replayTimestamp + " Cs: " + replayCs + " RT Condition " + replayRTCondition)
-
-          if ((myCondition eq CoordinatorCondition.WANTED) && myCs == replayCs && replayTo == mainControllerImpl.model.cpID) {
-            //TODO Check RescueTeam state (if state = Occupied then update coordination state)
-            if (replayRTCondition eq RescueTeamCondition.AVAILABLE)
+          if ((myCondition == CoordinatorCondition.WANTED) && myCs == replayCs && replayTo == mainControllerImpl.model.cpID) {
+            //Check RescueTeam state (if state = Occupied then set coordinator conditon = DETACHED)
+            if (replayRTCondition == RescueTeamCondition.AVAILABLE)
               coordinator.updatePendingCivilProtectionReplayStructure(replayFrom)
-            /*
-          else
-            coordinator.setCondition(CoordinatorCondition.DETACHED)
-            */
+            else
+              coordinator.setCondition(CoordinatorCondition.DETACHED)
           }
         }
 
