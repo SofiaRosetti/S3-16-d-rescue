@@ -18,28 +18,27 @@ case class CivilProtectionData() extends Observable {
   private var _enrolledTeamInfoList: List[EnrolledTeamInfo] = new ArrayList[EnrolledTeamInfo]()
 
   /**
-    * TODO
+    * Gets the logged civil protection identifier.
     *
-    * @return
+    * @return cpID
     */
-  def cpID = _cpID
+  def cpID: String = _cpID
 
   /**
-    * TODO
+    * Sets the logged civil protection identifier.
     *
-    * @param value
+    * @param value identifier to set
     */
   def cpID_=(value: String): Unit = {
     _cpID = value
   }
 
-  //TODO
   /**
     * TODO
     *
     * @return
     */
-  def lastAlerts = _lastAlerts
+  def lastAlerts: List[AlertEntry] = _lastAlerts
 
   /**
     * TODO
@@ -56,7 +55,7 @@ case class CivilProtectionData() extends Observable {
     *
     * @return
     */
-  def enrolledRescueTeams = _enrolledRescueTeams
+  def enrolledRescueTeams: List[RescueTeamImpl] = _enrolledRescueTeams
 
   /**
     * TODO
@@ -73,7 +72,7 @@ case class CivilProtectionData() extends Observable {
     *
     * @return
     */
-  def notEnrolledRescueTeams = _notEnrolledRescueTeams
+  def notEnrolledRescueTeams: List[RescueTeamImpl] = _notEnrolledRescueTeams
 
   /**
     * TODO
@@ -86,19 +85,42 @@ case class CivilProtectionData() extends Observable {
   }
 
   /**
-    * TODO
+    * Gets the list with all the info about availability of enrolled
+    * rescue teams.
     *
-    * @return
+    * @return the enrolledTeamInfoList
     */
-  def enrolledTeamInfoList = _enrolledTeamInfoList
+  def enrolledTeamInfoList: List[EnrolledTeamInfo] = this.synchronized(_enrolledTeamInfoList)
 
   /**
-    * TODO
+    * Sets the given list as the list with all the info about availability
+    * of enrolled rescue teams.
     *
-    * @param list
+    * @param list list to set into the model
     */
   def enrolledTeamInfoList_=(list: util.List[EnrolledTeamInfo]): Unit = {
-    _enrolledTeamInfoList = list
+    this.synchronized(_enrolledTeamInfoList = list)
+    notifyObserver(Observers.ManageRescue)
+  }
+
+  /**
+    * Replace the enrolledTeamInfo at given index with the given one.
+    *
+    * @param index            index of the element to replace
+    * @param enrolledTeamInfo element to set
+    */
+  def modifyEnrollment(index: Int, enrolledTeamInfo: EnrolledTeamInfo): Unit = {
+    this.synchronized(_enrolledTeamInfoList.set(index, enrolledTeamInfo))
+    notifyObserver(Observers.ManageRescue)
+  }
+
+  /**
+    * Add a new enrolledTeamInfo to enrolledTeamInfoList
+    *
+    * @param enrolledTeamInfo element to add
+    */
+  def addEnrollment(enrolledTeamInfo: EnrolledTeamInfo): Unit = {
+    this.synchronized(_enrolledTeamInfoList.add(enrolledTeamInfo))
     notifyObserver(Observers.ManageRescue)
   }
 
