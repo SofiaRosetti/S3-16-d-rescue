@@ -45,44 +45,8 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
     )
   }
 
-  def sendPressed(wantedRescueTeamID: String) = {
-    val message: Message = GetAssociatedCpMessageImpl(wantedRescueTeamID)
-    val task: Future[String] = pool.submit(new RequestHandler(rabbitMQ, message, QueueType.CIVIL_PROTECTION_QUEUE))
-    val response: String = task.get()
-    println("Manage Rescues Controller - cp: " + response)
-    val associatedCpMessage = GsonUtils.fromGson(response, classOf[CPsMessageImpl])
-    val cpList: java.util.List[CivilProtectionImpl] = associatedCpMessage.cpList
-
-    val cpIDList: java.util.List[String] = new util.ArrayList[String]()
-    cpList.forEach((cp: CivilProtectionImpl) => {
-      if (cp.getCpID != mainController.model.cpID) {
-        cpIDList.add(cp.getCpID)
-      }
-    })
-    println("associated cp" + cpIDList)
-
-    //TODO start Ricart Agrawala's Algorithm to occupy the given rescueTeamID
-    coordinator.setCondition(CoordinatorCondition.WANTED)
-    coordinator.setCsName(wantedRescueTeamID)
-    coordinator.setReqTimestamp(new Timestamp(System.currentTimeMillis()))
-    coordinator.createPendingCivilProtectionReplayStructure(cpIDList)
-
-    //Broadcast request
-    val reqCoordinationMessage: ReqCoordinationMessage = new messages.ReqCoordinationMessage()
-    reqCoordinationMessage.setFrom(mainController.model.cpID)
-    reqCoordinationMessage.setRescueTeamID(wantedRescueTeamID)
-    reqCoordinationMessage.setTimestamp(coordinator.getReqTimestamp)
-
-    rabbitMQ.sendMessage(mainController.ExchangeName, wantedRescueTeamID, null, reqCoordinationMessage)
-
-    //The process is blocked as long as enter in cs (coordinator condition == HELD) or has received a negative responde (RS = OCCUPIED)
-    //TODO Thread or timeout?
-    while (coordinator.getCondition != CoordinatorCondition.HELD && coordinator.getCondition != CoordinatorCondition.DETACHED) {
-      println(coordinator.getCondition)
-    }
-    if (coordinator.getCondition == CoordinatorCondition.HELD) {
-
-      println("[CS Execution]")
+  def sendPressed(wantedRescueTeamID: String, alertID: String) = {
+    if (wantedRescueTeamID != ""){
       var indexToChange: Int = -1
       var rescueTeamToChange: EnrolledTeamInfo = null
       val list = mainController.model.enrolledTeamInfoList
@@ -93,27 +57,71 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
         }
       })
 
-      //TODO get alert ID
-      mainController.model.modifyEnrollment(indexToChange, new EnrolledTeamInfo(
-        rescueTeamToChange.teamID.value,
-        rescueTeamToChange.teamName.value,
-        rescueTeamToChange.phoneNumber.value,
-        false,
-        mainController.model.cpID,
-        rescueTeamToChange.alertID.value)
-      )
+      if (rescueTeamToChange.availability.value == "false" && rescueTeamToChange.cpID.value == mainController.model.cpID) {
+        //TODO dialog message già occupato
+        print("RT Già occupata da me")
+      }
+      else {
+        val message: Message = GetAssociatedCpMessageImpl(wantedRescueTeamID)
+        val task: Future[String] = pool.submit(new RequestHandler(rabbitMQ, message, QueueType.CIVIL_PROTECTION_QUEUE))
+        val response: String = task.get()
+        println("Manage Rescues Controller - cp: " + response)
+        val associatedCpMessage = GsonUtils.fromGson(response, classOf[CPsMessageImpl])
+        val cpList: java.util.List[CivilProtectionImpl] = associatedCpMessage.cpList
 
-      //the process came back from CS
-      coordinator.backToCs(RescueTeamCondition.OCCUPIED)
+        val cpIDList: java.util.List[String] = new util.ArrayList[String]()
+        cpList.forEach((cp: CivilProtectionImpl) => {
+          if (cp.getCpID != mainController.model.cpID) {
+            cpIDList.add(cp.getCpID)
+          }
+        })
+        println("associated cp" + cpIDList)
 
-      //TODO send a message to inform other cp
-      sendReplyRescueTeamCondition(wantedRescueTeamID, RescueTeamCondition.OCCUPIED)
+        if (cpIDList.size() > 0){
+          //TODO start Ricart Agrawala's Algorithm to occupy the given rescueTeamID
+          coordinator.setCondition(CoordinatorCondition.WANTED)
+          coordinator.setCsName(wantedRescueTeamID)
+          coordinator.setReqTimestamp(new Timestamp(System.currentTimeMillis()))
+          coordinator.createPendingCivilProtectionReplayStructure(cpIDList)
 
-      startSuccessDialog()
-      mainController.changeView("Home")
-    }
-    else {
-      startErrorDialog()
+          //Broadcast request
+          val reqCoordinationMessage: ReqCoordinationMessage = new messages.ReqCoordinationMessage()
+          reqCoordinationMessage.setFrom(mainController.model.cpID)
+          reqCoordinationMessage.setRescueTeamID(wantedRescueTeamID)
+          reqCoordinationMessage.setTimestamp(coordinator.getReqTimestamp)
+
+          rabbitMQ.sendMessage(mainController.ExchangeName, wantedRescueTeamID, null, reqCoordinationMessage)
+
+          //The process is blocked as long as enter in cs (coordinator condition == HELD) or has received a negative responde (RS = OCCUPIED)
+          //TODO Thread or timeout?
+          while (coordinator.getCondition != CoordinatorCondition.HELD && coordinator.getCondition != CoordinatorCondition.DETACHED) {
+            println(coordinator.getCondition)
+          }
+          if (coordinator.getCondition == CoordinatorCondition.HELD) {
+
+            criticalSectionExecution(alertID, rescueTeamToChange, indexToChange)
+
+            //TODO send a message to inform other cp
+            sendReplyRescueTeamCondition(wantedRescueTeamID, RescueTeamCondition.OCCUPIED)
+
+            //the process came back from CS
+            coordinator.backToCs(RescueTeamCondition.OCCUPIED)
+
+            startSuccessDialog()
+            mainController.changeView("Home")
+          }
+          else {
+            startErrorDialog()
+          }
+
+        }
+        else {
+          criticalSectionExecution(alertID, rescueTeamToChange, indexToChange)
+          startSuccessDialog()
+          mainController.changeView("Home")
+        }
+      }
+
     }
   }
 
@@ -129,27 +137,32 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
         rescueTeamToChange = list.get(indexToChange)
       }
     })
+    print("cp Id: " + rescueTeamToChange.cpID.value);
+    if (rescueTeamToChange.cpID.value != ""){
+      if (rescueTeamToChange.cpID.value == mainController.model.cpID) {
+        mainController.model.modifyEnrollment(indexToChange, new EnrolledTeamInfo(
+          rescueTeamToChange.teamID.value,
+          rescueTeamToChange.teamName.value,
+          rescueTeamToChange.phoneNumber.value,
+          true,
+          "",
+          "")
+        )
 
-    if (rescueTeamToChange.cpID.value == mainController.model.cpID) {
-      mainController.model.modifyEnrollment(indexToChange, new EnrolledTeamInfo(
-        rescueTeamToChange.teamID.value,
-        rescueTeamToChange.teamName.value,
-        rescueTeamToChange.phoneNumber.value,
-        true,
-        "",
-        "")
-      )
+        //send message to the other CP with in order to update their view
+        sendReplyRescueTeamCondition(wantedRescueTeamID, RescueTeamCondition.AVAILABLE)
+        stopSuccessDialog()
 
-      //send message to the other CP with in order to update their view
-      sendReplyRescueTeamCondition(wantedRescueTeamID, RescueTeamCondition.AVAILABLE)
-      stopSuccessDialog()
-
-    } else {
-      //TODO error message
-      print("Stop not authorized")
-      stopNotAuthorizedErrorDialog()
+      } else {
+        //TODO error message
+        print("Stop not authorized")
+        stopNotAuthorizedErrorDialog()
+      }
     }
-
+    else {
+      //TODO messaggio che non c'è nulla da stoppare
+      print("Nessun RT da fermare" );
+    }
   }
 
   def startSuccessDialog() = {
@@ -188,6 +201,20 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
 
   def updateEnrollTeamInfo(wantedRescueTeamID: String, enrolledTeamInfo: EnrolledTeamInfo) = {
     //TODO same coda stop and send button
+  }
+
+
+  def criticalSectionExecution(alertID: String, rescueTeamToChange: EnrolledTeamInfo, indexToChange: Integer) = {
+    println("[CS Execution]")
+    //TODO get alert ID
+    mainController.model.modifyEnrollment(indexToChange, new EnrolledTeamInfo(
+      rescueTeamToChange.teamID.value,
+      rescueTeamToChange.teamName.value,
+      rescueTeamToChange.phoneNumber.value,
+      false,
+      mainController.model.cpID,
+      alertID)
+    )
   }
 
 }
