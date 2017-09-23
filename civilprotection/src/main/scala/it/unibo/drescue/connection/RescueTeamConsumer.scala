@@ -87,11 +87,6 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
           }
         }
 
-      case MessageType.CONFIGURATION_MESSAGE =>
-        val cpConfigurationMessage = GsonUtils.fromGson(message, classOf[CPConfigurationMessage])
-        println("[Configuration Message] RescueTeam name: " + cpConfigurationMessage.getRescueTeamCollection.get(0).getName
-          + " From: " + cpConfigurationMessage.getFrom
-          + " To: " + cpConfigurationMessage.getTo)
 
       case MessageType.REPLY_RESCUE_TEAM_CONDITION =>
         val replyRescueTeamConditionMessage = GsonUtils.fromGson(message, classOf[ReplyRescueTeamConditionMessage])
@@ -104,8 +99,8 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
 
           val rescueTeamID = replyRescueTeamConditionMessage.getRescueTeamID
           var indexToChange: Int = -1
-          
-          var infoList = mainControllerImpl.model.enrolledTeamInfoList
+
+          val infoList = mainControllerImpl.model.enrolledTeamInfoList
           infoList forEach ((enrolledTeamInfo: EnrolledTeamInfo) => {
             val enrolledTeamID = enrolledTeamInfo.teamID.value
             if (rescueTeamID == enrolledTeamID) {
@@ -152,7 +147,6 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
 
 
       case MessageType.REQ_RESCUE_TEAM_CONDITION =>
-
         val reqRescueTeamConditionMessage = GsonUtils.fromGson(message, classOf[ReqRescueTeamConditionMessage])
         println("[Req RT condition Message] RescueTeam name: " + reqRescueTeamConditionMessage.getRescueTeamID
           + " From: " + reqRescueTeamConditionMessage.getFrom
@@ -189,7 +183,6 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
 
           })
         }
-
 
       case _ => //do nothing
 
