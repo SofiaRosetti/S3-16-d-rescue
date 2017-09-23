@@ -67,22 +67,26 @@ public class ChangePasswordActivity extends ToolbarActivity {
      * @param message message containing user data to change password
      */
     private void changePassword(final Message message) {
-        showProgressDialog();
-        new RabbitAsyncTask(QueueType.MOBILEUSER_QUEUE.getQueueName(),
-                message,
-                new AbstractResponse() {
-                    @Override
-                    public void onSuccessfulRequest(final String response) {
-                        dismissProgressDialog();
-                        Toast.makeText(ChangePasswordActivity.this, R.string.change_password_successful, Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
+        if (isNetworkAvailable()) {
+            showProgressDialog();
+            new RabbitAsyncTask(QueueType.MOBILEUSER_QUEUE.getQueueName(),
+                    message,
+                    new AbstractResponse() {
+                        @Override
+                        public void onSuccessfulRequest(final String response) {
+                            dismissProgressDialog();
+                            Toast.makeText(ChangePasswordActivity.this, R.string.change_password_successful, Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
 
-                    @Override
-                    public void onErrorRequest(final String errorMessage) {
-                        dismissProgressDialog();
-                        showDialog(R.string.change_password, errorMessage);
-                    }
-                }).execute();
+                        @Override
+                        public void onErrorRequest(final String errorMessage) {
+                            dismissProgressDialog();
+                            showDialog(R.string.change_password, errorMessage);
+                        }
+                    }).execute();
+        } else {
+            showDialog(R.string.attention, R.string.connection_not_available);
+        }
     }
 }

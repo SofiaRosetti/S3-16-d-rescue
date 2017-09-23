@@ -80,29 +80,30 @@ public class SignUpActivity extends ToolbarActivity {
      * @param message message containing user's sign up data
      */
     private void signUp(final Message message) {
+        if (isNetworkAvailable()) {
+            showProgressDialog();
+            new RabbitAsyncTask(QueueType.MOBILEUSER_QUEUE.getQueueName(),
+                    message,
+                    new AbstractResponse() {
 
-        showProgressDialog();
-
-        new RabbitAsyncTask(QueueType.MOBILEUSER_QUEUE.getQueueName(),
-                message,
-                new AbstractResponse() {
-
-                    @Override
-                    public void onSuccessfulRequest(final String response) {
-                        dismissProgressDialog();
-                        if (MessageUtils.getMessageNameByJson(response) == MessageType.SUCCESSFUL_MESSAGE) {
-                            Toast.makeText(SignUpActivity.this, R.string.sign_up_successful, Toast.LENGTH_LONG).show();
-                            finish();
+                        @Override
+                        public void onSuccessfulRequest(final String response) {
+                            dismissProgressDialog();
+                            if (MessageUtils.getMessageNameByJson(response) == MessageType.SUCCESSFUL_MESSAGE) {
+                                Toast.makeText(SignUpActivity.this, R.string.sign_up_successful, Toast.LENGTH_LONG).show();
+                                finish();
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onErrorRequest(final String errorMessage) {
-                        dismissProgressDialog();
-                        showDialog(R.string.sign_up, errorMessage);
-                    }
+                        @Override
+                        public void onErrorRequest(final String errorMessage) {
+                            dismissProgressDialog();
+                            showDialog(R.string.sign_up, errorMessage);
+                        }
 
-                }).execute();
-
+                    }).execute();
+        } else {
+            showDialog(R.string.attention, R.string.connection_not_available);
+        }
     }
 }

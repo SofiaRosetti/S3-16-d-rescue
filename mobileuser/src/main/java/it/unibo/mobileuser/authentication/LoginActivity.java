@@ -60,40 +60,42 @@ public class LoginActivity extends ToolbarActivity {
      * @param message message containing user's login data
      */
     private void login(final Message message) {
-
-        showProgressDialog();
-
-        new RabbitAsyncTask(QueueType.MOBILEUSER_QUEUE.getQueueName(),
-                message,
-                new AbstractResponse() {
-                    @Override
-                    public void onSuccessfulRequest(final String response) {
-                        dismissProgressDialog();
-                        if (MessageUtils.getMessageNameByJson(response) == MessageType.RESPONSE_LOGIN_MESSAGE) {
-                            final ResponseLoginMessageImpl loginMessage = GsonUtils.fromGson(response, ResponseLoginMessageImpl.class);
-                            final UserImpl user = loginMessage.getUser();
-                            setSharedPreferences(PreferencesKey.USER_ID, Collections.singleton(Integer.toString(user.getUserID())));
-                            setSharedPreferences(PreferencesKey.USER_NAME, Collections.singleton(user.getName()));
-                            setSharedPreferences(PreferencesKey.USER_SURNAME, Collections.singleton(user.getSurname()));
-                            setSharedPreferences(PreferencesKey.USER_EMAIL, Collections.singleton(user.getEmail()));
-                            setSharedPreferences(PreferencesKey.USER_PHONE, Collections.singleton(user.getPhoneNumber()));
-                            final Set<String> eventTypeSet = new HashSet<>();
-                            for (final EventType event : loginMessage.getEventsType()) {
-                                eventTypeSet.add(event.getEventName());
+        if (isNetworkAvailable()) {
+            showProgressDialog();
+            new RabbitAsyncTask(QueueType.MOBILEUSER_QUEUE.getQueueName(),
+                    message,
+                    new AbstractResponse() {
+                        @Override
+                        public void onSuccessfulRequest(final String response) {
+                            dismissProgressDialog();
+                            if (MessageUtils.getMessageNameByJson(response) == MessageType.RESPONSE_LOGIN_MESSAGE) {
+                                final ResponseLoginMessageImpl loginMessage = GsonUtils.fromGson(response, ResponseLoginMessageImpl.class);
+                                final UserImpl user = loginMessage.getUser();
+                                setSharedPreferences(PreferencesKey.USER_ID, Collections.singleton(Integer.toString(user.getUserID())));
+                                setSharedPreferences(PreferencesKey.USER_NAME, Collections.singleton(user.getName()));
+                                setSharedPreferences(PreferencesKey.USER_SURNAME, Collections.singleton(user.getSurname()));
+                                setSharedPreferences(PreferencesKey.USER_EMAIL, Collections.singleton(user.getEmail()));
+                                setSharedPreferences(PreferencesKey.USER_PHONE, Collections.singleton(user.getPhoneNumber()));
+                                final Set<String> eventTypeSet = new HashSet<>();
+                                for (final EventType event : loginMessage.getEventsType()) {
+                                    eventTypeSet.add(event.getEventName());
+                                }
+                                setSharedPreferences(PreferencesKey.EVENT_TYPE, eventTypeSet);
+                                final Intent intent = new Intent();
+                                setResult(RESULT_OK, intent);
+                                finish();
                             }
-                            setSharedPreferences(PreferencesKey.EVENT_TYPE, eventTypeSet);
-                            final Intent intent = new Intent();
-                            setResult(RESULT_OK, intent);
-                            finish();
                         }
-                    }
 
-                    @Override
-                    public void onErrorRequest(final String errorMessage) {
-                        dismissProgressDialog();
-                        showDialog(R.string.login, errorMessage);
-                    }
-                }).execute();
+                        @Override
+                        public void onErrorRequest(final String errorMessage) {
+                            dismissProgressDialog();
+                            showDialog(R.string.login, errorMessage);
+                        }
+                    }).execute();
+        } else {
+            showDialog(R.string.attention, R.string.connection_not_available);
+        }
     }
 
     /**
