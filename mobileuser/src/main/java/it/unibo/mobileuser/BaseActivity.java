@@ -1,5 +1,8 @@
 package it.unibo.mobileuser;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -66,5 +69,17 @@ public class BaseActivity extends AppCompatActivity {
     protected boolean checkIfUserIsLogged() {
         final String userID = Utils.getUserDataFromSharedPreferences(getApplicationContext(), PreferencesKey.USER_ID);
         return userID.length() != 0;
+    }
+
+    /**
+     * Checks if the network connectivity exists.
+     *
+     * @return true if network connectivity exists, otherwise false
+     */
+    protected boolean isNetworkAvailable() {
+        final ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        final NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+        return info != null && info.isConnected();
     }
 }
