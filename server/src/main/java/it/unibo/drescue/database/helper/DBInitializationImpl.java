@@ -2,10 +2,7 @@ package it.unibo.drescue.database.helper;
 
 import it.unibo.drescue.database.DBConnection;
 import it.unibo.drescue.database.JsonFileUtils;
-import it.unibo.drescue.database.dao.CivilProtectionDao;
-import it.unibo.drescue.database.dao.CpAreaDao;
-import it.unibo.drescue.database.dao.DistrictDao;
-import it.unibo.drescue.database.dao.EventTypeDao;
+import it.unibo.drescue.database.dao.GenericDao;
 import it.unibo.drescue.database.exceptions.DBConnectionException;
 import it.unibo.drescue.database.exceptions.DBDuplicatedRecordException;
 import it.unibo.drescue.database.exceptions.DBQueryException;
@@ -29,121 +26,69 @@ public class DBInitializationImpl implements DBInitialization {
         this.dbConnection = connection;
     }
 
-    @Override
-    public void insertAllDistrictsFrom(final String pathFile) {
+    private Class getTheImplClassOf(final DBConnection.Table table) {
+        Class clazz = null;
+        switch (table) {
+            case USER: {
+                //TODO
+                clazz = UserImpl[].class;
+                break;
+            }
+            case DISTRICT: {
+                clazz = DistrictImpl[].class;
+                break;
+            }
+            case EVENT_TYPE: {
+                clazz = EventTypeImpl[].class;
+                break;
+            }
+            case CIVIL_PROTECTION: {
+                clazz = CivilProtectionImpl[].class;
+                break;
+            }
+            case CP_AREA: {
+                clazz = CpAreaImpl[].class;
+                break;
+            }
+            default: {
+                LOGGER.error("Not existing table");
+                break;
+            }
+        }
+        return clazz;
+    }
 
-        DistrictDao districtDao = null;
-        //Getting districts from file
-        final List<DistrictImpl> districts =
-                this.jsonFileUtils.getListFromJsonFile(pathFile, DistrictImpl[].class);
-        if (districts == null) {
-            LOGGER.error("Districts are null");
+    @Override
+    public void insertAllObjectsFromAFile(final DBConnection.Table table, final String pathFile) {
+        GenericDao dao = null;
+        final Class clazz = getTheImplClassOf(table);
+        if (clazz == null) {
+            LOGGER.error("Not existing table");
             return;
         }
-        //Getting Dao
+        final List<ObjectModel> objectModels =
+                this.jsonFileUtils.getListFromJsonFile(pathFile, clazz);
+        if (objectModels == null) {
+            LOGGER.error("objects are null");
+            return;
+        }
         try {
-            districtDao = (DistrictDao) this.dbConnection.getDAO(DBConnection.Table.DISTRICT);
+            dao = this.dbConnection.getDAO(table);
         } catch (final DBConnectionException e) {
             LOGGER.error("DBConnectionException when get DAO of districts", e);
         }
-        //Inserting districts
-        for (final District district : districts) {
+
+        //Inserting objects
+        for (final ObjectModel objectModel : objectModels) {
             try {
-                districtDao.insert(district);
+                dao.insert(objectModel);
             } catch (final DBDuplicatedRecordException e) {
-                LOGGER.error("DBDuplicatedRecordException when insert of a district already on the database", e);
+                LOGGER.error("DBDuplicatedRecordException when insert of a object of "
+                        + table.name() + " already on the database", e);
             } catch (final DBQueryException e) {
-                LOGGER.error("DBQueryException when insert a district", e);
+                LOGGER.error("DBQueryException when insert an object of " + table.name(), e);
             }
         }
     }
 
-
-    @Override
-    public void insertAllEventTypesFrom(final String pathFile) {
-        EventTypeDao eventTypeDao = null;
-        //Getting event_types from file
-        final List<EventTypeImpl> eventTypeList =
-                this.jsonFileUtils.getListFromJsonFile(pathFile, EventTypeImpl[].class);
-        if (eventTypeList == null) {
-            LOGGER.error("List of events type is null");
-            return;
-        }
-        //Getting Dao
-        try {
-            eventTypeDao = (EventTypeDao) this.dbConnection.getDAO(DBConnection.Table.EVENT_TYPE);
-        } catch (final DBConnectionException e) {
-            LOGGER.error("DBConnectionException when get DAO of events type", e);
-        }
-        //Inserting events_type
-        for (final EventType eventType : eventTypeList) {
-            try {
-                eventTypeDao.insert(eventType);
-            } catch (final DBDuplicatedRecordException e) {
-                LOGGER.error("DBDuplicatedRecordException when insert of a event type already on the database", e);
-            } catch (final DBQueryException e) {
-                LOGGER.error("DBQueryException when insert a event type", e);
-            }
-        }
-
-    }
-
-    @Override
-    public void insertAllCivilProtectionsFrom(final String pathFile) {
-
-        CivilProtectionDao civilProtectionDao = null;
-        //Getting districts from file
-        final List<CivilProtectionImpl> civilProtectionList =
-                this.jsonFileUtils.getListFromJsonFile(pathFile, CivilProtectionImpl[].class);
-        if (civilProtectionList == null) {
-            LOGGER.error("List of civil protections is null");
-            return;
-        }
-        //Getting Dao
-        try {
-            civilProtectionDao = (CivilProtectionDao)
-                    this.dbConnection.getDAO(DBConnection.Table.CIVIL_PROTECTION);
-        } catch (final DBConnectionException e) {
-            LOGGER.error("DBConnectionException when get DAO of civil protections", e);
-        }
-        //Inserting districts
-        for (final CivilProtection civilProtection : civilProtectionList) {
-            try {
-                civilProtectionDao.insert(civilProtection);
-            } catch (final DBDuplicatedRecordException e) {
-                LOGGER.error("DBDuplicatedRecordException when insert of a civil protection already on the database", e);
-            } catch (final DBQueryException e) {
-                LOGGER.error("DBQueryException when insert a civil protection", e);
-            }
-        }
-    }
-
-    @Override
-    public void insertAllCpAreasFrom(final String pathFile) {
-
-        CpAreaDao cpAreaDao = null;
-        //Getting districts from file
-        final List<CpAreaImpl> cpAreas =
-                this.jsonFileUtils.getListFromJsonFile(pathFile, CpAreaImpl[].class);
-        if (cpAreas == null) {
-            LOGGER.error("List of civil protections area is null");
-            return;
-        }
-        //Getting Dao
-        try {
-            cpAreaDao = (CpAreaDao) this.dbConnection.getDAO(DBConnection.Table.CP_AREA);
-        } catch (final DBConnectionException e) {
-            LOGGER.error("DBConnectionException when get DAO of civil protections area", e);
-        }
-        //Inserting districts
-        for (final CpArea cpArea : cpAreas) {
-            try {
-                cpAreaDao.insert(cpArea);
-            } catch (final DBDuplicatedRecordException e) {
-                LOGGER.error("DBDuplicatedRecordException when insert of a civil protection area already on the database", e);
-            } catch (final DBQueryException e) {
-                LOGGER.error("DBQueryException when insert a civil protection area", e);
-            }
-        }
-    }
 }

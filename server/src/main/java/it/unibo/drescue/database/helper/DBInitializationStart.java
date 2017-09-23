@@ -1,5 +1,6 @@
 package it.unibo.drescue.database.helper;
 
+import it.unibo.drescue.database.DBConnection;
 import it.unibo.drescue.database.DBConnectionImpl;
 
 /**
@@ -26,14 +27,22 @@ public class DBInitializationStart {
 
     public static void start() {
         final DBInitialization dbInitialization =
-                new DBInitializationImpl(DBConnectionImpl.getRemoteConnection());
+                new DBInitializationImpl(DBConnectionImpl.getLocalConnection());
 
-        dbInitialization.insertAllDistrictsFrom(FILE_PATH + DISTRICTS_FILE);
+        dbInitialization.insertAllObjectsFromAFile(
+                DBConnection.Table.DISTRICT,
+                FILE_PATH + DISTRICTS_FILE);
 
-        dbInitialization.insertAllEventTypesFrom(FILE_PATH + EVENT_TYPES_FILE);
+        dbInitialization.insertAllObjectsFromAFile(
+                DBConnection.Table.EVENT_TYPE,
+                FILE_PATH + EVENT_TYPES_FILE);
 
-        dbInitialization.insertAllCivilProtectionsFrom(FILE_PATH + CIVIL_PROTECTION_FILE);
+        dbInitialization.insertAllObjectsFromAFile(
+                DBConnection.Table.CIVIL_PROTECTION,
+                FILE_PATH + CIVIL_PROTECTION_FILE);
 
-        dbInitialization.insertAllCpAreasFrom(FILE_PATH + CP_AREAS_FILE);
+        dbInitialization.insertAllObjectsFromAFile(
+                DBConnection.Table.CP_AREA,
+                FILE_PATH + CP_AREAS_FILE);
     }
 }

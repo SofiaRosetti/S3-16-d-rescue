@@ -71,7 +71,7 @@ public class CpEnrollmentDaoImplTest extends GenericDaoAbstractTest {
     }
 
     @Test
-    public void isFindingNotRelatedAndNotRelatedRescueTeamsGivenACp() throws Exception {
+    public void isFindingRelatedAndNotRelatedRescueTeamsGivenACp() throws Exception {
         List<RescueTeam> rescueTeamsEnrolledByCp =
                 this.cpEnrollmentDao.findAllRescueTeamGivenACp(CP_TEST.getCpID(), true);
         assertEquals(rescueTeamsEnrolledByCp.size(), 0);
