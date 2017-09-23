@@ -17,13 +17,10 @@ import java.util.*;
  */
 public class CoordinatorImpl implements Coordinator {
 
-    public final static String EXCHANGE_NAME = "rabbit_cp";
-
-    private String exchangeName = "";
-
     private static CoordinatorImpl instance;
     private CoordinatorCondition condition;
     private Timestamp reqTimestamp = null;
+    private String exchangeName = "";
     private String myID = "";
     private String cs = "";
     private Map<String, Boolean> pendingCPReplay;
@@ -54,7 +51,6 @@ public class CoordinatorImpl implements Coordinator {
 
     @Override
     public void setCondition(CoordinatorCondition condition) {
-        //TODO quando setto lo stato a WANTED impostare anche il timestamp
         System.out.println("Condition " + this.condition + " --> " + condition);
         this.condition = condition;
     }
@@ -132,17 +128,6 @@ public class CoordinatorImpl implements Coordinator {
         System.out.println("blocked CP: "+ this.blockedCP);
     }
 
-    @Override
-    public void sendReplayMessage(String csName) {
-        ReplayCoordinationMessage replayCoordinationMessage = new ReplayCoordinationMessage();
-        replayCoordinationMessage.setTimestamp(new Timestamp(System.currentTimeMillis()));
-        replayCoordinationMessage.setFrom(myID);
-        try {
-            this.connection.sendMessage(this.exchangeName, csName, null, replayCoordinationMessage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void sendReplayMessageTo(String csName, String to, RescueTeamCondition rescueTeamCondition) {

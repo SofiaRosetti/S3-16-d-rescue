@@ -84,28 +84,27 @@ public interface Coordinator {
 
     /**
      *
-     * @param cpID the id of civil protection that are blocked until the precess came back from critical section
+     * @param cpID the id of civil protection that are blocked until the process came back from critical section
      */
     void addBlockedCP(String cpID);
 
     /**
-     * Send a replay message for that critical section
-     * @param csName the critical section name
-     */
-    void sendReplayMessage(String csName);
-
-    /**
      *
-     * @param csName he critical section name
+     * @param csName the critical section name
      * @param to the process to which send a replay
      */
     void sendReplayMessageTo(String csName, String to, RescueTeamCondition rescueTeamCondition);
 
     /**
-     *  The process came back to critical section
+     * The process came back to critical section
+     * @param rescueTeamCondition the new rescue team's condition update into critical section
      */
     void backToCs(RescueTeamCondition rescueTeamCondition);
 
+    /**
+     * Set the name of exchange
+     * @param exchange the exchange's name
+     */
     void setExchange(String exchange);
 
 }
