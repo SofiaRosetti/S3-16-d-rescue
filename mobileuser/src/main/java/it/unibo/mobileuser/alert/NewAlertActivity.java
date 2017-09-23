@@ -75,17 +75,22 @@ public class NewAlertActivity extends GpsActivityImpl {
      */
     private void sendNewAlert(final Message message) {
 
-        new RabbitPublishAsyncTask(QueueType.ALERTS_QUEUE.getQueueName(),
-                message,
-                bool -> {
-                    if (bool) {
-                        Toast.makeText(NewAlertActivity.this, R.string.alert_sent, Toast.LENGTH_LONG).show();
-                        finish();
-                    } else {
-                        Toast.makeText(NewAlertActivity.this, R.string.alert_sent_error, Toast.LENGTH_LONG).show();
-                    }
+        if (isNetworkAvailable()) {
 
-                }).execute();
+            new RabbitPublishAsyncTask(QueueType.ALERTS_QUEUE.getQueueName(),
+                    message,
+                    bool -> {
+                        if (bool) {
+                            Toast.makeText(NewAlertActivity.this, R.string.alert_sent, Toast.LENGTH_LONG).show();
+                            finish();
+                        } else {
+                            Toast.makeText(NewAlertActivity.this, R.string.alert_sent_error, Toast.LENGTH_LONG).show();
+                        }
+
+                    }).execute();
+        } else {
+            showDialog(R.string.attention, R.string.connection_not_available);
+        }
     }
 
 

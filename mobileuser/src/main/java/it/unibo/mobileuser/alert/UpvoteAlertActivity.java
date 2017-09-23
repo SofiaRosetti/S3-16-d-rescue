@@ -52,26 +52,30 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
         final ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(this.alertAdapter);
         listView.setOnItemClickListener((adapterView, view, position, id) -> {
-            new AlertDialog.Builder(this, R.style.alert_dialog_theme)
-                    .setTitle(R.string.upvote)
-                    .setMessage(R.string.upvote_message)
-                    .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
-                        final Alert alert = this.alertList.get(position);
+            if (isNetworkAvailable()) {
+                new AlertDialog.Builder(this, R.style.alert_dialog_theme)
+                        .setTitle(R.string.upvote)
+                        .setMessage(R.string.upvote_message)
+                        .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
+                            final Alert alert = this.alertList.get(position);
 
-                        Message message = new RequestUpvoteAlertMessageBuilderImpl()
-                                .setAlertID(alert.getAlertID())
-                                .setDistrictID(alert.getDistrictID())
-                                .setUserID(Integer.valueOf(userID))
-                                .build();
+                            Message message = new RequestUpvoteAlertMessageBuilderImpl()
+                                    .setAlertID(alert.getAlertID())
+                                    .setDistrictID(alert.getDistrictID())
+                                    .setUserID(Integer.valueOf(userID))
+                                    .build();
 
-                        upvoteAlert(message);
+                            upvoteAlert(message);
 
-                        dialogInterface.dismiss();
-                    })
-                    .setNeutralButton(R.string.alert_negative_button, (dialogInterface, i) -> {
-                        dialogInterface.dismiss();
-                    })
-                    .show();
+                            dialogInterface.dismiss();
+                        })
+                        .setNeutralButton(R.string.alert_negative_button, (dialogInterface, i) -> {
+                            dialogInterface.dismiss();
+                        })
+                        .show();
+            } else {
+                showDialog(R.string.attention, R.string.connection_not_available);
+            }
         });
 
         this.swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
@@ -87,16 +91,19 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
      * @param message message containing the upvote
      */
     private void upvoteAlert(final Message message) {
+        if (isNetworkAvailable()) {
+            new RabbitPublishAsyncTask(QueueType.ALERTS_QUEUE.getQueueName(),
+                    message,
+                    bool -> {
+                        if (bool)
+                            showDialog(R.string.upvote_sent, R.string.upvote_sent_successful);
+                        else
+                            Toast.makeText(UpvoteAlertActivity.this, R.string.alert_sent_error, Toast.LENGTH_LONG).show();
 
-        new RabbitPublishAsyncTask(QueueType.ALERTS_QUEUE.getQueueName(),
-                message,
-                bool -> {
-                    if (bool)
-                        showDialog(R.string.upvote_sent, R.string.upvote_sent_successful);
-                    else
-                        Toast.makeText(UpvoteAlertActivity.this, R.string.alert_sent_error, Toast.LENGTH_LONG).show();
-
-                }).execute();
+                    }).execute();
+        } else {
+            showDialog(R.string.attention, R.string.connection_not_available);
+        }
     }
 
     /**
@@ -113,35 +120,39 @@ public class UpvoteAlertActivity extends GpsActivityImpl {
 
                 final Message message = new RequestAlertsMessageImpl(latitude, longitude).build();
 
-                showProgressDialog();
+                if (isNetworkAvailable()) {
+                    showProgressDialog();
 
-                new RabbitAsyncTask(QueueType.ALERTS_QUEUE.getQueueName(),
-                        message,
-                        new AbstractResponse() {
+                    new RabbitAsyncTask(QueueType.ALERTS_QUEUE.getQueueName(),
+                            message,
+                            new AbstractResponse() {
 
-                            @Override
-                            public void onSuccessfulRequest(final String response) {
-                                UpvoteAlertActivity.this.swipeRefreshLayout.setRefreshing(false);
-                                dismissProgressDialog();
-                                if (MessageUtils.getMessageNameByJson(response) == MessageType.ALERTS_MESSAGE) {
-                                    final AlertsMessageImpl alertsMessage = GsonUtils.fromGson(response, AlertsMessageImpl.class);
-                                    final List<AlertImpl> list = alertsMessage.getAlerts();
-                                    if (list.size() == 0)
-                                        Toast.makeText(UpvoteAlertActivity.this, R.string.alerts_missing, Toast.LENGTH_LONG).show();
-                                    UpvoteAlertActivity.this.alertAdapter.clear();
-                                    UpvoteAlertActivity.this.alertAdapter.addAll(list);
-                                    UpvoteAlertActivity.this.alertAdapter.notifyDataSetChanged();
+                                @Override
+                                public void onSuccessfulRequest(final String response) {
+                                    UpvoteAlertActivity.this.swipeRefreshLayout.setRefreshing(false);
+                                    dismissProgressDialog();
+                                    if (MessageUtils.getMessageNameByJson(response) == MessageType.ALERTS_MESSAGE) {
+                                        final AlertsMessageImpl alertsMessage = GsonUtils.fromGson(response, AlertsMessageImpl.class);
+                                        final List<AlertImpl> list = alertsMessage.getAlerts();
+                                        if (list.size() == 0)
+                                            Toast.makeText(UpvoteAlertActivity.this, R.string.alerts_missing, Toast.LENGTH_LONG).show();
+                                        UpvoteAlertActivity.this.alertAdapter.clear();
+                                        UpvoteAlertActivity.this.alertAdapter.addAll(list);
+                                        UpvoteAlertActivity.this.alertAdapter.notifyDataSetChanged();
+                                    }
                                 }
-                            }
 
-                            @Override
-                            public void onErrorRequest(final String errorMessage) {
-                                UpvoteAlertActivity.this.swipeRefreshLayout.setRefreshing(false);
-                                dismissProgressDialog();
-                                showDialog(R.string.last_alerts, R.string.alerts_error);
-                            }
+                                @Override
+                                public void onErrorRequest(final String errorMessage) {
+                                    UpvoteAlertActivity.this.swipeRefreshLayout.setRefreshing(false);
+                                    dismissProgressDialog();
+                                    showDialog(R.string.last_alerts, R.string.alerts_error);
+                                }
 
-                        }).execute();
+                            }).execute();
+                } else {
+                    showDialog(R.string.attention, R.string.connection_not_available);
+                }
             }
         }
 
