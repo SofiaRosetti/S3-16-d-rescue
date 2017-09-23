@@ -28,6 +28,8 @@ object EnrollTeamControllerImpl extends Enumeration {
   val InvalidAddress = "InvalidAddress"
   val Checking = "Checking"
   val Error = "Error"
+  val EnrollOK = "The team has been successfully enrolled."
+  val SelectTeam = "Nothing selected"
 }
 
 class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, val rabbitMQ: RabbitMQImpl) extends Observer {
@@ -132,11 +134,6 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
     dialog.show()
   }
 
-  def startErrorDialog() = {
-    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.Error)
-    dialog.showAndWait()
-  }
-
   def startAddressDialog() = {
     dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.InvalidAddress)
     dialog.showAndWait()
@@ -170,9 +167,9 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
       messageName match {
         case MessageType.SUCCESSFUL_MESSAGE =>
 
-          //TODO dialog successful
+          startEnrollOkDialog()
 
-          //add rescue team to rescueTeamList and enrolledTeamInfoList
+          //get rescue team just enrolled
           var indexToChange: Int = -1
           mainController.model.notEnrolledRescueTeams forEach ((rescueTeam: RescueTeamImpl) => {
             val rescueTeamID = rescueTeam.getRescueTeamID
@@ -181,21 +178,24 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
             }
           })
 
-          val notEnrolledList = mainController.model.notEnrolledRescueTeams
-          val newEnrollment = notEnrolledList.get(indexToChange)
+          val newEnrollment = mainController.model.notEnrolledRescueTeams.get(indexToChange)
 
-          val enrolledList = mainController.model.enrolledRescueTeams
+          //add rescue team to rescueTeamList and enrolledTeamInfoList
           val enrolledInfoList = mainController.model.enrolledTeamInfoList
           if (indexToChange != -1) {
 
+            //add rescue team to rescueTeamList
             val newTeam = new RescueTeamImplBuilder()
               .setRescueTeamID(newEnrollment.getRescueTeamID)
               .setName(newEnrollment.getName)
               .setPhoneNumber(newEnrollment.getPhoneNumber)
               .createRescueTeamImpl()
+
+            val enrolledList = mainController.model.enrolledRescueTeams
             enrolledList.add(newTeam)
             mainController.model.enrolledRescueTeams = enrolledList
 
+            //add rescue team to enrolledTeamInfoList
             val newTeamInfo = new EnrolledTeamInfo(
               newEnrollment.getRescueTeamID,
               newEnrollment.getName,
@@ -203,8 +203,7 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
               true,
               "",
               "")
-            enrolledInfoList.add(newTeamInfo)
-            mainController.model.enrolledTeamInfoList = enrolledInfoList
+            mainController.model.addEnrollment(newTeamInfo)
 
             //send message to get availability
             val rescueTeamConditionMessage = new ReqRescueTeamConditionMessageBuilderImpl()
@@ -220,14 +219,30 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
 
           }
 
-        case MessageType.ERROR_MESSAGE => //TODO dialog error
+        case MessageType.ERROR_MESSAGE =>
+          startErrorDialog()
 
         case _ => //do nothing
 
       }
     } else {
-      //TODO dialog select a rescue team
+      startSelectTeamDialog()
     }
+  }
+
+  def startSelectTeamDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.SelectTeam)
+    dialog.showAndWait()
+  }
+
+  def startErrorDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.Error)
+    dialog.showAndWait()
+  }
+
+  def startEnrollOkDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.EnrollOK)
+    dialog.showAndWait()
   }
 
   def backPress() = {

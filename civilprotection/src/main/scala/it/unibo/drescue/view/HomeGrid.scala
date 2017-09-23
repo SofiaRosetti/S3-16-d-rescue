@@ -20,26 +20,25 @@ class HomeGrid(private var homeController: HomeControllerImpl) {
     vgap = Gap
     padding = Insets(Insets50)
 
-    val defaultFont = new Font(Font20)
-    val titleFont = new Font(Font30)
-    val checkBoxFont = new Font(Font18)
-    val buttonFont = new Font(Font25)
+    val DefaultFont = new Font(Font20)
+    val TitleFont = new Font(Font30)
+    val CheckBoxFont = new Font(Font18)
+    val ButtonFont = new Font(Font25)
 
-    val lastAlarmsLabel = new Label() {
+    val LastAlarmsLabel = new Label() {
       text = "LAST ALERTS:"
-      font = titleFont
+      font = TitleFont
       padding = Insets(Insets20)
     }
-    val titleBox = new HBox() {
-      children = lastAlarmsLabel
+    val TitleBox = new HBox() {
+      children = LastAlarmsLabel
       alignment = Pos.Center
     }
-    add(titleBox, ColumnRow0, ColumnRow0)
-    GridPane.setConstraints(titleBox, ColumnRow0, ColumnRow0, ColumnRow2, ColumnRow1)
+    add(TitleBox, ColumnRow0, ColumnRow0)
+    GridPane.setConstraints(TitleBox, ColumnRow0, ColumnRow0, ColumnRow2, ColumnRow1)
 
-    //var alertsEntries = homeController.obsBuffer
-
-    val AlertTable = new TableView[AlertEntry](homeController.obsBuffer) {
+    val entries = homeController.obsBuffer
+    val AlertTable = new TableView[AlertEntry](entries) {
       maxHeight = WidthHeight200
       columns ++= List(
         new TableColumn[AlertEntry, String]() {
@@ -106,38 +105,44 @@ class HomeGrid(private var homeController: HomeControllerImpl) {
 
     val EnrollTeamButton = new Button() {
       text = "Enroll team"
-      font = buttonFont
+      font = ButtonFont
       margin = Insets(Insets30)
       prefWidth = WidthHeight250
-      onMouseClicked = (event: MouseEvent) => { // TODO change event after pressure
+      onMouseClicked = (event: MouseEvent) => {
         homeController.enrollTeamPress()
       }
     }
     val ManageRescuesButton = new Button() {
       text = "Manage rescues"
-      font = buttonFont
+      font = ButtonFont
       margin = Insets(Insets30)
       prefWidth = WidthHeight250
       onMouseClicked = (event: MouseEvent) => {
-        //homeController.occupiedTeamsPress()
         homeController.manageRescuesPress()
       }
     }
     val StartRescueButton = new Button() {
       text = "Start rescue"
-      font = buttonFont
+      font = ButtonFont
       margin = Insets(Insets30)
       prefWidth = WidthHeight250
-      onMouseClicked = (event: MouseEvent) => { // TODO change event after pressure
-        homeController.startRescuePress()
+      onMouseClicked = (event: MouseEvent) => {
+        var selected = AlertTable.getSelectionModel.getFocusedIndex
+        if (selected == -1) {
+          homeController.startSelectAlertDialog()
+        } else {
+          var alert = entries.get(selected)
+          //println(selected)
+          homeController.startRescuePress(alert)
+        }
       }
     }
-    val buttonBox = new HBox {
+    val ButtonBox = new HBox {
       alignment = Pos.Center
       padding = Insets(Insets10)
       children.addAll(EnrollTeamButton, ManageRescuesButton, StartRescueButton)
     }
-    add(buttonBox, ColumnRow0, ColumnRow2)
+    add(ButtonBox, ColumnRow0, ColumnRow2)
   }
 
   def grid = _grid

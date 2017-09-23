@@ -13,65 +13,65 @@ import scalafx.scene.text.Font
 class EnrollTeamGrid(private var enrollTeamController: EnrollTeamControllerImpl) {
 
   val _grid = new GridPane() {
-    hgap = Gap
-    vgap = Gap
-    padding = Insets(Insets100)
+    hgap = Gap5
+    vgap = Gap5
+    padding = Insets(Insets30)
 
-    val defaultFont = new Font(Font25)
-    val titleFont = new Font(Font30)
-    val smallFont = new Font(Font20)
+    val DefaultFont = new Font(Font25)
+    val TitleFont = new Font(Font30)
+    val SmallFont = new Font(Font20)
 
-    val titleLabel = new Label() {
+    val TitleLabel = new Label() {
       text = "Enroll team:"
-      font = titleFont
+      font = TitleFont
       padding = Insets(Insets10)
     }
-    val titleBox = new HBox() {
-      children = titleLabel
+    val TitleBox = new HBox() {
+      children = TitleLabel
       alignment = Pos.Center
     }
-    add(titleBox, ColumnRow0, ColumnRow0)
-    GridPane.setConstraints(titleBox, ColumnRow0, ColumnRow0, ColumnRow2, ColumnRow1)
+    add(TitleBox, ColumnRow0, ColumnRow0)
+    GridPane.setConstraints(TitleBox, ColumnRow0, ColumnRow0, ColumnRow2, ColumnRow1)
 
-    val selectTeamLabel = new Label() {
+    val SelectTeamLabel = new Label() {
       text = "Select existing team:"
-      font = defaultFont
+      font = DefaultFont
       padding = Insets(Insets20)
     }
-    val selectBox = new HBox() {
-      children = selectTeamLabel
+    val SelectBox = new HBox() {
+      children = SelectTeamLabel
       alignment = Pos.Center
     }
-    add(selectBox, ColumnRow0, ColumnRow1)
+    add(SelectBox, ColumnRow0, ColumnRow1)
 
-    val insertTeamLabel = new Label() {
+    val InsertTeamLabel = new Label() {
       text = "Insert new team:"
-      font = defaultFont
+      font = DefaultFont
       padding = Insets(Insets20)
     }
-    val insertBox = new HBox() {
-      children = insertTeamLabel
+    val InsertBox = new HBox() {
+      children = InsertTeamLabel
       alignment = Pos.Center
     }
-    add(insertBox, ColumnRow1, ColumnRow1)
+    add(InsertBox, ColumnRow1, ColumnRow1)
 
-    val choices = enrollTeamController.obsBuffer
-    val teamChoice = new ComboBox[String] {
+    val Choices = enrollTeamController.obsBuffer
+    val TeamChoice = new ComboBox[String] {
       maxWidth = WidthHeight250
       editable = true
-      items = choices
+      items = Choices
     }
-    teamChoice.setStyle("-fx-font-size:25")
-    add(teamChoice, ColumnRow0, ColumnRow2)
+    TeamChoice.setStyle("-fx-font-size:25")
+    add(TeamChoice, ColumnRow0, ColumnRow2)
 
     val IDLabel = new Label() {
       text = "ID:"
-      font = defaultFont
+      font = DefaultFont
       padding = Insets(Insets10)
     }
     val IDField = new TextField() {
       promptText = "ID"
-      font = defaultFont
+      font = DefaultFont
     }
     val IDBox = new HBox() {
       children.addAll(IDLabel, IDField)
@@ -79,29 +79,29 @@ class EnrollTeamGrid(private var enrollTeamController: EnrollTeamControllerImpl)
     }
     add(IDBox, ColumnRow1, ColumnRow2)
 
-    val nameLabel = new Label() {
+    val NameLabel = new Label() {
       text = "Name:"
-      font = defaultFont
+      font = DefaultFont
       padding = Insets(Insets10)
     }
-    val nameField = new TextField() {
+    val NameField = new TextField() {
       promptText = "Name"
-      font = defaultFont
+      font = DefaultFont
     }
-    val nameBox = new HBox() {
-      children.addAll(nameLabel, nameField)
+    val NameBox = new HBox() {
+      children.addAll(NameLabel, NameField)
       alignment = Pos.CenterRight
     }
-    add(nameBox, ColumnRow1, ColumnRow3)
+    add(NameBox, ColumnRow1, ColumnRow3)
 
     val AddressLabel = new Label() {
       text = "Address:"
-      font = defaultFont
+      font = DefaultFont
       padding = Insets(Insets10)
     }
     val AddressField = new TextField() {
       promptText = "Address"
-      font = defaultFont
+      font = DefaultFont
     }
     val AddressBox = new HBox() {
       children.addAll(AddressLabel, AddressField)
@@ -111,12 +111,12 @@ class EnrollTeamGrid(private var enrollTeamController: EnrollTeamControllerImpl)
 
     val PhoneLabel = new Label() {
       text = "Phone number:"
-      font = defaultFont
+      font = DefaultFont
       padding = Insets(Insets10)
     }
     val PhoneField = new TextField() {
       promptText = "Phone number"
-      font = defaultFont
+      font = DefaultFont
     }
     val PhoneBox = new HBox() {
       children.addAll(PhoneLabel, PhoneField)
@@ -124,36 +124,35 @@ class EnrollTeamGrid(private var enrollTeamController: EnrollTeamControllerImpl)
     }
     add(PhoneBox, ColumnRow1, ColumnRow5)
 
-
-    val addButton = new Button {
+    val AddButton = new Button {
       text = "Add"
-      font = smallFont
+      font = SmallFont
       margin = Insets(Insets10)
       prefWidth = WidthHeight100
       onMouseClicked = (event: MouseEvent) => {
-        enrollTeamController.startChecks(IDField.getText(), nameField.getText(), AddressField.getText(), PhoneField.getText())
+        enrollTeamController.startChecks(IDField.getText(), NameField.getText(), AddressField.getText(), PhoneField.getText())
       }
     }
-    val addBox = new HBox {
-      children = addButton
+    val AddBox = new HBox {
+      children = AddButton
       alignment = Pos.CenterRight
     }
-    add(addBox, ColumnRow1, ColumnRow6)
+    add(AddBox, ColumnRow1, ColumnRow6)
 
-    val selectButton = new Button {
+    val SelectButton = new Button {
       text = "Select"
-      font = defaultFont
+      font = DefaultFont
       margin = Insets(Insets30)
       prefWidth = WidthHeight150
       onMouseClicked = (event: MouseEvent) => {
-        var selectedTeamID = teamChoice.getValue
+        var selectedTeamID = TeamChoice.getValue
         println("SelectButton" + selectedTeamID)
         enrollTeamController.selectPress(selectedTeamID)
       }
     }
-    val cancelButton = new Button() {
+    val CancelButton = new Button() {
       text = "Back"
-      font = defaultFont
+      font = DefaultFont
       margin = Insets(Insets30)
       prefWidth = WidthHeight150
 
@@ -161,13 +160,13 @@ class EnrollTeamGrid(private var enrollTeamController: EnrollTeamControllerImpl)
         enrollTeamController.backPress()
       }
     }
-    val buttonBox = new HBox {
+    val ButtonBox = new HBox {
       alignment = Pos.Center
-      padding = Insets(Insets30)
-      children.addAll(selectButton, cancelButton)
+      //padding = Insets(Insets10)
+      children.addAll(SelectButton, CancelButton)
     }
-    add(buttonBox, ColumnRow0, ColumnRow7)
-    GridPane.setConstraints(buttonBox, ColumnRow0, ColumnRow7, ColumnRow2, ColumnRow1)
+    add(ButtonBox, ColumnRow0, ColumnRow7)
+    GridPane.setConstraints(ButtonBox, ColumnRow0, ColumnRow7, ColumnRow2, ColumnRow1)
   }
 
   def grid = _grid

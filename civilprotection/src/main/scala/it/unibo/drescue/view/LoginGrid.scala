@@ -18,47 +18,47 @@ class LoginGrid(private var loginController: LoginControllerImpl) {
     vgap = Gap
     padding = Insets(Insets100)
 
-    val defaultFont = new Font(Font20)
+    val DefaultFont = new Font(Font20)
 
-    val username = new TextField() {
+    val Username = new TextField() {
       promptText = "Username"
-      font = defaultFont
+      font = DefaultFont
     }
-    val password = new PasswordField() {
+    val Password = new PasswordField() {
       promptText = "Password"
-      font = defaultFont
+      font = DefaultFont
     }
 
-    val usernameLabel = new Label() {
+    val UsernameLabel = new Label() {
       text = "Username:"
-      font = defaultFont
+      font = DefaultFont
     }
-    add(usernameLabel, ColumnRow0, ColumnRow0)
-    add(username, ColumnRow1, ColumnRow0)
+    add(UsernameLabel, ColumnRow0, ColumnRow0)
+    add(Username, ColumnRow1, ColumnRow0)
 
-    val passwordLabel = new Label() {
+    val PasswordLabel = new Label() {
       text = "Password:"
-      font = defaultFont
+      font = DefaultFont
     }
-    add(passwordLabel, ColumnRow0, ColumnRow1)
-    add(password, ColumnRow1, ColumnRow1)
+    add(PasswordLabel, ColumnRow0, ColumnRow1)
+    add(Password, ColumnRow1, ColumnRow1)
 
-    val loginButton = new Button() {
+    val LoginButton = new Button() {
       text = "Login"
-      font = defaultFont
+      font = DefaultFont
       onMouseClicked = (event: MouseEvent) => {
-        checkInputs(username.getText, password.getText) match {
-          case true => loginController.loginPress(username.getText, password.getText)
+        checkInputs(Username.getText, Password.getText) match {
+          case true => loginController.loginPress(Username.getText, Password.getText)
           case false => loginController.startEmptyLoginDialog()
         }
       }
     }
-    val buttonBox = new HBox() {
-      children = loginButton
+    val ButtonBox = new HBox() {
+      children = LoginButton
       alignment = Pos.Center
     }
-    add(buttonBox, ColumnRow0, ColumnRow4)
-    GridPane.setConstraints(buttonBox, ColumnRow0, ColumnRow4, ColumnRow2, ColumnRow1)
+    add(ButtonBox, ColumnRow0, ColumnRow4)
+    GridPane.setConstraints(ButtonBox, ColumnRow0, ColumnRow4, ColumnRow2, ColumnRow1)
   }
 
   def grid = _grid
