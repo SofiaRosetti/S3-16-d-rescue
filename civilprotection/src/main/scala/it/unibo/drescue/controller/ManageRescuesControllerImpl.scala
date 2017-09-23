@@ -19,6 +19,8 @@ import scalafx.scene.control.Alert
 object ManageRescuesControllerImpl extends Enumeration {
   val Sent: String = "Team notified"
   var Error: String = "Team working"
+  val Stop: String = "Team stop"
+  val StopNotAuthorized: String = "Stop not authorized"
 }
 
 class ManageRescuesControllerImpl(private var mainController: MainControllerImpl,
@@ -115,23 +117,12 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
     }
   }
 
-  def startSuccessDialog() = {
-    dialog = new CustomDialog(mainController).createDialog(ManageRescuesControllerImpl.Sent)
-    dialog.showAndWait()
-  }
 
-  def startErrorDialog() = {
-    dialog = new CustomDialog(mainController).createDialog(ManageRescuesControllerImpl.Error)
-    dialog.showAndWait()
-  }
 
   def stopPressed(wantedRescueTeamID: String) = {
-
-    //TODO stop the given rescueTeamID, change local state of rescueTeamID in available
     var indexToChange: Int = -1
     var rescueTeamToChange: EnrolledTeamInfo = null
     val list = mainController.model.enrolledTeamInfoList
-
     list forEach ((rescueTeam: EnrolledTeamInfo) => {
       if (rescueTeam.teamID.value == wantedRescueTeamID) {
         indexToChange = list.indexOf(rescueTeam)
@@ -149,15 +140,36 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
         "")
       )
 
-      //TODO send message to the other CP with in order to update their view
+      //send message to the other CP with in order to update their view
       sendReplyRescueTeamCondition(wantedRescueTeamID, RescueTeamCondition.AVAILABLE)
+      stopSuccessDialog()
 
-      //TODO confirm dialog
-      mainController.changeView("ManageRescues")
     } else {
       //TODO error message
+      print("Stop not authorized")
+      stopNotAuthorizedErrorDialog()
     }
 
+  }
+
+  def startSuccessDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(ManageRescuesControllerImpl.Sent)
+    dialog.showAndWait()
+  }
+
+  def stopSuccessDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(ManageRescuesControllerImpl.Stop)
+    dialog.showAndWait()
+  }
+
+  def startErrorDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(ManageRescuesControllerImpl.Error)
+    dialog.showAndWait()
+  }
+
+  def stopNotAuthorizedErrorDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(ManageRescuesControllerImpl.StopNotAuthorized)
+    dialog.showAndWait()
   }
 
   def sendReplyRescueTeamCondition(rescueTeamID: String, rescueTeamCondition: RescueTeamCondition) = {
