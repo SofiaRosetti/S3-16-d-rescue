@@ -47,10 +47,14 @@ object CustomDialog {
 
   val TeamNotified = "The rescue team has been notified."
   val TeamWorking = "The rescue team is already occupied."
+  val TeamAvailable = "The rescue team is available"
   val ChooseAnotherTeam = "Please choose another team."
 
   val SelectAlertHeader = "It is necessary to select an alert to start a rescue."
   val SelectAlertContent = "Please select one."
+
+  val CpNotAuthorized = "You don't have the authorization"
+  val CpNotAuthorizedToStop = "The rescue team was occupied by another civil protection"
 
   val Processing = "Processing"
   val EmptyLogin = "EmptyLogin"
@@ -65,7 +69,9 @@ object CustomDialog {
   val Error = "Error"
   val SelectTeam = "Nothing selected"
   val Sent = "Team notified"
+  val Stop = "Team stop"
   val TeamNotSent = "Team working"
+  val TeamStopNotAuthorized: String = "Stop not authorized"
   val SelectAlert = "Select Alert"
 
   var dialog: Alert = _
@@ -187,12 +193,26 @@ class CustomDialog(mainController: MainControllerImpl) {
           headerText = CustomDialog.TeamNotified
           contentText = CustomDialog.AddedDialogContent
         }
+      case CustomDialog.Stop =>
+        CustomDialog.dialog = new Alert(AlertType.Information) {
+          initOwner(mainController._view._stage)
+          title = CustomDialog.Stop
+          headerText = CustomDialog.TeamNotified
+          contentText = CustomDialog.TeamAvailable
+        }
       case CustomDialog.TeamNotSent =>
         CustomDialog.dialog = new Alert(AlertType.Error) {
           initOwner(mainController._view._stage)
           title = CustomDialog.ErrorDialogTitle
           headerText = CustomDialog.TeamWorking
           contentText = CustomDialog.ChooseAnotherTeam
+        }
+      case CustomDialog.TeamStopNotAuthorized =>
+        CustomDialog.dialog = new Alert(AlertType.Error) {
+          initOwner(mainController._view._stage)
+          title = CustomDialog.ErrorDialogTitle
+          headerText = CustomDialog.CpNotAuthorized
+          contentText = CustomDialog.CpNotAuthorizedToStop
         }
       case CustomDialog.SelectAlert =>
         CustomDialog.dialog = new Alert(AlertType.Error) {
