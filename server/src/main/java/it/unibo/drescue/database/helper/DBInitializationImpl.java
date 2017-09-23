@@ -50,6 +50,12 @@ public class DBInitializationImpl implements DBInitialization {
                 clazz = CpAreaImpl[].class;
                 break;
             }
+            case CP_ENROLLMENT:
+                clazz = CpEnrollmentImpl[].class;
+                break;
+            case RESCUE_TEAM:
+                clazz = RescueTeamImpl[].class;
+                break;
             default: {
                 LOGGER.error("Not existing table");
                 break;
