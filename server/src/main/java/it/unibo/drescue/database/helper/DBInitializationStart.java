@@ -1,5 +1,6 @@
 package it.unibo.drescue.database.helper;
 
+import it.unibo.drescue.database.DBConnection;
 import it.unibo.drescue.database.DBConnectionImpl;
 
 /**
@@ -14,6 +15,9 @@ public class DBInitializationStart {
     private static final String EVENT_TYPES_FILE = "/event_types.json";
     private static final String CIVIL_PROTECTION_FILE = "/civil_protections.json";
     private static final String CP_AREAS_FILE = "/cp_areas.json";
+    private static final String USERS_FILE = "/users.json";
+    private static final String RESCUE_TEAMS_FILE = "/rescue_teams.json";
+    private static final String CP_ENROLLMENT_FILE = "/cp_enrollments.json";
 
     /**
      * Used to initialize DB with static tables contents.
@@ -26,14 +30,34 @@ public class DBInitializationStart {
 
     public static void start() {
         final DBInitialization dbInitialization =
-                new DBInitializationImpl(DBConnectionImpl.getRemoteConnection());
+                new DBInitializationImpl(DBConnectionImpl.getLocalConnection());
 
-        dbInitialization.insertAllDistrictsFrom(FILE_PATH + DISTRICTS_FILE);
+        dbInitialization.insertAllObjectsFromAFile(
+                DBConnection.Table.DISTRICT,
+                FILE_PATH + DISTRICTS_FILE);
 
-        dbInitialization.insertAllEventTypesFrom(FILE_PATH + EVENT_TYPES_FILE);
+        dbInitialization.insertAllObjectsFromAFile(
+                DBConnection.Table.EVENT_TYPE,
+                FILE_PATH + EVENT_TYPES_FILE);
 
-        dbInitialization.insertAllCivilProtectionsFrom(FILE_PATH + CIVIL_PROTECTION_FILE);
+        dbInitialization.insertAllObjectsFromAFile(
+                DBConnection.Table.CIVIL_PROTECTION,
+                FILE_PATH + CIVIL_PROTECTION_FILE);
 
-        dbInitialization.insertAllCpAreasFrom(FILE_PATH + CP_AREAS_FILE);
+        dbInitialization.insertAllObjectsFromAFile(
+                DBConnection.Table.CP_AREA,
+                FILE_PATH + CP_AREAS_FILE);
+
+        dbInitialization.insertAllObjectsFromAFile(
+                DBConnection.Table.USER,
+                FILE_PATH + USERS_FILE);
+
+        dbInitialization.insertAllObjectsFromAFile(
+                DBConnection.Table.RESCUE_TEAM,
+                FILE_PATH + RESCUE_TEAMS_FILE);
+
+        dbInitialization.insertAllObjectsFromAFile(
+                DBConnection.Table.CP_ENROLLMENT,
+                FILE_PATH + CP_ENROLLMENT_FILE);
     }
 }

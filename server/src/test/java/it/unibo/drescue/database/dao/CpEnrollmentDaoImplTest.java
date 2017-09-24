@@ -8,7 +8,8 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class CpEnrollmentDaoImplTest extends GenericDaoAbstractTest {
     private static final RescueTeam RESCUE_TEAM_TEST = new RescueTeamImplBuilder()
@@ -71,21 +72,16 @@ public class CpEnrollmentDaoImplTest extends GenericDaoAbstractTest {
     }
 
     @Test
-    public void isFindingNotRelatedAndNotRelatedRescueTeamsGivenACp() throws Exception {
-        List<RescueTeam> rescueTeamsEnrolledByCp =
-                this.cpEnrollmentDao.findAllRescueTeamGivenACp(CP_TEST.getCpID(), true);
-        assertEquals(rescueTeamsEnrolledByCp.size(), 0);
-        List<RescueTeam> rescueTeamsNotEnrolledByCp =
+    public void isFindingRelatedAndNotRelatedRescueTeamsGivenACp() throws Exception {
+
+        final List<RescueTeam> rescueTeamsNotEnrolledByCp =
                 this.cpEnrollmentDao.findAllRescueTeamGivenACp(CP_TEST.getCpID(), false);
         assertTrue(rescueTeamsNotEnrolledByCp.size() > 0);
 
         this.cpEnrollmentDao.insert(CP_ENROLLMENT_TEST);
-        rescueTeamsEnrolledByCp =
+        final List<RescueTeam> rescueTeamsEnrolledByCp =
                 this.cpEnrollmentDao.findAllRescueTeamGivenACp(CP_TEST.getCpID(), true);
         assertTrue(rescueTeamsEnrolledByCp.size() > 0);
-        rescueTeamsNotEnrolledByCp =
-                this.cpEnrollmentDao.findAllRescueTeamGivenACp(CP_TEST.getCpID(), false);
-        assertEquals(rescueTeamsNotEnrolledByCp.size(), 0);
 
         this.cpEnrollmentDao.delete(CP_ENROLLMENT_TEST);
     }
