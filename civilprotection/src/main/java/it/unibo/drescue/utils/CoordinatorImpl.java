@@ -1,8 +1,7 @@
 package it.unibo.drescue.utils;
 
-import it.unibo.drescue.communication.messages.ReplayCoordinationMessage;
+import it.unibo.drescue.communication.messages.ReplyCoordinationMessage;
 import it.unibo.drescue.connection.RabbitMQ;
-import it.unibo.drescue.model.RescueTeam;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -131,14 +130,14 @@ public class CoordinatorImpl implements Coordinator {
 
     @Override
     public void sendReplayMessageTo(String csName, String to, RescueTeamCondition rescueTeamCondition) {
-        ReplayCoordinationMessage replayCoordinationMessage = new ReplayCoordinationMessage();
-        replayCoordinationMessage.setTimestamp(new Timestamp(System.currentTimeMillis()));
-        replayCoordinationMessage.setRescueTeamID(csName);
-        replayCoordinationMessage.setRTcondition(rescueTeamCondition);
-        replayCoordinationMessage.setFrom(myID);
-        replayCoordinationMessage.setTo(to);
+        ReplyCoordinationMessage replyCoordinationMessage = new ReplyCoordinationMessage();
+        replyCoordinationMessage.setTimestamp(new Timestamp(System.currentTimeMillis()));
+        replyCoordinationMessage.setRescueTeamID(csName);
+        replyCoordinationMessage.setRTcondition(rescueTeamCondition);
+        replyCoordinationMessage.setFrom(myID);
+        replyCoordinationMessage.setTo(to);
         try {
-            this.connection.sendMessage(this.exchangeName, csName, null, replayCoordinationMessage);
+            this.connection.sendMessage(this.exchangeName, csName, null, replyCoordinationMessage);
         } catch (IOException e) {
             e.printStackTrace();
         }
