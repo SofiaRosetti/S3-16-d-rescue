@@ -68,7 +68,7 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
         }
 
       case MessageType.REPLAY_COORDINATION_MESSAGE =>
-        val replayMessage = GsonUtils.fromGson(message, classOf[ReplayCoordinationMessage])
+        val replayMessage = GsonUtils.fromGson(message, classOf[ReplyCoordinationMessage])
         val replayTimestamp = replayMessage.getTimestamp
         val replayFrom = replayMessage.getFrom
         val replayTo = replayMessage.getTo
