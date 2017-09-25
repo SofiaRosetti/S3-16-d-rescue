@@ -9,6 +9,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Class that provides the complete access to the UpvotedAlert object in DB
+ * implements the abstract class GenericDaoAbstract and its interface
+ */
 public class UpvotedAlertDaoImpl extends GenericDaoAbstract<UpvotedAlert> implements UpvotedAlertDao {
 
     private static final String TABLENAME = "UPVOTED_ALERT";

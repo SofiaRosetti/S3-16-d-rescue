@@ -5,6 +5,10 @@ import it.unibo.drescue.model.CpArea;
 
 import java.util.List;
 
+/**
+ * Interface of DAO for CpArea objects, it extends GenericDao
+ * and specify some other useful methods for this objectModel
+ */
 public interface CpAreaDao extends GenericDao {
 
     /**

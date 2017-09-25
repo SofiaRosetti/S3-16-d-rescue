@@ -7,7 +7,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public abstract class UpdatableDaoAbstract<T> extends GenericDaoAbstract implements UpdatableDao {
+/**
+ * Abstract class from which all DAO implementation that needs an update method extends,
+ * it contains the template method for all objects in DB
+ *
+ * @param <T> specify the class of the object interested in DAO, in this case an ObjectModel
+ */
+public abstract class UpdatableDaoAbstract<T extends ObjectModel> extends GenericDaoAbstract implements UpdatableDao {
 
     protected UpdatableDaoAbstract(final Connection connection, final String tableName) {
         super(connection, tableName);

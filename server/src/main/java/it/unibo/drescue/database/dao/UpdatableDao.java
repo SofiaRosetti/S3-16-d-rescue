@@ -3,6 +3,10 @@ package it.unibo.drescue.database.dao;
 import it.unibo.drescue.database.exceptions.DBQueryException;
 import it.unibo.drescue.model.ObjectModel;
 
+/**
+ * Interface from which all DAO that need an update method extends,
+ * it extends the GenericDao interface
+ */
 public interface UpdatableDao extends GenericDao {
 
     /**

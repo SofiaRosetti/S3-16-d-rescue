@@ -12,7 +12,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventTypeDaoImpl extends GenericDaoAbstract implements EventTypeDao {
+/**
+ * Class that provides the complete access to the EventType object in DB
+ * implements the abstract class GenericDaoAbstract and its interface
+ */
+public class EventTypeDaoImpl extends GenericDaoAbstract<EventType> implements EventTypeDao {
 
     private final static String TABLENAME = "EVENT_TYPE";
 

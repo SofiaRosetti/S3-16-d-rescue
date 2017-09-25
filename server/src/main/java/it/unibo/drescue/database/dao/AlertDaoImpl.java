@@ -9,6 +9,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class that implement the abstract class UpdatableDaoAbstract
+ * and implements its interface obtaining the complete Dao for an Alert object
+ */
 public class AlertDaoImpl extends UpdatableDaoAbstract<Alert> implements AlertDao {
 
     private static final String FIND_LAST_EXCEPTION =
