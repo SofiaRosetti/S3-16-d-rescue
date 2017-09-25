@@ -97,7 +97,7 @@ class CustomDialog(mainController: MainControllerImpl) {
       case CustomDialog.InfoLogin =>
         CustomDialog.dialog = new Alert(AlertType.Information) {
           initOwner(mainController._view._stage)
-          title = CustomDialog.LoginErrorDialogTitle
+          title = CustomDialog.ProcessingDialogTitle
           headerText = CustomDialog.LoginVerifyDialogHeader
           contentText = CustomDialog.LoginVerifyDialogContent
           buttonTypes.remove(0)

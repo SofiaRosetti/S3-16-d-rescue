@@ -24,25 +24,48 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
   private var _alertInManage: AlertEntry = _
 
   /**
-    *
     * @return the button text that has to be active
     */
   def sendOrStop = _sendOrStop
 
+  /**
+    * Sets to value the button text that has to be active
+    *
+    * @param value
+    */
   def sendOrStop_=(value: String): Unit = {
     _sendOrStop = value
   }
 
+  /**
+    * @return the AlertEntry corresponding to the selected alert in home view
+    */
   def alertInManage = _alertInManage
 
+  /**
+    * Sets to value the AlertEntry corresponding to the selected alert in home view
+    *
+    * @param value
+    */
   def alertInManage_=(value: AlertEntry): Unit = {
     _alertInManage = value
   }
 
+  /**
+    * Adds the main view to the controller
+    *
+    * @param viewValue the main view to be added
+    */
   def addView(viewValue: MainView): Unit = {
     view = viewValue
   }
 
+  /**
+    * Creates consumers to retrieve alerts and rescue teams after login
+    *
+    * @param username    the civil protection ID
+    * @param rescueTeams the rescue teams list returned from the login
+    */
   def userLogged(username: String, rescueTeams: java.util.List[RescueTeamImpl]): Unit = {
     model.cpID = username
     model.enrolledRescueTeams = rescueTeams
@@ -80,15 +103,21 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
     rabbitMQ addConsumer(AlertConsumer(rabbitMQ, this), model.cpID)
   }
 
-  def startErrorDialog() = {
-    val dialog = new CustomDialog(this).createDialog(CustomDialog.Error)
-    dialog.showAndWait()
-  }
-
+  /**
+    * Initializes the local model alerts list
+    *
+    * @param list the alerts list local model has to be initialized to
+    */
   def initializeAlerts(list: java.util.List[AlertImpl]): Unit = {
     model.lastAlerts = fromAlertImplListToAlertEntryList(list)
   }
 
+  /**
+    * Converts a list of AlertImpl to a list of AlertEntry
+    *
+    * @param list the list to be converted
+    * @return the converted list
+    */
   def fromAlertImplListToAlertEntryList(list: java.util.List[AlertImpl]): java.util.List[AlertEntry] = {
     val entryList: java.util.List[AlertEntry] = new util.ArrayList[AlertEntry]()
     list.forEach((alert: AlertImpl) => {
@@ -97,6 +126,12 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
     entryList
   }
 
+  /**
+    * Converts an AlertImpl to an AlertEntry
+    *
+    * @param alert the AlertImpl to be converted
+    * @return the converted AlertEntry
+    */
   def fromAlertImplToAlertEntry(alert: AlertImpl): AlertEntry = {
     new AlertEntry(
       alert.getAlertID,
@@ -109,10 +144,21 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
       alert.getUpvotes)
   }
 
+  /**
+    * Initializes the local model EnrolledTeamInfo list
+    *
+    * @param list the list local model has to be initialized to
+    */
   def initializeEnrolledTeamInfoList(list: java.util.List[RescueTeamImpl]): Unit = {
     model.enrolledTeamInfoList = fromRescueTeamListToEnrolledTeamInfoList(list)
   }
 
+  /**
+    * Converts a RescueTeam list to a EnrolledTeamInfo list
+    *
+    * @param list the list to be converted
+    * @return the converted list
+    */
   def fromRescueTeamListToEnrolledTeamInfoList(list: java.util.List[RescueTeamImpl]): java.util.List[EnrolledTeamInfo] = {
     val entryList: java.util.List[EnrolledTeamInfo] = new util.ArrayList[EnrolledTeamInfo]()
     list.forEach((rescueTeam: RescueTeamImpl) => {
@@ -121,6 +167,11 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
     entryList
   }
 
+  /**
+    * Converts a RescueTeam to a EnrollTeamInfo
+    * @param rescueTeam the RescueTeam to be converted
+    * @return the converted EnrolledTeamInfo
+    */
   def fromRescueTeamToEnrolledTeamInfoEntry(rescueTeam: RescueTeamImpl): EnrolledTeamInfo = {
     new EnrolledTeamInfo(
       rescueTeam.getRescueTeamID,
@@ -131,6 +182,17 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
       "")
   }
 
+  /**
+    * Starts a custom error dialog
+    */
+  def startErrorDialog() = {
+    val dialog = new CustomDialog(this).createDialog(CustomDialog.Error)
+    dialog.showAndWait()
+  }
+
+  /**
+    * Initializes the local model not enrolled teams list with a DB query result message
+    */
   def initializeNotEnrolled(): Unit = {
     val message: Message = GetRescueTeamsNotEnrolledMessageImpl(model.cpID)
     val task: Future[String] = pool.submit(new RequestHandler(rabbitMQ, message, QueueType.CIVIL_PROTECTION_QUEUE))
@@ -145,14 +207,25 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
     }
   }
 
+  /**
+    * Initializes the local model not enrolled teams
+    * @param list the list local model has to be initialized to
+    */
   def initializeNotEnrolledModel(list: java.util.List[RescueTeamImpl]) = {
     model.notEnrolledRescueTeams = list
   }
 
+  /**
+    * Changes the view to the next view
+    * @param nextView the next view
+    */
   def changeView(nextView: String) = {
     view.changeView(nextView)
   }
 
+  /**
+    * @return the main view
+    */
   def _view: MainView = view
 
 }

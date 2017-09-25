@@ -11,23 +11,40 @@ class HomeControllerImpl(private var mainController: MainControllerImpl) extends
 
   var obsBuffer = new ObservableBuffer[AlertEntry]()
 
+  /**
+    * Performs actions relative to pressing on manage rescues button
+    * and changes the view to manage rescues view
+    */
   def manageRescuesPress() = {
     mainController.sendOrStop = "Stop"
     mainController.alertInManage = null
     mainController.changeView("ManageRescues")
   }
 
+  /**
+    * Performs actions relative to pressing on start rescue button
+    * and changes the view to manage rescues view
+    *
+    * @param alert the selected alert for which the rescue will start
+    */
   def startRescuePress(alert: AlertEntry) = {
     mainController.alertInManage = alert
     mainController.sendOrStop = "Send"
     mainController.changeView("ManageRescues")
   }
 
+  /**
+    * Starts a dialog that informs the user it's necessary to select an alert to start a rescue
+    */
   def startSelectAlertDialog() = {
     val dialog = new CustomDialog(mainController).createDialog(CustomDialog.SelectAlert)
     dialog.showAndWait()
   }
 
+  /**
+    * Performs actions relative to pressing on enroll team button
+    * and changes the view to enroll team view
+    */
   def enrollTeamPress() = {
     mainController.initializeNotEnrolled()
     mainController.changeView("NewTeam")

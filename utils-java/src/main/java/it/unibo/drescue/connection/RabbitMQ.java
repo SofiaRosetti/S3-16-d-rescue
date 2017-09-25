@@ -46,6 +46,12 @@ public interface RabbitMQ {
      */
     AMQP.BasicProperties setReplyTo(String queueName);
 
+    /**
+     * Declare a queue.
+     *
+     * @param queueName the queue name
+     * @throws IOException if an error is encountered
+     */
     void addQueue(String queueName) throws IOException;
 
     /**

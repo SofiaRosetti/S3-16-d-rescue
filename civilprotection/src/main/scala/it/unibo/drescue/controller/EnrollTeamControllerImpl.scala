@@ -38,6 +38,14 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
   var obsBuffer = new ObservableBuffer[String]()
   var dialog: Alert = _
 
+  /**
+    * Starts checks to verify if all fields are filled and if the inserted address is correct
+    *
+    * @param rescueTeamId the inserted rescue team ID
+    * @param name         the inserted rescue team name
+    * @param address      the inserted rescue team address
+    * @param phoneNumber  the inserted rescue team phone number
+    */
   def startChecks(rescueTeamId: String, name: String, address: String, phoneNumber: String) = {
 
     checkInputs(rescueTeamId, name, address, phoneNumber) match {
@@ -54,7 +62,7 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
         } catch {
           case e: GeocodingException =>
             mainController.changeView("NewTeam")
-            startAddressDialog()
+            startDialogAndWait(EnrollTeamControllerImpl.InvalidAddress)
             println("[EnrollTeam] : Address not valid")
             EnrollTeamControllerImpl.CommandInsertValidAddress
           case _: Throwable =>
@@ -74,6 +82,17 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
     }
   }
 
+  /**
+    * Adds the new rescue team both into the database and in the displayed list
+    *
+    * @param rescueTeamId the new rescue team ID
+    * @param name         the new rescue team name
+    * @param address      the new rescue team address
+    * @param phoneNumber  the new rescue team phone number
+    * @param latitude     the new rescue team latitude
+    * @param longitude    the new rescue team longitude
+    * @return a string representing the result action
+    */
   def addTeam(rescueTeamId: String, name: String, address: String, phoneNumber: String, latitude: Double, longitude: Double): String = {
 
     mainController.changeView("NewTeam")
@@ -122,21 +141,47 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
     EnrollTeamControllerImpl.Adding
   }
 
+  /**
+    * Starts a new custom dialog with OK button and waits for the user to click on it
+    *
+    * @param newDialog a string representing the new dialog information
+    */
+  def startDialogAndWait(newDialog: String) = {
+    dialog = new CustomDialog(mainController).createDialog(newDialog)
+    dialog.showAndWait()
+  }
+
+  /**
+    * Starts a new custom dialog without buttons
+    *
+    * @param newDialog a string representing the new dialog information
+    */
   def startDialog(newDialog: String) = {
     dialog = new CustomDialog(mainController).createDialog(newDialog)
     dialog.show()
   }
 
-  def startAddressDialog() = {
-    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.InvalidAddress)
-    dialog.showAndWait()
-  }
-
+  /**
+    * Checks if all input fields are filled
+    *
+    * @param rescueTeamId the text in rescue team ID field
+    * @param name         the text in rescue team name field
+    * @param address      the text in rescue team address field
+    * @param phoneNumber  the text in rescue team phone number field
+    * @return true, if all inputs are filled
+    *         false, otherwise
+    */
   def checkInputs(rescueTeamId: String, name: String, address: String, phoneNumber: String): Boolean = {
     StringUtils.isAValidString(rescueTeamId) && StringUtils.isAValidString(name) &&
       StringUtils.isAValidString(phoneNumber) && StringUtils.isAValidString(address)
   }
 
+  /**
+    * Verifies if a team is selected and performs actions to save the new enrollment
+    * to the database after the user clicks on the select button
+    *
+    * @param selectedTeamID a string representing the selected team
+    */
   def selectPress(selectedTeamID: String) = {
 
     if (StringUtils.isAValidString(selectedTeamID)) {
@@ -208,11 +253,9 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
     }
   }
 
-  def startDialogAndWait(newDialog: String) = {
-    dialog = new CustomDialog(mainController).createDialog(newDialog)
-    dialog.showAndWait()
-  }
-
+  /**
+    * Changes the view returning to the home view after the user clicks on back button
+    */
   def backPress() = {
     mainController.changeView("Home")
   }

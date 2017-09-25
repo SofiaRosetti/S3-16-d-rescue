@@ -20,13 +20,18 @@ object LoginControllerImpl {
 }
 
 class LoginControllerImpl(private var mainController: MainControllerImpl,
-                          val rabbitMQ: RabbitMQImpl
-                         ) {
-
+                          val rabbitMQ: RabbitMQImpl) {
 
   val pool: ExecutorService = Executors.newFixedThreadPool(1)
   var dialog: Alert = _
 
+  /**
+    * Performs actions to verify if login credentials are correct
+    * and changes the view to home view
+    *
+    * @param username the inserted username
+    * @param password the inserted password
+    */
   def loginPress(username: String, password: String) = {
     startLoadingDialog()
 
@@ -51,17 +56,26 @@ class LoginControllerImpl(private var mainController: MainControllerImpl,
     }
   }
 
+  /**
+    * Starts a custom dialog that tells the user to wait until credentials verify is completed
+    */
   def startLoadingDialog() = {
     dialog = new CustomDialog(mainController).createDialog(LoginControllerImpl.InfoLogin)
     dialog.show()
   }
 
+  /**
+    * Starts a custom dialog which informs the user that the inserted credentials are incorrect
+    */
   def startWrongLoginDialog() = {
     mainController.changeView(LoginControllerImpl.Login)
     dialog = new CustomDialog(mainController).createDialog(LoginControllerImpl.WrongLogin)
     dialog.showAndWait()
   }
 
+  /**
+    * Starts a custom dialog which tells the user to fill username and password
+    */
   def startEmptyLoginDialog() = {
     dialog = new CustomDialog(mainController).createDialog(LoginControllerImpl.EmptyLogin)
     dialog.showAndWait()

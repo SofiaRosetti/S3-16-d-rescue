@@ -44,6 +44,14 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
     )
   }
 
+  //TODO check scaladoc
+  /**
+    * Performs the actions relative to the click on the send button.
+    *
+    * @param wantedRescueTeamID
+    * @param alertID
+    * @return
+    */
   def sendPressed(wantedRescueTeamID: String, alertID: String): Any = {
     if (wantedRescueTeamID != "") {
       var indexToChange: Int = -1
@@ -134,16 +142,32 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
     )
   }
 
+  /**
+    * Starts a custom dialog which informs the user that the team has been sent
+    *
+    * @return
+    */
   def startSuccessDialog(): Option[ButtonType] = {
     dialog = new CustomDialog(mainController).createDialog(ManageRescuesControllerImpl.Sent)
     dialog.showAndWait()
   }
 
+  /**
+    * Starts a custom error dialog
+    *
+    * @return
+    */
   def startErrorDialog(): Option[ButtonType] = {
     dialog = new CustomDialog(mainController).createDialog(ManageRescuesControllerImpl.Error)
     dialog.showAndWait()
   }
 
+  /**
+    * Performs the ations relative to the click on the stop button
+    *
+    * @param wantedRescueTeamID
+    * @return
+    */
   def stopPressed(wantedRescueTeamID: String): Any = {
     var indexToChange: Int = -1
     var rescueTeamToChange: EnrolledTeamInfo = null
@@ -183,6 +207,9 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
     dialog.showAndWait()
   }
 
+  /**
+    * Changes the view to the home view after the click on the back button
+    */
   def backPress(): Unit = {
     mainController.changeView("Home")
   }
