@@ -1,6 +1,6 @@
 package it.unibo.drescue
 
-import it.unibo.drescue.connection.{RabbitMQConnectionImpl, RabbitMQImpl}
+import it.unibo.drescue.connection.{RabbitConnectionConstants, RabbitMQConnectionImpl, RabbitMQImpl}
 import it.unibo.drescue.controller._
 import it.unibo.drescue.localModel.CivilProtectionData
 import it.unibo.drescue.view.{LoginGrid, MainView}
@@ -9,7 +9,7 @@ import scalafx.application.JFXApp
 
 object Main extends JFXApp {
 
-  val connection = new RabbitMQConnectionImpl("localhost")
+  val connection = new RabbitMQConnectionImpl(RabbitConnectionConstants.REMOTE_HOST)
   connection.openConnection()
   var cpData = CivilProtectionData()
   var controller = new MainControllerImpl(cpData, new RabbitMQImpl(connection))
