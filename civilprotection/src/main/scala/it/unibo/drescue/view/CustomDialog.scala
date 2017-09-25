@@ -5,6 +5,9 @@ import it.unibo.drescue.controller.MainControllerImpl
 import scalafx.scene.control.Alert
 import scalafx.scene.control.Alert.AlertType
 
+/**
+  * Object companion of CustomDialog class
+  */
 object CustomDialog {
   val LoginErrorDialogTitle = "Login Error"
   val LoginErrorDialogHeader = "Empty login."
@@ -78,13 +81,29 @@ object CustomDialog {
   var errorMsg: String = _
 }
 
+/**
+  * A class that creates custom dialogs to be shown in civil protection views
+  *
+  * @param mainController the main controller
+  */
 class CustomDialog(mainController: MainControllerImpl) {
 
+  /**
+    * Sets a custom error text
+    *
+    * @param text the error text
+    */
   def setErrorText(text: String): Unit = {
     CustomDialog.errorMsg = text
   }
 
 
+  /**
+    * Creates a custom dialog depending on the type parameter
+    *
+    * @param dialogType the dialog type
+    * @return an alert that composes the custom dialog
+    */
   def createDialog(dialogType: String): Alert = {
     dialogType match {
       case CustomDialog.EmptyLogin =>
@@ -226,6 +245,9 @@ class CustomDialog(mainController: MainControllerImpl) {
     CustomDialog.dialog
   }
 
+  /**
+    * @return the created custom dialog
+    */
   def _dialog: Alert = CustomDialog.dialog
 
 }

@@ -1,5 +1,8 @@
 package it.unibo.drescue.view
 
+/**
+  * An object containing all civil protection views numeric constants
+  */
 object ViewConstants {
 
   val Gap = 10

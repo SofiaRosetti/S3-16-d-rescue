@@ -8,6 +8,17 @@ import scalafx.application.JFXApp.PrimaryStage
 import scalafx.application.{JFXApp, Platform}
 import scalafx.scene.Scene
 
+/**
+  * A class representing the main view of the civil protection application,
+  * which is the container of all different grids
+  *
+  * @param loginGrid                the login grid, which is the first to be shown
+  * @param loginController          the login controller
+  * @param controller               the main controller
+  * @param homeController           the home controller
+  * @param enrollTeamControllerImpl the enroll team controller
+  * @param manageRescuesController  the manage rescues controller
+  */
 class MainView(loginGrid: LoginGrid,
                loginController: LoginControllerImpl,
                controller: MainControllerImpl,
@@ -20,6 +31,9 @@ class MainView(loginGrid: LoginGrid,
   var team = new EnrollTeamGrid(enrollTeamControllerImpl)
   var manage = new ManageRescuesGrid(manageRescuesController, "Stop", controller.alertInManage)
 
+  /**
+    * Sets the type of stage to be shown with relative properties
+    */
   def setStage(): Unit = {
     stage = new PrimaryStage {
       title = "D-rescue"
@@ -35,6 +49,11 @@ class MainView(loginGrid: LoginGrid,
     }
   }
 
+  /**
+    * Performs the views alternation
+    *
+    * @param view the next view to be shown
+    */
   def changeView(view: String): Unit = {
 
     val LoginCase: String = "Login"
@@ -68,5 +87,8 @@ class MainView(loginGrid: LoginGrid,
     _stage.show()
   }
 
+  /**
+    * @return the main view stage
+    */
   def _stage = stage
 }

@@ -11,10 +11,18 @@ import it.unibo.drescue.localModel.EnrolledTeamInfo
 import it.unibo.drescue.utils.{Coordinator, CoordinatorCondition, CoordinatorImpl, RescueTeamCondition}
 
 /**
+<<<<<<< HEAD
   * This consumer handle the messages sent by other civil protection in order to coordinate the rescues
   *
   * @param rabbitMQ
   * @param mainControllerImpl
+=======
+  * A class representing a consumer able to coordinate civil protections
+  * thanks to the management of rescue teams
+  *
+  * @param rabbitMQ           the channel
+  * @param mainControllerImpl the main controller
+>>>>>>> 2765901000c3619a17efc5296e59efe70d8ff529
   */
 case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
                               private val mainControllerImpl: MainControllerImpl)

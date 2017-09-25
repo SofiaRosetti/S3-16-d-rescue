@@ -2,10 +2,16 @@ package it.unibo.drescue.localModel
 
 import it.unibo.drescue.controller.Observer
 
+/**
+  * Object companion of Observable trait
+  */
 object Observers extends Enumeration {
   val Home, EnrollTeam, ManageRescue = Value
 }
 
+/**
+  * A trait observable classes must implement to respect the observer pattern
+  */
 trait Observable {
 
   var homeObserver: Observer = _

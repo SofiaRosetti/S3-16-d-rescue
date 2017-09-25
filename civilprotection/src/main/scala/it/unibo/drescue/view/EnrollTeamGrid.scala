@@ -10,6 +10,12 @@ import scalafx.scene.control.{Button, ComboBox, Label, TextField}
 import scalafx.scene.layout.{GridPane, HBox}
 import scalafx.scene.text.Font
 
+/**
+  * A class representing the grid contained in the MainView
+  * and relative to the Enroll Team view
+  *
+  * @param enrollTeamController the enroll team controller
+  */
 class EnrollTeamGrid(private var enrollTeamController: EnrollTeamControllerImpl) {
 
   val _grid = new GridPane() {
@@ -169,6 +175,9 @@ class EnrollTeamGrid(private var enrollTeamController: EnrollTeamControllerImpl)
     GridPane.setConstraints(ButtonBox, ColumnRow0, ColumnRow7, ColumnRow2, ColumnRow1)
   }
 
+  /**
+    * @return the enroll team grid
+    */
   def grid = _grid
 
 }

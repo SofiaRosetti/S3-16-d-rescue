@@ -4,6 +4,18 @@ import java.sql.Timestamp
 
 import scalafx.beans.property.StringProperty
 
+/**
+  * A class representing an entry of the home view alerts list
+  *
+  * @param _alertID    the alert ID
+  * @param _timestamp  the alert timestamp
+  * @param _latitude   the alert latitude
+  * @param _longitude  the alert longitude
+  * @param _userID     the user ID
+  * @param _eventName  the event name
+  * @param _districtID the district ID
+  * @param _upvotes    the alert upvotes
+  */
 class AlertEntry(val _alertID: Int,
                  val _timestamp: Timestamp,
                  val _latitude: Double,

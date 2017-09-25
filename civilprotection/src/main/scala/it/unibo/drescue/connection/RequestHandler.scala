@@ -7,10 +7,20 @@ import it.unibo.drescue.communication.GsonUtils
 import it.unibo.drescue.communication.messages.Message
 import it.unibo.drescue.communication.messages.response.ErrorMessageImpl
 
+/**
+  * Object companion of RequestHandler class
+  */
 object RequestHandler {
   private val ErrorServer = "Error during server communication."
 }
 
+/**
+  * A class with the purpose of set up a RPC request
+  *
+  * @param rabbitMQ the request channel
+  * @param message  the request message
+  * @param queue    the request queue
+  */
 class RequestHandler(val rabbitMQ: RabbitMQImpl, val message: Message, val queue: QueueType) extends Callable[String] {
 
 

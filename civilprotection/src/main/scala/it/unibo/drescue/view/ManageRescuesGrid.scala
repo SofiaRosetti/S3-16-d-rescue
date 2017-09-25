@@ -12,6 +12,14 @@ import scalafx.scene.control.{Button, Label, TableColumn, TableView}
 import scalafx.scene.layout.{GridPane, HBox}
 import scalafx.scene.text.Font
 
+/**
+  * A class representing the grid contained in the MainView
+  * and relative to the manage rescues view
+  *
+  * @param manageRescuesController the manage rescues controller
+  * @param activeButton            a string representing which button is active
+  * @param alert                   the alert a new rescue will be started for
+  */
 class ManageRescuesGrid(private var manageRescuesController: ManageRescuesControllerImpl,
                         private var activeButton: String,
                         private var alert: AlertEntry) {
@@ -125,7 +133,7 @@ class ManageRescuesGrid(private var manageRescuesController: ManageRescuesContro
       onMouseClicked = (event: MouseEvent) => {
         val selected = Table.getSelectionModel.getFocusedIndex
         val team = entries.get(selected)
-        println("SendButton " + team.teamID.value + " " + alert.alertID.value )
+        println("SendButton " + team.teamID.value + " " + alert.alertID.value)
         manageRescuesController.sendPressed(team.teamID.value, alert.alertID.value)
       }
       if (activeButton == "Stop") {
@@ -166,5 +174,8 @@ class ManageRescuesGrid(private var manageRescuesController: ManageRescuesContro
     add(ButtonBox, ColumnRow0, ColumnRow5)
   }
 
+  /**
+    * @return the manage rescues team grid
+    */
   def grid = _grid
 }

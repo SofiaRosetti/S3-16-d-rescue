@@ -11,6 +11,12 @@ import scalafx.scene.control._
 import scalafx.scene.layout.{GridPane, HBox}
 import scalafx.scene.text.Font
 
+/**
+  * A class representing the grid contained in the MainView
+  * and relative to the Login view
+  *
+  * @param loginController the login controller
+  */
 class LoginGrid(private var loginController: LoginControllerImpl) {
 
   val _grid = new GridPane() {
@@ -61,8 +67,19 @@ class LoginGrid(private var loginController: LoginControllerImpl) {
     GridPane.setConstraints(ButtonBox, ColumnRow0, ColumnRow4, ColumnRow2, ColumnRow1)
   }
 
+  /**
+    * @return the login grid
+    */
   def grid = _grid
 
+  /**
+    * Checks if username and password fields are valid strings
+    *
+    * @param username the inserted username
+    * @param password the inserted password
+    * @return true, if both fields are valid
+    *         false, otherwise
+    */
   def checkInputs(username: String, password: String): Boolean = {
     StringUtils.isAValidString(username) && StringUtils.isAValidString(password)
   }

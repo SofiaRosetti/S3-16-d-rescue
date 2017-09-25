@@ -13,6 +13,12 @@ import it.unibo.drescue.localModel.{AlertEntry, CivilProtectionData, EnrolledTea
 import it.unibo.drescue.model.{AlertImpl, RescueTeamImpl}
 import it.unibo.drescue.view.{CustomDialog, MainView}
 
+/**
+  * A class representing the application main controller
+  *
+  * @param model    the application local model
+  * @param rabbitMQ the channel used to handle requests and responses
+  */
 class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQImpl) {
 
   val ExchangeName = "rt_exchange"
@@ -169,6 +175,7 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
 
   /**
     * Converts a RescueTeam to a EnrollTeamInfo
+    *
     * @param rescueTeam the RescueTeam to be converted
     * @return the converted EnrolledTeamInfo
     */
@@ -209,6 +216,7 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
 
   /**
     * Initializes the local model not enrolled teams
+    *
     * @param list the list local model has to be initialized to
     */
   def initializeNotEnrolledModel(list: java.util.List[RescueTeamImpl]) = {
@@ -217,6 +225,7 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
 
   /**
     * Changes the view to the next view
+    *
     * @param nextView the next view
     */
   def changeView(nextView: String) = {
