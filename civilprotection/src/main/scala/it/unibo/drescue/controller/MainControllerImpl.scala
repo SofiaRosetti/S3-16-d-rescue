@@ -11,7 +11,7 @@ import it.unibo.drescue.communication.messages.response.AlertsMessageImpl
 import it.unibo.drescue.connection._
 import it.unibo.drescue.localModel.{AlertEntry, CivilProtectionData, EnrolledTeamInfo}
 import it.unibo.drescue.model.{AlertImpl, RescueTeamImpl}
-import it.unibo.drescue.view.MainView
+import it.unibo.drescue.view.{CustomDialog, MainView}
 
 class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQImpl) {
 
@@ -44,14 +44,12 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
   }
 
   def userLogged(username: String, rescueTeams: java.util.List[RescueTeamImpl]): Unit = {
-    model.cpID = username // set cpID in main controller
+    model.cpID = username
     model.enrolledRescueTeams = rescueTeams
 
-    //initialize model.enrolledTeamInfoList
     initializeEnrolledTeamInfoList(rescueTeams)
     println(model.enrolledTeamInfoList)
 
-    //ask for availability of enrolledRescueTeams
     rabbitMQ declareExchange(ExchangeName, BuiltinExchangeType.DIRECT)
     queueName = rabbitMQ addReplyQueue()
     rabbitMQ bindQueueToExchange(queueName, ExchangeName, rescueTeams)
@@ -66,7 +64,6 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
       rabbitMQ.sendMessage(ExchangeName, rescueTeam.getRescueTeamID, null, rescueTeamConditionMessage)
     })
 
-    //request of alerts of my zone
     val message: Message = RequestCpAlertsMessageImpl(model.cpID)
     val task: Future[String] = pool.submit(new RequestHandler(rabbitMQ, message, QueueType.ALERTS_QUEUE))
     val response: String = task.get()
@@ -76,12 +73,16 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
       case MessageType.ALERTS_MESSAGE =>
         val alertsMessage = GsonUtils.fromGson(response, classOf[AlertsMessageImpl])
         initializeAlerts(alertsMessage.getAlerts)
-      case _ => //TODO error
+      case _ => startErrorDialog()
     }
 
     rabbitMQ.addQueue(model.cpID)
     rabbitMQ addConsumer(AlertConsumer(rabbitMQ, this), model.cpID)
+  }
 
+  def startErrorDialog() = {
+    val dialog = new CustomDialog(this).createDialog(CustomDialog.Error)
+    dialog.showAndWait()
   }
 
   def initializeAlerts(list: java.util.List[AlertImpl]): Unit = {
@@ -140,7 +141,7 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
       case MessageType.RESCUE_TEAMS_MESSAGE =>
         val teamsMessage = GsonUtils.fromGson(response, classOf[RescueTeamsMessageImpl])
         initializeNotEnrolledModel(teamsMessage.rescueTeamsList)
-      case _ => //TODO error
+      case _ => startErrorDialog()
     }
   }
 

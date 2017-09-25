@@ -41,19 +41,14 @@ class LoginControllerImpl(private var mainController: MainControllerImpl,
 
     messageName match {
 
-      case MessageType.RESCUE_TEAMS_MESSAGE => { //TODO success
+      case MessageType.RESCUE_TEAMS_MESSAGE =>
         val responseMessage: RescueTeamsMessageImpl = GsonUtils.fromGson(response, classOf[RescueTeamsMessageImpl])
         mainController.userLogged(username, responseMessage.rescueTeamsList)
-        mainController.changeView(LoginControllerImpl.Home) // stop dialog and change view
-      }
-      case MessageType.ERROR_MESSAGE => {
-        startWrongLoginDialog() // show ERROR -> change dialog
-      }
+        mainController.changeView(LoginControllerImpl.Home)
+      case MessageType.ERROR_MESSAGE =>
+        startWrongLoginDialog()
       case _ => //do nothing
     }
-
-    //pool.shutdown() //TODO verify
-
   }
 
   def startLoadingDialog() = {

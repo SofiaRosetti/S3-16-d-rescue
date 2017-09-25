@@ -119,7 +119,6 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
       }
       case _ => // do nothing
     }
-
     EnrollTeamControllerImpl.Adding
   }
 
@@ -136,11 +135,6 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
   def checkInputs(rescueTeamId: String, name: String, address: String, phoneNumber: String): Boolean = {
     StringUtils.isAValidString(rescueTeamId) && StringUtils.isAValidString(name) &&
       StringUtils.isAValidString(phoneNumber) && StringUtils.isAValidString(address)
-  }
-
-  def startDialogAndWait(newDialog: String) = {
-    dialog = new CustomDialog(mainController).createDialog(newDialog)
-    dialog.showAndWait()
   }
 
   def selectPress(selectedTeamID: String) = {
@@ -212,6 +206,11 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
     } else {
       startDialogAndWait(EnrollTeamControllerImpl.SelectTeam)
     }
+  }
+
+  def startDialogAndWait(newDialog: String) = {
+    dialog = new CustomDialog(mainController).createDialog(newDialog)
+    dialog.showAndWait()
   }
 
   def backPress() = {
