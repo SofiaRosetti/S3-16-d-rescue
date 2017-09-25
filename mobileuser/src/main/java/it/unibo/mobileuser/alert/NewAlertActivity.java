@@ -21,6 +21,8 @@ import java.util.List;
  */
 public class NewAlertActivity extends GpsActivityImpl {
 
+    private Button sendButton;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +47,8 @@ public class NewAlertActivity extends GpsActivityImpl {
         latitudeTextView.setText(getLatitude());
         longitudeTextView.setText(getLongitude());
 
-        final Button sendButton = (Button) findViewById(R.id.send_button);
-        sendButton.setOnClickListener((View view) -> {
+        this.sendButton = (Button) findViewById(R.id.send_button);
+        this.sendButton.setOnClickListener((View view) -> {
             final String eventType = spinner.getSelectedItem().toString();
             final String latitudeString = latitudeTextView.getText().toString();
             final double latitude = convertCoordinate(latitudeString);
@@ -77,6 +79,7 @@ public class NewAlertActivity extends GpsActivityImpl {
 
         if (isNetworkAvailable()) {
 
+            this.sendButton.setEnabled(false);
             new RabbitPublishAsyncTask(QueueType.ALERTS_QUEUE.getQueueName(),
                     message,
                     bool -> {
@@ -85,6 +88,7 @@ public class NewAlertActivity extends GpsActivityImpl {
                             finish();
                         } else {
                             Toast.makeText(NewAlertActivity.this, R.string.alert_sent_error, Toast.LENGTH_LONG).show();
+                            this.sendButton.setEnabled(true);
                         }
 
                     }).execute();
