@@ -9,6 +9,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Class that provides the complete access to the Alert object in DB
+ * implements the abstract class LoggableDaoAbstract and its interface
+ */
 public class CivilProtectionDaoImpl extends LoggableDaoAbstract<CivilProtection> implements CivilProtectionDao {
 
     protected static final String TABLENAME = "CIVIL_PROTECTION";

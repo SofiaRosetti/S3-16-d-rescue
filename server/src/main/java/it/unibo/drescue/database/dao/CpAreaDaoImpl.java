@@ -12,6 +12,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class that provides the complete access to the CpArea object in DB
+ * implements the abstract class GenericDaoAbstract and its interface
+ */
 public class CpAreaDaoImpl extends GenericDaoAbstract<CpArea> implements CpAreaDao {
 
     private static final String TABLENAME = "CP_AREA";

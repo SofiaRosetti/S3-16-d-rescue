@@ -10,6 +10,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Class that provides the complete access to the User object in DB
+ * implements the abstract class LoggableDaoAbstract and its interface
+ */
 public class UserDaoImpl extends LoggableDaoAbstract<User> implements UserDao {
 
     private final static String TABLENAME = "USER";

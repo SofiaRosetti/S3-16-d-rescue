@@ -12,6 +12,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class that provides the complete access to the District object in DB
+ * implements the abstract class UpdatableDaoAbstract and its interface
+ */
 public class DistrictDaoImpl extends UpdatableDaoAbstract<District> implements DistrictDao {
 
     private final static String TABLENAME = "DISTRICT";

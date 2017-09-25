@@ -5,6 +5,10 @@ import it.unibo.drescue.model.District;
 
 import java.util.List;
 
+/**
+ * Interface of DAO for District objects, it extends UpdatableDao
+ * and specify some other useful methods for this objectModel
+ */
 public interface DistrictDao extends UpdatableDao {
 
     /**

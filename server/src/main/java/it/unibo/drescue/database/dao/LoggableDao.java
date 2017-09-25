@@ -3,6 +3,11 @@ package it.unibo.drescue.database.dao;
 import it.unibo.drescue.database.exceptions.DBNotFoundRecordException;
 import it.unibo.drescue.model.LoggableModel;
 
+/**
+ * Interface from which all DAO that need a login method extends,
+ * it extends the UpdatableDao interface cause if an Object is Loggable,
+ * it must have a password that could be changed
+ */
 public interface LoggableDao extends UpdatableDao {
 
     /**

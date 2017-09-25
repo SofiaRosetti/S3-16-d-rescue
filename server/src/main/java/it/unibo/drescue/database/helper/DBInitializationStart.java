@@ -32,30 +32,37 @@ public class DBInitializationStart {
         final DBInitialization dbInitialization =
                 new DBInitializationImpl(DBConnectionImpl.getLocalConnection());
 
+        //Initialize districts
         dbInitialization.insertAllObjectsFromAFile(
                 DBConnection.Table.DISTRICT,
                 FILE_PATH + DISTRICTS_FILE);
 
+        //Initialize event_types
         dbInitialization.insertAllObjectsFromAFile(
                 DBConnection.Table.EVENT_TYPE,
                 FILE_PATH + EVENT_TYPES_FILE);
 
+        //Initialize civil_protections
         dbInitialization.insertAllObjectsFromAFile(
                 DBConnection.Table.CIVIL_PROTECTION,
                 FILE_PATH + CIVIL_PROTECTION_FILE);
 
+        //Initialize cp_areas
         dbInitialization.insertAllObjectsFromAFile(
                 DBConnection.Table.CP_AREA,
                 FILE_PATH + CP_AREAS_FILE);
 
+        //Initialize users
         dbInitialization.insertAllObjectsFromAFile(
                 DBConnection.Table.USER,
                 FILE_PATH + USERS_FILE);
 
+        //Initialize rescue_teams
         dbInitialization.insertAllObjectsFromAFile(
                 DBConnection.Table.RESCUE_TEAM,
                 FILE_PATH + RESCUE_TEAMS_FILE);
 
+        //Initialize cp_enrollments
         dbInitialization.insertAllObjectsFromAFile(
                 DBConnection.Table.CP_ENROLLMENT,
                 FILE_PATH + CP_ENROLLMENT_FILE);

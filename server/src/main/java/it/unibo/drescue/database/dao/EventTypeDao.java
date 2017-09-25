@@ -5,6 +5,10 @@ import it.unibo.drescue.model.EventType;
 
 import java.util.List;
 
+/**
+ * Interface of DAO for EventType objects, it extends GenericDao
+ * and specify some other useful methods for this objectModel
+ */
 public interface EventTypeDao extends GenericDao {
 
     /**

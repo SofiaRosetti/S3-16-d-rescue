@@ -1,6 +1,5 @@
 package it.unibo.drescue.database.dao;
 
-import it.unibo.drescue.model.Alert;
 import it.unibo.drescue.model.ObjectModel;
 import it.unibo.drescue.model.RescueTeam;
 import it.unibo.drescue.model.RescueTeamImplBuilder;
@@ -10,7 +9,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class RescueTeamDaoImpl extends LoggableDaoAbstract<Alert> implements RescueTeamDao {
+/**
+ * Class that provides the complete access to the RescueTeam object in DB
+ * implements the abstract class LoggableDaoAbstract and its interface
+ */
+public class RescueTeamDaoImpl extends LoggableDaoAbstract<RescueTeam> implements RescueTeamDao {
     protected static final String TABLENAME = "RESCUE_TEAM";
 
     public RescueTeamDaoImpl(final Connection connection) {
