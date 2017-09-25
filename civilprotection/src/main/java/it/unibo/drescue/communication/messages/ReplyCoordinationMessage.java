@@ -5,11 +5,11 @@ import it.unibo.drescue.utils.RescueTeamCondition;
 /**
  *
  */
-public class ReplayCoordinationMessage extends CoordinationMessage {
+public class ReplyCoordinationMessage extends CoordinationMessage {
 
     private RescueTeamCondition condition;
 
-    public ReplayCoordinationMessage() {
+    public ReplyCoordinationMessage() {
         super(MessageType.REPLAY_COORDINATION_MESSAGE);
     }
 

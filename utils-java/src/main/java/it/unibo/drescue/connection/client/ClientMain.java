@@ -32,7 +32,7 @@ public class ClientMain {
             //set in properties queue for response
 
             final Message alertMessage = new NewAlertMessageBuilderImpl()
-                    .setUserID(4)
+                    .setUserID(1)
                     .setEventType("Earthquakes")
                     .setLatitude(44.420826)
                     .setLongitude(11.912387)
