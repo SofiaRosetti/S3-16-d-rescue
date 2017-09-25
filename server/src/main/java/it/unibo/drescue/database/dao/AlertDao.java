@@ -6,6 +6,10 @@ import it.unibo.drescue.model.Alert;
 import java.sql.Timestamp;
 import java.util.List;
 
+/**
+ * Interface of DAO for Alert objects, it extends UpdatableDao
+ * and specify some other useful methods for this objectModel
+ */
 public interface AlertDao extends UpdatableDao {
 
     /**

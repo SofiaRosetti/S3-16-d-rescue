@@ -39,6 +39,9 @@ public interface DBConnection {
      */
     GenericDaoAbstract getDAO(Table table) throws DBConnectionException;
 
+    /**
+     * Enum listing all DB tables, to be updated when a DAO is added
+     */
     enum Table {
         USER,
         DISTRICT,

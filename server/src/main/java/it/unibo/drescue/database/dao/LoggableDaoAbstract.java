@@ -7,7 +7,14 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 
-/*Note: LoggableDao extends from Updatable because an object with credentials should change the password*/
+/**
+ * Abstract class from which all DAO implementation that needs a login method extends,
+ * it contains the template method for all objects in DB.
+ * Note that LoggableDao extends from Updatable because an object with credentials
+ * should have a password that could be changed
+ *
+ * @param <T> specify the class of the object interested in DAO, in this case an ObjectModel
+ */
 public abstract class LoggableDaoAbstract<T> extends UpdatableDaoAbstract implements LoggableDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoggableDaoAbstract.class);

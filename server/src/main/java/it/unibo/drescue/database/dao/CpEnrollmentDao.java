@@ -6,6 +6,10 @@ import it.unibo.drescue.model.RescueTeam;
 
 import java.util.List;
 
+/**
+ * Interface of DAO for CpEnrollment objects, it extends GenericDao
+ * and specify some other useful methods for this objectModel
+ */
 public interface CpEnrollmentDao extends GenericDao {
 
     /**

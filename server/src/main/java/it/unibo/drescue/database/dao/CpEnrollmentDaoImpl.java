@@ -10,6 +10,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class that provides the complete access to the CpEnrollment object in DB
+ * implements the abstract class GenericDaoAbstract and its interface
+ */
 public class CpEnrollmentDaoImpl extends GenericDaoAbstract<CpEnrollment> implements CpEnrollmentDao {
 
     private static final String TABLENAME = "CP_ENROLLMENT";

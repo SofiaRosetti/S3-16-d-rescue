@@ -26,48 +26,40 @@ public class DBInitializationImpl implements DBInitialization {
         this.dbConnection = connection;
     }
 
+    /**
+     * Method that returns the class of the implementation class for a
+     * specific object model related to a table given
+     *
+     * @param table
+     * @return the class of the implementation class for an object of the specified table
+     */
     private Class getTheImplClassOf(final DBConnection.Table table) {
-        Class clazz = null;
         switch (table) {
-            case USER: {
-                //TODO
-                clazz = UserImpl[].class;
-                break;
-            }
-            case DISTRICT: {
-                clazz = DistrictImpl[].class;
-                break;
-            }
-            case EVENT_TYPE: {
-                clazz = EventTypeImpl[].class;
-                break;
-            }
-            case CIVIL_PROTECTION: {
-                clazz = CivilProtectionImpl[].class;
-                break;
-            }
-            case CP_AREA: {
-                clazz = CpAreaImpl[].class;
-                break;
-            }
+            case USER:
+                return UserImpl[].class;
+            case DISTRICT:
+                return DistrictImpl[].class;
+            case EVENT_TYPE:
+                return EventTypeImpl[].class;
+            case CIVIL_PROTECTION:
+                return CivilProtectionImpl[].class;
+            case CP_AREA:
+                return CpAreaImpl[].class;
             case CP_ENROLLMENT:
-                clazz = CpEnrollmentImpl[].class;
-                break;
+                return CpEnrollmentImpl[].class;
             case RESCUE_TEAM:
-                clazz = RescueTeamImpl[].class;
-                break;
+                return RescueTeamImpl[].class;
             default: {
                 LOGGER.error("Not existing table");
-                break;
+                return null;
             }
         }
-        return clazz;
     }
 
     @Override
     public void insertAllObjectsFromAFile(final DBConnection.Table table, final String pathFile) {
         GenericDao dao = null;
-        final Class clazz = getTheImplClassOf(table);
+        final Class clazz = this.getTheImplClassOf(table);
         if (clazz == null) {
             LOGGER.error("Not existing table");
             return;
@@ -75,13 +67,13 @@ public class DBInitializationImpl implements DBInitialization {
         final List<ObjectModel> objectModels =
                 this.jsonFileUtils.getListFromJsonFile(pathFile, clazz);
         if (objectModels == null) {
-            LOGGER.error("objects are null");
+            LOGGER.error("There are no object in file " + pathFile);
             return;
         }
         try {
             dao = this.dbConnection.getDAO(table);
         } catch (final DBConnectionException e) {
-            LOGGER.error("DBConnectionException when get DAO of districts", e);
+            LOGGER.error("DBConnectionException when get DAO ", e);
         }
 
         //Inserting objects
@@ -90,9 +82,11 @@ public class DBInitializationImpl implements DBInitialization {
                 dao.insert(objectModel);
             } catch (final DBDuplicatedRecordException e) {
                 LOGGER.error("DBDuplicatedRecordException when insert of a object of "
-                        + table.name() + " already on the database", e);
+                        + table.name() + " already on the database");
             } catch (final DBQueryException e) {
-                LOGGER.error("DBQueryException when insert an object of " + table.name(), e);
+                LOGGER.error("DBQueryException inserting an object of " + table.name(), e);
+            } catch (final Exception e) {
+                LOGGER.error("Unknown exception inserting an object of " + table.name(), e);
             }
         }
     }

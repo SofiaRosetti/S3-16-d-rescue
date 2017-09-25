@@ -5,6 +5,10 @@ import it.unibo.drescue.database.exceptions.DBNotFoundRecordException;
 import it.unibo.drescue.database.exceptions.DBQueryException;
 import it.unibo.drescue.model.ObjectModel;
 
+/**
+ * Interface from which all others DAO interfaces extends,
+ * it shows the main methods for all objects in DB
+ */
 public interface GenericDao {
 
     /**

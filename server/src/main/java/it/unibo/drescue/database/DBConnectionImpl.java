@@ -10,7 +10,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * A class that allows communication with database.
+ * Implementation class that allows communication with database.
  */
 public class DBConnectionImpl implements DBConnection {
 

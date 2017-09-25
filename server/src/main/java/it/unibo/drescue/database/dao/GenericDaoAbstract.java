@@ -12,7 +12,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public abstract class GenericDaoAbstract<T> implements GenericDao {
+/**
+ * Abstract class from which all others DAO extends, it contains
+ * the template methods for all objects in DB and gives the abstract methods to be implemented
+ *
+ * @param <T> specify the class of the object interested in DAO, in this case an ObjectModel
+ */
+
+public abstract class GenericDaoAbstract<T extends ObjectModel> implements GenericDao {
 
     protected static final String UPDATE_EXCEPTION = "Exception while trying to update an object";
     protected static final String QUERY_NOT_FOUND_EXCEPTION = "Invalid query for its DAO";
