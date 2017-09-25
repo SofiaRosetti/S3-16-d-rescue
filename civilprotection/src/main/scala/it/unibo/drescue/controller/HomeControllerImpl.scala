@@ -5,6 +5,11 @@ import it.unibo.drescue.view.CustomDialog
 
 import scalafx.collections.ObservableBuffer
 
+/**
+  * A class representing the home controller
+  *
+  * @param mainController the main controller
+  */
 class HomeControllerImpl(private var mainController: MainControllerImpl) extends Observer {
 
   mainController.model.addObserver(Observers.Home, this)

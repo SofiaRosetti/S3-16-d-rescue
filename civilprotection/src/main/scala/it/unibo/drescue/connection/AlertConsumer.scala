@@ -6,6 +6,13 @@ import it.unibo.drescue.communication.messages._
 import it.unibo.drescue.controller.MainControllerImpl
 import it.unibo.drescue.localModel.AlertEntry
 
+/**
+  * A class representing a consumer with the purpose of
+  * consume messages containing new alerts and alert upvotes
+  *
+  * @param rabbitMQ           the channel
+  * @param mainControllerImpl the main controller
+  */
 case class AlertConsumer(private val rabbitMQ: RabbitMQ,
                          private val mainControllerImpl: MainControllerImpl)
   extends DefaultConsumer(rabbitMQ.getChannel) {

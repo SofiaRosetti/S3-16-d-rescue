@@ -16,6 +16,9 @@ import it.unibo.drescue.view.CustomDialog
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.{Alert, ButtonType}
 
+/**
+  * Object companion of ManageRescuesControllerImpl class
+  */
 object ManageRescuesControllerImpl extends Enumeration {
   val Sent: String = "Team notified"
   val Stop: String = "Team stop"
@@ -23,6 +26,11 @@ object ManageRescuesControllerImpl extends Enumeration {
   var Error: String = "Team working"
 }
 
+/**
+  * A class representing the manage rescues controller
+  * @param mainController the main controller
+  * @param rabbitMQ the channel used to handle requests and responses
+  */
 class ManageRescuesControllerImpl(private var mainController: MainControllerImpl,
                                   var rabbitMQ: RabbitMQImpl) extends Observer {
 
@@ -120,16 +128,6 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
     }
   }
 
-  def sendReplyRescueTeamCondition(rescueTeamID: String, rescueTeamCondition: RescueTeamCondition): Unit = {
-    var reply: Message = null
-    reply = new ReplyRescueTeamConditionMessageBuilderImpl()
-      .setRescueTeamID(rescueTeamID)
-      .setRescueTeamCondition(rescueTeamCondition)
-      .setFrom(mainController.model.cpID)
-      .build()
-    rabbitMQ.sendMessage(mainController.ExchangeName, rescueTeamID, null, reply)
-  }
-
   def criticalSectionExecution(alertID: String, rescueTeamToChange: EnrolledTeamInfo, indexToChange: Integer): Unit = {
     println("[CS Execution]")
     mainController.model.modifyEnrollment(indexToChange, new EnrolledTeamInfo(
@@ -160,6 +158,16 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
   def startErrorDialog(): Option[ButtonType] = {
     dialog = new CustomDialog(mainController).createDialog(ManageRescuesControllerImpl.Error)
     dialog.showAndWait()
+  }
+
+  def sendReplyRescueTeamCondition(rescueTeamID: String, rescueTeamCondition: RescueTeamCondition): Unit = {
+    var reply: Message = null
+    reply = new ReplyRescueTeamConditionMessageBuilderImpl()
+      .setRescueTeamID(rescueTeamID)
+      .setRescueTeamCondition(rescueTeamCondition)
+      .setFrom(mainController.model.cpID)
+      .build()
+    rabbitMQ.sendMessage(mainController.ExchangeName, rescueTeamID, null, reply)
   }
 
   /**

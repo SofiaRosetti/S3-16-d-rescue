@@ -16,6 +16,9 @@ import it.unibo.drescue.view.CustomDialog
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.Alert
 
+/**
+  * Object companion of EnrollTeamControllerImpl class
+  */
 object EnrollTeamControllerImpl extends Enumeration {
   val CommandFillAll: String = "Fill all data."
   val CommandInsertValidAddress: String = "Insert a valid address"
@@ -31,6 +34,11 @@ object EnrollTeamControllerImpl extends Enumeration {
   val SelectTeam = "Nothing selected"
 }
 
+/**
+  * A class representing the enroll team controller
+  * @param mainController the main controller
+  * @param rabbitMQ the channel used to handle requests and responses
+  */
 class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, val rabbitMQ: RabbitMQImpl) extends Observer {
 
   mainController.model.addObserver(Observers.EnrollTeam, this)
@@ -142,16 +150,6 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
   }
 
   /**
-    * Starts a new custom dialog with OK button and waits for the user to click on it
-    *
-    * @param newDialog a string representing the new dialog information
-    */
-  def startDialogAndWait(newDialog: String) = {
-    dialog = new CustomDialog(mainController).createDialog(newDialog)
-    dialog.showAndWait()
-  }
-
-  /**
     * Starts a new custom dialog without buttons
     *
     * @param newDialog a string representing the new dialog information
@@ -159,6 +157,16 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
   def startDialog(newDialog: String) = {
     dialog = new CustomDialog(mainController).createDialog(newDialog)
     dialog.show()
+  }
+
+  /**
+    * Starts a new custom dialog with OK button and waits for the user to click on it
+    *
+    * @param newDialog a string representing the new dialog information
+    */
+  def startDialogAndWait(newDialog: String) = {
+    dialog = new CustomDialog(mainController).createDialog(newDialog)
+    dialog.showAndWait()
   }
 
   /**

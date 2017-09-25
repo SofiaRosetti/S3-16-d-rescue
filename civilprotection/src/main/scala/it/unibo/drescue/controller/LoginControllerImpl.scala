@@ -9,6 +9,9 @@ import it.unibo.drescue.view.CustomDialog
 
 import scalafx.scene.control.Alert
 
+/**
+  * Companion object of LoginControllerImpl class
+  */
 object LoginControllerImpl {
 
   val Login = "Login"
@@ -19,6 +22,12 @@ object LoginControllerImpl {
   val WrongLogin = "WrongLogin"
 }
 
+/**
+  * A class representing the login controller
+  *
+  * @param mainController the main controller
+  * @param rabbitMQ       the channel used to handle requests and responses
+  */
 class LoginControllerImpl(private var mainController: MainControllerImpl,
                           val rabbitMQ: RabbitMQImpl) {
 

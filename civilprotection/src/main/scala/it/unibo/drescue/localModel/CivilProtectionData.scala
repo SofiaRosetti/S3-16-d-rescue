@@ -5,6 +5,9 @@ import java.util.{ArrayList, List}
 
 import it.unibo.drescue.model.RescueTeamImpl
 
+/**
+  * A class representing the civil protection local model
+  */
 case class CivilProtectionData() extends Observable {
 
   private var _cpID: String = _

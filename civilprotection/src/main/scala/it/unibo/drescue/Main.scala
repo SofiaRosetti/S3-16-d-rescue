@@ -7,6 +7,9 @@ import it.unibo.drescue.view.{LoginGrid, MainView}
 
 import scalafx.application.JFXApp
 
+/**
+  * The main object which starts the civil protection application
+  */
 object Main extends JFXApp {
 
   val connection = new RabbitMQConnectionImpl(RabbitConnectionConstants.REMOTE_HOST)

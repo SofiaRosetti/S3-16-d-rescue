@@ -12,6 +12,12 @@ import scalafx.scene.control._
 import scalafx.scene.layout.{GridPane, HBox}
 import scalafx.scene.text.Font
 
+/**
+  * A class representing the grid contained in the MainView
+  * and relative to the home view
+  *
+  * @param homeController the home controller
+  */
 class HomeGrid(private var homeController: HomeControllerImpl) {
 
   val _grid = new GridPane() {
@@ -145,6 +151,9 @@ class HomeGrid(private var homeController: HomeControllerImpl) {
     add(ButtonBox, ColumnRow0, ColumnRow2)
   }
 
+  /**
+    * @return the home grid
+    */
   def grid = _grid
 
 }
