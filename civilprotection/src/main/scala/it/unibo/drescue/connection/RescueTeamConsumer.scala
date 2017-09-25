@@ -10,6 +10,12 @@ import it.unibo.drescue.controller.MainControllerImpl
 import it.unibo.drescue.localModel.EnrolledTeamInfo
 import it.unibo.drescue.utils.{Coordinator, CoordinatorCondition, CoordinatorImpl, RescueTeamCondition}
 
+/**
+  * This consumer handle the messages sent by other civil protection in order to coordinate the rescues
+  *
+  * @param rabbitMQ
+  * @param mainControllerImpl
+  */
 case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
                               private val mainControllerImpl: MainControllerImpl)
   extends DefaultConsumer(rabbitMQ.getChannel) {
@@ -44,7 +50,6 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
         val reqCs = reqCoordinationMessage.getRescueTeamID
 
         if (!(reqFrom == mainControllerImpl.model.cpID)) {
-          println("[COORDINATION REQUEST] From: " + reqFrom + " To: " + reqTo + " Timestamp: " + reqTimestamp + " Cs: " + reqCs)
           myCondition = coordinator.getCondition
           myCs = coordinator.getCsName
           myTimestamp = coordinator.getReqTimestamp
@@ -69,7 +74,6 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
 
       case MessageType.REPLAY_COORDINATION_MESSAGE =>
         val replayMessage = GsonUtils.fromGson(message, classOf[ReplyCoordinationMessage])
-        val replayTimestamp = replayMessage.getTimestamp
         val replayFrom = replayMessage.getFrom
         val replayTo = replayMessage.getTo
         val replayCs = replayMessage.getRescueTeamID
@@ -77,9 +81,7 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
         myCondition = coordinator.getCondition
         myCs = coordinator.getCsName
         if (!(replayFrom == mainControllerImpl.model.cpID)) {
-          System.out.println("[COORDINATION REPLAY] From: " + replayFrom + " To: " + replayTo + " Timestamp: " + replayTimestamp + " Cs: " + replayCs + " RT Condition " + replayRTCondition)
           if ((myCondition == CoordinatorCondition.WANTED) && myCs == replayCs && replayTo == mainControllerImpl.model.cpID) {
-            //Check RescueTeam state (if state = Occupied then set coordinator conditon = DETACHED)
             if (replayRTCondition == RescueTeamCondition.AVAILABLE)
               coordinator.updatePendingCivilProtectionReplayStructure(replayFrom)
             else
@@ -87,19 +89,11 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
           }
         }
 
-
       case MessageType.REPLY_RESCUE_TEAM_CONDITION =>
         val replyRescueTeamConditionMessage = GsonUtils.fromGson(message, classOf[ReplyRescueTeamConditionMessage])
-        println("[Replay RT condition Message] RescueTeam name: " + replyRescueTeamConditionMessage.getRescueTeamID
-          + " Condition: " + replyRescueTeamConditionMessage.getRescueTeamCondition
-          + " From: " + replyRescueTeamConditionMessage.getFrom
-          + " To: " + replyRescueTeamConditionMessage.getTo)
-
         if (replyRescueTeamConditionMessage.getFrom != mainControllerImpl.model.cpID) {
-
           val rescueTeamID = replyRescueTeamConditionMessage.getRescueTeamID
           var indexToChange: Int = -1
-
           val infoList = mainControllerImpl.model.enrolledTeamInfoList
           infoList forEach ((enrolledTeamInfo: EnrolledTeamInfo) => {
             val enrolledTeamID = enrolledTeamInfo.teamID.value
@@ -112,21 +106,18 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
           rescueTeamCondition match {
 
             case RescueTeamCondition.OCCUPIED =>
-
               if (indexToChange != -1) {
                 val enrolledTeamInfo = infoList.get(indexToChange)
                 mainControllerImpl.model.modifyEnrollment(indexToChange, new EnrolledTeamInfo(
                   enrolledTeamInfo.teamID.value,
                   enrolledTeamInfo.teamName.value,
                   enrolledTeamInfo.phoneNumber.value,
-                  false, //occupied
-                  replyRescueTeamConditionMessage.getFrom, //cpID
+                  false,
+                  replyRescueTeamConditionMessage.getFrom,
                   enrolledTeamInfo.alertID.value)
                 )
               }
-
             case RescueTeamCondition.AVAILABLE =>
-
               if (indexToChange != -1) {
                 val senderCP = replyRescueTeamConditionMessage.getFrom
                 val enrolledTeamInfo = infoList.get(indexToChange)
@@ -135,8 +126,8 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
                     enrolledTeamInfo.teamID.value,
                     enrolledTeamInfo.teamName.value,
                     enrolledTeamInfo.phoneNumber.value,
-                    true, //available
-                    "", //cpID
+                    true,
+                    "",
                     "")
                   )
                 }
@@ -145,23 +136,15 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
           }
         }
 
-
       case MessageType.REQ_RESCUE_TEAM_CONDITION =>
         val reqRescueTeamConditionMessage = GsonUtils.fromGson(message, classOf[ReqRescueTeamConditionMessage])
-        println("[Req RT condition Message] RescueTeam name: " + reqRescueTeamConditionMessage.getRescueTeamID
-          + " From: " + reqRescueTeamConditionMessage.getFrom
-          + " To: " + reqRescueTeamConditionMessage.getTo)
-
         if (reqRescueTeamConditionMessage.getFrom != mainControllerImpl.model.cpID) {
           val list = mainControllerImpl.model.enrolledTeamInfoList
           list forEach ((enrolledTeam: EnrolledTeamInfo) => {
-
             val rescueTeamID = enrolledTeam.teamID.value
             if (rescueTeamID == reqRescueTeamConditionMessage.getRescueTeamID) {
-
               val rtAvailability: String = enrolledTeam.availability.value
               val cpID: String = enrolledTeam.cpID.value
-
               var reply: Message = null
               if (rtAvailability == "false" && cpID == mainControllerImpl.model.cpID) {
                 reply = new ReplyRescueTeamConditionMessageBuilderImpl()
@@ -178,7 +161,6 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
               }
 
               rabbitMQ.sendMessage(mainControllerImpl.ExchangeName, rescueTeamID, null, reply)
-
             }
 
           })
