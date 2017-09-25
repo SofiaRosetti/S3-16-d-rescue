@@ -20,7 +20,6 @@ object EnrollTeamControllerImpl extends Enumeration {
   val CommandFillAll: String = "Fill all data."
   val CommandInsertValidAddress: String = "Insert a valid address"
   val CommandDuplicated: String = "Error inserting the team, teamID duplicated"
-  //val Error: String = "An error occurred"
   val Added: String = "The team has been added."
   val Adding: String = "All data ok, adding the team."
   val Processing: String = "Processing"
@@ -42,9 +41,9 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
   def startChecks(rescueTeamId: String, name: String, address: String, phoneNumber: String) = {
 
     checkInputs(rescueTeamId, name, address, phoneNumber) match {
-      case false => startFillAllDataDialog()
+      case false => startDialogAndWait(EnrollTeamControllerImpl.EmptyTeamData)
       case true =>
-        startCheckingDataDialog()
+        startDialog(EnrollTeamControllerImpl.Checking)
         val geocoding: Geocoding = new GeocodingImpl()
         var latitude: Double = 0.0
         var longitude: Double = 0.0
@@ -60,7 +59,7 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
             EnrollTeamControllerImpl.CommandInsertValidAddress
           case _: Throwable =>
             mainController.changeView("NewTeam")
-            startErrorDialog()
+            startDialogAndWait(EnrollTeamControllerImpl.Error)
             println("[EnrollTeam] : Address not valid")
             EnrollTeamControllerImpl.Error
         }
@@ -78,7 +77,7 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
   def addTeam(rescueTeamId: String, name: String, address: String, phoneNumber: String, latitude: Double, longitude: Double): String = {
 
     mainController.changeView("NewTeam")
-    startProcessingDialog()
+    startDialog(EnrollTeamControllerImpl.Processing)
 
     val message: Message = NewRescueTeamMessage(
       rescueTeamID = rescueTeamId,
@@ -108,7 +107,7 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
         mainController.model.notEnrolledRescueTeams = notEnrolledTeams
 
         mainController.changeView("NewTeam")
-        startSuccessDialog()
+        startDialogAndWait(EnrollTeamControllerImpl.Added)
       }
       case MessageType.ERROR_MESSAGE => {
         println("[EnrollTeam] : Team not added, ERROR " + rescueTeamId)
@@ -124,13 +123,8 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
     EnrollTeamControllerImpl.Adding
   }
 
-  def startSuccessDialog() = {
-    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.Added)
-    dialog.showAndWait()
-  }
-
-  def startProcessingDialog() = {
-    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.Processing)
+  def startDialog(newDialog: String) = {
+    dialog = new CustomDialog(mainController).createDialog(newDialog)
     dialog.show()
   }
 
@@ -144,14 +138,9 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
       StringUtils.isAValidString(phoneNumber) && StringUtils.isAValidString(address)
   }
 
-  def startFillAllDataDialog() = {
-    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.EmptyTeamData)
+  def startDialogAndWait(newDialog: String) = {
+    dialog = new CustomDialog(mainController).createDialog(newDialog)
     dialog.showAndWait()
-  }
-
-  def startCheckingDataDialog() = {
-    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.Checking)
-    dialog.show()
   }
 
   def selectPress(selectedTeamID: String) = {
@@ -167,9 +156,8 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
       messageName match {
         case MessageType.SUCCESSFUL_MESSAGE =>
 
-          startEnrollOkDialog()
+          startDialogAndWait(EnrollTeamControllerImpl.EnrollOK)
 
-          //get rescue team just enrolled
           var indexToChange: Int = -1
           mainController.model.notEnrolledRescueTeams forEach ((rescueTeam: RescueTeamImpl) => {
             val rescueTeamID = rescueTeam.getRescueTeamID
@@ -180,11 +168,9 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
 
           val newEnrollment = mainController.model.notEnrolledRescueTeams.get(indexToChange)
 
-          //add rescue team to rescueTeamList and enrolledTeamInfoList
           val enrolledInfoList = mainController.model.enrolledTeamInfoList
           if (indexToChange != -1) {
 
-            //add rescue team to rescueTeamList
             val newTeam = new RescueTeamImplBuilder()
               .setRescueTeamID(newEnrollment.getRescueTeamID)
               .setName(newEnrollment.getName)
@@ -195,7 +181,6 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
             enrolledList.add(newTeam)
             mainController.model.enrolledRescueTeams = enrolledList
 
-            //add rescue team to enrolledTeamInfoList
             val newTeamInfo = new EnrolledTeamInfo(
               newEnrollment.getRescueTeamID,
               newEnrollment.getName,
@@ -205,7 +190,6 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
               "")
             mainController.model.addEnrollment(newTeamInfo)
 
-            //send message to get availability
             val rescueTeamConditionMessage = new ReqRescueTeamConditionMessageBuilderImpl()
               .setRescueTeamID(newEnrollment.getRescueTeamID)
               .setFrom(mainController.model.cpID)
@@ -220,29 +204,14 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
           }
 
         case MessageType.ERROR_MESSAGE =>
-          startErrorDialog()
+          startDialogAndWait(EnrollTeamControllerImpl.Error)
 
         case _ => //do nothing
 
       }
     } else {
-      startSelectTeamDialog()
+      startDialogAndWait(EnrollTeamControllerImpl.SelectTeam)
     }
-  }
-
-  def startSelectTeamDialog() = {
-    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.SelectTeam)
-    dialog.showAndWait()
-  }
-
-  def startErrorDialog() = {
-    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.Error)
-    dialog.showAndWait()
-  }
-
-  def startEnrollOkDialog() = {
-    dialog = new CustomDialog(mainController).createDialog(EnrollTeamControllerImpl.EnrollOK)
-    dialog.showAndWait()
   }
 
   def backPress() = {
