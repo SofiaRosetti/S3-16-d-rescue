@@ -77,7 +77,9 @@ class MainView(loginGrid: LoginGrid,
           val alertInLabel = controller.alertInManage
           manage = new ManageRescuesGrid(manageRescuesController, ActiveButton, alertInLabel)
           content = manage.grid
-        case _ => println("error") // TODO throw and handle exception
+        case _ =>
+          val dialog = new CustomDialog(controller).createDialog(CustomDialog.Error)
+          dialog.showAndWait()
       }
     }
 

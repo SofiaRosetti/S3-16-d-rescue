@@ -152,7 +152,6 @@ class EnrollTeamGrid(private var enrollTeamController: EnrollTeamControllerImpl)
       prefWidth = WidthHeight150
       onMouseClicked = (event: MouseEvent) => {
         var selectedTeamID = TeamChoice.getValue
-        println("SelectButton" + selectedTeamID)
         enrollTeamController.selectPress(selectedTeamID)
       }
     }

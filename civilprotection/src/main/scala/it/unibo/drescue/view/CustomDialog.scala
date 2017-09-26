@@ -1,6 +1,7 @@
 package it.unibo.drescue.view
 
 import it.unibo.drescue.controller.MainControllerImpl
+import org.slf4j.{Logger, LoggerFactory}
 
 import scalafx.scene.control.Alert
 import scalafx.scene.control.Alert.AlertType
@@ -87,6 +88,8 @@ object CustomDialog {
   * @param mainController the main controller
   */
 class CustomDialog(mainController: MainControllerImpl) {
+
+  private val Logger: Logger = LoggerFactory getLogger classOf[CustomDialog]
 
   /**
     * Sets a custom error text
@@ -240,7 +243,7 @@ class CustomDialog(mainController: MainControllerImpl) {
           headerText = CustomDialog.SelectAlertHeader
           contentText = CustomDialog.SelectAlertContent
         }
-      case _ => println("other match")
+      case _ => Logger info "Other match"
     }
     CustomDialog.dialog
   }

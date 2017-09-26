@@ -12,6 +12,7 @@ import it.unibo.drescue.connection._
 import it.unibo.drescue.localModel.{AlertEntry, CivilProtectionData, EnrolledTeamInfo}
 import it.unibo.drescue.model.{AlertImpl, RescueTeamImpl}
 import it.unibo.drescue.view.{CustomDialog, MainView}
+import org.slf4j.{Logger, LoggerFactory}
 
 /**
   * A class representing the application main controller
@@ -22,8 +23,8 @@ import it.unibo.drescue.view.{CustomDialog, MainView}
 class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQImpl) {
 
   val ExchangeName = "rt_exchange"
-
   val pool: ExecutorService = Executors.newFixedThreadPool(Runtime.getRuntime.availableProcessors() + 1)
+  private val Logger: Logger = LoggerFactory getLogger classOf[MainControllerImpl]
   var view = new MainView(null, null, null, null, null, null)
   var queueName: String = _
   private var _sendOrStop: String = "Stop"
@@ -77,7 +78,7 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
     model.enrolledRescueTeams = rescueTeams
 
     initializeEnrolledTeamInfoList(rescueTeams)
-    println(model.enrolledTeamInfoList)
+    Logger info ("Enrolled team info list: " + model.enrolledTeamInfoList)
 
     rabbitMQ declareExchange(ExchangeName, BuiltinExchangeType.DIRECT)
     queueName = rabbitMQ addReplyQueue()
@@ -96,7 +97,7 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
     val message: Message = RequestCpAlertsMessageImpl(model.cpID)
     val task: Future[String] = pool.submit(new RequestHandler(rabbitMQ, message, QueueType.ALERTS_QUEUE))
     val response: String = task.get()
-    println("Main controller - alerts: " + response)
+    Logger info ("Main controller - alerts: " + response)
     val messageName: MessageType = MessageUtils.getMessageNameByJson(response)
     messageName match {
       case MessageType.ALERTS_MESSAGE =>
@@ -190,21 +191,13 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
   }
 
   /**
-    * Starts a custom error dialog
-    */
-  def startErrorDialog() = {
-    val dialog = new CustomDialog(this).createDialog(CustomDialog.Error)
-    dialog.showAndWait()
-  }
-
-  /**
     * Initializes the local model not enrolled teams list with a DB query result message
     */
   def initializeNotEnrolled(): Unit = {
     val message: Message = GetRescueTeamsNotEnrolledMessageImpl(model.cpID)
     val task: Future[String] = pool.submit(new RequestHandler(rabbitMQ, message, QueueType.CIVIL_PROTECTION_QUEUE))
     val response: String = task.get()
-    println("Main controller - initialize not enrolled rescue team: " + response)
+    Logger info ("Main controller - initialize not enrolled rescue team: " + response)
     val messageName: MessageType = MessageUtils.getMessageNameByJson(response)
     messageName match {
       case MessageType.RESCUE_TEAMS_MESSAGE =>
@@ -212,6 +205,14 @@ class MainControllerImpl(var model: CivilProtectionData, val rabbitMQ: RabbitMQI
         initializeNotEnrolledModel(teamsMessage.rescueTeamsList)
       case _ => startErrorDialog()
     }
+  }
+
+  /**
+    * Starts a custom error dialog
+    */
+  def startErrorDialog() = {
+    val dialog = new CustomDialog(this).createDialog(CustomDialog.Error)
+    dialog.showAndWait()
   }
 
   /**

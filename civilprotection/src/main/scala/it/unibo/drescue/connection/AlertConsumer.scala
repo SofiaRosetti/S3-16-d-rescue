@@ -5,6 +5,8 @@ import it.unibo.drescue.communication.GsonUtils
 import it.unibo.drescue.communication.messages._
 import it.unibo.drescue.controller.MainControllerImpl
 import it.unibo.drescue.localModel.AlertEntry
+import it.unibo.drescue.view.CustomDialog
+import org.slf4j.{Logger, LoggerFactory}
 
 /**
   * A class representing a consumer with the purpose of
@@ -17,6 +19,8 @@ case class AlertConsumer(private val rabbitMQ: RabbitMQ,
                          private val mainControllerImpl: MainControllerImpl)
   extends DefaultConsumer(rabbitMQ.getChannel) {
 
+  private val Logger: Logger = LoggerFactory getLogger classOf[AlertConsumer]
+
   override def handleDelivery(consumerTag: String,
                               envelope: Envelope,
                               properties: AMQP.BasicProperties,
@@ -25,7 +29,7 @@ case class AlertConsumer(private val rabbitMQ: RabbitMQ,
     super.handleDelivery(consumerTag, envelope, properties, body)
 
     val message = new String(body, "UTF-8")
-    println("[AlertConsumer] " + message)
+    Logger info ("[AlertConsumer] " + message)
 
     val messageName: MessageType = MessageUtils.getMessageNameByJson(message)
     messageName match {
@@ -45,7 +49,7 @@ case class AlertConsumer(private val rabbitMQ: RabbitMQ,
         mainControllerImpl.model.lastAlerts forEach ((alert: AlertEntry) => {
           val valueID = alert.alertID.value
           if (valueID == alertID.toString) {
-            println("Equals to " + alert.alertID.value)
+            Logger info ("Equals to " + alert.alertID.value)
             indexToChange = mainControllerImpl.model.lastAlerts.indexOf(alert)
           }
         })
@@ -66,7 +70,9 @@ case class AlertConsumer(private val rabbitMQ: RabbitMQ,
           mainControllerImpl.model.lastAlerts = list
         }
 
-      case _ => //Error
+      case _ =>
+        val dialog = new CustomDialog(mainControllerImpl).createDialog(CustomDialog.Error)
+        dialog.showAndWait()
     }
   }
 }

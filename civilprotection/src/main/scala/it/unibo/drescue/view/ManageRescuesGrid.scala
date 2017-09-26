@@ -133,7 +133,6 @@ class ManageRescuesGrid(private var manageRescuesController: ManageRescuesContro
       onMouseClicked = (event: MouseEvent) => {
         val selected = Table.getSelectionModel.getFocusedIndex
         val team = entries.get(selected)
-        println("SendButton " + team.teamID.value + " " + alert.alertID.value)
         manageRescuesController.sendPressed(team.teamID.value, alert.alertID.value)
       }
       if (activeButton == "Stop") {
@@ -149,7 +148,6 @@ class ManageRescuesGrid(private var manageRescuesController: ManageRescuesContro
       onMouseClicked = (event: MouseEvent) => {
         val selected = Table.getSelectionModel.getFocusedIndex
         val team = entries.get(selected)
-        println("StopButton " + team.teamID.value)
         manageRescuesController.stopPressed(team.teamID.value)
       }
       if (activeButton == "Send") {

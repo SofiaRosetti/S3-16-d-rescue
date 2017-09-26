@@ -18,7 +18,7 @@ object RescueTeamsMessageImplTest {
 
 class RescueTeamsMessageImplTest extends FunSuite {
 
-  var RTList: java.util.List[RescueTeamImpl] = new util.ArrayList[RescueTeamImpl]() //TODO refactor
+  var RTList: java.util.List[RescueTeamImpl] = new util.ArrayList[RescueTeamImpl]()
   RTList add RescueTeamsMessageImplTest.RT
 
   var RescueTeamsMessage = RescueTeamsMessageImpl(RTList)

@@ -7,11 +7,12 @@ import it.unibo.drescue.communication.GsonUtils
 import it.unibo.drescue.communication.builder.ReqRescueTeamConditionMessageBuilderImpl
 import it.unibo.drescue.communication.messages._
 import it.unibo.drescue.communication.messages.response.ErrorMessageImpl
-import it.unibo.drescue.connection.{QueueType, RabbitMQImpl, RequestHandler}
+import it.unibo.drescue.connection.{QueueType, RabbitMQImpl, RequestHandler, RescueTeamConsumer}
 import it.unibo.drescue.geocoding.{Geocoding, GeocodingException, GeocodingImpl}
 import it.unibo.drescue.localModel.{EnrolledTeamInfo, Observers}
 import it.unibo.drescue.model.{RescueTeamImpl, RescueTeamImplBuilder}
 import it.unibo.drescue.view.CustomDialog
+import org.slf4j.{Logger, LoggerFactory}
 
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.Alert
@@ -41,8 +42,9 @@ object EnrollTeamControllerImpl extends Enumeration {
   */
 class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, val rabbitMQ: RabbitMQImpl) extends Observer {
 
-  mainController.model.addObserver(Observers.EnrollTeam, this)
   val pool: ExecutorService = Executors.newFixedThreadPool(1)
+  mainController.model.addObserver(Observers.EnrollTeam, this)
+  private val Logger: Logger = LoggerFactory getLogger classOf[EnrollTeamControllerImpl]
   var obsBuffer = new ObservableBuffer[String]()
   var dialog: Alert = _
 
@@ -71,18 +73,18 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
           case e: GeocodingException =>
             mainController.changeView("NewTeam")
             startDialogAndWait(EnrollTeamControllerImpl.InvalidAddress)
-            println("[EnrollTeam] : Address not valid")
+            Logger error ("EnrollTeam", "Address not valid")
             EnrollTeamControllerImpl.CommandInsertValidAddress
           case _: Throwable =>
             mainController.changeView("NewTeam")
             startDialogAndWait(EnrollTeamControllerImpl.Error)
-            println("[EnrollTeam] : Address not valid")
+            Logger error ("EnrollTeam", "Address not valid")
             EnrollTeamControllerImpl.Error
         }
 
-        println("[EnrollTeam] : lat " + latitude + " long: " + longitude)
+        Logger info ("[EnrollTeam] : lat " + latitude + " long: " + longitude)
         if (latitude == 0.0 || longitude == 0.0) {
-          println("[EnrollTeam] Error in geocoding")
+          Logger error ("EnrollTeam", "Error in geocoding")
           EnrollTeamControllerImpl.Error
         } else {
           addTeam(rescueTeamId, name, address, phoneNumber, latitude, longitude)
@@ -116,13 +118,13 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
     )
     val task: Future[String] = pool.submit(new RequestHandler(rabbitMQ, message, QueueType.CIVIL_PROTECTION_QUEUE))
     val response: String = task.get()
-    println("EnrollTeam controller: " + response)
+    Logger info ("EnrollTeam controller: " + response)
     val messageName: MessageType = MessageUtils.getMessageNameByJson(response)
 
     messageName match {
 
       case MessageType.SUCCESSFUL_MESSAGE => {
-        println("[EnrollTeam] : Team added: " + rescueTeamId)
+        Logger info ("[EnrollTeam] : Team added: " + rescueTeamId)
         val notEnrolledTeams = mainController.model.notEnrolledRescueTeams
         notEnrolledTeams.add(new RescueTeamImplBuilder().setRescueTeamID(rescueTeamId)
           .setPassword("")
@@ -137,7 +139,7 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
         startDialogAndWait(EnrollTeamControllerImpl.Added)
       }
       case MessageType.ERROR_MESSAGE => {
-        println("[EnrollTeam] : Team not added, ERROR " + rescueTeamId)
+        Logger error ("EnrollTeam", "Team not added, ERROR: " + rescueTeamId)
         mainController.changeView("NewTeam")
         val customDialog = new CustomDialog(mainController)
         customDialog.setErrorText(GsonUtils.fromGson(response, classOf[ErrorMessageImpl]).getError)
@@ -197,7 +199,7 @@ class EnrollTeamControllerImpl(private var mainController: MainControllerImpl, v
       val message: Message = EnrollRescueTeamMessageImpl(selectedTeamID, mainController.model.cpID)
       val task: Future[String] = pool.submit(new RequestHandler(rabbitMQ, message, QueueType.CIVIL_PROTECTION_QUEUE))
       val response: String = task.get()
-      println("EnrollTeam controller: " + response)
+      Logger info ("EnrollTeam controller: " + response)
       val messageName: MessageType = MessageUtils.getMessageNameByJson(response)
 
       messageName match {

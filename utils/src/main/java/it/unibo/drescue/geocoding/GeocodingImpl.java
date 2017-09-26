@@ -6,6 +6,9 @@ import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.LatLng;
 
+/**
+ * Geocoding implementation class.
+ */
 public class GeocodingImpl implements Geocoding {
 
     private static final String KEY = "AIzaSyBL8F9ebXIIXBF5IqjkG5Go2aFuJPpc-zQ";
@@ -67,6 +70,13 @@ public class GeocodingImpl implements Geocoding {
 
     }
 
+    /**
+     * Sends a reverse geocode request obtaining the district identifier.
+     *
+     * @param latitude  latitude value
+     * @param longitude longitude value
+     * @throws Exception if a geocoding error occurred
+     */
     private void reverseGeocode(final double latitude, final double longitude) throws Exception {
         final GeoApiContext context = new GeoApiContext.Builder()
                 .apiKey(KEY)
@@ -82,6 +92,12 @@ public class GeocodingImpl implements Geocoding {
         }
     }
 
+    /**
+     * Sends a geocode request obtaining latitude and longitude values.
+     *
+     * @param address a string representing the address
+     * @throws Exception if a geocoding error occurred
+     */
     private void geocode(final String address) throws Exception {
         final GeoApiContext context = new GeoApiContext.Builder()
                 .apiKey(KEY)

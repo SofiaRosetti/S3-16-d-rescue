@@ -10,7 +10,7 @@ import java.util.*;
 /**
  *
  *
- *  It is a singleton that keep the process' state in order  to ensure communication and coordination with other civil protection
+ *  It is a singleton that keep the process' state in order to ensure communication and coordination with other civil protection
  *
  *  The process can be in one critical section  at a time (the coordinator keep the state about one critical section)
  */
@@ -39,13 +39,18 @@ public class CoordinatorImpl implements Coordinator {
     }
 
     @Override
+    public RabbitMQ getConnection() {
+        return this.connection;
+    }
+
+    @Override
     public void setConnection(RabbitMQ rabbitMQ) {
         this.connection = rabbitMQ;
     }
 
     @Override
-    public RabbitMQ getConnection() {
-        return this.connection;
+    public CoordinatorCondition getCondition() {
+        return this.condition;
     }
 
     @Override
@@ -55,8 +60,8 @@ public class CoordinatorImpl implements Coordinator {
     }
 
     @Override
-    public CoordinatorCondition getCondition() {
-        return this.condition;
+    public Timestamp getReqTimestamp() {
+        return this.reqTimestamp;
     }
 
     @Override
@@ -65,8 +70,8 @@ public class CoordinatorImpl implements Coordinator {
     }
 
     @Override
-    public Timestamp getReqTimestamp() {
-        return this.reqTimestamp;
+    public String getMyID() {
+        return this.myID;
     }
 
     @Override
@@ -75,18 +80,13 @@ public class CoordinatorImpl implements Coordinator {
     }
 
     @Override
-    public String getMyID() {
-        return this.myID;
+    public String getCsName() {
+        return this.cs;
     }
 
     @Override
     public void setCsName(String csName) {
         this.cs = csName;
-    }
-
-    @Override
-    public String getCsName() {
-        return this.cs;
     }
 
     @Override

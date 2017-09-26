@@ -19,11 +19,8 @@ public class EditProfileActivity extends ToolbarActivity {
         setToolbar(true);
 
         final Button save = (Button) findViewById(R.id.save_button);
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                //TODO: Add method to send changes of the user's data.
-            }
+        save.setOnClickListener((View view) -> {
+
         });
     }
 }

@@ -9,24 +9,19 @@ import it.unibo.drescue.communication.messages._
 import it.unibo.drescue.controller.MainControllerImpl
 import it.unibo.drescue.localModel.EnrolledTeamInfo
 import it.unibo.drescue.utils.{Coordinator, CoordinatorCondition, CoordinatorImpl, RescueTeamCondition}
+import org.slf4j.{Logger, LoggerFactory}
 
 /**
-<<<<<<< HEAD
-  * This consumer handle the messages sent by other civil protection in order to coordinate the rescues
-  *
-  * @param rabbitMQ
-  * @param mainControllerImpl
-=======
-  * A class representing a consumer able to coordinate civil protections
-  * thanks to the management of rescue teams
+  * This consumer handles the messages sent by other civil protections in order to coordinate the rescues
   *
   * @param rabbitMQ           the channel
   * @param mainControllerImpl the main controller
->>>>>>> 2765901000c3619a17efc5296e59efe70d8ff529
   */
 case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
                               private val mainControllerImpl: MainControllerImpl)
   extends DefaultConsumer(rabbitMQ.getChannel) {
+
+  private val Logger: Logger = LoggerFactory getLogger classOf[RescueTeamConsumer]
 
   override def handleDelivery(consumerTag: String,
                               envelope: Envelope,
@@ -36,7 +31,7 @@ case class RescueTeamConsumer(private val rabbitMQ: RabbitMQ,
     super.handleDelivery(consumerTag, envelope, properties, body)
 
     val message = new String(body, "UTF-8")
-    println("[RescueTeamConsumer] " + message)
+    Logger info ("[RescueTeamConsumer] " + message)
 
     val coordinator: Coordinator = CoordinatorImpl.getInstance()
     coordinator.setConnection(rabbitMQ)

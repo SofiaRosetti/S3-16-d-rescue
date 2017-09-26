@@ -6,6 +6,7 @@ import it.unibo.drescue.communication.GsonUtils
 import it.unibo.drescue.communication.messages._
 import it.unibo.drescue.connection.{QueueType, RabbitMQImpl, RequestHandler}
 import it.unibo.drescue.view.CustomDialog
+import org.slf4j.{Logger, LoggerFactory}
 
 import scalafx.scene.control.Alert
 
@@ -32,6 +33,7 @@ class LoginControllerImpl(private var mainController: MainControllerImpl,
                           val rabbitMQ: RabbitMQImpl) {
 
   val pool: ExecutorService = Executors.newFixedThreadPool(1)
+  private val Logger: Logger = LoggerFactory getLogger classOf[LoginControllerImpl]
   var dialog: Alert = _
 
   /**
@@ -44,13 +46,12 @@ class LoginControllerImpl(private var mainController: MainControllerImpl,
   def loginPress(username: String, password: String) = {
     startLoadingDialog()
 
-    println(username)
-    println(password)
+    Logger info ("Username: " + username + ", Password: " + password)
 
     val message: Message = CpLoginMessageImpl(username, password)
     val task: Future[String] = pool.submit(new RequestHandler(rabbitMQ, message, QueueType.CIVIL_PROTECTION_QUEUE))
     val response: String = task.get()
-    println("Login controller: " + response)
+    Logger info ("Login controller: " + response)
     val messageName: MessageType = MessageUtils.getMessageNameByJson(response)
 
     messageName match {

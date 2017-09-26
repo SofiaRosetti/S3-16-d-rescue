@@ -6,6 +6,7 @@ import it.unibo.drescue.StringUtils
 import it.unibo.drescue.communication.GsonUtils
 import it.unibo.drescue.communication.messages.Message
 import it.unibo.drescue.communication.messages.response.ErrorMessageImpl
+import org.slf4j.{Logger, LoggerFactory}
 
 /**
   * Object companion of RequestHandler class
@@ -23,21 +24,20 @@ object RequestHandler {
   */
 class RequestHandler(val rabbitMQ: RabbitMQImpl, val message: Message, val queue: QueueType) extends Callable[String] {
 
+  private val Logger: Logger = LoggerFactory getLogger classOf[RequestHandler]
 
   override def call() = {
     var responseMessage: String = null
-    //TODO request channel.send message and wait response
     try {
-      val replyQueue = rabbitMQ.addReplyQueue(); //queue for response
-      val props = rabbitMQ.setReplyTo(replyQueue);
+      val replyQueue = rabbitMQ.addReplyQueue()
+      val props = rabbitMQ.setReplyTo(replyQueue)
       rabbitMQ.sendMessage("", queue.getQueueName, props, message)
       val response = new ArrayBlockingQueue[String](1)
       responseMessage = rabbitMQ.addRPCClientConsumer(response, replyQueue)
     } catch {
       case e: Exception => responseMessage = GsonUtils.toGson(new ErrorMessageImpl(RequestHandler.ErrorServer))
     }
-    println("Handler Response: " + responseMessage)
-    //if request reach timeout
+    Logger info ("Handler Response: " + responseMessage)
     if (!StringUtils.isAValidString(responseMessage)) responseMessage = GsonUtils.toGson(new ErrorMessageImpl(RequestHandler.ErrorServer))
 
     responseMessage

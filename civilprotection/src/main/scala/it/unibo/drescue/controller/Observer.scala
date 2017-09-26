@@ -1,7 +1,8 @@
 package it.unibo.drescue.controller
 
 /**
-  * A trait observer classes must implement to respect observer pattern
+  * A trait that observer classes must implement to respect observer pattern
+  * in order to be informed of changes in observable objects
   */
 trait Observer {
 

@@ -12,6 +12,7 @@ import it.unibo.drescue.localModel.{EnrolledTeamInfo, Observers}
 import it.unibo.drescue.model.CivilProtectionImpl
 import it.unibo.drescue.utils.{Coordinator, CoordinatorCondition, CoordinatorImpl, RescueTeamCondition}
 import it.unibo.drescue.view.CustomDialog
+import org.slf4j.{Logger, LoggerFactory}
 
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.{Alert, ButtonType}
@@ -29,6 +30,7 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
   mainController.model.addObserver(Observers.ManageRescue, this)
   val pool: ExecutorService = Executors.newFixedThreadPool(1)
   val coordinator: Coordinator = CoordinatorImpl.getInstance()
+  private val Logger: Logger = LoggerFactory getLogger classOf[ManageRescuesControllerImpl]
   var obsBuffer = new ObservableBuffer[EnrolledTeamInfo]()
   var dialog: Alert = _
   coordinator.setConnection(rabbitMQ)
@@ -73,7 +75,7 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
         val message: Message = GetAssociatedCpMessageImpl(wantedRescueTeamID)
         val task: Future[String] = pool.submit(new RequestHandler(rabbitMQ, message, QueueType.CIVIL_PROTECTION_QUEUE))
         val response: String = task.get()
-        println("Manage Rescues Controller - cp: " + response)
+        Logger info ("Manage Rescues Controller - cp: " + response)
         val associatedCpMessage = GsonUtils.fromGson(response, classOf[CPsMessageImpl])
         val cpList: java.util.List[CivilProtectionImpl] = associatedCpMessage.cpList
 
@@ -98,7 +100,7 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
           rabbitMQ.sendMessage(mainController.ExchangeName, wantedRescueTeamID, null, reqCoordinationMessage)
 
           while (coordinator.getCondition != CoordinatorCondition.HELD && coordinator.getCondition != CoordinatorCondition.DETACHED) {
-            println(coordinator.getCondition)
+            Logger info ("Coordinator condition: " + coordinator.getCondition)
           }
           if (coordinator.getCondition == CoordinatorCondition.HELD) {
             criticalSectionExecution(alertID, rescueTeamToChange, indexToChange)
@@ -119,6 +121,41 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
         }
       }
     }
+  }
+
+  /**
+    * Change the local condition of the rescue team
+    *
+    * @param alertID the alert for which the rescue is occupied
+    * @param rescueTeamToChange the changed rescue team
+    * @param indexToChange the index into local structure of the changed rescue team
+    */
+  def criticalSectionExecution(alertID: String, rescueTeamToChange: EnrolledTeamInfo, indexToChange: Integer): Unit = {
+    Logger info "CS Execution"
+    mainController.model.modifyEnrollment(indexToChange, new EnrolledTeamInfo(
+      rescueTeamToChange.teamID.value,
+      rescueTeamToChange.teamName.value,
+      rescueTeamToChange.phoneNumber.value,
+      false,
+      mainController.model.cpID,
+      alertID)
+    )
+  }
+
+  /**
+    * Starts a custom dialog which informs the user that the team has been sent
+    */
+  def startSuccessDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(ManageRescuesControllerImpl.Sent)
+    dialog.showAndWait()
+  }
+
+  /**
+    *  Starts a custom dialog which informs the user that the team has been occupied
+    */
+  def startErrorDialog() = {
+    dialog = new CustomDialog(mainController).createDialog(ManageRescuesControllerImpl.Error)
+    dialog.showAndWait()
   }
 
   /**
@@ -158,13 +195,6 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
   }
 
   /**
-    * Changes the view to the home view after the click on the back button
-    */
-  def backPress(): Unit = {
-    mainController.changeView("Home")
-  }
-
-  /**
     * Send message to the other civil protection in order to inform them that the rescue team condition has changed
     *
     * @param rescueTeamID the ID of the rescue team that has changed
@@ -181,41 +211,6 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
   }
 
   /**
-    * Change the local condition of the rescue team
-    *
-    * @param alertID the alert for which the rescue is occupied
-    * @param rescueTeamToChange the changed rescue team
-    * @param indexToChange the index into local structure of the changed rescue team
-    */
-  def criticalSectionExecution(alertID: String, rescueTeamToChange: EnrolledTeamInfo, indexToChange: Integer): Unit = {
-    println("[CS Execution]")
-    mainController.model.modifyEnrollment(indexToChange, new EnrolledTeamInfo(
-      rescueTeamToChange.teamID.value,
-      rescueTeamToChange.teamName.value,
-      rescueTeamToChange.phoneNumber.value,
-      false,
-      mainController.model.cpID,
-      alertID)
-    )
-  }
-
-  /**
-    * Starts a custom dialog which informs the user that the team has been sent
-    */
-  def startSuccessDialog() = {
-    dialog = new CustomDialog(mainController).createDialog(ManageRescuesControllerImpl.Sent)
-    dialog.showAndWait()
-  }
-
-  /**
-    *  Starts a custom dialog which informs the user that the team has been occupied
-    */
-  def startErrorDialog() = {
-    dialog = new CustomDialog(mainController).createDialog(ManageRescuesControllerImpl.Error)
-    dialog.showAndWait()
-  }
-
-  /**
     * Starts a custom dialog which informs the user that the team has been stopped
     */
   def stopSuccessDialog() = {
@@ -229,6 +224,13 @@ class ManageRescuesControllerImpl(private var mainController: MainControllerImpl
   def stopNotAuthorizedErrorDialog() = {
     dialog = new CustomDialog(mainController).createDialog(ManageRescuesControllerImpl.StopNotAuthorized)
     dialog.showAndWait()
+  }
+
+  /**
+    * Changes the view to the home view after the click on the back button
+    */
+  def backPress(): Unit = {
+    mainController.changeView("Home")
   }
 
 }

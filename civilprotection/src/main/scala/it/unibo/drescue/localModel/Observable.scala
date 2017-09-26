@@ -3,7 +3,7 @@ package it.unibo.drescue.localModel
 import it.unibo.drescue.controller.Observer
 
 /**
-  * Object companion of Observable trait
+  * An enum representing the list with all possible observers
   */
 object Observers extends Enumeration {
   val Home, EnrollTeam, ManageRescue = Value
