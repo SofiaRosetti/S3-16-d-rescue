@@ -16,8 +16,8 @@ case class ServerConsumer(private val rabbitMQ: RabbitMQ,
                           private val serviceOperation: ServiceOperation)
   extends DefaultConsumer(rabbitMQ.getChannel) {
 
-  val dbConnection: DBConnectionImpl = DBConnectionImpl.getLocalConnection
-  val Logger: Logger = LoggerFactory getLogger classOf[Service]
+  val dbConnection: DBConnectionImpl = DBConnectionImpl.getRemoteConnection
+  private val Logger: Logger = LoggerFactory getLogger classOf[Service]
 
   import com.rabbitmq.client.{AMQP, Envelope}
 

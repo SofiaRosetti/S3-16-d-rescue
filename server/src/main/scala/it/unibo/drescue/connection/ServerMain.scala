@@ -7,7 +7,7 @@ package it.unibo.drescue.connection
   */
 object ServerMain extends App {
 
-  val connection: RabbitMQConnection = new RabbitMQConnectionImpl(RabbitConnectionConstants.LOCAL_HOST)
+  val connection: RabbitMQConnection = new RabbitMQConnectionImpl(RabbitConnectionConstants.REMOTE_HOST)
   connection openConnection()
 
   Service(connection, QueueType.MOBILEUSER_QUEUE.getQueueName, MobileuserService())
