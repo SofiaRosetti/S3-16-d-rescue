@@ -6,6 +6,177 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="alert_dialog_theme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/colorPrimaryDark</item>
+        <item name="android:textColorPrimary">@color/colorPrimaryText</item>
+        <item name="android:windowBackground">@drawable/dialog_background</item>
+        <item name="android:windowTitleStyle">@style/alert_dialog_title_style</item>
+    </style>
+
+    <style name="alert_dialog_title_style">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
+    </style>
+
+    <style name="button_look">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">@dimen/padding_xsmall</item>
+        <item name="android:layout_marginLeft">@dimen/margin_small</item>
+        <item name="android:layout_marginRight">@dimen/margin_small</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_xlarge</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:background">@color/colorAccent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="card_view_look" parent="CardView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="cardCornerRadius">@dimen/radius_xsmall</item>
+    </style>
+
+    <style name="card_view_look_container">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="card_view_look_list" parent="card_view_look">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
+    <style name="card_view_look_text_view">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
+    </style>
+
+    <style name="gps_label_look">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorTextIcons</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">@dimen/padding_xsmall</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="label_look">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text_size_xlarge</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
+    </style>
+
+    <style name="label_title_look">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="label_text_look">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingStart">@dimen/padding_medium</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="layout_base">
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="layout_base_primary" parent="@style/layout_base">
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="layout_base_secondary" parent="@style/layout_base">
+        <item name="android:gravity">center</item>
+        <item name="android:background">@color/colorPrimaryLight</item>
+    </style>
+
+    <style name="layout_container">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">@dimen/padding_medium</item>
+    </style>
+
+    <style name="layout_container_item" parent="layout_container_item_base">
+        <item name="android:paddingTop">@dimen/padding_xsmall</item>
+        <item name="android:paddingBottom">@dimen/padding_medium</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="layout_container_item_base">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/padding_xsmall</item>
+        <item name="android:paddingRight">@dimen/padding_xsmall</item>
+        <item name="android:layout_marginBottom">@dimen/margin_xsmall</item>
+        <item name="android:background">@color/colorTextIcons</item>
+    </style>
+
+    <style name="layout_container_label">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="material_edit_text_look">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="spinner_event_type">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="spinner_event_type_dropdown_item_style" parent="spinner_event_type">
+        <item name="android:textColor">@color/colorSecondaryText</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+    </style>
+
+    <style name="spinner_event_type_item_style" parent="spinner_event_type">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="splash_section" parent="layout_base">
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="toolbar_look">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
     </style>
 
 </resources>

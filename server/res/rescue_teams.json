@@ -1,0 +1,34 @@
+[
+  {
+    "rescueTeamID": "RAY1",
+    "password": "passToChange",
+    "name": "Squadra Gialla Ravenna",
+    "latitude": 44.420345,
+    "longitude": 11.912222,
+    "phoneNumber": "054409090"
+  },
+  {
+    "rescueTeamID": "RAR1",
+    "password": "passToChange",
+    "name": "Squadra Rossa Ravenna",
+    "latitude": 44.420555,
+    "longitude": 11.912442,
+    "phoneNumber": "054409091"
+  },
+  {
+    "rescueTeamID": "FCR1",
+    "password": "passToChange",
+    "name": "Squadra Rossa Cesena",
+    "latitude": 44.1397615,
+    "longitude": 12.2432193,
+    "phoneNumber": "054709090"
+  },
+  {
+    "rescueTeamID": "FCG1",
+    "password": "passToChange",
+    "name": "Squadra verde Forlì-Cesena",
+    "latitude": 44.1397688,
+    "longitude": 12.2434493,
+    "phoneNumber": "054709091"
+  }
+]

@@ -5,26 +5,33 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:2.3.3"
+        classpath "com.android.tools.build:gradle:${gradleVersion}"
     }
 
 }
 
 apply plugin: 'com.android.application'
 
+dependencies {
+    compile "com.android.support.constraint:constraint-layout:${constraintLayoutVersion}"
+}
+
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    compileSdkVersion androidCompileSdkVersion.toInteger()
+    buildToolsVersion "${androidBuildToolsVersion}"
 
     defaultConfig {
-        applicationId "it.unibo.mobileuser"
-        minSdkVersion 19
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        applicationId "${androidArtifactId}"
+        minSdkVersion androidMinSdkVersion.toInteger()
+        targetSdkVersion androidTargetSdkVerision.toInteger()
+        versionCode androidVersionCode.toInteger()
+        versionName "${androidVersionName}"
+
+        jackOptions {
+            enabled true
+        }
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
     buildTypes {
         release {
@@ -32,15 +39,47 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    repositories {
+        maven {
+            url "https://maven.google.com"
+        }
+    }
+
+    dependencies {
+        compile fileTree(dir: 'libs', include: ['*.jar'])
+        androidTestCompile("com.android.support.test.espresso:espresso-core:${espressoVersion}", {
+            exclude group: 'com.android.support', module: 'support-annotations'
+        })
+        compile "com.android.support:appcompat-v7:${appCompatV7Version}"
+        compile "com.android.support:cardview-v7:${cardviewV7Version}"
+        compile "com.android.support:recyclerview-v7:${recyclerviewV7Version}"
+        compile "com.android.support.constraint:constraint-layout:${constraintLayoutVersion}"
+        compile "junit:junit:${junitVersion}"
+
+        compile "com.rengwuxian.materialedittext:library:${materialedittextVersion}"
+        compile "com.google.code.gson:gson:${gsonVersion}"
+
+        compile project(':utils-java')
+    }
 }
 
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:26.+'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    testCompile 'junit:junit:4.12'
-    compile 'junit:junit:4.12'
+android.applicationVariants.all { variant ->
+    task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
+        description "Generates Javadoc for $variant.name."
+        source = variant.javaCompile.source
+        ext.androidJar = "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
+        classpath = files(variant.javaCompile.classpath.files) + files(ext.androidJar)
+        options.links("http://docs.oracle.com/javase/7/docs/api");
+        options.links("http://d.android.com/reference/");
+    }
 }

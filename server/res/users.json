@@ -1,0 +1,37 @@
+[
+  {
+    "email": "samantha.bandini@gmail.it",
+    "password": "password1",
+    "name": "Samantha",
+    "surname": "Bandini",
+    "phoneNumber": "3450909090"
+  },
+  {
+    "email": "elisa.casadio@gmail.it",
+    "password": "password2",
+    "name": "Elisa",
+    "surname": "Casadio",
+    "phoneNumber": "3450909091"
+  },
+  {
+    "email": "martina.giovanelli@gmail.it",
+    "password": "password3",
+    "name": "Martina",
+    "surname": "Giovanelli",
+    "phoneNumber": "3450909092"
+  },
+  {
+    "email": "annagiulia.leoni@gmail.it",
+    "password": "password4",
+    "name": "Anna Giulia",
+    "surname": "Leoni",
+    "phoneNumber": "3450909093"
+  },
+  {
+    "email": "sofia.rosetti@gmail.it",
+    "password": "password5",
+    "name": "Sofia",
+    "surname": "Rosetti",
+    "phoneNumber": "3450909094"
+  }
+]

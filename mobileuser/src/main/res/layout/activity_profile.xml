@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context="it.unibo.mobileuser.profile.ProfileActivity">
+
+    <include
+            layout="@layout/toolbar"
+            android:id="@+id/toolbar"
+            style="@style/toolbar_look">
+    </include>
+
+    <LinearLayout
+            android:id="@+id/container"
+            style="@style/layout_base_secondary">
+
+
+        <LinearLayout
+                android:background="@color/colorTextIcons"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:layout_marginLeft="@dimen/text_size_medium"
+                android:layout_marginRight="@dimen/text_size_medium"
+                style="@style/layout_container">
+
+            <ImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="@dimen/fixed_dimension_medium"
+                    android:layout_height="@dimen/fixed_dimension_medium"
+                    android:src="@drawable/ic_account_box_black_48dp"
+                    android:tint="@color/colorPrimaryDark"
+                    android:scaleType="centerCrop"
+                    android:layout_marginBottom="@dimen/margin_xsmall"/>
+
+            <LinearLayout
+                    style="@style/layout_container_label"
+                    android:paddingBottom="@dimen/padding_small">
+
+                <TextView
+                        android:id="@+id/name_label"
+                        android:text="@string/name_label"
+                        style="@style/label_title_look"/>
+
+                <TextView
+                        android:id="@+id/name_field"
+                        style="@style/label_text_look"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    style="@style/layout_container_label"
+                    android:paddingBottom="@dimen/padding_small">
+
+                <TextView
+                        android:id="@+id/surname_label"
+                        android:text="@string/surname_label"
+                        style="@style/label_title_look"/>
+
+                <TextView
+                        android:id="@+id/surname_field"
+                        style="@style/label_text_look"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    style="@style/layout_container_label"
+                    android:paddingBottom="@dimen/padding_small">
+
+                <TextView
+                        android:id="@+id/email_label"
+                        android:text="@string/email_label"
+                        style="@style/label_title_look"/>
+
+                <TextView
+                        android:id="@+id/email_field"
+                        style="@style/label_text_look"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    style="@style/layout_container_label">
+
+                <TextView
+                        android:id="@+id/phone_label"
+                        android:text="@string/phone_label"
+                        style="@style/label_title_look"/>
+
+                <TextView
+                        android:id="@+id/phone_field"
+                        style="@style/label_text_look"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <Button
+                android:id="@+id/password_change_button"
+                android:text="@string/change_password"
+                style="@style/button_look"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:drawableStart="@drawable/ic_vpn_key_black_36dp"
+                android:drawablePadding="@dimen/padding_text_icon_small"
+                android:paddingStart="@dimen/padding_icon_small"
+                android:clickable="true"/>
+
+        <Button
+                android:id="@+id/logout_button"
+                android:text="@string/logout"
+                style="@style/button_look"
+                android:drawableStart="@drawable/ic_exit_to_app_black_36dp"
+                android:drawablePadding="@dimen/padding_text_icon_big"
+                android:paddingStart="@dimen/padding_icon_medium"
+                android:clickable="true"/>
+
+    </LinearLayout>
+
+</LinearLayout>

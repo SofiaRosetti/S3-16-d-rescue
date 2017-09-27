@@ -1,21 +1,40 @@
-group 'it.unibo.S3.drescue'
-version '0.1'
+group projectGroup
+version version
 
-apply plugin: 'java'
-apply plugin: 'scala'
-
-sourceCompatibility = 1.8
-
-allprojects {
+subprojects {
 
     repositories {
         mavenCentral()
         jcenter()
     }
+
 }
 
-dependencies {
-    compile 'org.scala-lang:scala-library:2.12.2'
+configure(subprojects.findAll()) {
+    if (it.name != 'mobileuser') {
+
+        if (it.name != 'utils-java') {
+            apply plugin: 'scala'
+
+            scaladoc.destinationDir = file("${docFolderScala}")
+
+            dependencies {
+                compile "org.scala-lang:scala-library:${scalaVersion}"
+                testCompile "org.scalatest:scalatest_2.12:${scalaTestVersion}"
+            }
+        }
+
+        apply plugin: 'java'
+
+        javadoc.destinationDir = file("${docFolderJava}")
+
+        sourceCompatibility = "${jdk8Version}"
+
+        dependencies {
+            testCompile "junit:junit:${junitVersion}"
+        }
+
+    }
 }
 
-defaultTasks('clean', 'build')
+defaultTasks('clean', 'build', 'javadoc', 'scaladoc')
